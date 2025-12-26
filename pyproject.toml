@@ -5,14 +5,66 @@
 # Project Configuration
 # =============================================================================
 
-[build-system]
-requires = ["setuptools>=42", "wheel"]   # PEP 508 specifications.
-build-backend = "setuptools.build_meta"
+[project]
+name = "dreamstack_raster"
+version = "0.0.1"
+description = "Dreamstack Raster"
+license = { text = "Proprietary" }
+readme = "README.md"
+requires-python = ">=3.12,<4.0"
+authors = [{ name = "Scape Agency", email = "info@scape.agency" }]
+maintainers = [{ name = "Lars van Vianen", email = "lars@scape.agency" }]
+keywords = ["dreamstack", "raster"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: Other/Proprietary License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dynamic = ["dependencies"]
+
+
+# =============================================================================
+# Project URLs
+# =============================================================================
+
+[project.urls]
+homepage = "https://scape.agency/"
+repository = "https://github.com/scape-agency/dreamstack-raster"
+documentation = "https://github.com/scape-agency/dreamstack-raster/doc"
+
+
+# =============================================================================
+# Poetry
+# =============================================================================
+
+[tool.poetry]
+package-mode = true
+packages = [{ include = "dreamstack", from = "src" }]
+
+
+# =============================================================================
+# Poetry Source
+# =============================================================================
+
+[[tool.poetry.source]]
+name = "github-private"
+url = "https://github.com/scape-agency"
+priority = "supplemental"
 
 
 # =============================================================================
 # Dependencies
 # =============================================================================
+
+[tool.poetry.dependencies]
+dreamstack = "^0.0.1"
 
 
 # =============================================================================
@@ -20,17 +72,30 @@ build-backend = "setuptools.build_meta"
 # =============================================================================
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.3.4"           # Framework for testing
-pytest-cov = "^6.0.0"       # Code coverage for tests
-black = "^24.8.0"           # Code formatter
-flake8 = "^7.1.0"           # Linter for code quality
-mypy = "^1.14.1"            # Static type checker
-sphinx = "^8.0.2"           # Documentation generator
-isort = "^5.10.1"           # Import sorter
-tox = "^4.4.6"              # Testing multiple environments
-pre-commit = "^4.0.1"       # Pre-commit hooks for linting and formatting
+sturnus-dev = { git = "https://github.com/starling-cloud/sturnus-dev.git", rev = "pro" }
+
+
+# =============================================================================
+# Documentation Dependencies
+# =============================================================================
+
+[tool.poetry.group.doc.dependencies]
+sturnus-doc = { git = "https://github.com/starling-cloud/sturnus-doc.git", rev = "pro" }
+
+
+# =============================================================================
+# Scripts
+# =============================================================================
+
+[tool.poetry.scripts]
+main = "dreamstack_raster.__main__:main"
+test = "bin.run_tests:main"
 
 
 # =============================================================================
 # Build System
 # =============================================================================
+
+[build-system]
+requires = ["poetry-core>=2.0.0"]
+build-backend = "poetry.core.masonry.api"
