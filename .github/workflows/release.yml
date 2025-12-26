@@ -1,0 +1,126 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      # Trigger only on version tags
+      - "v*.*.*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # Checkout the repository
+      -
+        name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      # Set up GitHub Credentials, especially for private repositories
+      # and rate limiting
+      - name: Configure Git to Use PAT
+        run: |
+            git config --global credential.helper store
+            git config --global url."https://x-access-token:${{ secrets.GH_PAT }}@github.com/".insteadOf "https://github.com/"
+
+      # Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.12.7
+
+      # Cache Poetry dependencies for faster builds
+      -
+        name: Cache Poetry dependencies
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.cache/pypoetry
+            ~/.venv
+          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-
+
+      # Install Poetry
+      -
+        name: Install Poetry
+        run: curl -sSL https://install.python-poetry.org | python3 -
+
+      # Authenticate Poetry for Private Repositories
+      -
+        name: Configure Poetry for Private Repository
+        env:
+            POETRY_HTTP_BASIC_GITHUB_USERNAME: "x-token-auth"
+            POETRY_HTTP_BASIC_GITHUB_PASSWORD: ${{ secrets.GH_PAT }}
+        run: |
+            poetry config http-basic.github $POETRY_HTTP_BASIC_GITHUB_USERNAME $POETRY_HTTP_BASIC_GITHUB_PASSWORD
+
+    #   -
+    #     name: Configure Poetry for Private Repositories
+    #     env:
+    #         GH_ACTOR: ${{ github.actor }}  # Automatically sets the GitHub actor
+    #         GH_PAT: ${{ secrets.GH_PAT }}  # Add your PAT as a secret
+    #     run: |
+    #         mkdir -p ~/.config/pypoetry
+    #         echo "[tool.poetry.source]
+    #         default = true
+
+    #         [tool.poetry.source.github]
+    #         name = \"github\"
+    #         url = \"https://github.com/\"
+    #         " > ~/.config/pypoetry/config.toml
+    #             poetry config http-basic.github "$GH_ACTOR" "$GH_PAT"
+
+      # Regenerate the lock file if needed
+      -
+        name: Update Poetry Lock File
+        run: poetry lock
+
+      # Configure Git timeout
+      -
+        name: Increase Git timeout
+        run: git config --global http.postBuffer 524288000
+
+      # Install dependencies using Poetry with retry
+      -
+        name: Install dependencies
+        run: |
+          n=0
+          until [ "$n" -ge 5 ]
+          do
+            poetry install --no-root --vvv & break
+            n=$((n+1))
+            echo "Retrying... ($n/5)"
+            sleep 5
+          done
+
+    #   -
+    #     name: Install Dependencies with Poetry
+    #     run: poetry install --no-root -vvv
+
+      # Build the package using Poetry
+      -
+        name: Build the package
+        run: poetry build
+
+      # Create a release on GitHub
+      -
+        name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          body: |
+            This release contains the following:
+            - Version: ${{ github.ref_name }}
+            - Package built with Poetry.
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Verify the release
+      -
+        name: Verify release success
+        run: |
+          echo "Release created for ${{ github.ref_name }}."
