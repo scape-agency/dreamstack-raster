@@ -1,0 +1,55 @@
+{
+    "recommendations": [
+
+        // ────────────────────────────────────────────────────────────────────
+        // Docker & Containers
+        // ────────────────────────────────────────────────────────────────────
+        "ms-azuretools.vscode-docker",               // Docker support
+        "ms-vscode-remote.remote-containers",        // Dev container integration
+
+
+        // ────────────────────────────────────────────────────────────────────
+        // GitHub & VCS
+        // ────────────────────────────────────────────────────────────────────
+        "github.vscode-pull-request-github",         // GitHub PR & issue management
+
+
+        // ────────────────────────────────────────────────────────────────────
+        // TypeScript / JavaScript
+        // ────────────────────────────────────────────────────────────────────
+        "esbenp.prettier-vscode",                    // Prettier code formatter
+        "ms-vscode.vscode-typescript-next",          // Enhanced TypeScript support
+        // "dbaeumer.vscode-eslint",                 // ESLint (optional)
+
+
+        // ────────────────────────────────────────────────────────────────────
+        // 🐍 Python
+        // ────────────────────────────────────────────────────────────────────
+        "ms-python.autopep8",                        // Autopep8 formatter
+        "ms-python.black-formatter",                 // Black formatter
+        "ms-python.debugpy",                         // Debugger
+        "ms-python.flake8",                          // Flake8 linter
+        "ms-python.isort",                           // Import sorter
+        "ms-python.pylint",                          // Pylint
+        "ms-python.python",                          // Python core extension
+        "ms-python.vscode-pylance",                  // Pylance language server
+        "zeshuaro.vscode-python-poetry",             // Poetry environment manager
+
+
+        // ────────────────────────────────────────────────────────────────────
+        // SCSS / CSS / Style
+        // ────────────────────────────────────────────────────────────────────
+        "sibiraj-s.vscode-scss-formatter",           // SCSS formatter
+        "stylelint.vscode-stylelint",                // Linter for CSS/SCSS
+        // "syler.sass-indented",                    // Optional: SCSS/SASS language support
+
+        
+        // ────────────────────────────────────────────────────────────────────
+        // Markup / Templates / Config
+        // ────────────────────────────────────────────────────────────────────
+        "samuelcolvin.jinjahtml",                    // Jinja2 template support
+        "tamasfe.even-better-toml",                  // Better TOML syntax highlighting
+        "redhat.vscode-yaml",                        // Optional: YAML support
+
+    ]
+}
