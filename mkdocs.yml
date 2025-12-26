@@ -1,0 +1,206 @@
+# Project Information
+# =============================================================================
+
+site_name: Dreamstack Raster Documentation
+site_description: Documentation for the Dreamstack Raster package
+site_author: Starling
+site_url: https://www.scape.agency/
+
+docs_dir: doc
+
+
+# Repository
+# =============================================================================
+
+repo_name: "GitHub"
+repo_url: https://github.com/scape-agency/dreamstack-raster/
+edit_uri_template: "doc/{path}"
+dev_addr: 127.0.0.1:8001
+
+
+
+# Page tree
+# =============================================================================
+
+nav:
+  - Home: index.md
+  - Resources: resources.md
+#   - Getting Started:
+#       - Installation: getting-started/installation.md
+#       - Usage: getting-started/usage.md
+#   - Reference:
+#       - API: reference/api.md
+#       - CLI: reference/cli.md
+
+
+# Theme Configuration
+# =============================================================================
+
+theme:
+  name: material
+  custom_dir: doc/overrides
+  locale: en
+  language: en
+  palette:
+    scheme: scape
+  font: false
+  # font:
+  #   text: "Roboto"
+  #   code: "Roboto Mono"
+  logo: static/image/logo.png
+  favicon: static/favicon/favicon.png
+  features:
+    - navigation.footer
+    - navigation.indexes
+    # - navigation.instant
+    # - navigation.prune
+    # - navigation.sections
+    # - navigation.tabs
+    # - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.share
+    - search.suggest
+    # - content.action.edit
+    # - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    - content.code.select
+    - content.tabs.link
+    # - header.autohide
+    - toc.follow
+    # - toc.integrate
+
+
+# Plugins
+# =============================================================================
+
+plugins:
+  - git-revision-date
+  - macros
+  - mermaid2
+  - search:
+      lang: en
+      separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
+  # - mkdocstrings:
+  # #   custom_templates: templates
+  #     default_handler: python
+  #     handlers:
+  #       python:
+  #         options:
+  #           # Heading options
+  #           heading_level: 2
+  #           show_root_heading: false
+  #           show_root_toc_entry: false
+  #           show_root_full_path: false
+  #           show_root_members_full_path: false
+  #           show_object_full_path: false
+  #           show_category_heading: false
+  #           # Additional options
+  #           show_bases: true
+  #           show_source: false
+
+
+
+
+
+# Footer
+# =============================================================================
+
+copyright: >
+  Copyright &copy; 2025 <a href="https://www.scape.agency">Scape Agency</a>. All Rights Reserved.
+
+# hide:
+#   - footer
+
+
+
+
+# Customization
+# =============================================================================
+
+extra:
+  generator: false
+  analytics:
+    provider: google
+    # property: G-QC1W520T96
+  social:
+    - icon: fontawesome/solid/globe
+      link: https://www.scape.agency
+    - icon: fontawesome/brands/github
+      link: https://github.com/scape-agency
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/company/scape-agency/
+    - icon: fontawesome/brands/instagram
+      link: https://www.instagram.com/scape.agency/
+    - icon: fontawesome/brands/facebook
+      link: https://www.facebook.com/scape.agency/
+  # consent:
+  #   title: Cookie consent
+  #   description: >-
+  #     We use cookies to recognize your repeated visits and preferences, as well
+  #     as to measure the effectiveness of our documentation and whether users
+  #     find what they"re searching for. With your consent, you"re helping us to
+  #     make our documentation better.
+extra_css:
+  - static/css/extra.css
+extra_javascript:
+  - static/js/extra.js
+# extra_templates:
+
+
+
+
+# Extensions
+# =============================================================================
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - codehilite
+  - toc:
+      permalink: true
+  # - pymdownx.arithmatex:
+  #     generic: true
+  # - pymdownx.betterem:
+  #     smart_enable: all
+  # - pymdownx.caret
+  # - pymdownx.details
+  # - pymdownx.emoji:
+  #     emoji_generator: !!python/name:materialx.emoji.to_svg
+  #     emoji_index: !!python/name:materialx.emoji.twemoji
+  # - pymdownx.highlight:
+  #     anchor_linenums: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.details
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  # - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: squidfunk
+      repo: mkdocs-material
+  # - pymdownx.mark
+  # - pymdownx.smartsymbols
+  # - pymdownx.superfences:
+  #     custom_fences:
+  #       - name: mermaid
+  #         class: mermaid
+  #         format: !!python/name:pymdownx.superfences.fence_code_format
+  # - pymdownx.tabbed:
+  #     alternate_style: true
+  # - pymdownx.tasklist:
+  #     custom_checkbox: true
+  # - pymdownx.tilde
