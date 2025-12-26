@@ -1,0 +1,4 @@
+[MASTER]
+ignore=bup,tmp
+init-hook='import sys; sys.path.append("src")'
+# ignore=tests,exe,build,docs,migrations,bup,tmp
