@@ -1,0 +1,102 @@
+
+---
+
+# =============================================================================
+# Header
+# =============================================================================
+
+name: Feature Request
+description: "Propose a new feature to improve the product internally"
+type: "Feature"
+# title: "[FEATURE]: "
+# assignees: []
+
+# =============================================================================
+# Body
+# =============================================================================
+
+body:
+
+# Introduction
+# =============================================================================
+
+- type: markdown
+  attributes:
+    value: |
+      Use this form to suggest a new feature or capability for our product.
+
+      Please ensure:
+      - You describe the feature clearly and concisely
+      - You include any relevant team, context, or use case
+      - You check for duplicates before submitting
+      - You break separate ideas into separate requests
+
+      If the feature is critical, mark the issue as such or flag it in Slack.
+
+# Feature Description
+# =============================================================================
+
+- type: textarea
+  id: description
+  attributes:
+    label: What should this feature do?
+    description: "Describe the new functionality and its core behavior."
+    placeholder: "Enable bulk editing for the admin dashboard user table."
+  validations:
+    required: true
+
+# Use Case & Impact
+# =============================================================================
+
+- type: textarea
+  id: impact
+  attributes:
+    label: Why do we need this?
+    description: "What's the motivation or problem this feature solves? Who benefits?"
+    placeholder: |
+      - This is blocking QA automation for X flow
+      - Will improve onboarding for content team
+  validations:
+    required: true
+
+# Implementation Thoughts
+# =============================================================================
+
+- type: textarea
+  id: implementation-notes
+  attributes:
+    label: Any ideas on how to implement it?
+    description: "Optional technical notes or suggestions for execution."
+    placeholder: "Add notes about data models, UI, permissions, etc."
+  validations:
+    required: false
+
+# Stakeholders or Dependencies
+# =============================================================================
+
+- type: textarea
+  id: dependencies
+  attributes:
+    label: Stakeholders or Dependencies
+    description: "List people, systems, or tasks this is related to."
+    placeholder: |
+      - Frontend team (UI)
+      - Affects customer success onboarding flow
+      - Dependent on #341
+  validations:
+    required: false
+
+# Contribution
+# =============================================================================
+
+- type: dropdown
+  id: willing-to-help
+  attributes:
+    label: Will you be involved?
+    description: "Will you contribute to or help implement this feature?"
+    options:
+      - "Yes, I will own it"
+      - "Yes, I can help"
+      - "No, just suggesting"
+  validations:
+    required: true

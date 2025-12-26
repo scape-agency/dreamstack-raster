@@ -1,0 +1,70 @@
+
+---
+
+# =============================================================================
+# Header
+# =============================================================================
+
+name: Story
+description: Define a user story to group related sub-issues
+type: "Story"
+# title: "[STORY]: "
+# assignees: []
+
+# =============================================================================
+# Body
+# =============================================================================
+
+body:
+
+# Introduction
+# =============================================================================
+
+- type: markdown
+  attributes:
+    value: |
+
+      📘 This issue defines a **Story** — a small but meaningful unit of value.
+
+      - Keep it focused and actionable.
+      - Sub-issues (tasks, bugs, research) should be created separately and linked here.
+      - This issue will be used for coordination and tracking progress.
+
+# Story
+# =============================================================================
+
+- type: textarea
+  id: story
+  attributes:
+    label: What’s the story?
+    description: Briefly describe the user story or feature.
+    placeholder: |
+      As a user, I want to __ so that I can __.
+  validations:
+    required: true
+
+# Value
+# =============================================================================
+
+- type: textarea
+  id: value
+  attributes:
+    label: Why does this matter?
+    description: The goal or problem this story addresses.
+    placeholder: Improves workflow, unlocks a new use case, or unblocks delivery.
+  validations:
+    required: true
+
+# Sub-Issues
+# =============================================================================
+
+- type: textarea
+  id: subissues
+  attributes:
+    label: Sub-Issues
+    description: Link related tasks or issues here.
+    placeholder: |
+      - [ ] #456 Implement logic
+      - [ ] #457 Add UI
+  validations:
+    required: false

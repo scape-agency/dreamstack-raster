@@ -1,0 +1,102 @@
+
+---
+
+# =============================================================================
+# Header
+# =============================================================================
+name: Task Issue
+description: Track a specific actionable unit of work
+# labels: "enhancement"
+type: "Task"
+# title: "[TASK]: "
+# assignees: []
+
+# =============================================================================
+# Body
+# =============================================================================
+
+body:
+
+# Introduction
+# =============================================================================
+
+-
+  type: markdown
+  attributes:
+    value: |
+
+      Use this template for tracking a **specific, actionable task**. Tasks should be:
+
+      - Clear and concise
+      - Focused on one goal or unit of work
+      - Assigned to someone, if applicable
+      - Linked to related issues (project, story, bugs, or features)
+
+      > Tip: Use checklists inside the task if it's broken into smaller parts.
+
+
+# Task Description
+# =============================================================================
+
+-
+  type: textarea
+  id: description
+  attributes:
+    label: Task Summary
+    description: What needs to be done?
+    placeholder: |
+      Example:
+      - Refactor login form validation logic
+      - Update translation keys for new languages
+  validations:
+    required: true
+
+
+# Acceptance Criteria
+# =============================================================================
+
+-
+  type: textarea
+  id: acceptance
+  attributes:
+    label: Acceptance Criteria
+    description: When is this task considered done?
+    placeholder: |
+      Example:
+      - [ ] Unit tests cover all edge cases
+      - [ ] No errors in the console
+      - [ ] Deployed to staging
+  validations:
+    required: false
+
+
+# Dependencies / Blockers
+# =============================================================================
+
+-
+  type: textarea
+  id: blockers
+  attributes:
+    label: 🚧 Blockers or Dependencies
+    description: Does this task depend on another issue, PR, or external event?
+    placeholder: |
+      - #203 must be completed first
+      - Waiting for UI design from Figma
+  validations:
+    required: false
+
+
+# Related Issues
+# =============================================================================
+
+-
+  type: textarea
+  id: related
+  attributes:
+    label: Related Issues or PRs
+    description: Paste any relevant issue/PR numbers or URLs
+    placeholder: |
+      - #120
+      - https://github.com/org/repo/issues/456
+  validations:
+    required: false

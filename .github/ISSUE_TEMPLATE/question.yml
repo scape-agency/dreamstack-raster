@@ -1,0 +1,82 @@
+
+---
+
+# =============================================================================
+# Header
+# =============================================================================
+
+name: Question
+description: Ask a question related to features, decisions, or ongoing work
+labels: ['Needs: Triage :mag:', 'type:question']
+type: "Question"
+# title: "[QUESTION]: "
+# assignees: []
+
+# =============================================================================
+# Body
+# =============================================================================
+
+body:
+
+# Introduction
+# =============================================================================
+
+-
+  type: markdown
+  attributes:
+    value: |
+
+      Use this template to ask a **clarifying question** about a feature, workflow, or decision in this project.
+
+      - This is for internal use only.
+      - All questions will be reviewed in weekly syncs or relevant team meetings.
+      - Questions may be converted into feature or task issues after discussion.
+      - Include enough context so teammates can respond efficiently.
+      - Please tag relevant teammates who can best respond.
+      - Add screenshots or links when helpful.
+
+
+# Feature or Topic
+# =============================================================================
+
+-
+  type: input
+  id: feature
+  validations:
+    required: true
+  attributes:
+    label: What is this question about?
+    description: |
+      Mention the specific feature, area, or topic this question relates to.
+
+      Use the feature name, team name, or a relevant page/component.
+
+
+# Relevant Teammates
+# =============================================================================
+
+-
+  type: input
+  id: authors
+  validations:
+    required: true
+  attributes:
+    label: Who should weigh in?
+    description: |
+      Tag any teammate(s) who might have the answer or relevant context.
+
+      Use GitHub handles like @teammate or @product-lead.
+
+
+# Your Question
+# =============================================================================
+
+-
+  type: textarea
+  id: question
+  attributes:
+    label: What would you like to ask?
+    description: Describe your question clearly. Include context, links, or screenshots if needed.
+    placeholder: The more details, the better.
+  validations:
+    required: true
