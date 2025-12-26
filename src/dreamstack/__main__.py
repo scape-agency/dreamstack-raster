@@ -6,14 +6,8 @@
 # =============================================================================
 
 """
-Provides a palet entry point
-===========================
+Main Module for DreamStack
 
-Todo:
------
-
-Links:
-------
 
 """
 
@@ -27,13 +21,14 @@ from __future__ import print_function
 
 # Import | Standard Library
 import platform
+
 try:
     import pkg_resources
 except ImportError:
     pkg_resources = None
 
 # Import | Libraries
-import palet
+import dreamstack
 
 # Import | Local Modules
 
@@ -47,7 +42,7 @@ if __name__ == "__main__":
     print()
     print("palet is set!")
     print()
-    print("tite: {}".format(palet.__version__))
+    print("tite: {}".format(dreamstack.__version__))
     print(
         "Python: {} ({})".format(
             platform.python_version(), platform.python_implementation()

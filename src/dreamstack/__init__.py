@@ -6,45 +6,30 @@
 # =============================================================================
 
 """
-Provides Palet package information
-==================================
+Sturnus - Dreamstack Initialization
+===================================
 
-Todo:
------
-
-Links:
-------
+This module initializes the Dreamstack package.
 
 """
 
 
 # =============================================================================
-# Import
+# Imports
 # =============================================================================
 
-# Import | Futures
+# Import | Future
+from __future__ import annotations
 
 # Import | Standard Library
-
-# Import | Libraries
-
-# Import | Local Modules
-
+from pkgutil import extend_path
+from typing import MutableSequence
 
 # =============================================================================
-# Main
+# Variables
 # =============================================================================
 
-__author__ =        "Lars van Vianen"
-__copyright__ =     "Copyright 2022, Scape Agency"
-__credits__ =       [
-                        "Lars van Vianen",
-                    ]
-__license__ =       "MIT License"
-__version__ =       "0.0.0"
-__maintainer__ =    "Scape Agency"
-__email__ =         "info@scape.agency"
-__status__ =        "Alpha"
-
-
-from .model import *
+__path__: MutableSequence[str] = extend_path(
+    path=__path__,  # type: ignore
+    name=__name__,
+)
