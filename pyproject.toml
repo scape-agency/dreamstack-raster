@@ -72,7 +72,7 @@ dreamstack = "^0.0.1"
 # =============================================================================
 
 [tool.poetry.group.dev.dependencies]
-sturnus-dev = { git = "https://github.com/starling-cloud/sturnus-dev.git", rev = "pro" }
+# sturnus-dev = { git = "https://github.com/starling-cloud/sturnus-dev.git", rev = "pro" }
 
 
 # =============================================================================
@@ -80,7 +80,7 @@ sturnus-dev = { git = "https://github.com/starling-cloud/sturnus-dev.git", rev =
 # =============================================================================
 
 [tool.poetry.group.doc.dependencies]
-sturnus-doc = { git = "https://github.com/starling-cloud/sturnus-doc.git", rev = "pro" }
+# sturnus-doc = { git = "https://github.com/starling-cloud/sturnus-doc.git", rev = "pro" }
 
 
 # =============================================================================
