@@ -58,22 +58,6 @@ jobs:
         run: |
             poetry config http-basic.github $POETRY_HTTP_BASIC_GITHUB_USERNAME $POETRY_HTTP_BASIC_GITHUB_PASSWORD
 
-    #   -
-    #     name: Configure Poetry for Private Repositories
-    #     env:
-    #         GH_ACTOR: ${{ github.actor }}  # Automatically sets the GitHub actor
-    #         GH_PAT: ${{ secrets.GH_PAT }}  # Add your PAT as a secret
-    #     run: |
-    #         mkdir -p ~/.config/pypoetry
-    #         echo "[tool.poetry.source]
-    #         default = true
-
-    #         [tool.poetry.source.github]
-    #         name = \"github\"
-    #         url = \"https://github.com/\"
-    #         " > ~/.config/pypoetry/config.toml
-    #             poetry config http-basic.github "$GH_ACTOR" "$GH_PAT"
-
       # Regenerate the lock file if needed
       -
         name: Update Poetry Lock File
@@ -97,9 +81,6 @@ jobs:
             sleep 5
           done
 
-    #   -
-    #     name: Install Dependencies with Poetry
-    #     run: poetry install --no-root -vvv
 
       # Build the package using Poetry
       -
@@ -124,3 +105,15 @@ jobs:
         name: Verify release success
         run: |
           echo "Release created for ${{ github.ref_name }}."
+
+      # Push tag to pro branch
+      -
+        name: Push tag to pro branch
+        run: |
+          git checkout ${{ github.ref_name }}
+          git push origin HEAD:refs/heads/pro
+        env:
+          GIT_AUTHOR_NAME: github-actions
+          GIT_AUTHOR_EMAIL: github-actions@github.com
+          GIT_COMMITTER_NAME: github-actions
+          GIT_COMMITTER_EMAIL: github-actions@github.com
