@@ -65,7 +65,43 @@ priority = "supplemental"
 
 [tool.poetry.dependencies]
 dreamstack = "^0.0.1"
+dreamstack-color = { git = "https://github.com/scape-agency/dreamstack-color.git", rev = "pro" }
 
+# Core image processing
+numpy = "^2.0.0"
+pillow = "^11.0.0"
+scikit-image = "^0.24.0"
+opencv-python = "^4.10.0"
+scipy = "^1.14.0"
+
+# Color management
+colour-science = "^0.4.0"
+
+# Raw image processing
+rawpy = "^0.22.0"
+
+# PSD file support
+psd-tools = "^1.10.0"
+
+# Advanced math and signal processing
+numba = "^0.60.0"
+
+# Font/text rendering
+freetype-py = "^2.5.0"
+
+# SVG support
+svgwrite = "^1.4.0"
+cairosvg = "^2.7.0"
+
+# EXIF/metadata
+piexif = "^1.1.0"
+
+# HDR/EXR support
+imageio = "^2.35.0"
+OpenEXR = "^3.2.0"
+
+# ICC color profiles
+Pillow-heif = "^0.18.0"
 
 # =============================================================================
 # Development Dependencies

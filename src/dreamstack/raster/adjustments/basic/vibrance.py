@@ -1,0 +1,67 @@
+# -*- coding: utf-8 -*-
+
+"""Vibrance adjustment function."""
+
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+import numpy as np
+
+if TYPE_CHECKING:
+    from dreamstack.raster.core.image import Image
+
+from dreamstack.raster.adjustments.basic._color_utils import (
+    _hsv_to_rgb,
+    _rgb_to_hsv,
+)
+
+
+def vibrance(image: Image, amount: float = 0) -> Image:
+    """
+    Adjust vibrance (intelligent saturation).
+
+    Args:
+        image: Input image
+        amount: Vibrance (-100 to 100)
+
+    Returns:
+        Adjusted image
+    """
+    from dreamstack.raster.core.pixel import PixelData
+
+    if image.channels < 3:
+        return image.copy()
+
+    data = image.data.astype(np.float32)
+    max_val = 255 if image.bit_depth.name == "UINT8" else 65535
+
+    # Convert to HSV
+    hsv = _rgb_to_hsv(data[:, :, :3] / max_val)
+
+    # Vibrance adjusts saturation based on current saturation
+    # Low saturation pixels get more adjustment
+    sat = hsv[:, :, 1]
+
+    # Weight by inverse saturation
+    weight = 1 - sat
+
+    # Apply vibrance
+    factor = 1 + (amount / 100) * weight
+    hsv[:, :, 1] = np.clip(sat * factor, 0, 1)
+
+    # Convert back to RGB
+    rgb = _hsv_to_rgb(hsv) * max_val
+
+    result = data.copy()
+    result[:, :, :3] = rgb
+    result = np.clip(result, 0, max_val)
+
+    result_image = image.copy()
+    result_image._pixel_data = PixelData(
+        data=result.astype(image.data.dtype),
+        pixel_format=image.pixel_format,
+        bit_depth=image.bit_depth,
+    )
+
+    return result_image
