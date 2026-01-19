@@ -10,18 +10,25 @@ Utilities for working with dreamstack.color models.
 
 from __future__ import annotations
 
-from typing import Union, Type
+from typing import Type, Union
 
 import numpy as np
 
 # Import dreamstack.color models and conversions
 from dreamstack.color import (
-    RGB, HSL, HSV, CMYK,
-    rgb_to_hsl, rgb_to_hsv, rgb_to_cmyk,
-    hsl_to_rgb, hsv_to_rgb, cmyk_to_rgb,
+    CMYKColorModel,
+    HSLColorModel,
+    HSVColorModel,
+    RGBColorModel,
+    cmyk_to_rgb,
+    hsl_to_rgb,
+    hsv_to_rgb,
+    rgb_to_cmyk,
+    rgb_to_hsl,
+    rgb_to_hsv,
 )
 
-ColorModel = Union[RGB, HSL, HSV, CMYK]
+ColorModel = Union[RGBColorModel, HSLColorModel, HSVColorModel, CMYKColorModel]
 
 
 def get_color_model(
@@ -38,7 +45,7 @@ def get_color_model(
         normalized: Whether input values are in normalized range
 
     Returns:
-        Appropriate color model (RGB, HSL, HSV, or CMYK)
+        Appropriate color model (RGBColorModel, HSLColorModel, HSVColorModel, or CMYKColorModel)
     """
     array = np.asarray(array).flatten()[:4]
 
@@ -46,11 +53,15 @@ def get_color_model(
 
     if color_space == "rgb":
         if normalized:
-            r, g, b = int(array[0] * 255), int(array[1] * 255), int(array[2] * 255)
+            r, g, b = (
+                int(array[0] * 255),
+                int(array[1] * 255),
+                int(array[2] * 255),
+            )
         else:
             r, g, b = int(array[0]), int(array[1]), int(array[2])
         a = float(array[3]) if len(array) > 3 else 1.0
-        return RGB(r, g, b, a)
+        return RGBColorModel(r, g, b, a)
 
     elif color_space == "hsl":
         # HSL: H in 0-360, S and L in 0-100 (dreamstack.color convention)
@@ -61,7 +72,7 @@ def get_color_model(
         else:
             h, s, l = float(array[0]), float(array[1]), float(array[2])
         a = float(array[3]) if len(array) > 3 else 1.0
-        return HSL(h, s, l, a)
+        return HSLColorModel(h, s, l, a)
 
     elif color_space == "hsv":
         # HSV: H in 0-360, S and V in 0-100 (dreamstack.color convention)
@@ -72,7 +83,7 @@ def get_color_model(
         else:
             h, s, v = float(array[0]), float(array[1]), float(array[2])
         a = float(array[3]) if len(array) > 3 else 1.0
-        return HSV(h, s, v, a)
+        return HSVColorModel(h, s, v, a)
 
     elif color_space == "cmyk":
         # CMYK: All values in 0-100
@@ -84,7 +95,7 @@ def get_color_model(
         else:
             c, m, y = float(array[0]), float(array[1]), float(array[2])
             k = float(array[3]) if len(array) > 3 else 0.0
-        return CMYK(c, m, y, k)
+        return CMYKColorModel(c, m, y, k)
 
     else:
         raise ValueError(f"Unknown color space: {color_space}")
@@ -107,13 +118,13 @@ def convert_color_model(
     target = target.lower()
 
     # First convert to RGB if not already
-    if isinstance(color, RGB):
+    if isinstance(color, RGBColorModel):
         rgb = color
-    elif isinstance(color, HSL):
+    elif isinstance(color, HSLColorModel):
         rgb = hsl_to_rgb(color)
-    elif isinstance(color, HSV):
+    elif isinstance(color, HSVColorModel):
         rgb = hsv_to_rgb(color)
-    elif isinstance(color, CMYK):
+    elif isinstance(color, CMYKColorModel):
         rgb = cmyk_to_rgb(color)
     else:
         raise TypeError(f"Unknown color type: {type(color)}")

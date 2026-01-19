@@ -13,27 +13,26 @@ manipulation operations).
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Tuple, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional, Tuple
 
 import numpy as np
 
 # Import dreamstack.color for manipulation operations
-from dreamstack.color import (
-    RGB as DreamstackRGB,
-    lighten as ds_lighten,
-    darken as ds_darken,
-    saturate as ds_saturate,
-    desaturate as ds_desaturate,
-    complement as ds_complement,
-    mix as ds_mix,
-    grayscale as ds_grayscale,
-    invert as ds_invert,
-    adjust_hue as ds_adjust_hue,
-    rgb_to_hsl as ds_rgb_to_hsl,
-    rgb_to_hsv as ds_rgb_to_hsv,
-    hsl_to_rgb as ds_hsl_to_rgb,
-    hsv_to_rgb as ds_hsv_to_rgb,
-)
+from dreamstack.color import HSLColorModel, HSVColorModel
+from dreamstack.color import RGBColorModel as DreamstackRGB
+from dreamstack.color import adjust_hue as ds_adjust_hue
+from dreamstack.color import complement as ds_complement
+from dreamstack.color import darken as ds_darken
+from dreamstack.color import desaturate as ds_desaturate
+from dreamstack.color import grayscale as ds_grayscale
+from dreamstack.color import hsl_to_rgb as ds_hsl_to_rgb
+from dreamstack.color import hsv_to_rgb as ds_hsv_to_rgb
+from dreamstack.color import invert as ds_invert
+from dreamstack.color import lighten as ds_lighten
+from dreamstack.color import mix as ds_mix
+from dreamstack.color import rgb_to_hsl as ds_rgb_to_hsl
+from dreamstack.color import rgb_to_hsv as ds_rgb_to_hsv
+from dreamstack.color import saturate as ds_saturate
 
 
 @dataclass
@@ -99,8 +98,9 @@ class Color:
         Returns:
             Color instance
         """
-        from dreamstack.color import HSV
-        hsv = HSV(h, s * 100, v * 100, a)  # dreamstack.color uses 0-100 for S/V
+        hsv = HSVColorModel(
+            h, s * 100, v * 100, a
+        )  # dreamstack.color uses 0-100 for S/V
         rgb = ds_hsv_to_rgb(hsv)
         return cls(rgb.r, rgb.g, rgb.b, rgb.a)
 
@@ -118,8 +118,9 @@ class Color:
         Returns:
             Color instance
         """
-        from dreamstack.color import HSL
-        hsl = HSL(h, s * 100, l * 100, a)  # dreamstack.color uses 0-100 for S/L
+        hsl = HSLColorModel(
+            h, s * 100, l * 100, a
+        )  # dreamstack.color uses 0-100 for S/L
         rgb = ds_hsl_to_rgb(hsl)
         return cls(rgb.r, rgb.g, rgb.b, rgb.a)
 
@@ -185,7 +186,9 @@ class Color:
     def to_dreamstack_rgb(self) -> DreamstackRGB:
         """Convert to dreamstack.color RGB model."""
         r, g, b = self.to_rgb()
-        return DreamstackRGB(r, g, b, self.a if self.normalized else self.a / 255)
+        return DreamstackRGB(
+            r, g, b, self.a if self.normalized else self.a / 255
+        )
 
     @classmethod
     def from_dreamstack_rgb(cls, rgb: DreamstackRGB) -> Color:
@@ -195,6 +198,7 @@ class Color:
     def luminance(self) -> float:
         """Calculate perceptual luminance using dreamstack.color."""
         from dreamstack.color import luminance as ds_luminance
+
         return ds_luminance(self.to_dreamstack_rgb())
 
     def blend(self, other: Color, factor: float = 0.5) -> Color:
@@ -208,7 +212,9 @@ class Color:
         Returns:
             Blended color
         """
-        result = ds_mix(self.to_dreamstack_rgb(), other.to_dreamstack_rgb(), factor)
+        result = ds_mix(
+            self.to_dreamstack_rgb(), other.to_dreamstack_rgb(), factor
+        )
         return Color.from_dreamstack_rgb(result)
 
     def lighten(self, amount: float = 0.1) -> Color:

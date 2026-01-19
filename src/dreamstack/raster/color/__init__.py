@@ -36,6 +36,67 @@ Example:
 
 from __future__ import annotations
 
+# Re-export dreamstack.color models and functions for convenience
+from dreamstack.color import (  # Models; Manipulation functions; Harmony functions; Distance & Comparison; Gradients; Generators; Validators; Utils; Additional conversions
+    NAMED_COLORS,
+    CMYKColorModel,
+    HSLColorModel,
+    HSVColorModel,
+    RGBColorModel,
+    adjust_hue,
+    analogous,
+    bezier_gradient,
+    brighten,
+    complement,
+    complementary,
+    contrast_ratio,
+    darken,
+    desaturate,
+    dim,
+    euclidean_distance,
+    fade,
+    get_named_color,
+    golden_ratio_color,
+    grayscale,
+    hex_to_rgb,
+    interpolate,
+    invert,
+    is_dark,
+    is_light,
+    is_similar,
+    is_valid_css_color,
+    is_valid_hex,
+    is_valid_rgb,
+    lighten,
+    linear_gradient,
+    luminance,
+    manhattan_distance,
+    mix,
+    monochromatic,
+    parse_css_color,
+    passes_wcag_aa,
+    passes_wcag_aaa,
+    random_color,
+    random_palette,
+    rgb_to_hex,
+    saturate,
+    shades,
+    split_complementary,
+    square,
+    tetradic,
+    tints,
+    tones,
+    triadic,
+)
+from dreamstack.raster.color.bridge import (
+    array_to_rgb,
+    arrays_to_rgb_list,
+    convert_color_model,
+    get_color_model,
+    rgb_list_to_arrays,
+    rgb_to_array,
+)
+
 # Import from submodules (now directories with __init__.py)
 from dreamstack.raster.color.convert import (
     cmyk_to_rgb,
@@ -97,76 +158,6 @@ from dreamstack.raster.color.spaces import (
     list_color_spaces,
     sRGB,
 )
-from dreamstack.raster.color.bridge import (
-    array_to_rgb,
-    rgb_to_array,
-    arrays_to_rgb_list,
-    rgb_list_to_arrays,
-    convert_color_model,
-    get_color_model,
-)
-
-# Re-export dreamstack.color models and functions for convenience
-from dreamstack.color import (
-    # Models
-    RGB,
-    HSL,
-    HSV,
-    CMYK,
-    # Manipulation functions
-    lighten,
-    darken,
-    saturate,
-    desaturate,
-    grayscale,
-    adjust_hue,
-    mix,
-    invert,
-    fade,
-    brighten,
-    dim,
-    complement,
-    # Harmony functions
-    complementary,
-    triadic,
-    tetradic,
-    analogous,
-    split_complementary,
-    square,
-    monochromatic,
-    shades,
-    tints,
-    tones,
-    # Distance & Comparison
-    euclidean_distance,
-    manhattan_distance,
-    is_similar,
-    is_dark,
-    is_light,
-    contrast_ratio,
-    passes_wcag_aa,
-    passes_wcag_aaa,
-    luminance,
-    # Gradients
-    linear_gradient,
-    bezier_gradient,
-    interpolate,
-    # Generators
-    random_color,
-    random_palette,
-    golden_ratio_color,
-    # Validators
-    is_valid_hex,
-    is_valid_rgb,
-    is_valid_css_color,
-    # Utils
-    NAMED_COLORS,
-    get_named_color,
-    # Additional conversions
-    hex_to_rgb,
-    rgb_to_hex,
-    parse_css_color,
-)
 
 __all__: list[str] = [
     # ==========================================================================
@@ -197,10 +188,10 @@ __all__: list[str] = [
     # ==========================================================================
     # Color models (from dreamstack.color)
     # ==========================================================================
-    "RGB",
-    "HSL",
-    "HSV",
-    "CMYK",
+    "RGBColorModel",
+    "HSLColorModel",
+    "HSVColorModel",
+    "CMYKColorModel",
     # ==========================================================================
     # Manipulation functions (from dreamstack.color)
     # ==========================================================================

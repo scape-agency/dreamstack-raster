@@ -15,22 +15,27 @@ from typing import List, Union
 import numpy as np
 
 # Import dreamstack.color models
-from dreamstack.color import RGB, HSL, HSV, CMYK
+from dreamstack.color import (
+    CMYKColorModel,
+    HSLColorModel,
+    HSVColorModel,
+    RGBColorModel,
+)
 
 
 def array_to_rgb(
     array: np.ndarray,
     normalized: bool = True,
-) -> RGB:
+) -> RGBColorModel:
     """
-    Convert a numpy array to an RGB color model.
+    Convert a numpy array to an RGBColorModel.
 
     Args:
         array: RGB(A) array of shape (3,) or (4,)
         normalized: Whether input values are in 0-1 range (default: True)
 
     Returns:
-        RGB color model from dreamstack.color
+        RGBColorModel from dreamstack.color
     """
     array = np.asarray(array)
 
@@ -50,19 +55,19 @@ def array_to_rgb(
     if normalized and array.shape[0] == 4:
         a = float(array[3])  # Alpha is already 0-1
 
-    return RGB(r, g, b, a)
+    return RGBColorModel(r, g, b, a)
 
 
 def rgb_to_array(
-    rgb: RGB,
+    rgb: RGBColorModel,
     normalized: bool = True,
     include_alpha: bool = False,
 ) -> np.ndarray:
     """
-    Convert an RGB color model to a numpy array.
+    Convert an RGBColorModel to a numpy array.
 
     Args:
-        rgb: RGB color model from dreamstack.color
+        rgb: RGBColorModel from dreamstack.color
         normalized: Whether to output values in 0-1 range (default: True)
         include_alpha: Whether to include alpha channel (default: False)
 
@@ -76,16 +81,18 @@ def rgb_to_array(
         return np.array([r, g, b], dtype=np.float64)
     else:
         if include_alpha:
-            return np.array([rgb.r, rgb.g, rgb.b, int(rgb.a * 255)], dtype=np.uint8)
+            return np.array(
+                [rgb.r, rgb.g, rgb.b, int(rgb.a * 255)], dtype=np.uint8
+            )
         return np.array([rgb.r, rgb.g, rgb.b], dtype=np.uint8)
 
 
 def arrays_to_rgb_list(
     array: np.ndarray,
     normalized: bool = True,
-) -> List[RGB]:
+) -> List[RGBColorModel]:
     """
-    Convert a 2D/3D array of colors to a list of RGB models.
+    Convert a 2D/3D array of colors to a list of RGBColorModels.
 
     Useful for operations that need to apply dreamstack.color functions
     to multiple colors extracted from an image.
@@ -95,7 +102,7 @@ def arrays_to_rgb_list(
         normalized: Whether input values are in 0-1 range
 
     Returns:
-        List of RGB color models
+        List of RGBColorModel objects
     """
     array = np.asarray(array)
 
@@ -114,22 +121,25 @@ def arrays_to_rgb_list(
 
 
 def rgb_list_to_arrays(
-    colors: List[RGB],
+    colors: List[RGBColorModel],
     normalized: bool = True,
     include_alpha: bool = False,
 ) -> np.ndarray:
     """
-    Convert a list of RGB models to a 2D numpy array.
+    Convert a list of RGBColorModels to a 2D numpy array.
 
     Args:
-        colors: List of RGB color models
+        colors: List of RGBColorModel objects
         normalized: Whether to output values in 0-1 range
         include_alpha: Whether to include alpha channel
 
     Returns:
         Array of shape (N, 3) or (N, 4)
     """
-    arrays = [rgb_to_array(c, normalized=normalized, include_alpha=include_alpha) for c in colors]
+    arrays = [
+        rgb_to_array(c, normalized=normalized, include_alpha=include_alpha)
+        for c in colors
+    ]
     return np.stack(arrays, axis=0)
 
 

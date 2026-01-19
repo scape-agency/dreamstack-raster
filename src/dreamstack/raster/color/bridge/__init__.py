@@ -15,8 +15,8 @@ from __future__ import annotations
 from dreamstack.raster.color.bridge.array_to_model import (
     array_to_rgb,
     arrays_to_rgb_list,
-    rgb_to_array,
     rgb_list_to_arrays,
+    rgb_to_array,
 )
 from dreamstack.raster.color.bridge.model_conversions import (
     convert_color_model,
