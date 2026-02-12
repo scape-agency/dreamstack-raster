@@ -11,24 +11,15 @@ preprocessing, and color analysis.
 
 from __future__ import annotations
 
-from dreamstack.raster.analysis.histogram import (
-    cumulative_histogram,
-    histogram,
-    histogram_luminosity,
-    histogram_rgb,
-    histogram_stats,
-)
-from dreamstack.raster.analysis.measure import (
-    color_sampler,
-    measure_selection,
-    pixel_info,
-    sample_color,
-)
-from dreamstack.raster.analysis.statistics import (
-    channel_statistics,
-    color_count,
-    image_statistics,
-    unique_colors,
+# Color analysis
+from dreamstack.raster.analysis.analysis import (
+    ColorAnalyzer,
+    adjust_background_color,
+    create_gradient_background,
+    find_background_color,
+    get_dominant_color,
+    get_dominant_colors,
+    get_most_common_color,
 )
 
 # Contour detection
@@ -46,6 +37,31 @@ from dreamstack.raster.analysis.contour import (
     scale_contour,
 )
 
+# Depth estimation
+from dreamstack.raster.analysis.depth import (
+    DepthConfig,
+    DepthEstimator,
+    DepthResult,
+    colorize_depth,
+    estimate_depth,
+    estimate_depth_batch,
+    normalize_depth,
+    save_depth_image,
+)
+from dreamstack.raster.analysis.histogram import (
+    cumulative_histogram,
+    histogram,
+    histogram_luminosity,
+    histogram_rgb,
+    histogram_stats,
+)
+from dreamstack.raster.analysis.measure import (
+    color_sampler,
+    measure_selection,
+    pixel_info,
+    sample_color,
+)
+
 # Image preprocessing
 from dreamstack.raster.analysis.preprocessing import (
     ImagePreprocessor,
@@ -58,28 +74,11 @@ from dreamstack.raster.analysis.preprocessing import (
     preprocess_for_contours,
     to_grayscale,
 )
-
-# Color analysis
-from dreamstack.raster.analysis.coloranalysis import (
-    ColorAnalyzer,
-    adjust_background_color,
-    create_gradient_background,
-    find_background_color,
-    get_dominant_color,
-    get_dominant_colors,
-    get_most_common_color,
-)
-
-# Depth estimation
-from dreamstack.raster.analysis.depth import (
-    DepthConfig,
-    DepthEstimator,
-    DepthResult,
-    colorize_depth,
-    estimate_depth,
-    estimate_depth_batch,
-    normalize_depth,
-    save_depth_image,
+from dreamstack.raster.analysis.statistics import (
+    channel_statistics,
+    color_count,
+    image_statistics,
+    unique_colors,
 )
 
 __all__: list[str] = [

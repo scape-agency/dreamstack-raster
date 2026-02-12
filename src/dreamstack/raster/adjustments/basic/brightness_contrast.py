@@ -74,7 +74,7 @@ def brightness_contrast(
     result = np.clip(result, 0, max_val)
 
     result_image = image.copy()
-    
+
     result_image._pixel_data = PixelData(
         data=result.astype(image.data.dtype),
         pixel_format=image.pixel_format,

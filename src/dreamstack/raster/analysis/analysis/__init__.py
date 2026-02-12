@@ -11,8 +11,8 @@ k-means clustering, and background color analysis.
 
 from __future__ import annotations
 
-from dreamstack.raster.analysis.coloranalysis.analyzer import ColorAnalyzer
-from dreamstack.raster.analysis.coloranalysis.operations import (
+from dreamstack.raster.analysis.analysis.analyzer import ColorAnalyzer
+from dreamstack.raster.analysis.analysis.operations import (
     adjust_background_color,
     create_gradient_background,
     find_background_color,

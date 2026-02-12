@@ -19,8 +19,11 @@ import cv2
 import numpy as np
 from numpy.typing import NDArray
 
-from dreamstack.raster.analysis.coloranalysis.analyzer import ColorAnalyzer
-from dreamstack.raster.analysis.contour.detector import ContourDetector, DetectionConfig
+from dreamstack.raster.analysis.analysis.analyzer import ColorAnalyzer
+from dreamstack.raster.analysis.contour.detector import (
+    ContourDetector,
+    DetectionConfig,
+)
 from dreamstack.raster.analysis.contour.info import ContourInfo
 from dreamstack.raster.analysis.preprocessing.processor import (
     ImagePreprocessor,
@@ -117,7 +120,9 @@ class ExtractionConfig:
     target_size: int | None = None
     with_alpha: bool = False
     feather_edges: int = 0
-    preprocessing: PreprocessingConfig = field(default_factory=PreprocessingConfig)
+    preprocessing: PreprocessingConfig = field(
+        default_factory=PreprocessingConfig
+    )
     detection: DetectionConfig = field(default_factory=DetectionConfig)
 
 
@@ -224,7 +229,8 @@ class ObjectExtractor:
         h, w = image.shape[:2]
         image_area = h * w
         contours = [
-            c for c in contours
+            c
+            for c in contours
             if image_area * self.config.min_area_ratio
             <= c.area
             <= image_area * self.config.max_area_ratio
@@ -454,5 +460,6 @@ class ObjectExtractor:
         >>> alpha_extractor = extractor.with_config(with_alpha=True)
         """
         from dataclasses import replace
+
         new_config = replace(self.config, **kwargs)
         return ObjectExtractor(new_config)

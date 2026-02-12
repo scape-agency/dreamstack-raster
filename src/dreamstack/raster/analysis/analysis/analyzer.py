@@ -15,7 +15,7 @@ from typing import List, Tuple
 import numpy as np
 from numpy.typing import NDArray
 
-from dreamstack.raster.analysis.coloranalysis.operations import (
+from dreamstack.raster.analysis.analysis.operations import (
     adjust_background_color,
     create_gradient_background,
     find_background_color,
