@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """HDR toning function."""
 
 from __future__ import annotations
@@ -70,9 +68,7 @@ def hdr_toning(
     mapped_lum = np.log1p(luminance * 10) / np.log1p(10)
 
     # Blend based on strength
-    adjusted_lum = (
-        luminance * (1 - strength_factor) + mapped_lum * strength_factor
-    )
+    adjusted_lum = luminance * (1 - strength_factor) + mapped_lum * strength_factor
 
     # Add detail
     detail_factor = detail / 100
@@ -118,9 +114,7 @@ def hdr_toning(
 
         # Vibrance (saturation weighted by inverse saturation)
         if vibrance != 0:
-            vib_factor = (
-                1 + (vibrance / 100) * (1 - current_sat)[:, :, np.newaxis]
-            )
+            vib_factor = 1 + (vibrance / 100) * (1 - current_sat)[:, :, np.newaxis]
             result = mean_color + (result - mean_color) * vib_factor
 
         # Saturation

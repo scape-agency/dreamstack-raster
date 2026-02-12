@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-
 """Extract single channel operation."""
 
 from __future__ import annotations
 
-from typing import Literal, Union
+from typing import Literal
 
 import numpy as np
 from numpy.typing import NDArray
@@ -14,7 +12,7 @@ ChannelName = Literal["red", "green", "blue", "alpha", "r", "g", "b", "a"]
 
 def extract_channel(
     image: NDArray[np.uint8],
-    channel: Union[int, ChannelName],
+    channel: int | ChannelName,
     color_format: str = "BGR",
 ) -> NDArray[np.uint8]:
     """Extract a single channel from an image.

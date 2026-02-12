@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Lens Blur
 =============================
@@ -66,9 +64,7 @@ def lens_blur(
                     # Check if inside polygon
                     blade_angle = 2 * np.pi / blade_count
                     sector = angle % blade_angle - blade_angle / 2
-                    edge_dist = (
-                        radius * np.cos(blade_angle / 2) / np.cos(sector)
-                    )
+                    edge_dist = radius * np.cos(blade_angle / 2) / np.cos(sector)
 
                     if r <= edge_dist:
                         kernel[y, x] = 1
@@ -81,9 +77,7 @@ def lens_blur(
 
     # Apply specular highlights boost
     if brightness > 0:
-        highlights = np.where(
-            data > threshold, data * (1 + brightness / 100), data
-        )
+        highlights = np.where(data > threshold, data * (1 + brightness / 100), data)
         data = highlights
 
     # Apply blur

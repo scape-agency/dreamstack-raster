@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Palette class definition."""
 
 from __future__ import annotations
@@ -7,7 +5,6 @@ from __future__ import annotations
 import struct
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List
 
 from dreamstack.raster.color.palette.color import Color
 
@@ -22,7 +19,7 @@ class Palette:
         name: Palette name
     """
 
-    colors: List[Color] = field(default_factory=list)
+    colors: list[Color] = field(default_factory=list)
     name: str = ""
 
     def __len__(self) -> int:
@@ -55,20 +52,20 @@ class Palette:
         self.colors.sort(key=lambda c: c.luminance())
 
     @classmethod
-    def from_hex_list(cls, hex_colors: List[str], name: str = "") -> Palette:
+    def from_hex_list(cls, hex_colors: list[str], name: str = "") -> Palette:
         """Create palette from hex color strings."""
         colors = [Color.from_hex(h) for h in hex_colors]
         return cls(colors=colors, name=name)
 
-    def to_hex_list(self) -> List[str]:
+    def to_hex_list(self) -> list[str]:
         """Get palette as list of hex strings."""
         return [c.to_hex() for c in self.colors]
 
     @classmethod
-    def load_aco(cls, path: str) -> Palette:
+    def load_aco(cls, path: str | Path) -> Palette:
         """Load Adobe Color (ACO) palette."""
-        path = Path(path)
-        data = path.read_bytes()
+        path_obj = Path(path)
+        data = path_obj.read_bytes()
 
         colors = []
         offset = 0
@@ -98,16 +95,16 @@ class Palette:
                 name_length = struct.unpack(">I", data[offset : offset + 4])[0]
                 offset += 4 + name_length * 2
 
-        return cls(colors=colors, name=path.stem)
+        return cls(colors=colors, name=path_obj.stem)
 
     @classmethod
-    def load_gpl(cls, path: str) -> Palette:
+    def load_gpl(cls, path: str | Path) -> Palette:
         """Load GIMP palette (GPL)."""
-        path = Path(path)
-        lines = path.read_text().splitlines()
+        path_obj = Path(path)
+        lines = path_obj.read_text(encoding="utf-8").splitlines()
 
         colors = []
-        name = path.stem
+        name = path_obj.stem
 
         for line in lines:
             line = line.strip()
@@ -135,13 +132,13 @@ class Palette:
 
         return cls(colors=colors, name=name)
 
-    def save_gpl(self, path: str) -> None:
+    def save_gpl(self, path: str | Path) -> None:
         """Save as GIMP palette."""
-        path = Path(path)
+        path_obj = Path(path)
 
         lines = [
             "GIMP Palette",
-            f"Name: {self.name or path.stem}",
+            f"Name: {self.name or path_obj.stem}",
             "Columns: 16",
             "#",
         ]
@@ -150,4 +147,4 @@ class Palette:
             r, g, b = color.to_rgb()
             lines.append(f"{r:3d} {g:3d} {b:3d}")
 
-        path.write_text("\n".join(lines))
+        path_obj.write_text("\n".join(lines), encoding="utf-8")

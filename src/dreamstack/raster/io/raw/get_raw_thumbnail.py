@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - RAW Thumbnail Extraction
 ============================================
@@ -11,7 +9,7 @@ Extract embedded thumbnails from RAW camera files.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -43,9 +41,9 @@ def get_raw_thumbnail(path: str | Path) -> Image:
         try:
             thumb = raw.extract_thumb()
 
-            if thumb.format == rawpy.ThumbFormat.JPEG:
+            if thumb.format == getattr(rawpy, "ThumbFormat").JPEG:
                 pil_image = PILImage.open(BytesIO(thumb.data))
-            elif thumb.format == rawpy.ThumbFormat.BITMAP:
+            elif thumb.format == getattr(rawpy, "ThumbFormat").BITMAP:
                 # Raw RGB data
                 pil_image = PILImage.frombytes(
                     "RGB", (thumb.width, thumb.height), thumb.data
@@ -69,4 +67,4 @@ def get_raw_thumbnail(path: str | Path) -> Image:
             )
 
         except Exception as e:
-            raise ValueError(f"No thumbnail available: {e}")
+            raise ValueError(f"No thumbnail available: {e}") from e

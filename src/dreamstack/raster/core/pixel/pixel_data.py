@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Pixel Data
 ==============================
@@ -11,7 +9,6 @@ Main pixel data class for image manipulation.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Tuple
 
 import numpy as np
 from numpy.typing import NDArray
@@ -48,9 +45,7 @@ class PixelData:
             self.data = self.data[:, :, np.newaxis]
 
         if self.data.ndim != 3:
-            raise ValueError(
-                f"Data must be 2D or 3D array, got {self.data.ndim}D"
-            )
+            raise ValueError(f"Data must be 2D or 3D array, got {self.data.ndim}D")
 
         expected_channels = CHANNEL_COUNT[self.pixel_format]
         actual_channels = self.data.shape[2]
@@ -77,7 +72,7 @@ class PixelData:
         return self.data.shape[2]
 
     @property
-    def shape(self) -> Tuple[int, int, int]:
+    def shape(self) -> tuple[int, int, int]:
         """Get data shape (height, width, channels)."""
         return self.data.shape
 
@@ -143,9 +138,7 @@ class PixelData:
 
         value_array = np.asarray(value, dtype=self.dtype)
         if value_array.shape != (self.channels,):
-            raise ValueError(
-                f"Expected {self.channels} values, got {len(value)}"
-            )
+            raise ValueError(f"Expected {self.channels} values, got {len(value)}")
 
         self.data[y, x] = value_array
 
@@ -257,9 +250,7 @@ class PixelData:
             2D numpy array of channel values
         """
         if not 0 <= index < self.channels:
-            raise IndexError(
-                f"Channel {index} out of range (0-{self.channels-1})"
-            )
+            raise IndexError(f"Channel {index} out of range (0-{self.channels - 1})")
         return self.data[:, :, index].copy()
 
     def set_channel(self, index: int, values: NDArray) -> None:
@@ -271,9 +262,7 @@ class PixelData:
             values: 2D array of values
         """
         if not 0 <= index < self.channels:
-            raise IndexError(
-                f"Channel {index} out of range (0-{self.channels-1})"
-            )
+            raise IndexError(f"Channel {index} out of range (0-{self.channels - 1})")
 
         if values.shape != (self.height, self.width):
             raise ValueError(
@@ -361,9 +350,7 @@ class PixelData:
         if target_depth == BitDepth.UINT8:
             converted = (normalized * 255).clip(0, 255).astype(target_dtype)
         elif target_depth == BitDepth.UINT16:
-            converted = (
-                (normalized * 65535).clip(0, 65535).astype(target_dtype)
-            )
+            converted = (normalized * 65535).clip(0, 65535).astype(target_dtype)
         else:
             converted = normalized.astype(target_dtype)
 
@@ -454,11 +441,7 @@ class PixelData:
                 gray = color_data
             rgb = np.stack([gray, gray, gray], axis=2)
         elif self.pixel_format in (PixelFormat.RGB, PixelFormat.RGBA):
-            rgb = (
-                color_data
-                if color_data.shape[2] == 3
-                else color_data[:, :, :3]
-            )
+            rgb = color_data if color_data.shape[2] == 3 else color_data[:, :, :3]
         elif self.pixel_format == PixelFormat.HSV:
             # HSV to RGB conversion
             from dreamstack.raster.color.convert import hsv_to_rgb
@@ -484,18 +467,10 @@ class PixelData:
         # Convert to target format
         if target_format == PixelFormat.GRAY:
             # Luminosity formula
-            result = (
-                0.299 * rgb[:, :, 0]
-                + 0.587 * rgb[:, :, 1]
-                + 0.114 * rgb[:, :, 2]
-            )
+            result = 0.299 * rgb[:, :, 0] + 0.587 * rgb[:, :, 1] + 0.114 * rgb[:, :, 2]
             result = result[:, :, np.newaxis]
         elif target_format == PixelFormat.GRAY_ALPHA:
-            gray = (
-                0.299 * rgb[:, :, 0]
-                + 0.587 * rgb[:, :, 1]
-                + 0.114 * rgb[:, :, 2]
-            )
+            gray = 0.299 * rgb[:, :, 0] + 0.587 * rgb[:, :, 1] + 0.114 * rgb[:, :, 2]
             result = np.stack([gray, alpha], axis=2)
         elif target_format == PixelFormat.RGB:
             result = rgb
@@ -518,9 +493,7 @@ class PixelData:
 
             result = rgb_to_cmyk(rgb)
         else:
-            raise NotImplementedError(
-                f"Conversion to {target_format} not implemented"
-            )
+            raise NotImplementedError(f"Conversion to {target_format} not implemented")
 
         return PixelData(
             data=result.astype(np.float32),
@@ -617,9 +590,7 @@ class PixelData:
                 elif channels == 4:
                     pixel_format = PixelFormat.RGBA
                 else:
-                    raise ValueError(
-                        f"Cannot detect format for {channels} channels"
-                    )
+                    raise ValueError(f"Cannot detect format for {channels} channels")
             else:
                 raise ValueError(f"Expected 2D or 3D array, got {array.ndim}D")
 

@@ -111,6 +111,7 @@ Pillow-heif = "^0.18.0"
 # =============================================================================
 # Documentation Dependencies
 # =============================================================================
+ruff = "^0.15.0"
 
 [tool.poetry.group.doc.dependencies]
 # sturnus-doc = { git = "https://github.com/starling-cloud/sturnus-doc.git", rev = "pro" }
@@ -132,3 +133,22 @@ test = "bin.run_tests:main"
 [build-system]
 requires = ["poetry-core>=2.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+
+# =============================================================================
+# Ruff Configuration
+# =============================================================================
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP"]
+ignore = [
+    "E501", # Line too long (handled by formatter)
+    "E741", # Ambiguous variable name (l for lightness is standard in color science)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"] # Unused imports in __init__.py are re-exports

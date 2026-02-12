@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Load Images
 ===============================
@@ -11,13 +9,13 @@ Load multiple images.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from dreamstack.raster.core.image import Image
 
 
-def load_images(paths: List[str | Path], **options) -> List[Image]:
+def load_images(paths: list[str | Path], **options) -> list[Image]:
     """
     Load multiple images.
 

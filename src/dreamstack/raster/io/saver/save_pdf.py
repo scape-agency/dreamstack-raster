@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Save PDF
 ============================
@@ -33,8 +31,8 @@ def save_pdf(image: Image, path: Path, **options) -> None:
 
     # Calculate PDF size
     dpi = image.metadata.dpi
-    width_inches = image.width / dpi[0]
-    height_inches = image.height / dpi[1]
+    image.width / dpi[0]
+    image.height / dpi[1]
 
     pil_image.save(
         path,

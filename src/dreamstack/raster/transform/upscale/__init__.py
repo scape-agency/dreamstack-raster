@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Upscale Module
 ==================================
@@ -11,13 +9,13 @@ Supports various super-resolution models.
 
 from __future__ import annotations
 
-from dreamstack.raster.transform.upscale.upscaler import (
-    ImageUpscaler,
-    UpscaleConfig,
-)
 from dreamstack.raster.transform.upscale.operations import (
     upscale_image,
     upscale_lanczos,
+)
+from dreamstack.raster.transform.upscale.upscaler import (
+    ImageUpscaler,
+    UpscaleConfig,
 )
 
 __all__: list[str] = [

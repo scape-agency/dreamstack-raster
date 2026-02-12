@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Glass Distortion
 ====================================
@@ -10,7 +8,7 @@ Glass distortion effect filter implementation.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import cv2
 import numpy as np
@@ -23,7 +21,7 @@ def glass(
     image: Image,
     distortion: float = 5,
     smoothness: int = 3,
-    texture: Optional[np.ndarray] = None,
+    texture: np.ndarray | None = None,
 ) -> Image:
     """
     Apply glass distortion effect.

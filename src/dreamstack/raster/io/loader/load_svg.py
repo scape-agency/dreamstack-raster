@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Load SVG
 ============================
@@ -21,10 +19,10 @@ if TYPE_CHECKING:
 
 def load_svg(
     path: Path,
-    width: int = None,
-    height: int = None,
+    width: int | None = None,
+    height: int | None = None,
     dpi: float = 96,
-    **options,
+    **_options,  # noqa: ARG001
 ) -> Image:
     """Load and rasterize SVG."""
     from io import BytesIO
@@ -37,11 +35,11 @@ def load_svg(
 
     # Rasterize SVG
     png_data = cairosvg.svg2png(
-        url=str(path), output_width=width, output_height=height, dpi=dpi
+        url=str(path), output_width=width, output_height=height, dpi=int(dpi)
     )
 
     # Load PNG data
-    pil_image = PILImage.open(BytesIO(png_data))
+    pil_image = PILImage.open(BytesIO(png_data))  # type: ignore[arg-type]
     array = np.array(pil_image)
 
     pixel_data = PixelData(

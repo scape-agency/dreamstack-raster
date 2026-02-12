@@ -1,16 +1,12 @@
-# -*- coding: utf-8 -*-
-
 """Create curve function."""
 
 from __future__ import annotations
-
-from typing import List, Tuple
 
 from dreamstack.raster.adjustments.curves.curve import Curve
 from dreamstack.raster.adjustments.curves.curve_point import CurvePoint
 
 
-def create_curve(points: List[Tuple[float, float]]) -> Curve:
+def create_curve(points: list[tuple[float, float]]) -> Curve:
     """
     Create a curve from a list of (input, output) tuples.
 

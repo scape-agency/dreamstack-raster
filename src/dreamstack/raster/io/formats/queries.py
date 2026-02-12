@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Format Queries
 ==================================
@@ -9,8 +7,6 @@ Functions for querying format support.
 """
 
 from __future__ import annotations
-
-from typing import Set
 
 from dreamstack.raster.io.formats.constants import (
     ALPHA_FORMATS,
@@ -22,17 +18,17 @@ from dreamstack.raster.io.formats.constants import (
 from dreamstack.raster.io.formats.image_format import ImageFormat
 
 
-def get_supported_formats() -> Set[ImageFormat]:
+def get_supported_formats() -> set[ImageFormat]:
     """Get all supported formats."""
     return READ_FORMATS | WRITE_FORMATS
 
 
-def get_read_formats() -> Set[ImageFormat]:
+def get_read_formats() -> set[ImageFormat]:
     """Get formats that can be read."""
     return READ_FORMATS.copy()
 
 
-def get_write_formats() -> Set[ImageFormat]:
+def get_write_formats() -> set[ImageFormat]:
     """Get formats that can be written."""
     return WRITE_FORMATS.copy()
 

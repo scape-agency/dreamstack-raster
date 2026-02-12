@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - OpenEXR Channel Information
 ================================================
@@ -11,10 +9,9 @@ Get information about channels in EXR files.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Dict
 
 
-def get_exr_channels(path: str | Path) -> Dict[str, dict]:
+def get_exr_channels(path: str | Path) -> dict[str, dict]:
     """
     Get information about channels in an EXR file.
 

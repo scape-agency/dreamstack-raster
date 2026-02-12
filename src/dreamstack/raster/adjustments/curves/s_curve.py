@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """S-curve adjustment function."""
 
 from __future__ import annotations

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Sepia tone effect function."""
 
 from __future__ import annotations

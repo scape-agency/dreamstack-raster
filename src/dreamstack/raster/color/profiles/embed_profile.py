@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Embed ICC profile in image."""
 
 from __future__ import annotations
@@ -11,7 +9,7 @@ if TYPE_CHECKING:
     from dreamstack.raster.core.image import Image
 
 
-def embed_profile(image: "Image", profile: "ICCProfile") -> "Image":
+def embed_profile(image: Image, profile: ICCProfile) -> Image:
     """
     Embed ICC profile in image.
 

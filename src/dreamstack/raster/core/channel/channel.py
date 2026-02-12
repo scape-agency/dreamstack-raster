@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Channel
 ===========================
@@ -176,6 +174,7 @@ class Channel:
             raise ValueError("Channel dimensions must match")
 
         # Convert to float for blending
+        max_val: float = 1.0
         if np.issubdtype(self.dtype, np.integer):
             max_val = float(np.iinfo(self.dtype).max)
             self_float = self.data.astype(np.float32) / max_val
@@ -253,15 +252,19 @@ class Channel:
         import cv2
 
         interpolation_methods = {
-            "nearest": cv2.INTER_NEAREST,
-            "bilinear": cv2.INTER_LINEAR,
-            "bicubic": cv2.INTER_CUBIC,
-            "lanczos": cv2.INTER_LANCZOS4,
-            "area": cv2.INTER_AREA,
+            "nearest": getattr(cv2, "INTER_NEAREST"),
+            "bilinear": getattr(cv2, "INTER_LINEAR"),
+            "bicubic": getattr(cv2, "INTER_CUBIC"),
+            "lanczos": getattr(cv2, "INTER_LANCZOS4"),
+            "area": getattr(cv2, "INTER_AREA"),
         }
 
-        interp = interpolation_methods.get(method.lower(), cv2.INTER_LINEAR)
-        resized = cv2.resize(self.data, (width, height), interpolation=interp)
+        interp = interpolation_methods.get(
+            method.lower(), cv2.INTER_LINEAR
+        )  # pylint: disable=no-member
+        resized = cv2.resize(
+            self.data, (width, height), interpolation=interp
+        )  # pylint: disable=no-member
 
         return Channel(
             name=self.name,
@@ -278,7 +281,7 @@ class Channel:
         height: int,
         channel_type: ChannelType = ChannelType.CUSTOM,
         name: str = "Channel",
-        dtype: np.dtype = np.float32,
+        dtype: np.dtype | type = np.float32,
         fill_value: float = 0.0,
     ) -> Channel:
         """

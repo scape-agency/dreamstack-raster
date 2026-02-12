@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Contour Information Data Class
 ==============================
@@ -10,9 +8,8 @@ Data structure for storing contour geometric information.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Tuple
 
-import cv2
+import cv2  # pylint: disable=no-member
 import numpy as np
 from numpy.typing import NDArray
 
@@ -52,14 +49,14 @@ class ContourInfo:
     contour: NDArray[np.int32]
     is_convex: bool
     area: float
-    bounding_rect: Tuple[int, int, int, int]
-    min_area_rect: Tuple[Tuple[float, float], Tuple[float, float], float]
+    bounding_rect: tuple[int, int, int, int]
+    min_area_rect: tuple[tuple[float, float], tuple[float, float], float]
     perimeter: float = 0.0
     circularity: float = 0.0
     aspect_ratio: float = 1.0
 
     @classmethod
-    def from_contour(cls, contour: NDArray[np.int32]) -> "ContourInfo":
+    def from_contour(cls, contour: NDArray[np.int32]) -> ContourInfo:
         """Create ContourInfo from a contour array.
 
         Parameters
@@ -72,10 +69,20 @@ class ContourInfo:
         ContourInfo
             Populated contour information object.
         """
-        area = cv2.contourArea(contour)
-        perimeter = cv2.arcLength(contour, closed=True)
-        bounding_rect = cv2.boundingRect(contour)
-        x, y, w, h = bounding_rect
+        area = cv2.contourArea(contour)  # pylint: disable=no-member
+        perimeter = cv2.arcLength(
+            contour, closed=True
+        )  # pylint: disable=no-member
+        bounding_rect_raw = cv2.boundingRect(
+            contour
+        )  # pylint: disable=no-member
+        bounding_rect: tuple[int, int, int, int] = (
+            int(bounding_rect_raw[0]),
+            int(bounding_rect_raw[1]),
+            int(bounding_rect_raw[2]),
+            int(bounding_rect_raw[3]),
+        )
+        _, _, w, h = bounding_rect
 
         # Calculate circularity (4 * pi * area / perimeter^2)
         circularity = 0.0
@@ -85,19 +92,31 @@ class ContourInfo:
         # Aspect ratio
         aspect_ratio = float(w) / h if h > 0 else 1.0
 
+        # Convert min_area_rect to explicit tuple types
+        mar_raw = cv2.minAreaRect(contour)  # pylint: disable=no-member
+        min_area_rect: tuple[
+            tuple[float, float], tuple[float, float], float
+        ] = (
+            (float(mar_raw[0][0]), float(mar_raw[0][1])),
+            (float(mar_raw[1][0]), float(mar_raw[1][1])),
+            float(mar_raw[2]),
+        )
+
         return cls(
             contour=contour,
-            is_convex=cv2.isContourConvex(contour),
+            is_convex=cv2.isContourConvex(
+                contour
+            ),  # pylint: disable=no-member
             area=area,
             bounding_rect=bounding_rect,
-            min_area_rect=cv2.minAreaRect(contour),
+            min_area_rect=min_area_rect,
             perimeter=perimeter,
             circularity=circularity,
             aspect_ratio=aspect_ratio,
         )
 
     @property
-    def center(self) -> Tuple[float, float]:
+    def center(self) -> tuple[float, float]:
         """Get the center of the bounding rectangle.
 
         Returns
@@ -109,7 +128,7 @@ class ContourInfo:
         return (x + w / 2, y + h / 2)
 
     @property
-    def centroid(self) -> Tuple[float, float]:
+    def centroid(self) -> tuple[float, float]:
         """Get the centroid using image moments.
 
         Returns
@@ -117,7 +136,7 @@ class ContourInfo:
         tuple[float, float]
             Centroid point (x, y), or center if moments are zero.
         """
-        moments = cv2.moments(self.contour)
+        moments = cv2.moments(self.contour)  # pylint: disable=no-member
         if moments["m00"] != 0:
             cx = moments["m10"] / moments["m00"]
             cy = moments["m01"] / moments["m00"]
@@ -133,7 +152,9 @@ class ContourInfo:
         NDArray[np.int32]
             Convex hull points.
         """
-        return cv2.convexHull(self.contour)
+        return np.asarray(
+            cv2.convexHull(self.contour), dtype=np.int32
+        )  # pylint: disable=no-member
 
     @property
     def solidity(self) -> float:
@@ -145,7 +166,7 @@ class ContourInfo:
             Solidity ratio (0-1).
         """
         hull = self.convex_hull
-        hull_area = cv2.contourArea(hull)
+        hull_area = cv2.contourArea(hull)  # pylint: disable=no-member
         return self.area / hull_area if hull_area > 0 else 0.0
 
     def __repr__(self) -> str:

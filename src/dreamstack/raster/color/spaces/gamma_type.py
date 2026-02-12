@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Gamma type enumeration."""
 
 from __future__ import annotations

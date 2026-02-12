@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Dehaze function."""
 
 from __future__ import annotations
@@ -66,15 +64,14 @@ def dehaze(image: Image, amount: float = 50) -> Image:
         # Remove haze
         for i in range(3):
             result[:, :, i] = (
-                normalized[:, :, i]
-                - atmospheric[i] * (1 - transmission) * strength
+                normalized[:, :, i] - atmospheric[i] * (1 - transmission) * strength
             ) / np.maximum(transmission, 0.1)
     else:
         # Add haze
         for i in range(3):
-            result[:, :, i] = normalized[:, :, i] * (
-                1 + amount / 100
-            ) + atmospheric[i] * (1 - transmission) * (-amount / 100)
+            result[:, :, i] = normalized[:, :, i] * (1 + amount / 100) + atmospheric[
+                i
+            ] * (1 - transmission) * (-amount / 100)
 
     result = np.clip(result, 0, 1)
 

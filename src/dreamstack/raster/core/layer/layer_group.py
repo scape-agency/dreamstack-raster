@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Layer Group
 ===============================
@@ -9,8 +7,6 @@ Layer group containing multiple layers.
 """
 
 from __future__ import annotations
-
-from typing import List, Optional
 
 import numpy as np
 from numpy.typing import NDArray
@@ -50,11 +46,11 @@ class LayerGroup(LayerBase):
             locked: Lock state
         """
         super().__init__(name, opacity, blend_mode, visible, locked)
-        self._children: List[LayerBase] = []
+        self._children: list[LayerBase] = []
         self._expanded = True
 
     @property
-    def children(self) -> List[LayerBase]:
+    def children(self) -> list[LayerBase]:
         """Get child layers."""
         return self._children.copy()
 
@@ -184,7 +180,7 @@ class LayerGroup(LayerBase):
                     return found
         return None
 
-    def flatten_hierarchy(self) -> List[LayerBase]:
+    def flatten_hierarchy(self) -> list[LayerBase]:
         """
         Get flattened list of all layers.
 
@@ -233,9 +229,7 @@ class LayerGroup(LayerBase):
             ):
                 # Simple alpha compositing
                 child_alpha = child_render[:, :, 3:4]
-                result = (
-                    result * (1 - child_alpha) + child_render * child_alpha
-                )
+                result = result * (1 - child_alpha) + child_render * child_alpha
             else:
                 # Apply blend mode to RGB, then composite
                 blended = apply_blend_mode(
@@ -243,8 +237,7 @@ class LayerGroup(LayerBase):
                 )
                 child_alpha = child_render[:, :, 3:4]
                 result[:, :, :3] = (
-                    result[:, :, :3] * (1 - child_alpha)
-                    + blended * child_alpha
+                    result[:, :, :3] * (1 - child_alpha) + blended * child_alpha
                 )
                 result[:, :, 3:4] = result[:, :, 3:4] + child_alpha * (
                     1 - result[:, :, 3:4]

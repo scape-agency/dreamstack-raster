@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Cartoon
 ===========================
@@ -19,9 +17,7 @@ if TYPE_CHECKING:
     from dreamstack.raster.core.image import Image
 
 
-def cartoon(
-    image: Image, edge_threshold: float = 100, color_levels: int = 8
-) -> Image:
+def cartoon(image: Image, edge_threshold: float = 100, color_levels: int = 8) -> Image:
     """
     Apply cartoon/cel-shading effect.
 

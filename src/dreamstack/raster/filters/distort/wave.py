@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Wave Distortion
 ===================================
@@ -58,15 +56,11 @@ def wave(
             map_y = y + offset
     else:  # triangle
         if direction == "horizontal":
-            offset = (
-                amplitude * (2 * np.abs((y / wavelength) % 1 - 0.5) - 0.5) * 2
-            )
+            offset = amplitude * (2 * np.abs((y / wavelength) % 1 - 0.5) - 0.5) * 2
             map_x = x + offset
             map_y = y
         else:
-            offset = (
-                amplitude * (2 * np.abs((x / wavelength) % 1 - 0.5) - 0.5) * 2
-            )
+            offset = amplitude * (2 * np.abs((x / wavelength) % 1 - 0.5) - 0.5) * 2
             map_x = x
             map_y = y + offset
 

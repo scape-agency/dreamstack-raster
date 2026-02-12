@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Read IPTC Metadata
 ======================================
@@ -11,10 +9,10 @@ Read IPTC metadata from image files.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 
-def read_iptc(path: str | Path) -> Dict[str, Any]:
+def read_iptc(path: str | Path) -> dict[str, Any]:
     """
     Read IPTC metadata from an image.
 

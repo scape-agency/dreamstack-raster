@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Shadows and highlights adjustment function."""
 
 from __future__ import annotations
@@ -75,8 +73,7 @@ def shadows_highlights(
     # Highlight mask
     highlight_width = highlight_tonal_width / 100
     highlight_mask = (
-        np.clip((local_lum - (1 - highlight_width)) / highlight_width, 0, 1)
-        ** 2
+        np.clip((local_lum - (1 - highlight_width)) / highlight_width, 0, 1) ** 2
     )
 
     # Calculate adjustments
@@ -89,9 +86,7 @@ def shadows_highlights(
     # Shadows: brighten or darken
     if shadow_adj > 0:
         # Brighten shadows
-        adjusted_lum = adjusted_lum + shadow_mask * shadow_adj * (
-            1 - adjusted_lum
-        )
+        adjusted_lum = adjusted_lum + shadow_mask * shadow_adj * (1 - adjusted_lum)
     else:
         # Darken shadows
         adjusted_lum = adjusted_lum * (1 + shadow_adj * shadow_mask)
@@ -104,9 +99,7 @@ def shadows_highlights(
         )
     else:
         # Darken highlights
-        adjusted_lum = (
-            adjusted_lum + highlight_mask * highlight_adj * adjusted_lum
-        )
+        adjusted_lum = adjusted_lum + highlight_mask * highlight_adj * adjusted_lum
 
     # Midtone contrast
     if midtone_contrast != 0:
@@ -134,7 +127,7 @@ def shadows_highlights(
         # Calculate current saturation
         max_c = np.max(result, axis=2)
         min_c = np.min(result, axis=2)
-        sat = np.where(max_c > 0, (max_c - min_c) / max_c, 0)
+        np.where(max_c > 0, (max_c - min_c) / max_c, 0)
 
         # Adjust
         mean_color = np.mean(result, axis=2, keepdims=True)

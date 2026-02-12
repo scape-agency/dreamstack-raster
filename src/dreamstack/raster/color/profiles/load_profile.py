@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Load ICC profile from file."""
 
 from __future__ import annotations

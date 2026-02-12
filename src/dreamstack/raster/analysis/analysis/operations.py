@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Color Analysis Operations
 =========================
@@ -9,8 +7,6 @@ Provides functions for dominant color detection and background analysis.
 """
 
 from __future__ import annotations
-
-from typing import List, Tuple
 
 import cv2
 import numpy as np
@@ -75,7 +71,7 @@ def get_dominant_colors(
     k: int = 5,
     max_iterations: int = 10,
     epsilon: float = 1.0,
-) -> List[Tuple[NDArray[np.int32], float]]:
+) -> list[tuple[NDArray[np.int32], float]]:
     """Find multiple dominant colors with their proportions.
 
     Parameters
@@ -230,9 +226,7 @@ def find_background_color(
             unique, counts = np.unique(all_edges, axis=0, return_counts=True)
             return unique[np.argmax(counts)].astype(np.int32)
         else:  # edge_dominant
-            return get_dominant_color(
-                all_edges.reshape(1, -1, 3).astype(np.uint8)
-            )
+            return get_dominant_color(all_edges.reshape(1, -1, 3).astype(np.uint8))
 
 
 def adjust_background_color(
@@ -288,7 +282,7 @@ def adjust_background_color(
 
 
 def create_gradient_background(
-    size: Tuple[int, int],
+    size: tuple[int, int],
     center_color: NDArray,
     darken_factor: float = 0.8,
     gradient_type: str = "radial",

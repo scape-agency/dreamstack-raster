@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Zoom Blur
 =============================
@@ -10,7 +8,7 @@ Zoom blur filter implementation.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, Tuple
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from dreamstack.raster.core.image import Image
@@ -19,7 +17,7 @@ if TYPE_CHECKING:
 def zoom_blur(
     image: Image,
     amount: float = 10,
-    center: Optional[Tuple[float, float]] = None,
+    center: tuple[float, float] | None = None,
 ) -> Image:
     """
     Apply zoom blur (radial blur in zoom mode).

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Contour Detector
 ================
@@ -12,7 +10,6 @@ Provides a stateful interface with customizable detection parameters.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import List, Tuple
 
 import cv2
 import numpy as np
@@ -106,7 +103,10 @@ class ContourDetector:
     functional API in `operations.py`.
     """
 
-    def __init__(self, config: DetectionConfig | None = None,) -> None:
+    def __init__(
+        self,
+        config: DetectionConfig | None = None,
+    ) -> None:
         """Initialize the contour detector.
 
         Parameters
@@ -120,7 +120,7 @@ class ContourDetector:
         self,
         binary_image: NDArray[np.uint8],
         apply_filters: bool = True,
-    ) -> List[ContourInfo]:
+    ) -> list[ContourInfo]:
         """Detect and analyze contours in a binary image.
 
         Parameters
@@ -159,9 +159,9 @@ class ContourDetector:
 
     def filter(
         self,
-        contours: List[ContourInfo],
-        image_size: Tuple[int, int],
-    ) -> List[ContourInfo]:
+        contours: list[ContourInfo],
+        image_size: tuple[int, int],
+    ) -> list[ContourInfo]:
         """Apply all configured filters to contours.
 
         Parameters
@@ -205,10 +205,10 @@ class ContourDetector:
 
     def get_boxes(
         self,
-        contours: List[ContourInfo],
+        contours: list[ContourInfo],
         margin: int | None = None,
-        image_size: Tuple[int, int] | None = None,
-    ) -> List[Tuple[int, int, int, int]]:
+        image_size: tuple[int, int] | None = None,
+    ) -> list[tuple[int, int, int, int]]:
         """Get bounding boxes for contours.
 
         Parameters
@@ -276,7 +276,7 @@ class ContourDetector:
         self,
         contour: NDArray[np.int32] | ContourInfo,
         scale: float,
-        offset: Tuple[int, int] = (0, 0),
+        offset: tuple[int, int] = (0, 0),
     ) -> NDArray[np.int32]:
         """Scale and offset a contour.
 
@@ -297,7 +297,7 @@ class ContourDetector:
         raw_contour = contour.contour if isinstance(contour, ContourInfo) else contour
         return scale_contour(raw_contour, scale, offset)
 
-    def with_config(self, **kwargs) -> "ContourDetector":
+    def with_config(self, **kwargs) -> ContourDetector:
         """Create a new detector with modified configuration.
 
         Parameters
@@ -316,5 +316,6 @@ class ContourDetector:
         >>> strict_detector = detector.with_config(min_area_ratio=0.01)
         """
         from dataclasses import replace
+
         new_config = replace(self.config, **kwargs)
         return ContourDetector(new_config)

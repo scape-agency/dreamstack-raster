@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Canvas
 ==========================
@@ -10,7 +8,7 @@ Canvas for rendering and compositing layers.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, Tuple
+from typing import TYPE_CHECKING
 
 import numpy as np
 from numpy.typing import NDArray
@@ -53,7 +51,7 @@ class Canvas:
         height: int,
         pixel_format: PixelFormat = PixelFormat.RGBA,
         bit_depth: BitDepth = BitDepth.UINT8,
-        dpi: Tuple[float, float] = (72.0, 72.0),
+        dpi: tuple[float, float] = (72.0, 72.0),
         background: CanvasBackground | None = None,
     ):
         """
@@ -74,7 +72,7 @@ class Canvas:
         self._dpi = dpi
         self._background = background or CanvasBackground()
         self._layers = LayerGroup(name="Root")
-        self._cached_render: Optional[NDArray] = None
+        self._cached_render: NDArray | None = None
         self._render_dirty = True
 
     @property
@@ -108,12 +106,12 @@ class Canvas:
         return self._bit_depth
 
     @property
-    def dpi(self) -> Tuple[float, float]:
+    def dpi(self) -> tuple[float, float]:
         """Get resolution."""
         return self._dpi
 
     @dpi.setter
-    def dpi(self, value: Tuple[float, float]) -> None:
+    def dpi(self, value: tuple[float, float]) -> None:
         """Set resolution."""
         self._dpi = value
 
@@ -188,9 +186,7 @@ class Canvas:
 
         # Offset all layers
         for layer in self._layers.flatten_hierarchy():
-            layer.offset = Point(
-                layer.offset.x + offset[0], layer.offset.y + offset[1]
-            )
+            layer.offset = Point(layer.offset.x + offset[0], layer.offset.y + offset[1])
 
         self._render_dirty = True
 
@@ -206,9 +202,7 @@ class Canvas:
 
         # Offset layers
         for layer in self._layers.flatten_hierarchy():
-            layer.offset = Point(
-                layer.offset.x - bounds.x, layer.offset.y - bounds.y
-            )
+            layer.offset = Point(layer.offset.x - bounds.x, layer.offset.y - bounds.y)
 
         self._render_dirty = True
 
@@ -418,7 +412,7 @@ class Canvas:
         height: int,
         pixel_format: PixelFormat = PixelFormat.RGBA,
         bit_depth: BitDepth = BitDepth.UINT8,
-        dpi: Tuple[float, float] = (72.0, 72.0),
+        dpi: tuple[float, float] = (72.0, 72.0),
         background_color: tuple | None = None,
     ) -> Canvas:
         """
@@ -436,9 +430,7 @@ class Canvas:
             New Canvas
         """
         if background_color:
-            background = CanvasBackground(
-                type="color", color1=background_color
-            )
+            background = CanvasBackground(type="color", color1=background_color)
         else:
             background = CanvasBackground(type="checker")
 

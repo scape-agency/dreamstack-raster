@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Profile class enumeration."""
 
 from __future__ import annotations

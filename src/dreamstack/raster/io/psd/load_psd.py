@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Load PSD
 ============================
@@ -11,20 +9,19 @@ Load Adobe Photoshop PSD/PSB files.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import numpy as np
 
 if TYPE_CHECKING:
-    from dreamstack.raster.core.document import Document
     from dreamstack.raster.core.image import Image
 
 
 def load_psd(
     path: str | Path,
     layers: bool = False,
-    layer_index: Optional[int] = None,
-    **options,
+    layer_index: int | None = None,
+    **_options,  # noqa: ARG001
 ) -> Image:
     """
     Load a Photoshop PSD/PSB file.
@@ -50,7 +47,7 @@ def load_psd(
     psd = PSDImage.open(path)
 
     if layers:
-        return load_psd_with_layers(psd, path.stem)
+        return load_psd_with_layers(psd, path.stem)  # type: ignore[return-value]
 
     if layer_index is not None:
         # Load specific layer
@@ -59,6 +56,9 @@ def load_psd(
     else:
         # Get composite (flattened) image
         pil_image = psd.composite()
+
+    if pil_image is None:
+        raise ValueError("Failed to load PSD composite image")
 
     # Convert to numpy array
     array = np.array(pil_image)
@@ -95,8 +95,9 @@ def load_psd(
     )
 
     # Metadata
+    dpi_value = getattr(psd, "dpi", None)
     metadata = ImageMetadata(
-        dpi=(psd.dpi, psd.dpi) if psd.dpi else (72.0, 72.0)
+        dpi=(dpi_value, dpi_value) if dpi_value else (72.0, 72.0)
     )
 
     return Image(pixel_data, metadata, name=path.stem)

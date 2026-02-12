@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Image Metadata
 ==================================
@@ -11,7 +9,6 @@ Image metadata storage class.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Tuple
 
 
 @dataclass
@@ -33,7 +30,7 @@ class ImageMetadata:
         custom: Custom metadata dictionary
     """
 
-    dpi: Tuple[float, float] = (72.0, 72.0)
+    dpi: tuple[float, float] = (72.0, 72.0)
     color_profile: str = "sRGB"
     copyright: str = ""
     author: str = ""

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Preprocessing Module
 ========================================
@@ -11,10 +9,6 @@ segmentation, and extraction workflows.
 
 from __future__ import annotations
 
-from dreamstack.raster.analysis.preprocessing.processor import (
-    ImagePreprocessor,
-    PreprocessingConfig,
-)
 from dreamstack.raster.analysis.preprocessing.operations import (
     apply_clahe,
     binarize,
@@ -23,6 +17,10 @@ from dreamstack.raster.analysis.preprocessing.operations import (
     morphological_open,
     preprocess_for_contours,
     to_grayscale,
+)
+from dreamstack.raster.analysis.preprocessing.processor import (
+    ImagePreprocessor,
+    PreprocessingConfig,
 )
 
 __all__: list[str] = [

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Filters Module
 ==================================
@@ -65,9 +63,8 @@ from dreamstack.raster.filters.sharpen import (
     smart_sharpen,
     unsharp_mask,
 )
-from dreamstack.raster.filters.stylize import diffuse, extrude
+from dreamstack.raster.filters.stylize import diffuse, extrude, solarize, tiles, wind
 from dreamstack.raster.filters.stylize import find_edges as stylize_edges
-from dreamstack.raster.filters.stylize import solarize, tiles, wind
 
 __all__: list[str] = [
     # Blur

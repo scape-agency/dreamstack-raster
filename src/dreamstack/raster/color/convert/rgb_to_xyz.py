@@ -1,15 +1,11 @@
-# -*- coding: utf-8 -*-
-
 """RGB to XYZ conversion."""
 
 from __future__ import annotations
 
-from typing import Union
-
 import numpy as np
 
 # Type for array-like inputs
-ArrayLike = Union[np.ndarray, list, tuple]
+ArrayLike = np.ndarray | list | tuple
 
 
 def rgb_to_xyz(rgb: np.ndarray, illuminant: str = "D65") -> np.ndarray:
@@ -29,15 +25,14 @@ def rgb_to_xyz(rgb: np.ndarray, illuminant: str = "D65") -> np.ndarray:
 
     input_shape = rgb.shape
     has_alpha = input_shape[-1] == 4
+    alpha: np.ndarray | None = None
 
     if has_alpha:
         alpha = rgb[..., 3:4]
         rgb = rgb[..., :3]
 
     # Linearize sRGB
-    linear = np.where(
-        rgb <= 0.04045, rgb / 12.92, np.power((rgb + 0.055) / 1.055, 2.4)
-    )
+    linear = np.where(rgb <= 0.04045, rgb / 12.92, np.power((rgb + 0.055) / 1.055, 2.4))
 
     # sRGB to XYZ matrix (D65)
     if illuminant == "D65":
@@ -61,7 +56,7 @@ def rgb_to_xyz(rgb: np.ndarray, illuminant: str = "D65") -> np.ndarray:
 
     xyz = np.einsum("...j,ij->...i", linear, m)
 
-    if has_alpha:
+    if has_alpha and alpha is not None:
         xyz = np.concatenate([xyz, alpha], axis=-1)
 
     return xyz

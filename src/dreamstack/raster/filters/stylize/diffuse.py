@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Diffuse
 ===========================
@@ -68,16 +66,12 @@ def diffuse(image: Image, mode: str = "normal", distance: int = 10) -> Image:
                     data[y, x] = image.data[src_y, src_x]
                 elif mode == "darken":
                     if data.ndim == 3:
-                        data[y, x] = np.minimum(
-                            data[y, x], image.data[src_y, src_x]
-                        )
+                        data[y, x] = np.minimum(data[y, x], image.data[src_y, src_x])
                     else:
                         data[y, x] = min(data[y, x], image.data[src_y, src_x])
                 elif mode == "lighten":
                     if data.ndim == 3:
-                        data[y, x] = np.maximum(
-                            data[y, x], image.data[src_y, src_x]
-                        )
+                        data[y, x] = np.maximum(data[y, x], image.data[src_y, src_x])
                     else:
                         data[y, x] = max(data[y, x], image.data[src_y, src_x])
 

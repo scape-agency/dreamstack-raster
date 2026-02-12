@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Reduce Noise
 ================================
@@ -47,9 +45,7 @@ def reduce_noise(
         data = (data / data.max() * 255).astype(np.uint8)
 
     if data.ndim == 3 and data.shape[2] >= 3:
-        result = cv2.bilateralFilter(
-            data[:, :, :3], d, sigma_color, sigma_space
-        )
+        result = cv2.bilateralFilter(data[:, :, :3], d, sigma_color, sigma_space)
         if data.shape[2] == 4:
             result = np.dstack([result, data[:, :, 3]])
     else:

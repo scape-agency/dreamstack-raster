@@ -1,15 +1,11 @@
-# -*- coding: utf-8 -*-
-
 """HSL to RGB conversion."""
 
 from __future__ import annotations
 
-from typing import Union
-
 import numpy as np
 
 # Type for array-like inputs
-ArrayLike = Union[np.ndarray, list, tuple]
+ArrayLike = np.ndarray | list | tuple
 
 
 def hsl_to_rgb(hsl: np.ndarray) -> np.ndarray:
@@ -26,6 +22,7 @@ def hsl_to_rgb(hsl: np.ndarray) -> np.ndarray:
 
     input_shape = hsl.shape
     has_alpha = input_shape[-1] == 4
+    alpha: np.ndarray | None = None
 
     if has_alpha:
         alpha = hsl[..., 3:4]
@@ -71,7 +68,7 @@ def hsl_to_rgb(hsl: np.ndarray) -> np.ndarray:
 
     rgb = rgb + m[..., np.newaxis]
 
-    if has_alpha:
+    if has_alpha and alpha is not None:
         rgb = np.concatenate([rgb, alpha], axis=-1)
 
     if squeeze:

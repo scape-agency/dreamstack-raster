@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Bilateral Blur
 ==================================
@@ -44,9 +42,7 @@ def bilateral_blur(
 
     if data.ndim == 3 and data.shape[2] >= 3:
         # Use color bilateral
-        result = cv2.bilateralFilter(
-            data[:, :, :3], d, sigma_color, sigma_space
-        )
+        result = cv2.bilateralFilter(data[:, :, :3], d, sigma_color, sigma_space)
         if data.shape[2] == 4:
             # Preserve alpha
             result = np.dstack([result, data[:, :, 3]])

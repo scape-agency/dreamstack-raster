@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Twirl Distortion
 ====================================
@@ -10,7 +8,7 @@ Twirl distortion filter implementation.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, Tuple
+from typing import TYPE_CHECKING
 
 import cv2
 import numpy as np
@@ -22,8 +20,8 @@ if TYPE_CHECKING:
 def twirl(
     image: Image,
     angle: float = 180,
-    radius: Optional[float] = None,
-    center: Optional[Tuple[float, float]] = None,
+    radius: float | None = None,
+    center: tuple[float, float] | None = None,
 ) -> Image:
     """
     Apply twirl distortion.

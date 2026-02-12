@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Adjustments Module
 ======================================
@@ -10,6 +8,11 @@ brightness/contrast, color balance, and more.
 """
 
 from __future__ import annotations
+
+from typing import Any
+
+import numpy as np
+from numpy.typing import NDArray
 
 from dreamstack.raster.adjustments.basic import (
     brightness,
@@ -35,9 +38,9 @@ from dreamstack.raster.adjustments.clamp import (
     auto_gamma,
     clamp,
     clamp_normalized,
-    gamma_rgb,
 )
 from dreamstack.raster.adjustments.clamp import gamma as gamma_per_channel
+from dreamstack.raster.adjustments.clamp import gamma_rgb
 from dreamstack.raster.adjustments.color_balance import (
     color_balance,
     hue_saturation,
@@ -64,13 +67,6 @@ from dreamstack.raster.adjustments.levels import (
     levels,
     output_levels,
 )
-from dreamstack.raster.adjustments.tone import (
-    dehaze,
-    hdr_toning,
-    shadows_highlights,
-    split_toning,
-    tone_curve,
-)
 from dreamstack.raster.adjustments.remap import (
     RemapConfig,
     auto_remap,
@@ -81,6 +77,62 @@ from dreamstack.raster.adjustments.remap import (
     remap_values,
     threshold_values,
 )
+from dreamstack.raster.adjustments.tone import (
+    dehaze,
+    hdr_toning,
+    shadows_highlights,
+    split_toning,
+    tone_curve,
+)
+
+
+def apply_adjustment(
+    data: NDArray[np.floating],
+    adjustment_type: str,
+    parameters: dict[str, Any],
+) -> NDArray[np.floating]:
+    """Apply an adjustment by name.
+
+    Args:
+        data: Input pixel data (normalized float 0-1).
+        adjustment_type: Name of the adjustment to apply.
+        parameters: Parameters for the adjustment.
+
+    Returns:
+        Adjusted pixel data.
+    """
+    adjustments_map = {
+        "brightness": brightness,
+        "contrast": contrast,
+        "brightness_contrast": brightness_contrast,
+        "exposure": exposure,
+        "gamma": gamma,
+        "vibrance": vibrance,
+        "saturation": saturation,
+        "levels": levels,
+        "auto_levels": auto_levels,
+        "curves": curves,
+        "color_balance": color_balance,
+        "hue_saturation": hue_saturation,
+        "shadows_highlights": shadows_highlights,
+        "invert": invert,
+        "threshold": threshold,
+        "black_white": black_white,
+        "sepia": sepia,
+    }
+
+    func = adjustments_map.get(adjustment_type)
+    if func is None:
+        return data
+
+    # Convert to uint8 for adjustment functions if needed
+    if data.dtype in (np.float32, np.float64):
+        data_uint8 = (np.clip(data, 0, 1) * 255).astype(np.uint8)
+        result = func(data_uint8, **parameters)  # type: ignore[operator]
+        return result.astype(np.float32) / 255.0
+
+    return func(data, **parameters)  # type: ignore[operator]
+
 
 __all__: list[str] = [
     # Basic
@@ -145,4 +197,6 @@ __all__: list[str] = [
     "gamma_per_channel",
     "gamma_rgb",
     "auto_gamma",
+    # Apply adjustment
+    "apply_adjustment",
 ]

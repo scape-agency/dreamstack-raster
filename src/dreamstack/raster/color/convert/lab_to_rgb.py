@@ -1,17 +1,13 @@
-# -*- coding: utf-8 -*-
-
 """LAB to RGB conversion."""
 
 from __future__ import annotations
-
-from typing import Union
 
 import numpy as np
 
 from dreamstack.raster.color.convert.xyz_to_rgb import xyz_to_rgb
 
 # Type for array-like inputs
-ArrayLike = Union[np.ndarray, list, tuple]
+ArrayLike = np.ndarray | list | tuple
 
 
 def lab_to_rgb(lab: np.ndarray, illuminant: str = "D65") -> np.ndarray:
@@ -29,6 +25,7 @@ def lab_to_rgb(lab: np.ndarray, illuminant: str = "D65") -> np.ndarray:
 
     input_shape = lab.shape
     has_alpha = input_shape[-1] == 4
+    alpha: np.ndarray | None = None
 
     if has_alpha:
         alpha = lab[..., 3:4]
@@ -57,7 +54,7 @@ def lab_to_rgb(lab: np.ndarray, illuminant: str = "D65") -> np.ndarray:
 
     xyz = np.stack([xr, yr, zr], axis=-1) * ref_white
 
-    if has_alpha:
+    if has_alpha and alpha is not None:
         xyz = np.concatenate([xyz, alpha], axis=-1)
 
     return xyz_to_rgb(xyz, illuminant)

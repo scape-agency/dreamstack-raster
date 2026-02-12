@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Gaussian Blur
 =================================
@@ -10,7 +8,7 @@ Gaussian blur filter implementation.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import cv2
 import numpy as np
@@ -20,7 +18,7 @@ if TYPE_CHECKING:
 
 
 def gaussian_blur(
-    image: Image, radius: float = 5.0, sigma: Optional[float] = None
+    image: Image, radius: float = 5.0, sigma: float | None = None
 ) -> Image:
     """
     Apply Gaussian blur.
@@ -47,9 +45,7 @@ def gaussian_blur(
     if data.ndim == 3:
         result = np.zeros_like(data)
         for i in range(data.shape[2]):
-            result[:, :, i] = cv2.GaussianBlur(
-                data[:, :, i], (ksize, ksize), sigma
-            )
+            result[:, :, i] = cv2.GaussianBlur(data[:, :, i], (ksize, ksize), sigma)
     else:
         result = cv2.GaussianBlur(data, (ksize, ksize), sigma)
 

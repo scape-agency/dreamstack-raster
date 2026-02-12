@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - History Snapshot
 ====================================
@@ -37,7 +35,7 @@ class HistorySnapshot:
         # Snapshot layer pixel data
         for layer in document.layers.flatten_hierarchy():
             if hasattr(layer, "pixel_data"):
-                self._layer_data[layer.id] = layer.pixel_data.data.copy()
+                self._layer_data[layer.id] = layer.pixel_data.data.copy()  # type: ignore[attr-defined]
 
         # Snapshot selection
         if document.selection is not None:
@@ -52,7 +50,7 @@ class HistorySnapshot:
         """
         for layer in document.layers.flatten_hierarchy():
             if layer.id in self._layer_data and hasattr(layer, "pixel_data"):
-                layer.pixel_data.data[:] = self._layer_data[layer.id]
+                layer.pixel_data.data[:] = self._layer_data[layer.id]  # type: ignore[attr-defined]
 
         if self._selection is not None and document.selection is not None:
             document.selection.mask[:] = self._selection

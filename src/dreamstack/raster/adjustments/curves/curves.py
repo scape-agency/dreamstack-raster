@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-
 """Curves adjustment function."""
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -16,10 +14,10 @@ from dreamstack.raster.adjustments.curves.curve import Curve
 
 def curves(
     image: Image,
-    rgb_curve: Optional[Curve] = None,
-    red_curve: Optional[Curve] = None,
-    green_curve: Optional[Curve] = None,
-    blue_curve: Optional[Curve] = None,
+    rgb_curve: Curve | None = None,
+    red_curve: Curve | None = None,
+    green_curve: Curve | None = None,
+    blue_curve: Curve | None = None,
 ) -> Image:
     """
     Apply curves adjustment.

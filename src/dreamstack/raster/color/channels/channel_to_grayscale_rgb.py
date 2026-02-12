@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Convert channel to grayscale RGB."""
 
 from __future__ import annotations

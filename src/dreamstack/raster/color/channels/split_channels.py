@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """Split channels operation."""
 
 from __future__ import annotations
-
-from typing import Tuple
 
 import cv2
 import numpy as np
@@ -14,7 +10,7 @@ from numpy.typing import NDArray
 def split_channels(
     image: NDArray[np.uint8],
     color_format: str = "BGR",
-) -> Tuple[NDArray[np.uint8], ...]:
+) -> tuple[NDArray[np.uint8], ...]:
     """Split image into individual color channels.
 
     Separates a color image into its component channels,

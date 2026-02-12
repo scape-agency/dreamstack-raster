@@ -15,7 +15,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Iterator, List, Tuple
 
-import cv2
+import cv2  # pylint: disable=no-member
 import numpy as np
 from numpy.typing import NDArray
 
@@ -29,11 +29,11 @@ from dreamstack.raster.analysis.preprocessing.processor import (
     ImagePreprocessor,
     PreprocessingConfig,
 )
-from dreamstack.raster.extraction.operations import (
+from dreamstack.raster.extraction.apply_background_mask import (
     apply_background_mask,
-    extract_object,
-    extract_with_alpha,
 )
+from dreamstack.raster.extraction.extract_object import extract_object
+from dreamstack.raster.extraction.extract_with_alpha import extract_with_alpha
 
 
 @dataclass
@@ -220,7 +220,10 @@ class ObjectExtractor:
         """
         # Preprocess
         processed = self.preprocessor.preprocess(image)
-        binary = processed["threshold"]
+        if isinstance(processed, dict):
+            binary = processed["threshold"]
+        else:
+            binary = processed
 
         # Detect contours
         contours = self.detector.detect(binary)
@@ -356,7 +359,14 @@ class ObjectExtractor:
         new_w = int(w * scale)
         new_h = int(h * scale)
 
-        return cv2.resize(image, (new_w, new_h), interpolation=cv2.INTER_AREA)
+        return np.asarray(
+            cv2.resize(  # pylint: disable=no-member
+                image,
+                (new_w, new_h),
+                interpolation=cv2.INTER_AREA,  # pylint: disable=no-member
+            ),
+            dtype=np.uint8,
+        )
 
     def extract_with_mask(
         self,
@@ -436,7 +446,7 @@ class ObjectExtractor:
         for obj in objects:
             filename = f"{prefix}_{obj.index:04d}{extension}"
             filepath = output_dir / filename
-            cv2.imwrite(str(filepath), obj.image)
+            cv2.imwrite(str(filepath), obj.image)  # pylint: disable=no-member
             saved_paths.append(filepath)
 
         return saved_paths

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Contrast adjustment function."""
 
 from __future__ import annotations

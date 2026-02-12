@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Model Conversions
 =================
@@ -9,8 +7,6 @@ Utilities for working with dreamstack.color models.
 """
 
 from __future__ import annotations
-
-from typing import Type, Union
 
 import numpy as np
 
@@ -28,7 +24,7 @@ from dreamstack.color import (
     rgb_to_hsv,
 )
 
-ColorModel = Union[RGBColorModel, HSLColorModel, HSVColorModel, CMYKColorModel]
+ColorModel = RGBColorModel | HSLColorModel | HSVColorModel | CMYKColorModel
 
 
 def get_color_model(

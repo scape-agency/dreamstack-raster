@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Read XMP Metadata
 =====================================
@@ -11,10 +9,10 @@ Read XMP metadata from image files.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 
-def read_xmp(path: str | Path) -> Dict[str, Any]:
+def read_xmp(path: str | Path) -> dict[str, Any]:
     """
     Read XMP metadata from an image.
 
@@ -38,7 +36,7 @@ def read_xmp(path: str | Path) -> Dict[str, Any]:
         elif hasattr(img, "applist"):
             # Look in APP1 segments
             xmp_str = None
-            for segment in img.applist:
+            for segment in img.applist:  # type: ignore[attr-defined]
                 if (
                     segment[0] == "APP1"
                     and b"http://ns.adobe.com/xap/" in segment[1]

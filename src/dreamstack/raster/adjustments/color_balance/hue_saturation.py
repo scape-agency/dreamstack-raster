@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Hue/Saturation adjustment function."""
 
 from __future__ import annotations

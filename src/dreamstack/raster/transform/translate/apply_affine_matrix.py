@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """Apply affine matrix operation."""
 
 from __future__ import annotations
-
-from typing import Optional, Tuple, Union
 
 import cv2
 import numpy as np
@@ -15,9 +11,9 @@ def apply_affine_matrix(
     image: NDArray[np.uint8],
     matrix: NDArray[np.float32],
     *,
-    output_size: Optional[Tuple[int, int]] = None,
+    output_size: tuple[int, int] | None = None,
     border_mode: str = "constant",
-    border_value: Union[int, Tuple[int, int, int]] = 0,
+    border_value: int | tuple[int, int, int] = 0,
 ) -> NDArray[np.uint8]:
     """Apply a 2x3 affine transformation matrix.
 

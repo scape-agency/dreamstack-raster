@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-
 """Auto color adjustment function."""
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, Tuple
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -17,7 +15,7 @@ from dreamstack.raster.adjustments.levels.auto_contrast import auto_contrast
 def auto_color(
     image: Image,
     clip: float = 0.5,
-    neutral: Optional[Tuple[float, float, float]] = None,
+    neutral: tuple[float, float, float] | None = None,
 ) -> Image:
     """
     Auto-adjust color balance.
@@ -48,9 +46,7 @@ def auto_color(
 
         sorted_vals = np.sort(channel)
         in_black = sorted_vals[clip_count] if clip_count < total else 0
-        in_white = (
-            sorted_vals[-clip_count - 1] if clip_count < total else max_val
-        )
+        in_white = sorted_vals[-clip_count - 1] if clip_count < total else max_val
 
         if in_white > in_black:
             result[:, :, i] = (

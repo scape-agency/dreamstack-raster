@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Array to Model Conversion
 =========================
@@ -10,15 +8,10 @@ Convert between numpy arrays and dreamstack.color models.
 
 from __future__ import annotations
 
-from typing import List, Union
-
 import numpy as np
 
 # Import dreamstack.color models
 from dreamstack.color import (
-    CMYKColorModel,
-    HSLColorModel,
-    HSVColorModel,
     RGBColorModel,
 )
 
@@ -81,16 +74,14 @@ def rgb_to_array(
         return np.array([r, g, b], dtype=np.float64)
     else:
         if include_alpha:
-            return np.array(
-                [rgb.r, rgb.g, rgb.b, int(rgb.a * 255)], dtype=np.uint8
-            )
+            return np.array([rgb.r, rgb.g, rgb.b, int(rgb.a * 255)], dtype=np.uint8)
         return np.array([rgb.r, rgb.g, rgb.b], dtype=np.uint8)
 
 
 def arrays_to_rgb_list(
     array: np.ndarray,
     normalized: bool = True,
-) -> List[RGBColorModel]:
+) -> list[RGBColorModel]:
     """
     Convert a 2D/3D array of colors to a list of RGBColorModels.
 
@@ -121,7 +112,7 @@ def arrays_to_rgb_list(
 
 
 def rgb_list_to_arrays(
-    colors: List[RGBColorModel],
+    colors: list[RGBColorModel],
     normalized: bool = True,
     include_alpha: bool = False,
 ) -> np.ndarray:

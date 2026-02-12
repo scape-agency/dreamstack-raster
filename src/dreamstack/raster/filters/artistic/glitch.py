@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Glitch
 ==========================
@@ -10,7 +8,7 @@ Digital glitch effect implementation.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -18,9 +16,7 @@ if TYPE_CHECKING:
     from dreamstack.raster.core.image import Image
 
 
-def glitch(
-    image: Image, amount: float = 10, seed: Optional[int] = None
-) -> Image:
+def glitch(image: Image, amount: float = 10, seed: int | None = None) -> Image:
     """
     Apply digital glitch effect.
 
@@ -45,9 +41,7 @@ def glitch(
     for _ in range(num_shifts):
         y = np.random.randint(0, h)
         height = np.random.randint(1, max(2, h // 10))
-        shift = np.random.randint(
-            -int(w * amount / 100), int(w * amount / 100)
-        )
+        shift = np.random.randint(-int(w * amount / 100), int(w * amount / 100))
 
         y2 = min(y + height, h)
         data[y:y2] = np.roll(data[y:y2], shift, axis=1)

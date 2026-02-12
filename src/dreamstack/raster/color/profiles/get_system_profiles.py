@@ -1,15 +1,12 @@
-# -*- coding: utf-8 -*-
-
 """Get system ICC profiles."""
 
 from __future__ import annotations
 
 import platform
 from pathlib import Path
-from typing import Dict, List, Tuple
 
 
-def _get_system_profile_paths() -> List[Tuple[str, Path]]:
+def _get_system_profile_paths() -> list[tuple[str, Path]]:
     """Get paths to system ICC profiles."""
     profiles = []
     system = platform.system()
@@ -42,7 +39,7 @@ def _get_system_profile_paths() -> List[Tuple[str, Path]]:
     return profiles
 
 
-def get_system_profiles() -> Dict[str, Path]:
+def get_system_profiles() -> dict[str, Path]:
     """
     Get available system ICC profiles.
 

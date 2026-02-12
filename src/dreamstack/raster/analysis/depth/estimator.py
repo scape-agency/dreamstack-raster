@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Depth Estimator Class
 =====================
@@ -12,8 +10,7 @@ using transformer-based models like Depth Anything.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from pathlib import Path
-from typing import TYPE_CHECKING, Any, Literal
+from typing import TYPE_CHECKING, Literal
 
 import numpy as np
 
@@ -155,8 +152,7 @@ class DepthEstimator:
                 if torch.cuda.is_available():
                     return 0  # GPU
                 elif (
-                    hasattr(torch.backends, "mps")
-                    and torch.backends.mps.is_available()
+                    hasattr(torch.backends, "mps") and torch.backends.mps.is_available()
                 ):
                     return "mps"
                 else:
@@ -198,9 +194,7 @@ class DepthEstimator:
         max_depth = float(depth_map.max())
 
         if max_depth > min_depth:
-            depth_normalized = (depth_map - min_depth) / (
-                max_depth - min_depth
-            )
+            depth_normalized = (depth_map - min_depth) / (max_depth - min_depth)
         else:
             depth_normalized = np.zeros_like(depth_map)
 
@@ -236,7 +230,7 @@ class DepthEstimator:
         model_name: ModelName | None = None,
         model_size: ModelSize | None = None,
         invert: bool = False,
-    ) -> "DepthEstimator":
+    ) -> DepthEstimator:
         """Create estimator with specific configuration.
 
         Args:

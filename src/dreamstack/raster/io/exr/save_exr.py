@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - OpenEXR Saving
 ==================================
@@ -11,7 +9,7 @@ Save images as OpenEXR files.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, Dict, List, Optional
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -24,7 +22,7 @@ def save_exr(
     path: str | Path,
     compression: str = "zip",
     half_float: bool = False,
-    channel_names: Optional[List[str]] = None,
+    channel_names: list[str] | None = None,
     **options,
 ) -> None:
     """
@@ -42,7 +40,7 @@ def save_exr(
         import Imath
         import OpenEXR
     except ImportError:
-        _save_exr_imageio(image, path, **options)
+        _save_exr_imageio(image, Path(path), **options)
         return
 
     from dreamstack.raster.core.pixel import BitDepth
@@ -95,7 +93,7 @@ def save_exr(
     # Define channels
     channel_def = {}
     for name in channel_names:
-        channel_def[name] = Imath.Channel(pixel_type)
+        channel_def[name] = Imath.Channel(pixel_type)  # type: ignore[arg-type]
     header["channels"] = channel_def
 
     # Set metadata
@@ -129,7 +127,7 @@ def save_exr(
     exr_file.close()
 
 
-def _save_exr_imageio(image: Image, path: Path, **options) -> None:
+def _save_exr_imageio(image: Image, path: Path, **_options) -> None:
     """Fallback EXR saving using imageio."""
     import imageio
 
@@ -139,4 +137,4 @@ def _save_exr_imageio(image: Image, path: Path, **options) -> None:
     if image.bit_depth not in (BitDepth.FLOAT16, BitDepth.FLOAT32):
         image = image.convert_bit_depth(BitDepth.FLOAT32)
 
-    imageio.imwrite(path, image.data.astype(np.float32), format="EXR-FI")
+    imageio.imwrite(path, image.data.astype(np.float32), format="EXR-FI")  # type: ignore[call-overload]

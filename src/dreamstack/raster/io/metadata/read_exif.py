@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Read EXIF Metadata
 ======================================
@@ -11,10 +9,10 @@ Read EXIF metadata from image files.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 
-def read_exif(path: str | Path) -> Dict[str, Any]:
+def read_exif(path: str | Path) -> dict[str, Any]:
     """
     Read EXIF metadata from an image.
 
@@ -27,26 +25,26 @@ def read_exif(path: str | Path) -> Dict[str, Any]:
     try:
         import piexif
     except ImportError:
-        return _read_exif_pil(path)
+        return _read_exif_pil(Path(path))
 
     path = Path(path)
 
     try:
         exif_dict = piexif.load(str(path))
-    except Exception:
+    except (OSError, ValueError):
         return {}
 
     result = {}
 
-    # IFD names
-    ifd_names = {
-        "0th": piexif.TAGS.get(0, {}),
-        "Exif": piexif.TAGS.get(34665, {}),
-        "GPS": piexif.TAGS.get(34853, {}),
-        "1st": piexif.TAGS.get(1, {}),
+    # IFD names mapping (used for tag lookup)
+    _ifd_tags = {  # noqa: F841
+        "0th": piexif.TAGS.get(0, {}),  # type: ignore[call-overload]
+        "Exif": piexif.TAGS.get(34665, {}),  # type: ignore[call-overload]
+        "GPS": piexif.TAGS.get(34853, {}),  # type: ignore[call-overload]
+        "1st": piexif.TAGS.get(1, {}),  # type: ignore[call-overload]
     }
 
-    for ifd_name, tags in [
+    for ifd_name, _tags in [
         ("0th", piexif.ImageIFD),
         ("Exif", piexif.ExifIFD),
         ("GPS", piexif.GPSIFD),
@@ -71,15 +69,15 @@ def read_exif(path: str | Path) -> Dict[str, Any]:
     return result
 
 
-def _read_exif_pil(path: Path) -> Dict[str, Any]:
+def _read_exif_pil(path: Path) -> dict[str, Any]:
     """Read EXIF using PIL fallback."""
     from PIL import Image as PILImage
-    from PIL.ExifTags import GPSTAGS, TAGS
+    from PIL.ExifTags import TAGS
 
     result = {}
 
     with PILImage.open(path) as img:
-        exif = img._getexif()
+        exif = img._getexif()  # type: ignore[attr-defined]  # pylint: disable=protected-access
         if exif:
             for tag_id, value in exif.items():
                 tag = TAGS.get(tag_id, tag_id)

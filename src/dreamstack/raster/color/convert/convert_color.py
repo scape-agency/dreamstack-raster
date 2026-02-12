@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """Universal color space conversion."""
 
 from __future__ import annotations
-
-from typing import Union
 
 import numpy as np
 
@@ -22,7 +18,7 @@ from dreamstack.raster.color.convert.rgb_to_xyz import rgb_to_xyz
 from dreamstack.raster.color.convert.xyz_to_rgb import xyz_to_rgb
 
 # Type for array-like inputs
-ArrayLike = Union[np.ndarray, list, tuple]
+ArrayLike = np.ndarray | list | tuple
 
 
 def convert_color(

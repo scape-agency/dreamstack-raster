@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Selective color adjustment function."""
 
 from __future__ import annotations
@@ -67,9 +65,7 @@ def selective_color(
 
     if method == "relative":
         # Relative: percentage of current color
-        result[:, :, 0] -= (
-            c_adj * mask * (1 - normalized[:, :, 0])
-        )  # Cyan reduces Red
+        result[:, :, 0] -= c_adj * mask * (1 - normalized[:, :, 0])  # Cyan reduces Red
         result[:, :, 1] -= (
             m_adj * mask * (1 - normalized[:, :, 1])
         )  # Magenta reduces Green

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Compositing Module
 ======================================
@@ -19,6 +17,7 @@ from dreamstack.raster.compositing.alpha import (
 )
 from dreamstack.raster.compositing.blend import (
     BlendMode,
+    LayerInfo,
     blend,
     composite,
     merge_layers,
@@ -52,17 +51,18 @@ from dreamstack.raster.compositing.merge import (
 )
 
 __all__: list[str] = [
-    # Blend
-    "BlendMode",
-    "blend",
-    "composite",
-    "merge_layers",
     # Alpha
     "alpha_composite",
     "premultiply_alpha",
     "unpremultiply_alpha",
     "set_alpha",
     "extract_alpha",
+    # Blend
+    "BlendMode",
+    "blend",
+    "composite",
+    "LayerInfo",
+    "merge_layers",
     # Mask
     "apply_mask",
     "create_clipping_mask",

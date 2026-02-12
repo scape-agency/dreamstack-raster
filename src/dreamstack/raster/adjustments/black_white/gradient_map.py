@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-
 """Gradient map function."""
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List, Tuple
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -14,7 +12,7 @@ if TYPE_CHECKING:
 
 def gradient_map(
     image: Image,
-    gradient: List[Tuple[float, Tuple[int, int, int]]],
+    gradient: list[tuple[float, tuple[int, int, int]]],
     reverse: bool = False,
     dither: bool = False,
 ) -> Image:
@@ -72,16 +70,13 @@ def gradient_map(
             if gradient[j][0] <= pos <= gradient[j + 1][0]:
                 # Interpolate
                 t = (
-                    (pos - gradient[j][0])
-                    / (gradient[j + 1][0] - gradient[j][0])
+                    (pos - gradient[j][0]) / (gradient[j + 1][0] - gradient[j][0])
                     if gradient[j + 1][0] != gradient[j][0]
                     else 0
                 )
 
                 for c in range(3):
-                    lut[i, c] = (
-                        gradient[j][1][c] * (1 - t) + gradient[j + 1][1][c] * t
-                    )
+                    lut[i, c] = gradient[j][1][c] * (1 - t) + gradient[j + 1][1][c] * t
                 break
 
     # Normalize LUT
@@ -97,9 +92,9 @@ def gradient_map(
 
     # Add dithering
     if dither:
-        noise = np.random.random(luminance.shape) * (
-            1 / (lut_size - 1)
-        ) - 0.5 / (lut_size - 1)
+        noise = np.random.random(luminance.shape) * (1 / (lut_size - 1)) - 0.5 / (
+            lut_size - 1
+        )
         result = result + noise[:, :, np.newaxis]
 
     result = np.clip(result, 0, 1)

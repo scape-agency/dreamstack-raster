@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Analysis Module
 ===================================
@@ -69,7 +67,11 @@ from dreamstack.raster.analysis.depth import (
 from dreamstack.raster.analysis.face import (
     AlignmentResult,
     FaceBbox,
+    FaceLandmarks,
     align_eyes,
+    apply_transform,
+    compute_inverse_transform,
+    crop_face,
     detect_face,
     detect_faces,
     detect_landmarks,

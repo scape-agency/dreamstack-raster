@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - RAW Image Loading
 =====================================
@@ -11,9 +9,7 @@ Load RAW camera files.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional
-
-import numpy as np
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from dreamstack.raster.core.image import Image
@@ -29,7 +25,7 @@ def load_raw(
     no_auto_bright: bool = False,
     gamma: tuple = (1, 1),
     demosaic_algorithm: str = "AHD",
-    **options,
+    **_options,  # noqa: ARG001
 ) -> Image:
     """
     Load a RAW camera file.
@@ -58,7 +54,8 @@ def load_raw(
 
     with rawpy.imread(str(path)) as raw:
         # Configure postprocessing
-        params = rawpy.Params(
+        Params = getattr(rawpy, "Params")
+        params = Params(
             use_camera_wb=use_camera_wb,
             use_auto_wb=use_auto_wb,
             bright=bright,
@@ -68,30 +65,30 @@ def load_raw(
         )
 
         # Output color space
+        ColorSpace = getattr(rawpy, "ColorSpace")
         color_spaces = {
-            "sRGB": rawpy.ColorSpace.sRGB,
-            "Adobe": rawpy.ColorSpace.Adobe,
-            "Wide": rawpy.ColorSpace.Wide,
-            "ProPhoto": rawpy.ColorSpace.ProPhoto,
-            "XYZ": rawpy.ColorSpace.XYZ,
-            "raw": rawpy.ColorSpace.raw,
+            "sRGB": ColorSpace.sRGB,
+            "Adobe": ColorSpace.Adobe,
+            "Wide": ColorSpace.Wide,
+            "ProPhoto": ColorSpace.ProPhoto,
+            "XYZ": ColorSpace.XYZ,
+            "raw": ColorSpace.raw,
         }
-        params.output_color = color_spaces.get(
-            output_color, rawpy.ColorSpace.sRGB
-        )
+        params.output_color = color_spaces.get(output_color, ColorSpace.sRGB)
 
         # Demosaicing algorithm
+        DemosaicAlgorithm = getattr(rawpy, "DemosaicAlgorithm")
         demosaic_algorithms = {
-            "linear": rawpy.DemosaicAlgorithm.LINEAR,
-            "VNG": rawpy.DemosaicAlgorithm.VNG,
-            "PPG": rawpy.DemosaicAlgorithm.PPG,
-            "AHD": rawpy.DemosaicAlgorithm.AHD,
-            "DCB": rawpy.DemosaicAlgorithm.DCB,
-            "DHT": rawpy.DemosaicAlgorithm.DHT,
-            "AAHD": rawpy.DemosaicAlgorithm.AAHD,
+            "linear": DemosaicAlgorithm.LINEAR,
+            "VNG": DemosaicAlgorithm.VNG,
+            "PPG": DemosaicAlgorithm.PPG,
+            "AHD": DemosaicAlgorithm.AHD,
+            "DCB": DemosaicAlgorithm.DCB,
+            "DHT": DemosaicAlgorithm.DHT,
+            "AAHD": DemosaicAlgorithm.AAHD,
         }
         params.demosaic_algorithm = demosaic_algorithms.get(
-            demosaic_algorithm, rawpy.DemosaicAlgorithm.AHD
+            demosaic_algorithm, DemosaicAlgorithm.AHD
         )
 
         # Process
@@ -130,7 +127,7 @@ def load_raw(
                         else None
                     ),
                 }
-        except Exception:
+        except (AttributeError, KeyError, OSError):
             pass
 
     # Determine bit depth

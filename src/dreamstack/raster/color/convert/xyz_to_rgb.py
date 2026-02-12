@@ -1,15 +1,11 @@
-# -*- coding: utf-8 -*-
-
 """XYZ to RGB conversion."""
 
 from __future__ import annotations
 
-from typing import Union
-
 import numpy as np
 
 # Type for array-like inputs
-ArrayLike = Union[np.ndarray, list, tuple]
+ArrayLike = np.ndarray | list | tuple
 
 
 def xyz_to_rgb(xyz: np.ndarray, illuminant: str = "D65") -> np.ndarray:
@@ -27,6 +23,7 @@ def xyz_to_rgb(xyz: np.ndarray, illuminant: str = "D65") -> np.ndarray:
 
     input_shape = xyz.shape
     has_alpha = input_shape[-1] == 4
+    alpha: np.ndarray | None = None
 
     if has_alpha:
         alpha = xyz[..., 3:4]
@@ -63,7 +60,7 @@ def xyz_to_rgb(xyz: np.ndarray, illuminant: str = "D65") -> np.ndarray:
 
     rgb = np.clip(rgb, 0, 1)
 
-    if has_alpha:
+    if has_alpha and alpha is not None:
         rgb = np.concatenate([rgb, alpha], axis=-1)
 
     return rgb

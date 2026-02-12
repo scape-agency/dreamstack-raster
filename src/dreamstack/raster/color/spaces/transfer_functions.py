@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Transfer functions for HDR and gamma encoding."""
 
 from __future__ import annotations

@@ -1,15 +1,11 @@
-# -*- coding: utf-8 -*-
-
 """Grayscale to RGB conversion."""
 
 from __future__ import annotations
 
-from typing import Union
-
 import numpy as np
 
 # Type for array-like inputs
-ArrayLike = Union[np.ndarray, list, tuple]
+ArrayLike = np.ndarray | list | tuple
 
 
 def gray_to_rgb(gray: np.ndarray) -> np.ndarray:

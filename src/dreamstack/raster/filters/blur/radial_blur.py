@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Radial Blur
 ===============================
@@ -10,7 +8,7 @@ Radial blur filter implementation.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, Tuple
+from typing import TYPE_CHECKING
 
 import cv2
 import numpy as np
@@ -22,7 +20,7 @@ if TYPE_CHECKING:
 def radial_blur(
     image: Image,
     amount: float = 10,
-    center: Optional[Tuple[float, float]] = None,
+    center: tuple[float, float] | None = None,
     mode: str = "spin",
 ) -> Image:
     """

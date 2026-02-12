@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Invert colors function."""
 
 from __future__ import annotations

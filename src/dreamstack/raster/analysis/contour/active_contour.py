@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Active Contour (Snake) Operations
 =================================
@@ -12,8 +10,7 @@ precise image segmentation.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Optional, Tuple, Union
+from dataclasses import dataclass
 
 import cv2
 import numpy as np
@@ -77,7 +74,7 @@ class ActiveContourResult:
 
 
 def create_circular_contour(
-    center: Tuple[float, float],
+    center: tuple[float, float],
     radius: float,
     num_points: int = 400,
 ) -> NDArray[np.float64]:
@@ -109,8 +106,8 @@ def create_circular_contour(
 
 
 def create_elliptical_contour(
-    center: Tuple[float, float],
-    axes: Tuple[float, float],
+    center: tuple[float, float],
+    axes: tuple[float, float],
     num_points: int = 400,
     angle: float = 0.0,
 ) -> NDArray[np.float64]:
@@ -156,7 +153,7 @@ def create_elliptical_contour(
 
 
 def create_rectangular_contour(
-    bounds: Tuple[float, float, float, float],
+    bounds: tuple[float, float, float, float],
     num_points: int = 400,
 ) -> NDArray[np.float64]:
     """Create a rectangular initial contour.
@@ -203,7 +200,7 @@ def active_contour(
     image: NDArray[np.uint8],
     initial_contour: NDArray[np.float64],
     *,
-    config: Optional[ActiveContourConfig] = None,
+    config: ActiveContourConfig | None = None,
     preprocess: bool = True,
 ) -> ActiveContourResult:
     """Apply active contour model (snakes) for image segmentation.
@@ -292,7 +289,7 @@ def active_contour(
 def draw_contour(
     image: NDArray[np.uint8],
     contour: NDArray,
-    color: Tuple[int, int, int] = (0, 255, 0),
+    color: tuple[int, int, int] = (0, 255, 0),
     thickness: int = 2,
     closed: bool = True,
 ) -> NDArray[np.uint8]:
@@ -328,7 +325,7 @@ def draw_contour(
 
 def contour_to_mask(
     contour: NDArray,
-    image_shape: Tuple[int, int],
+    image_shape: tuple[int, int],
 ) -> NDArray[np.uint8]:
     """Convert contour to binary mask.
 
@@ -354,7 +351,7 @@ def extract_contour_region(
     image: NDArray[np.uint8],
     contour: NDArray,
     *,
-    background: Union[int, Tuple[int, int, int]] = 0,
+    background: int | tuple[int, int, int] = 0,
 ) -> NDArray[np.uint8]:
     """Extract region inside contour.
 
@@ -419,7 +416,7 @@ def contour_perimeter(contour: NDArray, closed: bool = True) -> float:
     return cv2.arcLength(pts, closed)
 
 
-def contour_centroid(contour: NDArray) -> Tuple[float, float]:
+def contour_centroid(contour: NDArray) -> tuple[float, float]:
     """Calculate contour centroid.
 
     Parameters

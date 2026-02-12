@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Black and white conversion function."""
 
 from __future__ import annotations

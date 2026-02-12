@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 # =============================================================================
 # Docstring
 # =============================================================================
@@ -21,9 +18,10 @@ This module initializes the Dreamstack package.
 # Import | Future
 from __future__ import annotations
 
+from collections.abc import MutableSequence
+
 # Import | Standard Library
 from pkgutil import extend_path
-from typing import MutableSequence
 
 # =============================================================================
 # Variables

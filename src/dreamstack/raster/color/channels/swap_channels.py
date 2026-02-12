@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-
 """Swap channels operation."""
 
 from __future__ import annotations
 
-from typing import Literal, Union
+from typing import Literal
 
 import numpy as np
 from numpy.typing import NDArray
@@ -14,8 +12,8 @@ ChannelName = Literal["red", "green", "blue", "alpha", "r", "g", "b", "a"]
 
 def swap_channels(
     image: NDArray[np.uint8],
-    from_channel: Union[int, ChannelName],
-    to_channel: Union[int, ChannelName],
+    from_channel: int | ChannelName,
+    to_channel: int | ChannelName,
     color_format: str = "BGR",
 ) -> NDArray[np.uint8]:
     """Swap two color channels.
@@ -39,9 +37,7 @@ def swap_channels(
     channel_map_bgr = {"blue": 0, "b": 0, "green": 1, "g": 1, "red": 2, "r": 2}
     channel_map_rgb = {"red": 0, "r": 0, "green": 1, "g": 1, "blue": 2, "b": 2}
     channel_map = (
-        channel_map_bgr
-        if color_format.upper() in ("BGR", "BGRA")
-        else channel_map_rgb
+        channel_map_bgr if color_format.upper() in ("BGR", "BGRA") else channel_map_rgb
     )
 
     def get_idx(ch):

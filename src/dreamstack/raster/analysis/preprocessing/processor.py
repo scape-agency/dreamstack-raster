@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Image Preprocessor
 ==================
@@ -12,7 +10,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Tuple
 
 import cv2
 import numpy as np
@@ -61,9 +58,9 @@ class PreprocessingConfig:
     >>> processor = ImagePreprocessor(config)
     """
 
-    blur_kernel_size: Tuple[int, int] = (11, 11)
+    blur_kernel_size: tuple[int, int] = (11, 11)
     clahe_clip_limit: float = 3.0
-    clahe_tile_size: Tuple[int, int] = (8, 8)
+    clahe_tile_size: tuple[int, int] = (8, 8)
     threshold_method: str = "otsu"
     threshold_value: int = 127
     edge_method: str = "canny"
@@ -245,20 +242,16 @@ class ImagePreprocessor:
             Cleaned mask.
         """
         # Dilate to connect nearby regions
-        dilated = cv2.dilate(
-            mask, None, iterations=self.config.morph_dilate_iter
-        )
+        dilated = cv2.dilate(mask, None, iterations=self.config.morph_dilate_iter)
         # Erode to restore size
-        eroded = cv2.erode(
-            dilated, None, iterations=self.config.morph_erode_iter
-        )
+        eroded = cv2.erode(dilated, None, iterations=self.config.morph_erode_iter)
         return eroded
 
     def preprocess(
         self,
         image: NDArray[np.uint8],
         return_all: bool = True,
-    ) -> Dict[str, NDArray[np.uint8]] | NDArray[np.uint8]:
+    ) -> dict[str, NDArray[np.uint8]] | NDArray[np.uint8]:
         """Run full preprocessing pipeline.
 
         Parameters
@@ -314,7 +307,7 @@ class ImagePreprocessor:
         self,
         path: str | Path,
         return_all: bool = True,
-    ) -> Dict[str, NDArray[np.uint8]] | NDArray[np.uint8]:
+    ) -> dict[str, NDArray[np.uint8]] | NDArray[np.uint8]:
         """Load and preprocess an image file.
 
         Parameters
@@ -332,7 +325,7 @@ class ImagePreprocessor:
         image = self.load(path)
         return self.preprocess(image, return_all=return_all)
 
-    def with_config(self, **kwargs) -> "ImagePreprocessor":
+    def with_config(self, **kwargs) -> ImagePreprocessor:
         """Create a new preprocessor with modified configuration.
 
         Parameters

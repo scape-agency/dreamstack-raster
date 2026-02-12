@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Get Save Options
 ====================================
@@ -10,12 +8,12 @@ Get available save options for a format.
 
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any
 
 from dreamstack.raster.io.formats import ImageFormat
 
 
-def get_save_options(format: ImageFormat) -> Dict[str, Any]:
+def get_save_options(format: ImageFormat) -> dict[str, Any]:
     """
     Get available save options for a format.
 

@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """Translation operation."""
 
 from __future__ import annotations
-
-from typing import Tuple, Union
 
 import cv2
 import numpy as np
@@ -17,7 +13,7 @@ def translate(
     ty: int = 0,
     *,
     border_mode: str = "constant",
-    border_value: Union[int, Tuple[int, int, int]] = 0,
+    border_value: int | tuple[int, int, int] = 0,
 ) -> NDArray[np.uint8]:
     """Translate (shift) an image by pixel offset.
 

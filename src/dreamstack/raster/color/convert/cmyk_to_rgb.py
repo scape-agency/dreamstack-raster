@@ -1,15 +1,11 @@
-# -*- coding: utf-8 -*-
-
 """CMYK to RGB conversion."""
 
 from __future__ import annotations
 
-from typing import Union
-
 import numpy as np
 
 # Type for array-like inputs
-ArrayLike = Union[np.ndarray, list, tuple]
+ArrayLike = np.ndarray | list | tuple
 
 
 def cmyk_to_rgb(cmyk: np.ndarray) -> np.ndarray:
@@ -26,6 +22,7 @@ def cmyk_to_rgb(cmyk: np.ndarray) -> np.ndarray:
 
     input_shape = cmyk.shape
     has_alpha = input_shape[-1] == 5
+    alpha: np.ndarray | None = None
 
     if has_alpha:
         alpha = cmyk[..., 4:5]
@@ -39,7 +36,7 @@ def cmyk_to_rgb(cmyk: np.ndarray) -> np.ndarray:
 
     rgb = np.stack([r, g, b], axis=-1)
 
-    if has_alpha:
+    if has_alpha and alpha is not None:
         rgb = np.concatenate([rgb, alpha], axis=-1)
 
     return rgb

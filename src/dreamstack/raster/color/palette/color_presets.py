@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Common color presets."""
 
 from __future__ import annotations

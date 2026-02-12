@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Pipeline Operations
 ===================
@@ -10,19 +8,23 @@ Functional API for batch extraction operations.
 from __future__ import annotations
 
 import logging
+from collections.abc import Callable, Iterator
 from pathlib import Path
-from typing import Callable, Iterator, List, Tuple
 
-from dreamstack.raster.extraction.extractor import (
-    ExtractedObject,
-    ObjectExtractor,
-)
+from dreamstack.raster.extraction.extracted_object import ExtractedObject
+from dreamstack.raster.extraction.object_extractor import ObjectExtractor
 
 logger = logging.getLogger(__name__)
 
 # Supported image formats
 DEFAULT_IMAGE_FORMATS = (
-    ".jpg", ".jpeg", ".png", ".tiff", ".tif", ".bmp", ".webp"
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".tiff",
+    ".tif",
+    ".bmp",
+    ".webp",
 )
 
 
@@ -30,7 +32,7 @@ def find_images(
     directory: str | Path,
     extensions: tuple = DEFAULT_IMAGE_FORMATS,
     recursive: bool = False,
-) -> List[Path]:
+) -> list[Path]:
     """Find all image files in a directory.
 
     Parameters
@@ -69,7 +71,7 @@ def process_image(
     extractor: ObjectExtractor | None = None,
     prefix: str | None = None,
     extension: str = ".png",
-) -> List[ExtractedObject]:
+) -> list[ExtractedObject]:
     """Process a single image and extract objects.
 
     Parameters
@@ -124,7 +126,7 @@ def process_directory(
     recursive: bool = False,
     extensions: tuple = DEFAULT_IMAGE_FORMATS,
     progress_callback: Callable[[int, int, str], None] | None = None,
-) -> List[ExtractedObject]:
+) -> list[ExtractedObject]:
     """Process all images in a directory.
 
     Parameters
@@ -193,7 +195,7 @@ def process_directory_iter(
     extractor: ObjectExtractor | None = None,
     recursive: bool = False,
     extensions: tuple = DEFAULT_IMAGE_FORMATS,
-) -> Iterator[Tuple[Path, List[ExtractedObject]]]:
+) -> Iterator[tuple[Path, list[ExtractedObject]]]:
     """Process directory and yield results incrementally.
 
     Useful for processing large directories where you want

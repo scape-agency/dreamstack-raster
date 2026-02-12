@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-
 """Levels adjustment function."""
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -19,7 +17,7 @@ def levels(
     input_gamma: float = 1.0,
     output_black: float = 0,
     output_white: float = 255,
-    channel: Optional[str] = None,
+    channel: str | None = None,
 ) -> Image:
     """
     Apply levels adjustment.
@@ -73,11 +71,7 @@ def levels(
     else:
         # Apply to specific channel
         channel_idx = {"red": 0, "green": 1, "blue": 2}.get(channel.lower())
-        if (
-            channel_idx is not None
-            and data.ndim == 3
-            and channel_idx < data.shape[2]
-        ):
+        if channel_idx is not None and data.ndim == 3 and channel_idx < data.shape[2]:
             result[:, :, channel_idx] = apply_levels(data[:, :, channel_idx])
 
     result = np.clip(result, 0, max_val)

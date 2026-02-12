@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Extrude
 ===========================
@@ -53,18 +51,18 @@ def extrude(
 
             # Extrusion direction
             if direction == "random":
-                dx = np.random.randint(-depth, depth + 1)
-                dy = np.random.randint(-depth, depth + 1)
+                np.random.randint(-depth, depth + 1)
+                np.random.randint(-depth, depth + 1)
             else:  # center
                 # Direction towards center
                 dir_x = cx - (x + block_w // 2)
                 dir_y = cy - (y + block_h // 2)
                 length = np.sqrt(dir_x**2 + dir_y**2)
                 if length > 0:
-                    dx = int(depth * dir_x / length)
-                    dy = int(depth * dir_y / length)
+                    int(depth * dir_x / length)
+                    int(depth * dir_y / length)
                 else:
-                    dx = dy = 0
+                    pass
 
             # Draw extrusion (simplified as solid color block)
             # This is a simplified version - full implementation would draw 3D projection

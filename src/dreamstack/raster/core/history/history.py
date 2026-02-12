@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - History
 ===========================
@@ -10,7 +8,8 @@ Undo/redo history manager.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Callable, List, Optional
+from collections.abc import Callable
+from typing import TYPE_CHECKING, Any
 
 from dreamstack.raster.core.history.history_action import HistoryAction
 from dreamstack.raster.core.history.history_state import HistoryState
@@ -44,13 +43,13 @@ class History:
             max_states: Maximum number of states to keep
         """
         self._max_states = max_states
-        self._states: List[HistoryState] = []
+        self._states: list[HistoryState] = []
         self._current_index = -1
         self._saved_index = -1
-        self._action_group: List[HistoryAction] = []
+        self._action_group: list[HistoryAction] = []
         self._grouping = False
         self._disabled = False
-        self._on_change: List[Callable[[], None]] = []
+        self._on_change: list[Callable[[], None]] = []
 
     @property
     def can_undo(self) -> bool:
@@ -78,14 +77,14 @@ class History:
         return self._current_index != self._saved_index
 
     @property
-    def current_state(self) -> Optional[HistoryState]:
+    def current_state(self) -> HistoryState | None:
         """Get current state."""
         if 0 <= self._current_index < len(self._states):
             return self._states[self._current_index]
         return None
 
     @property
-    def states(self) -> List[HistoryState]:
+    def states(self) -> list[HistoryState]:
         """Get all history states."""
         return self._states.copy()
 
@@ -238,13 +237,13 @@ class History:
         for callback in self._on_change:
             callback()
 
-    def get_undo_name(self) -> Optional[str]:
+    def get_undo_name(self) -> str | None:
         """Get name of action that would be undone."""
         if self.can_undo:
             return self._states[self._current_index].name
         return None
 
-    def get_redo_name(self) -> Optional[str]:
+    def get_redo_name(self) -> str | None:
         """Get name of action that would be redone."""
         if self.can_redo:
             return self._states[self._current_index + 1].name

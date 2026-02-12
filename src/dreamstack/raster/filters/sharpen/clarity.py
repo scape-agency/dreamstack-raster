@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Clarity
 ===========================
@@ -41,9 +39,7 @@ def clarity(image: Image, amount: float = 50) -> Image:
     if data.ndim == 3:
         blurred = np.zeros_like(data)
         for i in range(data.shape[2]):
-            blurred[:, :, i] = cv2.GaussianBlur(
-                data[:, :, i], (ksize, ksize), 0
-            )
+            blurred[:, :, i] = cv2.GaussianBlur(data[:, :, i], (ksize, ksize), 0)
     else:
         blurred = cv2.GaussianBlur(data, (ksize, ksize), 0)
 

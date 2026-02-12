@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Blend Functions
 ===================================
@@ -16,9 +14,7 @@ from numpy.typing import NDArray
 from dreamstack.raster.core.layer.blend_mode import BlendMode
 
 
-def apply_blend_mode(
-    base: NDArray, blend: NDArray, mode: BlendMode
-) -> NDArray:
+def apply_blend_mode(base: NDArray, blend: NDArray, mode: BlendMode) -> NDArray:
     """
     Apply blend mode to combine two layers.
 
@@ -45,9 +41,7 @@ def apply_blend_mode(
 
     elif mode == BlendMode.OVERLAY:
         mask = base < 0.5
-        result = np.where(
-            mask, 2 * base * blend, 1 - 2 * (1 - base) * (1 - blend)
-        )
+        result = np.where(mask, 2 * base * blend, 1 - 2 * (1 - base) * (1 - blend))
         return result
 
     elif mode == BlendMode.DARKEN:
@@ -68,9 +62,7 @@ def apply_blend_mode(
 
     elif mode == BlendMode.HARD_LIGHT:
         mask = blend < 0.5
-        result = np.where(
-            mask, 2 * base * blend, 1 - 2 * (1 - base) * (1 - blend)
-        )
+        result = np.where(mask, 2 * base * blend, 1 - 2 * (1 - base) * (1 - blend))
         return result
 
     elif mode == BlendMode.SOFT_LIGHT:

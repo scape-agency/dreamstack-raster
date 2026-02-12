@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """Random translation operation."""
 
 from __future__ import annotations
-
-from typing import Optional, Tuple, Union
 
 import numpy as np
 from numpy.typing import NDArray
@@ -18,8 +14,8 @@ def random_translate(
     max_ty: int = 50,
     *,
     border_mode: str = "constant",
-    border_value: Union[int, Tuple[int, int, int]] = 0,
-    seed: Optional[int] = None,
+    border_value: int | tuple[int, int, int] = 0,
+    seed: int | None = None,
 ) -> NDArray[np.uint8]:
     """Apply random translation for data augmentation.
 
@@ -57,6 +53,4 @@ def random_translate(
     tx = np.random.randint(-max_tx, max_tx + 1)
     ty = np.random.randint(-max_ty, max_ty + 1)
 
-    return translate(
-        image, tx, ty, border_mode=border_mode, border_value=border_value
-    )
+    return translate(image, tx, ty, border_mode=border_mode, border_value=border_value)

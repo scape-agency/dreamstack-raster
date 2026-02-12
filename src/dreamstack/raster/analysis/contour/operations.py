@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Contour Operations
 ==================
@@ -10,9 +8,9 @@ Provides stateless functions for finding, filtering, and analyzing contours.
 
 from __future__ import annotations
 
-from typing import List, Sequence, Tuple
+from collections.abc import Sequence
 
-import cv2
+import cv2  # pylint: disable=no-member
 import numpy as np
 from numpy.typing import NDArray
 
@@ -21,9 +19,9 @@ from dreamstack.raster.analysis.contour.info import ContourInfo
 
 def find_contours(
     binary_image: NDArray[np.uint8],
-    mode: int = cv2.RETR_EXTERNAL,
-    method: int = cv2.CHAIN_APPROX_SIMPLE,
-) -> List[NDArray[np.int32]]:
+    mode: int = cv2.RETR_EXTERNAL,  # pylint: disable=no-member
+    method: int = cv2.CHAIN_APPROX_SIMPLE,  # pylint: disable=no-member
+) -> list[NDArray[np.int32]]:
     """Find contours in a binary image.
 
     Uses OpenCV's findContours to detect object boundaries
@@ -57,15 +55,17 @@ def find_contours(
     >>> contours = find_contours(binary)
     >>> print(f"Found {len(contours)} contours")
     """
-    contours, _ = cv2.findContours(binary_image, mode, method)
-    return list(contours)
+    contours, _ = cv2.findContours(
+        binary_image, mode, method
+    )  # pylint: disable=no-member
+    return [np.asarray(c, dtype=np.int32) for c in contours]
 
 
 def analyze_contours(
     contours: Sequence[NDArray[np.int32]],
     sort_by: str = "area",
     descending: bool = True,
-) -> List[ContourInfo]:
+) -> list[ContourInfo]:
     """Analyze contours and extract geometric information.
 
     Converts raw contour arrays into ContourInfo objects with
@@ -106,11 +106,11 @@ def analyze_contours(
 
 
 def filter_by_area(
-    contours: List[ContourInfo],
+    contours: list[ContourInfo],
     image_area: int,
     min_ratio: float = 0.0002,
     max_ratio: float = 1.0,
-) -> List[ContourInfo]:
+) -> list[ContourInfo]:
     """Filter contours by area relative to image size.
 
     Removes contours that are too small (noise) or too large
@@ -143,10 +143,10 @@ def filter_by_area(
 
 
 def filter_by_circularity(
-    contours: List[ContourInfo],
+    contours: list[ContourInfo],
     min_circularity: float = 0.0,
     max_circularity: float = 1.0,
-) -> List[ContourInfo]:
+) -> list[ContourInfo]:
     """Filter contours by circularity.
 
     Circularity is defined as 4*pi*area/perimeter^2.
@@ -167,16 +167,17 @@ def filter_by_circularity(
         Filtered contours within circularity bounds.
     """
     return [
-        c for c in contours
+        c
+        for c in contours
         if min_circularity <= c.circularity <= max_circularity
     ]
 
 
 def filter_by_aspect_ratio(
-    contours: List[ContourInfo],
+    contours: list[ContourInfo],
     min_ratio: float = 0.0,
     max_ratio: float = float("inf"),
-) -> List[ContourInfo]:
+) -> list[ContourInfo]:
     """Filter contours by aspect ratio.
 
     Parameters
@@ -193,17 +194,14 @@ def filter_by_aspect_ratio(
     list[ContourInfo]
         Filtered contours within aspect ratio bounds.
     """
-    return [
-        c for c in contours
-        if min_ratio <= c.aspect_ratio <= max_ratio
-    ]
+    return [c for c in contours if min_ratio <= c.aspect_ratio <= max_ratio]
 
 
 def get_bounding_boxes(
-    contours: List[ContourInfo],
+    contours: list[ContourInfo],
     margin: int = 0,
-    image_size: Tuple[int, int] | None = None,
-) -> List[Tuple[int, int, int, int]]:
+    image_size: tuple[int, int] | None = None,
+) -> list[tuple[int, int, int, int]]:
     """Get bounding boxes for contours with optional margin.
 
     Parameters
@@ -243,8 +241,8 @@ def get_bounding_boxes(
 
 
 def get_rotated_boxes(
-    contours: List[ContourInfo],
-) -> List[NDArray[np.int32]]:
+    contours: list[ContourInfo],
+) -> list[NDArray[np.int32]]:
     """Get minimum area rotated bounding boxes.
 
     Returns the four corner vertices of the minimum area
@@ -268,14 +266,14 @@ def get_rotated_boxes(
     """
     boxes = []
     for c in contours:
-        box = cv2.boxPoints(c.min_area_rect)
+        box = cv2.boxPoints(c.min_area_rect)  # pylint: disable=no-member
         boxes.append(np.int32(box))
     return boxes
 
 
 def find_largest_contour(
     binary_image: NDArray[np.uint8],
-    mode: int = cv2.RETR_EXTERNAL,
+    mode: int = cv2.RETR_EXTERNAL,  # pylint: disable=no-member
 ) -> ContourInfo | None:
     """Find the largest contour by area in a binary image.
 
@@ -340,15 +338,17 @@ def approximate_contour(
     >>> print(f"Reduced from {len(contour)} to {len(simplified)} points")
     """
     if epsilon is None:
-        perimeter = cv2.arcLength(contour, closed)
+        perimeter = cv2.arcLength(contour, closed)  # pylint: disable=no-member
         epsilon = epsilon_percent * perimeter
-    return cv2.approxPolyDP(contour, epsilon, closed)
+    return np.asarray(
+        cv2.approxPolyDP(contour, epsilon, closed), dtype=np.int32
+    )  # pylint: disable=no-member
 
 
 def scale_contour(
     contour: NDArray[np.int32],
     scale: float,
-    offset: Tuple[int, int] = (0, 0),
+    offset: tuple[int, int] = (0, 0),
 ) -> NDArray[np.int32]:
     """Scale and offset a contour.
 
@@ -379,8 +379,8 @@ def scale_contour(
 
 
 def contours_to_mask(
-    contours: List[ContourInfo],
-    image_size: Tuple[int, int],
+    contours: list[ContourInfo],
+    image_size: tuple[int, int],
     filled: bool = True,
 ) -> NDArray[np.uint8]:
     """Create a binary mask from contours.
@@ -408,5 +408,7 @@ def contours_to_mask(
     mask = np.zeros(image_size, dtype=np.uint8)
     thickness = -1 if filled else 1
     raw_contours = [c.contour for c in contours]
-    cv2.drawContours(mask, raw_contours, -1, 255, thickness)
+    cv2.drawContours(
+        mask, raw_contours, -1, 255, thickness
+    )  # pylint: disable=no-member
     return mask

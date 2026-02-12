@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Point
 =========================
@@ -11,8 +9,8 @@ Dreamstack Raster - Point
 from __future__ import annotations
 
 import math
+from collections.abc import Iterator
 from dataclasses import dataclass
-from typing import Iterator, Tuple
 
 
 @dataclass(frozen=True, slots=True)
@@ -94,24 +92,22 @@ class Point:
 
     def lerp(self, other: Point, t: float) -> Point:
         """Linear interpolation between this point and another."""
-        return Point(
-            self.x + (other.x - self.x) * t, self.y + (other.y - self.y) * t
-        )
+        return Point(self.x + (other.x - self.x) * t, self.y + (other.y - self.y) * t)
 
     def to_int(self) -> Point:
         """Convert to integer coordinates."""
         return Point(int(self.x), int(self.y))
 
-    def to_tuple(self) -> Tuple[float, float]:
+    def to_tuple(self) -> tuple[float, float]:
         """Convert to tuple."""
         return (self.x, self.y)
 
-    def to_int_tuple(self) -> Tuple[int, int]:
+    def to_int_tuple(self) -> tuple[int, int]:
         """Convert to integer tuple."""
         return (int(self.x), int(self.y))
 
     @classmethod
-    def from_tuple(cls, t: Tuple[float, float]) -> Point:
+    def from_tuple(cls, t: tuple[float, float]) -> Point:
         """Create from tuple."""
         return cls(t[0], t[1])
 

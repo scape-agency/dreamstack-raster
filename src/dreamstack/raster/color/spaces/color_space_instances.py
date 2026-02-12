@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Pre-defined color space instances."""
 
 from __future__ import annotations

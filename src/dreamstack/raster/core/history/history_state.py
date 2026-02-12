@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - History State
 =================================
@@ -12,7 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 
 @dataclass
@@ -30,7 +28,7 @@ class HistoryState:
     name: str
     timestamp: datetime
     data: Any
-    thumbnail: Optional[bytes] = None
+    thumbnail: bytes | None = None
 
     @classmethod
     def create(cls, name: str, data: Any) -> HistoryState:

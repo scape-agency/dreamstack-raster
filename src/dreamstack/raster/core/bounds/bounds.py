@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Bounds
 ==========================
@@ -11,7 +9,6 @@ Rectangular bounding box representation.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Tuple
 
 from dreamstack.raster.core.bounds.point import Point
 from dreamstack.raster.core.bounds.size import Size
@@ -101,9 +98,7 @@ class Bounds:
 
     def contains_point(self, point: Point) -> bool:
         """Check if point is inside bounds."""
-        return (
-            self.x <= point.x < self.right and self.y <= point.y < self.bottom
-        )
+        return self.x <= point.x < self.right and self.y <= point.y < self.bottom
 
     def contains_bounds(self, other: Bounds) -> bool:
         """Check if this bounds fully contains another."""
@@ -184,15 +179,13 @@ class Bounds:
 
     def to_int(self) -> Bounds:
         """Convert to integer coordinates."""
-        return Bounds(
-            int(self.x), int(self.y), int(self.width), int(self.height)
-        )
+        return Bounds(int(self.x), int(self.y), int(self.width), int(self.height))
 
-    def to_tuple(self) -> Tuple[float, float, float, float]:
+    def to_tuple(self) -> tuple[float, float, float, float]:
         """Convert to tuple (x, y, width, height)."""
         return (self.x, self.y, self.width, self.height)
 
-    def to_ltrb(self) -> Tuple[float, float, float, float]:
+    def to_ltrb(self) -> tuple[float, float, float, float]:
         """Convert to left, top, right, bottom tuple."""
         return (self.left, self.top, self.right, self.bottom)
 
@@ -216,9 +209,7 @@ class Bounds:
         )
 
     @classmethod
-    def from_ltrb(
-        cls, left: float, top: float, right: float, bottom: float
-    ) -> Bounds:
+    def from_ltrb(cls, left: float, top: float, right: float, bottom: float) -> Bounds:
         """Create from left, top, right, bottom."""
         return cls(left, top, right - left, bottom - top)
 

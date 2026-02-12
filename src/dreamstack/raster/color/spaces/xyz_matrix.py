@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Compute RGB to XYZ conversion matrix."""
 
 from __future__ import annotations

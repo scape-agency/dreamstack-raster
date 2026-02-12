@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Gradient Direction
 ======================================
@@ -10,7 +8,7 @@ Gradient magnitude and direction calculation implementation.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Tuple
+from typing import TYPE_CHECKING
 
 import cv2
 import numpy as np
@@ -19,7 +17,7 @@ if TYPE_CHECKING:
     from dreamstack.raster.core.image import Image
 
 
-def gradient_direction(image: Image) -> Tuple[np.ndarray, np.ndarray]:
+def gradient_direction(image: Image) -> tuple[np.ndarray, np.ndarray]:
     """
     Calculate gradient magnitude and direction.
 

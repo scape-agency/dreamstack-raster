@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Trace Contour
 =================================
@@ -43,9 +41,7 @@ def trace_contour(image: Image, edge_mode: str = "upper") -> Image:
 
     # Threshold and find contours
     _, thresh = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
-    contours, _ = cv2.findContours(
-        thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE
-    )
+    contours, _ = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
     result = np.ones_like(gray, dtype=np.uint8) * 255
     cv2.drawContours(result, contours, -1, 0, 1)

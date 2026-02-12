@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Size
 ========================
@@ -11,8 +9,9 @@ Dreamstack Raster - Size
 from __future__ import annotations
 
 import math
+from collections.abc import Iterator
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Iterator, Tuple
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from dreamstack.raster.core.bounds.point import Point
@@ -93,15 +92,15 @@ class Size:
         """Convert to integer dimensions."""
         return Size(int(self.width), int(self.height))
 
-    def to_tuple(self) -> Tuple[float, float]:
+    def to_tuple(self) -> tuple[float, float]:
         """Convert to tuple."""
         return (self.width, self.height)
 
-    def to_int_tuple(self) -> Tuple[int, int]:
+    def to_int_tuple(self) -> tuple[int, int]:
         """Convert to integer tuple."""
         return (int(self.width), int(self.height))
 
     @classmethod
-    def from_tuple(cls, t: Tuple[float, float]) -> Size:
+    def from_tuple(cls, t: tuple[float, float]) -> Size:
         """Create from tuple."""
         return cls(t[0], t[1])

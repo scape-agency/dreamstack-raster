@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
-
 """Curve dataclass for curves adjustment."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import List
 
 import numpy as np
 from scipy import interpolate
@@ -17,7 +14,7 @@ from dreamstack.raster.adjustments.curves.curve_point import CurvePoint
 class Curve:
     """A curves adjustment curve."""
 
-    points: List[CurvePoint] = field(
+    points: list[CurvePoint] = field(
         default_factory=lambda: [CurvePoint(0, 0), CurvePoint(255, 255)]
     )
 
@@ -34,9 +31,7 @@ class Curve:
     def add_point(self, input_val: float, output_val: float) -> None:
         """Add a point to the curve."""
         # Remove existing point at same input
-        self.points = [
-            p for p in self.points if abs(p.input - input_val) > 0.5
-        ]
+        self.points = [p for p in self.points if abs(p.input - input_val) > 0.5]
         self.points.append(CurvePoint(input_val, output_val))
         self.points = sorted(self.points, key=lambda p: p.input)
 
@@ -45,9 +40,7 @@ class Curve:
         # Don't remove endpoints
         if input_val <= 1 or input_val >= 254:
             return
-        self.points = [
-            p for p in self.points if abs(p.input - input_val) > 0.5
-        ]
+        self.points = [p for p in self.points if abs(p.input - input_val) > 0.5]
 
     def get_lookup_table(self, size: int = 256) -> np.ndarray:
         """Generate lookup table from curve."""
@@ -59,9 +52,7 @@ class Curve:
 
         if len(x) == 2:
             # Linear interpolation
-            lut = np.interp(
-                np.arange(size), x * (size - 1) / 255, y * (size - 1) / 255
-            )
+            lut = np.interp(np.arange(size), x * (size - 1) / 255, y * (size - 1) / 255)
         else:
             # Cubic spline interpolation
             try:

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Color Class Definition
 ======================
@@ -13,7 +11,6 @@ manipulation operations).
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Optional, Tuple
 
 import numpy as np
 
@@ -130,17 +127,15 @@ class Color:
         if len(array) == 3:
             return cls(array[0], array[1], array[2], normalized=normalized)
         else:
-            return cls(
-                array[0], array[1], array[2], array[3], normalized=normalized
-            )
+            return cls(array[0], array[1], array[2], array[3], normalized=normalized)
 
-    def to_rgb(self) -> Tuple[int, int, int]:
+    def to_rgb(self) -> tuple[int, int, int]:
         """Get as RGB tuple (0-255)."""
         if self.normalized:
             return (int(self.r * 255), int(self.g * 255), int(self.b * 255))
         return (int(self.r), int(self.g), int(self.b))
 
-    def to_rgba(self) -> Tuple[int, int, int, int]:
+    def to_rgba(self) -> tuple[int, int, int, int]:
         """Get as RGBA tuple (0-255)."""
         if self.normalized:
             return (
@@ -151,7 +146,7 @@ class Color:
             )
         return (int(self.r), int(self.g), int(self.b), int(self.a))
 
-    def to_normalized(self) -> Tuple[float, float, float, float]:
+    def to_normalized(self) -> tuple[float, float, float, float]:
         """Get as normalized RGBA tuple (0-1)."""
         if self.normalized:
             return (self.r, self.g, self.b, self.a)
@@ -171,13 +166,13 @@ class Color:
             return np.array([self.r, self.g, self.b, self.a])
         return np.array([self.r, self.g, self.b])
 
-    def to_hsv(self) -> Tuple[float, float, float]:
+    def to_hsv(self) -> tuple[float, float, float]:
         """Get as HSV values (h: 0-360, s: 0-1, v: 0-1)."""
         ds_rgb = self.to_dreamstack_rgb()
         hsv = ds_rgb_to_hsv(ds_rgb)
         return (hsv.h, hsv.s / 100, hsv.v / 100)
 
-    def to_hsl(self) -> Tuple[float, float, float]:
+    def to_hsl(self) -> tuple[float, float, float]:
         """Get as HSL values (h: 0-360, s: 0-1, l: 0-1)."""
         ds_rgb = self.to_dreamstack_rgb()
         hsl = ds_rgb_to_hsl(ds_rgb)
@@ -186,13 +181,14 @@ class Color:
     def to_dreamstack_rgb(self) -> DreamstackRGB:
         """Convert to dreamstack.color RGB model."""
         r, g, b = self.to_rgb()
-        return DreamstackRGB(
-            r, g, b, self.a if self.normalized else self.a / 255
-        )
+        return DreamstackRGB(r, g, b, self.a if self.normalized else self.a / 255)
 
     @classmethod
-    def from_dreamstack_rgb(cls, rgb: DreamstackRGB) -> Color:
-        """Create Color from dreamstack.color RGB model."""
+    def from_dreamstack_rgb(cls, rgb: DreamstackRGB | HSLColorModel) -> Color:
+        """Create Color from dreamstack.color RGB or HSL model."""
+        if isinstance(rgb, HSLColorModel):
+            # Convert HSL to RGB first
+            rgb = ds_hsl_to_rgb(rgb)
         return cls(rgb.r, rgb.g, rgb.b, rgb.a)
 
     def luminance(self) -> float:
@@ -212,9 +208,7 @@ class Color:
         Returns:
             Blended color
         """
-        result = ds_mix(
-            self.to_dreamstack_rgb(), other.to_dreamstack_rgb(), factor
-        )
+        result = ds_mix(self.to_dreamstack_rgb(), other.to_dreamstack_rgb(), factor)
         return Color.from_dreamstack_rgb(result)
 
     def lighten(self, amount: float = 0.1) -> Color:

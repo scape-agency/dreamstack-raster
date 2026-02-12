@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """Center to origin operation."""
 
 from __future__ import annotations
-
-from typing import Tuple, Union
 
 import numpy as np
 from numpy.typing import NDArray
@@ -16,7 +12,7 @@ def center_to_origin(
     image: NDArray[np.uint8],
     *,
     border_mode: str = "constant",
-    border_value: Union[int, Tuple[int, int, int]] = 0,
+    border_value: int | tuple[int, int, int] = 0,
 ) -> NDArray[np.uint8]:
     """Move image center to origin (top-left).
 
@@ -40,6 +36,4 @@ def center_to_origin(
     h, w = image.shape[:2]
     tx = -w // 2
     ty = -h // 2
-    return translate(
-        image, tx, ty, border_mode=border_mode, border_value=border_value
-    )
+    return translate(image, tx, ty, border_mode=border_mode, border_value=border_value)

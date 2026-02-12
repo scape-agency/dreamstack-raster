@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Canny Edge Detection
 ========================================
@@ -76,7 +74,7 @@ def canny_auto(
 ) -> Image:
     """
     Apply Canny edge detection with automatic threshold selection.
-    
+
     Computes optimal thresholds based on median pixel intensity.
 
     Args:

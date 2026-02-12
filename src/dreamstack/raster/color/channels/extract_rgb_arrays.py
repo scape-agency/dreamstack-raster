@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """Extract RGB arrays as colorized images."""
 
 from __future__ import annotations
-
-from typing import Tuple
 
 import cv2
 import numpy as np
@@ -16,7 +12,7 @@ from .split_channels import split_channels
 def extract_rgb_arrays(
     image: NDArray[np.uint8],
     color_format: str = "BGR",
-) -> Tuple[NDArray[np.uint8], NDArray[np.uint8], NDArray[np.uint8]]:
+) -> tuple[NDArray[np.uint8], NDArray[np.uint8], NDArray[np.uint8]]:
     """Extract R, G, B as separate colorized images.
 
     Creates three images where each shows only one color channel

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Auto contrast adjustment function."""
 
 from __future__ import annotations
@@ -31,9 +29,7 @@ def auto_contrast(image: Image, clip: float = 0.1) -> Image:
     # Find global min/max
     if data.ndim == 3:
         luminance = (
-            0.299 * data[:, :, 0]
-            + 0.587 * data[:, :, 1]
-            + 0.114 * data[:, :, 2]
+            0.299 * data[:, :, 0] + 0.587 * data[:, :, 1] + 0.114 * data[:, :, 2]
         )
     else:
         luminance = data

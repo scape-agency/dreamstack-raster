@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """Get color space by name."""
 
 from __future__ import annotations
-
-from typing import Optional
 
 from dreamstack.raster.color.spaces.color_space import ColorSpace
 from dreamstack.raster.color.spaces.color_space_instances import (
@@ -43,7 +39,7 @@ _color_spaces = {
 }
 
 
-def get_color_space(name: str) -> Optional[ColorSpace]:
+def get_color_space(name: str) -> ColorSpace | None:
     """
     Get a color space by name.
 

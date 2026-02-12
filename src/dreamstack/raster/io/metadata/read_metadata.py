@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Read Metadata
 =================================
@@ -11,14 +9,14 @@ Read metadata from image files.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 from dreamstack.raster.io.metadata.read_exif import read_exif
 from dreamstack.raster.io.metadata.read_iptc import read_iptc
 from dreamstack.raster.io.metadata.read_xmp import read_xmp
 
 
-def read_metadata(path: str | Path) -> Dict[str, Any]:
+def read_metadata(path: str | Path) -> dict[str, Any]:
     """
     Read metadata from an image file.
 

@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-
 """Color balance adjustment function."""
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Tuple
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -14,9 +12,9 @@ if TYPE_CHECKING:
 
 def color_balance(
     image: Image,
-    shadows: Tuple[float, float, float] = (0, 0, 0),
-    midtones: Tuple[float, float, float] = (0, 0, 0),
-    highlights: Tuple[float, float, float] = (0, 0, 0),
+    shadows: tuple[float, float, float] = (0, 0, 0),
+    midtones: tuple[float, float, float] = (0, 0, 0),
+    highlights: tuple[float, float, float] = (0, 0, 0),
     preserve_luminosity: bool = True,
 ) -> Image:
     """
@@ -61,9 +59,7 @@ def color_balance(
 
     # Apply adjustments
     for i, (s, m, h) in enumerate(zip(shadows, midtones, highlights)):
-        adjustment = (
-            shadow_mask * s + midtone_mask * m + highlight_mask * h
-        ) / 100
+        adjustment = (shadow_mask * s + midtone_mask * m + highlight_mask * h) / 100
         result[:, :, i] = result[:, :, i] + adjustment
 
     result = np.clip(result, 0, 1)
@@ -71,15 +67,11 @@ def color_balance(
     # Preserve luminosity
     if preserve_luminosity:
         new_luminosity = (
-            0.299 * result[:, :, 0]
-            + 0.587 * result[:, :, 1]
-            + 0.114 * result[:, :, 2]
+            0.299 * result[:, :, 0] + 0.587 * result[:, :, 1] + 0.114 * result[:, :, 2]
         )
 
         with np.errstate(divide="ignore", invalid="ignore"):
-            ratio = np.where(
-                new_luminosity > 0, luminosity / new_luminosity, 1
-            )
+            ratio = np.where(new_luminosity > 0, luminosity / new_luminosity, 1)
 
         for i in range(3):
             result[:, :, i] = result[:, :, i] * ratio

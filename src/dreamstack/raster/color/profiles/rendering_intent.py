@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Rendering intent enumeration."""
 
 from __future__ import annotations

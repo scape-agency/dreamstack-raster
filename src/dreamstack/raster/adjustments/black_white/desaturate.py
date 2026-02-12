@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Desaturate function."""
 
 from __future__ import annotations
@@ -45,9 +43,7 @@ def desaturate(image: Image, method: str = "luminosity") -> Image:
     elif method == "average":
         gray = (r + g + b) / 3
     elif method == "lightness":
-        gray = (
-            np.maximum(np.maximum(r, g), b) + np.minimum(np.minimum(r, g), b)
-        ) / 2
+        gray = (np.maximum(np.maximum(r, g), b) + np.minimum(np.minimum(r, g), b)) / 2
     elif method == "maximum":
         gray = np.maximum(np.maximum(r, g), b)
     elif method == "minimum":

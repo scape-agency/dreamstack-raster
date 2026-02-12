@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Brightness and contrast combined adjustment function."""
 
 from __future__ import annotations
@@ -67,9 +65,7 @@ def brightness_contrast(
             contrast_factor = 1 + contrast_amount / 100
 
         mid_val = max_val / 2
-        result = (
-            (data - mid_val) * contrast_factor + mid_val + brightness_offset
-        )
+        result = (data - mid_val) * contrast_factor + mid_val + brightness_offset
 
     result = np.clip(result, 0, max_val)
 

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Adjustment Layer
 ====================================
@@ -10,7 +8,8 @@ Non-destructive adjustment layer.
 
 from __future__ import annotations
 
-from typing import Any, Callable, Optional
+from collections.abc import Callable
+from typing import Any
 
 import numpy as np
 from numpy.typing import NDArray
@@ -51,7 +50,7 @@ class AdjustmentLayer(LayerBase):
         super().__init__(name, opacity, blend_mode, visible)
         self._adjustment_type = adjustment_type
         self._parameters = parameters
-        self._apply_func: Optional[Callable] = None
+        self._apply_func: Callable | None = None
 
     @property
     def adjustment_type(self) -> str:
@@ -90,17 +89,12 @@ class AdjustmentLayer(LayerBase):
         """
         from dreamstack.raster.adjustments import apply_adjustment
 
-        result = apply_adjustment(
-            data, self._adjustment_type, self._parameters
-        )
+        result = apply_adjustment(data, self._adjustment_type, self._parameters)
 
         # Apply mask if present
         if self._mask is not None and self._mask_enabled:
             if np.issubdtype(self._mask.dtype, np.integer):
-                mask = (
-                    self._mask.astype(np.float32)
-                    / np.iinfo(self._mask.dtype).max
-                )
+                mask = self._mask.astype(np.float32) / np.iinfo(self._mask.dtype).max
             else:
                 mask = self._mask.astype(np.float32)
 

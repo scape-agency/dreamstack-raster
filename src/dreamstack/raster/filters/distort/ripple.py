@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Ripple Distortion
 =====================================
@@ -10,7 +8,7 @@ Ripple distortion filter implementation.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, Tuple
+from typing import TYPE_CHECKING
 
 import cv2
 import numpy as np
@@ -23,7 +21,7 @@ def ripple(
     image: Image,
     amplitude: float = 5,
     wavelength: float = 20,
-    center: Optional[Tuple[float, float]] = None,
+    center: tuple[float, float] | None = None,
 ) -> Image:
     """
     Apply ripple distortion (concentric waves from center).

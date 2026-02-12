@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 # =============================================================================
 # Docstring
 # =============================================================================
@@ -75,39 +72,30 @@ from dreamstack.raster import (
 from dreamstack.raster.__version__ import __version__
 
 # Import | Common adjustment functions
-from dreamstack.raster.adjustments import (
-    adjust_brightness,
-    adjust_contrast,
-    adjust_saturation,
-    apply_curves,
-    auto_levels,
-)
+from dreamstack.raster.adjustments import auto_levels
+from dreamstack.raster.adjustments import brightness as adjust_brightness
+from dreamstack.raster.adjustments import contrast as adjust_contrast
+from dreamstack.raster.adjustments import curves as apply_curves
+from dreamstack.raster.adjustments import saturation as adjust_saturation
 
 # Import | Common compositing functions
-from dreamstack.raster.compositing import (
-    alpha_composite,
-    apply_mask,
-    blend_multiply,
-    blend_normal,
-    blend_overlay,
-    blend_screen,
-)
+from dreamstack.raster.compositing import alpha_composite
+from dreamstack.raster.compositing import multiply as blend_multiply
+from dreamstack.raster.compositing import screen as blend_screen
 
 # Import | Core Module - Primary classes
 from dreamstack.raster.core import (
-    BlendMode,
     Bounds,
     Canvas,
     Channel,
     ChannelType,
     Document,
-    HistoryManager,
     HistoryState,
     Image,
     Layer,
-    LayerType,
-    Pixel,
 )
+from dreamstack.raster.core import History as HistoryManager
+from dreamstack.raster.core import PixelData as Pixel
 
 # Import | Object extraction
 from dreamstack.raster.extraction import (
@@ -135,7 +123,6 @@ from dreamstack.raster.io import get_supported_formats, load_image, save_image
 
 # Import | Common transform functions
 from dreamstack.raster.transform import (
-    crop,
     flip_horizontal,
     flip_vertical,
     resize,
@@ -160,8 +147,6 @@ __all__: list[str] = [
     "ChannelType",
     "Image",
     "Layer",
-    "LayerType",
-    "BlendMode",
     "HistoryManager",
     "HistoryState",
     "Canvas",
@@ -198,16 +183,12 @@ __all__: list[str] = [
     # Transform convenience
     "resize",
     "rotate",
-    "crop",
     "flip_horizontal",
     "flip_vertical",
     # Compositing convenience
     "alpha_composite",
-    "apply_mask",
-    "blend_normal",
     "blend_multiply",
     "blend_screen",
-    "blend_overlay",
     # Extraction convenience
     "ObjectExtractor",
     "ExtractedObject",
@@ -276,17 +257,17 @@ def get_info() -> dict:
 def print_info() -> None:
     """Print library information to stdout."""
     info = get_info()
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"  {info['name']} v{info['version']}")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     print(f"  {info['description']}")
     print(f"  License: {info['license']}")
-    print(f"\n  Modules:")
+    print("\n  Modules:")
     for module in info["modules"]:
         print(f"    - {module}")
-    print(f"\n  Key Features:")
+    print("\n  Key Features:")
     print(f"    - {info['features']['formats_supported']} image formats")
     print(f"    - {info['features']['blend_modes']} blend modes")
-    print(f"    - HDR/RAW/PSD support")
-    print(f"    - Professional color management")
-    print(f"{'='*60}\n")
+    print("    - HDR/RAW/PSD support")
+    print("    - Professional color management")
+    print(f"{'=' * 60}\n")

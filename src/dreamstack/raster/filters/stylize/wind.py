@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Wind
 ========================
@@ -71,9 +69,7 @@ def wind(
                 elif mode == "blast":
                     streak_length = strength
                 else:  # stagger
-                    streak_length = np.random.choice(
-                        [1, strength // 2, strength]
-                    )
+                    streak_length = np.random.choice([1, strength // 2, strength])
 
                 if direction == "right":
                     for i in range(streak_length):
@@ -83,13 +79,11 @@ def wind(
                             alpha = 1 - i / streak_length
                             if data.ndim == 3:
                                 result[y, nx] = (
-                                    alpha * data[y, x]
-                                    + (1 - alpha) * result[y, nx]
+                                    alpha * data[y, x] + (1 - alpha) * result[y, nx]
                                 )
                             else:
                                 result[y, nx] = (
-                                    alpha * data[y, x]
-                                    + (1 - alpha) * result[y, nx]
+                                    alpha * data[y, x] + (1 - alpha) * result[y, nx]
                                 )
                 else:  # left
                     for i in range(streak_length):
@@ -98,13 +92,11 @@ def wind(
                             alpha = 1 - i / streak_length
                             if data.ndim == 3:
                                 result[y, nx] = (
-                                    alpha * data[y, x]
-                                    + (1 - alpha) * result[y, nx]
+                                    alpha * data[y, x] + (1 - alpha) * result[y, nx]
                                 )
                             else:
                                 result[y, nx] = (
-                                    alpha * data[y, x]
-                                    + (1 - alpha) * result[y, nx]
+                                    alpha * data[y, x] + (1 - alpha) * result[y, nx]
                                 )
 
     result_image = image.copy()

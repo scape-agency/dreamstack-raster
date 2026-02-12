@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-
 """Tritone effect function."""
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Tuple
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from dreamstack.raster.core.image import Image
@@ -14,9 +12,9 @@ from dreamstack.raster.adjustments.black_white.gradient_map import gradient_map
 
 def tritone(
     image: Image,
-    shadow_color: Tuple[int, int, int] = (0, 0, 0),
-    midtone_color: Tuple[int, int, int] = (128, 128, 128),
-    highlight_color: Tuple[int, int, int] = (255, 255, 255),
+    shadow_color: tuple[int, int, int] = (0, 0, 0),
+    midtone_color: tuple[int, int, int] = (128, 128, 128),
+    highlight_color: tuple[int, int, int] = (255, 255, 255),
 ) -> Image:
     """
     Apply tritone effect (three-color gradient map).

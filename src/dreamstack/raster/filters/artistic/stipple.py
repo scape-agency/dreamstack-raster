@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Stipple
 ===========================
@@ -51,9 +49,7 @@ def stipple(image: Image, density: float = 0.3, dot_size: int = 2) -> Image:
 
     # Enlarge dots
     if dot_size > 1:
-        kernel = cv2.getStructuringElement(
-            cv2.MORPH_ELLIPSE, (dot_size, dot_size)
-        )
+        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (dot_size, dot_size))
         dots = cv2.dilate(dots.astype(np.uint8), kernel).astype(bool)
 
     result[dots] = 0

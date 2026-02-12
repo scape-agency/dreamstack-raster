@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Alpha Compositing Operations
 ============================
@@ -10,8 +8,6 @@ Alpha channel operations for compositing layers.
 
 from __future__ import annotations
 
-from typing import Optional, Tuple
-
 import cv2
 import numpy as np
 from numpy.typing import NDArray
@@ -21,7 +17,7 @@ def alpha_composite(
     foreground: NDArray[np.uint8],
     background: NDArray[np.uint8],
     *,
-    position: Tuple[int, int] = (0, 0),
+    position: tuple[int, int] = (0, 0),
 ) -> NDArray[np.uint8]:
     """Composite foreground over background using alpha.
 

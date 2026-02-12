@@ -1,15 +1,11 @@
-# -*- coding: utf-8 -*-
-
 """RGB to Grayscale conversion."""
 
 from __future__ import annotations
 
-from typing import Union
-
 import numpy as np
 
 # Type for array-like inputs
-ArrayLike = Union[np.ndarray, list, tuple]
+ArrayLike = np.ndarray | list | tuple
 
 
 def rgb_to_gray(rgb: np.ndarray, method: str = "luminance") -> np.ndarray:
@@ -30,6 +26,7 @@ def rgb_to_gray(rgb: np.ndarray, method: str = "luminance") -> np.ndarray:
     rgb = np.asarray(rgb, dtype=np.float64)
 
     has_alpha = rgb.shape[-1] == 4
+    alpha: np.ndarray | None = None
 
     if has_alpha:
         alpha = rgb[..., 3:4]
@@ -41,9 +38,7 @@ def rgb_to_gray(rgb: np.ndarray, method: str = "luminance") -> np.ndarray:
         # ITU-R BT.601 (standard NTSC)
         gray = 0.299 * r + 0.587 * g + 0.114 * b
     elif method == "lightness":
-        gray = (
-            np.maximum(np.maximum(r, g), b) + np.minimum(np.minimum(r, g), b)
-        ) / 2
+        gray = (np.maximum(np.maximum(r, g), b) + np.minimum(np.minimum(r, g), b)) / 2
     elif method == "average":
         gray = (r + g + b) / 3
     elif method == "luminosity":
@@ -54,7 +49,7 @@ def rgb_to_gray(rgb: np.ndarray, method: str = "luminance") -> np.ndarray:
 
     gray = gray[..., np.newaxis]
 
-    if has_alpha:
+    if has_alpha and alpha is not None:
         gray = np.concatenate([gray, alpha], axis=-1)
 
     return gray

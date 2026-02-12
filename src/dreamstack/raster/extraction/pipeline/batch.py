@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Batch Pipeline
 ==============
@@ -11,20 +9,20 @@ configuration, progress tracking, and result aggregation.
 from __future__ import annotations
 
 import logging
+from collections.abc import Callable, Iterator
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Callable, Iterator, List, Tuple
 
 import cv2
 from numpy.typing import NDArray
 
 from dreamstack.raster.analysis.contour.detector import DetectionConfig
-from dreamstack.raster.analysis.preprocessing.processor import PreprocessingConfig
-from dreamstack.raster.extraction.extractor import (
-    ExtractionConfig,
-    ExtractedObject,
-    ObjectExtractor,
+from dreamstack.raster.analysis.preprocessing.processor import (
+    PreprocessingConfig,
 )
+from dreamstack.raster.extraction.extracted_object import ExtractedObject
+from dreamstack.raster.extraction.extraction_config import ExtractionConfig
+from dreamstack.raster.extraction.object_extractor import ObjectExtractor
 from dreamstack.raster.extraction.pipeline.operations import (
     DEFAULT_IMAGE_FORMATS,
     find_images,
@@ -55,8 +53,8 @@ class BatchResult:
     """
 
     source_path: Path
-    objects: List[ExtractedObject] = field(default_factory=list)
-    output_paths: List[Path] = field(default_factory=list)
+    objects: list[ExtractedObject] = field(default_factory=list)
+    output_paths: list[Path] = field(default_factory=list)
     error: str | None = None
 
     @property
@@ -106,7 +104,9 @@ class PipelineConfig:
     >>> pipeline = BatchPipeline(config)
     """
 
-    preprocessing: PreprocessingConfig = field(default_factory=PreprocessingConfig)
+    preprocessing: PreprocessingConfig = field(
+        default_factory=PreprocessingConfig
+    )
     detection: DetectionConfig = field(default_factory=DetectionConfig)
     extraction: ExtractionConfig = field(default_factory=ExtractionConfig)
     output_prefix: str = "object"
@@ -114,7 +114,7 @@ class PipelineConfig:
     file_formats: tuple = DEFAULT_IMAGE_FORMATS
     save_intermediate: bool = False
     visualize_boxes: bool = False
-    box_color: Tuple[int, int, int] = (36, 255, 12)
+    box_color: tuple[int, int, int] = (36, 255, 12)
     box_thickness: int = 2
 
 
@@ -201,11 +201,11 @@ class BatchPipeline:
             Processing result with extracted objects.
         """
         image_path = Path(image_path)
-        logger.info(f"Processing: {image_path.name}")
+        logger.info("Processing: %s", image_path.name)
 
         try:
             objects = self.extractor.extract_from_file(image_path)
-            logger.info(f"Found {len(objects)} objects")
+            logger.info("Found %d objects", len(objects))
 
             output_paths = []
             if output_dir:
@@ -217,7 +217,7 @@ class BatchPipeline:
                     prefix=prefix,
                     extension=self.config.output_extension,
                 )
-                logger.info(f"Saved {len(output_paths)} objects")
+                logger.info("Saved %d objects", len(output_paths))
 
                 # Save visualization if requested
                 if self.config.visualize_boxes:
@@ -229,8 +229,8 @@ class BatchPipeline:
                 output_paths=output_paths,
             )
 
-        except Exception as e:
-            logger.error(f"Failed to process {image_path}: {e}")
+        except (OSError, ValueError, RuntimeError) as e:
+            logger.error("Failed to process %s: %s", image_path, e)
             return BatchResult(
                 source_path=image_path,
                 error=str(e),
@@ -242,7 +242,7 @@ class BatchPipeline:
         output_dir: str | Path,
         recursive: bool = False,
         progress_callback: Callable[[int, int, str], None] | None = None,
-    ) -> List[BatchResult]:
+    ) -> list[BatchResult]:
         """Process all images in a directory.
 
         Parameters
@@ -270,7 +270,7 @@ class BatchPipeline:
         )
 
         total = len(image_files)
-        logger.info(f"Found {total} images to process")
+        logger.info("Found %d images to process", total)
 
         results = []
         for idx, image_path in enumerate(image_files, 1):
@@ -284,8 +284,10 @@ class BatchPipeline:
         total_objects = sum(r.count for r in results)
         failed = sum(1 for r in results if not r.success)
         logger.info(
-            f"Completed: {total_objects} objects from "
-            f"{total - failed}/{total} images"
+            "Completed: %d objects from %d/%d images",
+            total_objects,
+            total - failed,
+            total,
         )
 
         return results
@@ -348,7 +350,7 @@ class BatchPipeline:
     def _draw_boxes(
         self,
         image: NDArray,
-        objects: List[ExtractedObject],
+        objects: list[ExtractedObject],
         output_path: str | Path | None = None,
     ) -> NDArray:
         """Draw bounding boxes on image.
@@ -371,7 +373,7 @@ class BatchPipeline:
 
         for obj in objects:
             x, y, w, h = obj.original_region
-            cv2.rectangle(
+            cv2.rectangle(  # pylint: disable=no-member
                 annotated,
                 (x, y),
                 (x + w, y + h),
@@ -380,14 +382,16 @@ class BatchPipeline:
             )
 
         if output_path:
-            cv2.imwrite(str(output_path), annotated)
+            cv2.imwrite(
+                str(output_path), annotated
+            )  # pylint: disable=no-member
 
         return annotated
 
     def _save_visualization(
         self,
         image_path: Path,
-        objects: List[ExtractedObject],
+        objects: list[ExtractedObject],
         output_dir: Path,
     ) -> None:
         """Save visualization image.
@@ -405,7 +409,7 @@ class BatchPipeline:
         output_path = output_dir / f"{image_path.stem}_boxes.jpg"
         self._draw_boxes(image, objects, output_path)
 
-    def with_config(self, **kwargs) -> "BatchPipeline":
+    def with_config(self, **kwargs) -> BatchPipeline:
         """Create a new pipeline with modified configuration.
 
         Parameters
@@ -419,6 +423,7 @@ class BatchPipeline:
             New pipeline with updated config.
         """
         from dataclasses import replace
+
         new_config = replace(self.config, **kwargs)
         return BatchPipeline(new_config)
 
@@ -426,7 +431,7 @@ class BatchPipeline:
     def quick_extract(
         image_path: str | Path,
         output_dir: str | Path,
-    ) -> List[ExtractedObject]:
+    ) -> list[ExtractedObject]:
         """Quick extraction with default settings.
 
         Convenience method for simple extraction tasks.

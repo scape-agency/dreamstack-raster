@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Document
 ============================
@@ -12,7 +10,7 @@ from __future__ import annotations
 
 import pickle
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
@@ -34,6 +32,7 @@ from dreamstack.raster.core.pixel import (
     PixelData,
     PixelFormat,
 )
+from dreamstack.raster.io import load_image, save_image
 
 if TYPE_CHECKING:
     from dreamstack.raster.core.image import Image
@@ -62,7 +61,7 @@ class Document:
         self,
         canvas: Canvas,
         name: str = "Untitled",
-        path: Optional[Path] = None,
+        path: Path | None = None,
     ):
         """
         Initialize document.
@@ -76,11 +75,11 @@ class Document:
         self._name = name
         self._path = path
         self._history = History(max_states=100)
-        self._selection: Optional[Selection] = None
-        self._guides: List[Guide] = []
+        self._selection: Selection | None = None
+        self._guides: list[Guide] = []
         self._grids: GridSettings = GridSettings()
-        self._metadata: Dict[str, Any] = {}
-        self._active_layer: Optional[LayerBase] = None
+        self._metadata: dict[str, Any] = {}
+        self._active_layer: LayerBase | None = None
         self._color_profile: str = "sRGB"
 
     @property
@@ -99,7 +98,7 @@ class Document:
         self._name = value
 
     @property
-    def path(self) -> Optional[Path]:
+    def path(self) -> Path | None:
         """Get file path."""
         return self._path
 
@@ -114,22 +113,22 @@ class Document:
         return self._canvas.layers
 
     @property
-    def selection(self) -> Optional[Selection]:
+    def selection(self) -> Selection | None:
         """Get current selection."""
         return self._selection
 
     @selection.setter
-    def selection(self, value: Optional[Selection]) -> None:
+    def selection(self, value: Selection | None) -> None:
         """Set current selection."""
         self._selection = value
 
     @property
-    def active_layer(self) -> Optional[LayerBase]:
+    def active_layer(self) -> LayerBase | None:
         """Get active layer."""
         return self._active_layer
 
     @active_layer.setter
-    def active_layer(self, value: Optional[LayerBase]) -> None:
+    def active_layer(self, value: LayerBase | None) -> None:
         """Set active layer."""
         self._active_layer = value
 
@@ -154,7 +153,7 @@ class Document:
         return self._history.is_modified
 
     @property
-    def guides(self) -> List[Guide]:
+    def guides(self) -> list[Guide]:
         """Get guides."""
         return self._guides.copy()
 
@@ -180,8 +179,8 @@ class Document:
     def add_layer(
         self,
         layer: LayerBase,
-        index: Optional[int] = None,
-        parent: Optional[LayerGroup] = None,
+        index: int | None = None,
+        parent: LayerGroup | None = None,
     ) -> None:
         """
         Add a layer to the document.
@@ -209,13 +208,17 @@ class Document:
         Returns:
             Removed layer
         """
+        layer_obj: LayerBase
         if isinstance(layer, str):
-            layer = self.find_layer(layer)
-            if layer is None:
+            found = self.find_layer(layer)
+            if found is None:
                 raise ValueError(f"Layer not found: {layer}")
+            layer_obj = found
+        else:
+            layer_obj = layer
 
-        parent = layer.parent or self._canvas.layers
-        removed = parent.remove(layer)
+        parent = layer_obj.parent or self._canvas.layers
+        removed = parent.remove(layer_obj)
 
         if self._active_layer == removed:
             # Select next available layer
@@ -235,16 +238,20 @@ class Document:
         Returns:
             New duplicated layer
         """
+        resolved_layer: LayerBase
         if isinstance(layer, str):
-            layer = self.find_layer(layer)
-            if layer is None:
+            found = self.find_layer(layer)
+            if found is None:
                 raise ValueError(f"Layer not found: {layer}")
+            resolved_layer = found
+        else:
+            resolved_layer = layer
 
-        copy = layer.copy()
-        parent = layer.parent or self._canvas.layers
+        copy = resolved_layer.copy()
+        parent = resolved_layer.parent or self._canvas.layers
 
         # Insert above original
-        index = parent.children.index(layer)
+        index = parent.children.index(resolved_layer)
         parent.add(copy, index + 1)
 
         self._active_layer = copy
@@ -252,7 +259,7 @@ class Document:
 
         return copy
 
-    def merge_layers(self, layers: List[LayerBase]) -> Layer:
+    def merge_layers(self, layers: list[LayerBase]) -> Layer:
         """
         Merge multiple layers into one.
 
@@ -302,12 +309,12 @@ class Document:
     def flatten(self) -> None:
         """Flatten all layers into one."""
         flat = self._canvas.flatten()
-        self._canvas.layers._children.clear()
+        self._canvas.layers._children.clear()  # pylint: disable=protected-access
         self._canvas.layers.add(flat)
         self._active_layer = flat
         self._canvas.invalidate()
 
-    def find_layer(self, identifier: str) -> Optional[LayerBase]:
+    def find_layer(self, identifier: str) -> LayerBase | None:
         """
         Find layer by name or ID.
 
@@ -369,7 +376,7 @@ class Document:
             height: New height
             method: Interpolation method
         """
-        import cv2
+        import cv2  # pylint: disable=import-outside-toplevel
 
         scale_x = width / self._canvas.width
         scale_y = height / self._canvas.height
@@ -378,17 +385,19 @@ class Document:
         for layer in self._canvas.layers.flatten_hierarchy():
             if isinstance(layer, Layer):
                 # Resize pixel data
+                # pylint: disable=no-member
                 interpolation = {
                     "nearest": cv2.INTER_NEAREST,
                     "bilinear": cv2.INTER_LINEAR,
                     "bicubic": cv2.INTER_CUBIC,
                     "lanczos": cv2.INTER_LANCZOS4,
                 }.get(method, cv2.INTER_LANCZOS4)
+                # pylint: enable=no-member
 
                 new_w = int(layer.width * scale_x)
                 new_h = int(layer.height * scale_y)
 
-                resized = cv2.resize(
+                resized = cv2.resize(  # pylint: disable=no-member  # pylint: disable=no-member
                     layer.pixel_data.data,
                     (new_w, new_h),
                     interpolation=interpolation,
@@ -397,10 +406,12 @@ class Document:
                 if resized.ndim == 2:
                     resized = resized[:, :, np.newaxis]
 
-                layer._pixel_data = PixelData(
-                    data=resized,
-                    pixel_format=layer.pixel_data.pixel_format,
-                    bit_depth=layer.pixel_data.bit_depth,
+                layer._pixel_data = (  # pylint: disable=protected-access
+                    PixelData(
+                        data=resized,
+                        pixel_format=layer.pixel_data.pixel_format,
+                        bit_depth=layer.pixel_data.bit_depth,
+                    )
                 )
 
             # Scale offset
@@ -409,8 +420,10 @@ class Document:
             )
 
         # Update canvas size
+        # pylint: disable=protected-access
         self._canvas._width = width
         self._canvas._height = height
+        # pylint: enable=protected-access
         self._canvas.invalidate()
 
     def crop(self, bounds: Bounds) -> None:
@@ -515,6 +528,7 @@ class Document:
         doc_data = pickle.loads(data)
 
         self._name = doc_data["name"]
+        # pylint: disable=protected-access
         self._canvas._width = doc_data["width"]
         self._canvas._height = doc_data["height"]
         self._canvas._pixel_format = doc_data["pixel_format"]
@@ -527,6 +541,7 @@ class Document:
             layer = self._deserialize_layer(child_data)
             if layer:
                 self._canvas._layers.add(layer)
+        # pylint: enable=protected-access
 
         # Deserialize guides
         self._guides.clear()
@@ -544,7 +559,7 @@ class Document:
 
         self._canvas.invalidate()
 
-    def _deserialize_layer(self, data: dict) -> Optional[LayerBase]:
+    def _deserialize_layer(self, data: dict) -> LayerBase | None:
         """Deserialize a layer from dict."""
         layer_type = data.get("type")
 
@@ -598,7 +613,7 @@ class Document:
     # File Operations
     # =========================================================================
 
-    def save(self, path: Optional[str | Path] = None) -> None:
+    def save(self, path: str | Path | None = None) -> None:
         """
         Save document to file.
 
@@ -620,8 +635,6 @@ class Document:
         else:
             # Export as image
             image = self.render()
-            from dreamstack.raster.io import save_image
-
             save_image(image, path)
 
         self._history.mark_saved()
@@ -651,8 +664,6 @@ class Document:
             return doc
         else:
             # Load as image
-            from dreamstack.raster.io import load_image
-
             image = load_image(path)
 
             canvas = Canvas.from_image(image)
@@ -715,7 +726,7 @@ class Document:
         return doc
 
     @classmethod
-    def from_image(cls, image: Image, name: Optional[str] = None) -> Document:
+    def from_image(cls, image: Image, name: str | None = None) -> Document:
         """
         Create document from image.
 

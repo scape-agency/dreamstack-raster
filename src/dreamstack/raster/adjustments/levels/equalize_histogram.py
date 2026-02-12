@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Histogram equalization function."""
 
 from __future__ import annotations

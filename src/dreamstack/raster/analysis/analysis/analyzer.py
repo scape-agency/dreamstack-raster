@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Color Analyzer
 ==============
@@ -9,8 +7,6 @@ dominant color extraction, and color palette generation.
 """
 
 from __future__ import annotations
-
-from typing import List, Tuple
 
 import numpy as np
 from numpy.typing import NDArray
@@ -78,7 +74,7 @@ class ColorAnalyzer:
         self,
         image: NDArray[np.uint8],
         num_colors: int = 5,
-    ) -> List[Tuple[NDArray[np.int32], float]]:
+    ) -> list[tuple[NDArray[np.int32], float]]:
         """Extract a color palette from an image.
 
         Parameters
@@ -165,7 +161,7 @@ class ColorAnalyzer:
 
     def create_background(
         self,
-        size: Tuple[int, int],
+        size: tuple[int, int],
         color: NDArray | None = None,
         gradient: bool = True,
         source_image: NDArray[np.uint8] | None = None,
@@ -204,7 +200,7 @@ class ColorAnalyzer:
             return bg
 
     @staticmethod
-    def bgr_to_rgb(color: NDArray) -> Tuple[int, int, int]:
+    def bgr_to_rgb(color: NDArray) -> tuple[int, int, int]:
         """Convert BGR color to RGB tuple.
 
         Parameters

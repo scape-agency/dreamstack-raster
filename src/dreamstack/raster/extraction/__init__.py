@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Extraction Module
 =====================================
@@ -15,17 +13,16 @@ and other visual sources.
 
 from __future__ import annotations
 
-from dreamstack.raster.extraction.extractor import (
-    ExtractedObject,
-    ExtractionConfig,
-    ObjectExtractor,
-)
-from dreamstack.raster.extraction.operations import (
+from dreamstack.raster.extraction.apply_background_mask import (
     apply_background_mask,
-    extract_object,
-    extract_objects,
-    extract_region,
 )
+from dreamstack.raster.extraction.extract_object import extract_object
+from dreamstack.raster.extraction.extract_objects import extract_objects
+from dreamstack.raster.extraction.extract_region import extract_region
+from dreamstack.raster.extraction.extract_with_alpha import extract_with_alpha
+from dreamstack.raster.extraction.extracted_object import ExtractedObject
+from dreamstack.raster.extraction.extraction_config import ExtractionConfig
+from dreamstack.raster.extraction.object_extractor import ObjectExtractor
 
 __all__: list[str] = [
     # Data Classes
@@ -34,8 +31,9 @@ __all__: list[str] = [
     # Extractor Class
     "ObjectExtractor",
     # Operations
+    "apply_background_mask",
     "extract_object",
     "extract_objects",
     "extract_region",
-    "apply_background_mask",
+    "extract_with_alpha",
 ]

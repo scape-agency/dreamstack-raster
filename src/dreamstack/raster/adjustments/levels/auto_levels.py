@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Auto levels adjustment function."""
 
 from __future__ import annotations
@@ -45,15 +43,11 @@ def auto_levels(
 
             sorted_vals = np.sort(channel)
             in_black = sorted_vals[black_clip] if black_clip < total else 0
-            in_white = (
-                sorted_vals[-white_clip - 1] if white_clip < total else max_val
-            )
+            in_white = sorted_vals[-white_clip - 1] if white_clip < total else max_val
 
             if in_white > in_black:
                 result[:, :, i] = (
-                    (data[:, :, i] - in_black)
-                    / (in_white - in_black)
-                    * max_val
+                    (data[:, :, i] - in_black) / (in_white - in_black) * max_val
                 )
     else:
         flat = data.flatten()
@@ -63,9 +57,7 @@ def auto_levels(
 
         sorted_vals = np.sort(flat)
         in_black = sorted_vals[black_clip] if black_clip < total else 0
-        in_white = (
-            sorted_vals[-white_clip - 1] if white_clip < total else max_val
-        )
+        in_white = sorted_vals[-white_clip - 1] if white_clip < total else max_val
 
         if in_white > in_black:
             result = (data - in_black) / (in_white - in_black) * max_val

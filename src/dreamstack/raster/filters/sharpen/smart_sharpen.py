@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Smart Sharpen
 =================================
@@ -61,9 +59,9 @@ def smart_sharpen(
 
     elif remove == "lens":
         # Disk blur approximation
-        kernel = cv2.getStructuringElement(
-            cv2.MORPH_ELLIPSE, (ksize, ksize)
-        ).astype(np.float32)
+        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (ksize, ksize)).astype(
+            np.float32
+        )
         kernel /= kernel.sum()
 
         if data.ndim == 3:

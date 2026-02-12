@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Watercolor
 ==============================
@@ -19,9 +17,7 @@ if TYPE_CHECKING:
     from dreamstack.raster.core.image import Image
 
 
-def watercolor(
-    image: Image, smoothness: int = 5, edge_threshold: float = 0.5
-) -> Image:
+def watercolor(image: Image, smoothness: int = 5, edge_threshold: float = 0.5) -> Image:
     """
     Apply watercolor effect.
 

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Convert between color spaces."""
 
 from __future__ import annotations

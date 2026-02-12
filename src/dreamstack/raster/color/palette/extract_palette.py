@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Extract color palette from image."""
 
 from __future__ import annotations
@@ -16,7 +14,7 @@ if TYPE_CHECKING:
 
 
 def extract_palette(
-    image: "Image",
+    image: Image,
     num_colors: int = 8,
     method: str = "kmeans",
 ) -> Palette:
@@ -72,9 +70,7 @@ def extract_palette(
     # Create palette
     colors = []
     for center in centers:
-        color = Color(
-            int(center[0] * 255), int(center[1] * 255), int(center[2] * 255)
-        )
+        color = Color(int(center[0] * 255), int(center[1] * 255), int(center[2] * 255))
         colors.append(color)
 
     palette = Palette(colors=colors)

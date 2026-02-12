@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Curve point dataclass."""
 
 from __future__ import annotations

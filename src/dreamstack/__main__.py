@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 # =============================================================================
 # Docstring
 # =============================================================================
@@ -17,7 +14,6 @@ Main Module for DreamStack
 # =============================================================================
 
 # Import | Futures
-from __future__ import print_function
 
 # Import | Standard Library
 import platform
@@ -38,16 +34,11 @@ import dreamstack
 # =============================================================================
 
 if __name__ == "__main__":
-
     print()
     print("palet is set!")
     print()
-    print("tite: {}".format(dreamstack.__version__))
-    print(
-        "Python: {} ({})".format(
-            platform.python_version(), platform.python_implementation()
-        )
-    )
+    print(f"tite: {dreamstack.__version__}")
+    print(f"Python: {platform.python_version()} ({platform.python_implementation()})")
 
     if pkg_resources:
         working_set = pkg_resources.working_set
@@ -55,4 +46,4 @@ if __name__ == "__main__":
         palet_pkgs = [p for p in packages if p.lower().startswith("palet")]
 
         if palet_pkgs:
-            print("Extensions: {}".format([p for p in palet_pkgs]))
+            print(f"Extensions: {[p for p in palet_pkgs]}")

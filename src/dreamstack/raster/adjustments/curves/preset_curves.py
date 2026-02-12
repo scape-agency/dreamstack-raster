@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Preset curves function."""
 
 from __future__ import annotations

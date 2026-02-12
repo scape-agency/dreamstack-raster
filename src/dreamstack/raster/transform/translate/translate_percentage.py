@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """Translate by percentage operation."""
 
 from __future__ import annotations
-
-from typing import Tuple, Union
 
 import numpy as np
 from numpy.typing import NDArray
@@ -18,7 +14,7 @@ def translate_percentage(
     ty_percent: float = 0.0,
     *,
     border_mode: str = "constant",
-    border_value: Union[int, Tuple[int, int, int]] = 0,
+    border_value: int | tuple[int, int, int] = 0,
 ) -> NDArray[np.uint8]:
     """Translate image by percentage of dimensions.
 
@@ -51,6 +47,4 @@ def translate_percentage(
     h, w = image.shape[:2]
     tx = int(w * tx_percent)
     ty = int(h * ty_percent)
-    return translate(
-        image, tx, ty, border_mode=border_mode, border_value=border_value
-    )
+    return translate(image, tx, ty, border_mode=border_mode, border_value=border_value)

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Custom Exceptions
 =====================================
@@ -45,6 +43,7 @@ class DreamstackRasterError(Exception):
 # File/Path Exceptions
 # =============================================================================
 
+
 class InvalidPathError(DreamstackRasterError):
     """Raised when a path is invalid or does not exist."""
 
@@ -64,6 +63,7 @@ class DirectoryNotFoundError(DreamstackRasterError):
 # =============================================================================
 # Image Exceptions
 # =============================================================================
+
 
 class InvalidImageError(DreamstackRasterError):
     """Raised when an image is invalid or corrupted."""
@@ -93,6 +93,7 @@ class ImageWriteError(DreamstackRasterError):
 # Parameter Exceptions
 # =============================================================================
 
+
 class InvalidParameterError(DreamstackRasterError):
     """Raised when a function receives an invalid parameter value."""
 
@@ -108,6 +109,7 @@ class MissingRequiredParameterError(DreamstackRasterError):
 # =============================================================================
 # Processing Exceptions
 # =============================================================================
+
 
 class FilterError(DreamstackRasterError):
     """Raised when a filter operation fails."""

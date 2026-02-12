@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Vignette
 ============================
@@ -58,7 +56,7 @@ def vignette(
         ax = aspect
         ay = 1.0
 
-    roundness_factor = 1 + roundness / 100
+    1 + roundness / 100
 
     # Distance from center (normalized)
     dx = (x - cx) / (w / 2) * ax
@@ -72,9 +70,7 @@ def vignette(
     feather_normalized = max(0.01, feather / 100)
 
     # Create mask
-    mask = 1 - np.clip(
-        (distance - midpoint_normalized) / feather_normalized, 0, 1
-    )
+    mask = 1 - np.clip((distance - midpoint_normalized) / feather_normalized, 0, 1)
 
     # Apply amount
     amount_normalized = amount / 100

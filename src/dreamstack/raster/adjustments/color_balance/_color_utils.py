@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Internal color conversion utilities for color balance adjustments."""
 
 from __future__ import annotations
@@ -65,29 +63,17 @@ def _hsl_to_rgb(hsl: np.ndarray) -> np.ndarray:
     for sector in range(6):
         mask = h_sector == sector
         if sector == 0:
-            rgb[mask] = np.stack(
-                [c[mask], x[mask], np.zeros_like(c[mask])], axis=-1
-            )
+            rgb[mask] = np.stack([c[mask], x[mask], np.zeros_like(c[mask])], axis=-1)
         elif sector == 1:
-            rgb[mask] = np.stack(
-                [x[mask], c[mask], np.zeros_like(c[mask])], axis=-1
-            )
+            rgb[mask] = np.stack([x[mask], c[mask], np.zeros_like(c[mask])], axis=-1)
         elif sector == 2:
-            rgb[mask] = np.stack(
-                [np.zeros_like(c[mask]), c[mask], x[mask]], axis=-1
-            )
+            rgb[mask] = np.stack([np.zeros_like(c[mask]), c[mask], x[mask]], axis=-1)
         elif sector == 3:
-            rgb[mask] = np.stack(
-                [np.zeros_like(c[mask]), x[mask], c[mask]], axis=-1
-            )
+            rgb[mask] = np.stack([np.zeros_like(c[mask]), x[mask], c[mask]], axis=-1)
         elif sector == 4:
-            rgb[mask] = np.stack(
-                [x[mask], np.zeros_like(c[mask]), c[mask]], axis=-1
-            )
+            rgb[mask] = np.stack([x[mask], np.zeros_like(c[mask]), c[mask]], axis=-1)
         else:
-            rgb[mask] = np.stack(
-                [c[mask], np.zeros_like(c[mask]), x[mask]], axis=-1
-            )
+            rgb[mask] = np.stack([c[mask], np.zeros_like(c[mask]), x[mask]], axis=-1)
 
     rgb = rgb + m[:, :, np.newaxis]
 
@@ -96,9 +82,8 @@ def _hsl_to_rgb(hsl: np.ndarray) -> np.ndarray:
 
 def _get_color_mask(rgb: np.ndarray, color: str):
     """Get mask for specific color range."""
-    from typing import Optional
 
-    r, g, b = rgb[:, :, 0], rgb[:, :, 1], rgb[:, :, 2]
+    _r, _g, _b = rgb[:, :, 0], rgb[:, :, 1], rgb[:, :, 2]
 
     # Convert to HSL for color detection
     hsl = _rgb_to_hsl(rgb)
@@ -113,7 +98,7 @@ def _get_color_mask(rgb: np.ndarray, color: str):
         "magentas": (270, 330, -1, -1),
     }
 
-    mask: Optional[np.ndarray] = None
+    mask: np.ndarray | None = None
 
     if color in color_ranges:
         h_deg = h * 360

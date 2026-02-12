@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Image Class
 ===============================
@@ -11,18 +9,17 @@ Core Image class representing a raster image with full editing capabilities.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import numpy as np
 from numpy.typing import NDArray
 
-from dreamstack.raster.core.bounds import Bounds, Point, Size
-from dreamstack.raster.core.channel import Channel, ChannelManager, ChannelType
+from dreamstack.raster.core.bounds import Bounds, Size
+from dreamstack.raster.core.channel import ChannelManager
 from dreamstack.raster.core.image.image_metadata import ImageMetadata
 from dreamstack.raster.core.pixel import BitDepth, PixelData, PixelFormat
 
 if TYPE_CHECKING:
-    from dreamstack.raster.core.layer import Layer
     from dreamstack.raster.selection import Selection
 
 
@@ -65,10 +62,10 @@ class Image:
         self._pixel_data = pixel_data
         self._metadata = metadata or ImageMetadata()
         self._name = name
-        self._selection: Optional[Selection] = None
+        self._selection: Selection | None = None
         self._channels = ChannelManager(pixel_data.width, pixel_data.height)
         self._dirty = False
-        self._path: Optional[Path] = None
+        self._path: Path | None = None
 
     # =========================================================================
     # Properties
@@ -140,17 +137,17 @@ class Image:
         self._name = value
 
     @property
-    def path(self) -> Optional[Path]:
+    def path(self) -> Path | None:
         """Get file path if loaded from disk."""
         return self._path
 
     @property
-    def selection(self) -> Optional[Selection]:
+    def selection(self) -> Selection | None:
         """Get current selection."""
         return self._selection
 
     @selection.setter
-    def selection(self, value: Optional[Selection]) -> None:
+    def selection(self, value: Selection | None) -> None:
         """Set current selection."""
         self._selection = value
 
@@ -498,20 +495,24 @@ class Image:
                 width = int(height * aspect)
 
         interpolation_methods = {
-            "nearest": cv2.INTER_NEAREST,
-            "bilinear": cv2.INTER_LINEAR,
-            "bicubic": cv2.INTER_CUBIC,
-            "lanczos": cv2.INTER_LANCZOS4,
-            "area": cv2.INTER_AREA,
+            "nearest": getattr(cv2, "INTER_NEAREST"),
+            "bilinear": getattr(cv2, "INTER_LINEAR"),
+            "bicubic": getattr(cv2, "INTER_CUBIC"),
+            "lanczos": getattr(cv2, "INTER_LANCZOS4"),
+            "area": getattr(cv2, "INTER_AREA"),
         }
 
-        interp = interpolation_methods.get(method.lower(), cv2.INTER_LANCZOS4)
+        interp = interpolation_methods.get(
+            method.lower(), cv2.INTER_LANCZOS4
+        )  # pylint: disable=no-member
 
         # Use INTER_AREA for downscaling
         if width < self.width and height < self.height:
-            interp = cv2.INTER_AREA
+            interp = cv2.INTER_AREA  # pylint: disable=no-member
 
-        resized = cv2.resize(self.data, (width, height), interpolation=interp)
+        resized = cv2.resize(
+            self.data, (width, height), interpolation=interp
+        )  # pylint: disable=no-member
 
         # Ensure 3D array
         if resized.ndim == 2:
@@ -560,7 +561,10 @@ class Image:
     # =========================================================================
 
     def rotate(
-        self, angle: float, expand: bool = True, fill_color: tuple = None
+        self,
+        angle: float,
+        expand: bool = True,
+        fill_color: tuple | None = None,
     ) -> Image:
         """
         Rotate image by angle.
@@ -577,7 +581,9 @@ class Image:
 
         # Get rotation matrix
         center = (self.width / 2, self.height / 2)
-        matrix = cv2.getRotationMatrix2D(center, angle, 1.0)
+        matrix = cv2.getRotationMatrix2D(
+            center, angle, 1.0
+        )  # pylint: disable=no-member
 
         if expand:
             # Calculate new bounds
@@ -597,11 +603,11 @@ class Image:
         if fill_color is None:
             fill_color = tuple([0] * self.channels)
 
-        rotated = cv2.warpAffine(
+        rotated = cv2.warpAffine(  # pylint: disable=no-member
             self.data,
             matrix,
             (new_width, new_height),
-            borderMode=cv2.BORDER_CONSTANT,
+            borderMode=cv2.BORDER_CONSTANT,  # pylint: disable=no-member
             borderValue=fill_color,
         )
 
@@ -697,7 +703,7 @@ class Image:
         from dreamstack.raster.io import load_image
 
         image = load_image(path, **options)
-        image._path = Path(path)
+        image._path = Path(path)  # pylint: disable=protected-access
         return image
 
     @classmethod
@@ -769,8 +775,6 @@ class Image:
         Returns:
             New image
         """
-        import numpy as np
-
         array = np.array(pil_image)
 
         # Determine pixel format from PIL mode

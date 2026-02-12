@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Color Channel Operations
 ========================

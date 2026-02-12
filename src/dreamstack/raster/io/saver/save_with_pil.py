@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Save with PIL
 =================================
@@ -20,7 +18,7 @@ if TYPE_CHECKING:
 
 
 def save_with_pil(
-    image: Image, path: Path, format: ImageFormat, **options
+    image: Image, path: Path, format: ImageFormat, **options  # noqa: A002
 ) -> None:
     """Save image using PIL."""
     from PIL import Image as PILImage
@@ -77,7 +75,7 @@ def save_with_pil(
         # Convert to palette mode
         if pil_image.mode != "P":
             pil_image = pil_image.convert(
-                "P", palette=PILImage.ADAPTIVE, colors=256
+                "P", palette=getattr(PILImage, "ADAPTIVE"), colors=256
             )
 
     elif format == ImageFormat.BMP:
@@ -122,7 +120,7 @@ def save_with_pil(
             # This is simplified - full implementation would map all tags
             exif_bytes = piexif.dump(exif_dict)
             save_kwargs["exif"] = exif_bytes
-        except (ImportError, Exception):
+        except (ImportError, KeyError, TypeError):
             pass
 
     # Add ICC profile

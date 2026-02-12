@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Write Metadata
 ==================================
@@ -11,11 +9,11 @@ Write metadata to image files.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 
 def write_metadata(
-    path: str | Path, metadata: Dict[str, Any], preserve_existing: bool = True
+    path: str | Path, metadata: dict[str, Any], preserve_existing: bool = True
 ) -> None:
     """
     Write metadata to an image file.

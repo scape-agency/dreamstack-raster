@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Channel Manager
 ===================================
@@ -10,10 +8,9 @@ Multi-channel management for images.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 
 import numpy as np
-from numpy.typing import NDArray
 
 from dreamstack.raster.core.channel.channel import Channel
 from dreamstack.raster.core.channel.channel_type import ChannelType
@@ -40,7 +37,7 @@ class ChannelManager:
         """
         self._width = width
         self._height = height
-        self._channels: List[Channel] = []
+        self._channels: list[Channel] = []
 
     @property
     def width(self) -> int:
@@ -99,7 +96,7 @@ class ChannelManager:
             raise KeyError(f"Channel '{index}' not found")
         return self._channels.pop(index)
 
-    def reorder(self, new_order: List[int]) -> None:
+    def reorder(self, new_order: list[int]) -> None:
         """
         Reorder channels.
 
@@ -113,9 +110,7 @@ class ChannelManager:
 
         self._channels = [self._channels[i] for i in new_order]
 
-    def duplicate(
-        self, index: int | str, new_name: str | None = None
-    ) -> Channel:
+    def duplicate(self, index: int | str, new_name: str | None = None) -> Channel:
         """
         Duplicate a channel.
 
@@ -137,9 +132,7 @@ class ChannelManager:
         self._channels.append(copy)
         return copy
 
-    def merge(
-        self, indices: List[int], weights: List[float] | None = None
-    ) -> Channel:
+    def merge(self, indices: list[int], weights: list[float] | None = None) -> Channel:
         """
         Merge multiple channels into one.
 
@@ -168,9 +161,7 @@ class ChannelManager:
 
         result = np.clip(result, 0, 1)
 
-        return Channel(
-            name="Merged", channel_type=ChannelType.CUSTOM, data=result
-        )
+        return Channel(name="Merged", channel_type=ChannelType.CUSTOM, data=result)
 
     def split_from_image(self, pixel_data: PixelData) -> None:
         """

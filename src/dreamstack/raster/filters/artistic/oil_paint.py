@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Oil Paint
 =============================
@@ -43,9 +41,7 @@ def oil_paint(image: Image, brush_size: int = 6, roughness: int = 1) -> Image:
     if data.ndim == 3 and data.shape[2] >= 3:
         # OpenCV xphoto module has oil painting
         try:
-            result = cv2.xphoto.oilPainting(
-                data[:, :, :3], brush_size, roughness
-            )
+            result = cv2.xphoto.oilPainting(data[:, :, :3], brush_size, roughness)  # type: ignore[attr-defined]
             if data.shape[2] == 4:
                 result = np.dstack([result, data[:, :, 3]])
         except AttributeError:
@@ -60,7 +56,7 @@ def oil_paint(image: Image, brush_size: int = 6, roughness: int = 1) -> Image:
         result = (result / 255.0 * max_val).astype(image.data.dtype)
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result, pixel_format=image.pixel_format, bit_depth=image.bit_depth
     )
 

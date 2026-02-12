@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Get translation matrix."""
 
 from __future__ import annotations

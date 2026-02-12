@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Surface Blur
 ================================
@@ -16,9 +14,7 @@ if TYPE_CHECKING:
     from dreamstack.raster.core.image import Image
 
 
-def surface_blur(
-    image: Image, radius: int = 10, threshold: float = 15
-) -> Image:
+def surface_blur(image: Image, radius: int = 10, threshold: float = 15) -> Image:
     """
     Apply surface blur (preserves edges while smoothing).
 

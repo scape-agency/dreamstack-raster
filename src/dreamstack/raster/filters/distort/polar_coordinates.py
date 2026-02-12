@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Polar Coordinates
 =====================================
@@ -10,7 +8,7 @@ Polar/rectangular coordinate transformation filter implementation.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional, Tuple
+from typing import TYPE_CHECKING
 
 import cv2
 import numpy as np
@@ -22,7 +20,7 @@ if TYPE_CHECKING:
 def polar_coordinates(
     image: Image,
     mode: str = "rectangular_to_polar",
-    center: Optional[Tuple[float, float]] = None,
+    center: tuple[float, float] | None = None,
 ) -> Image:
     """
     Convert between polar and rectangular coordinates.

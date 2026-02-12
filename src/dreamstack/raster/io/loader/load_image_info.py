@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Load Image Info
 ===================================
@@ -11,10 +9,10 @@ Load only image metadata without full pixel data.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 
-def load_image_info(path: str | Path) -> Dict[str, Any]:
+def load_image_info(path: str | Path) -> dict[str, Any]:
     """
     Load only image metadata without full pixel data.
 
@@ -45,7 +43,7 @@ def load_image_info(path: str | Path) -> Dict[str, Any]:
             info["dpi"] = img.info["dpi"]
 
         if hasattr(img, "n_frames"):
-            info["frames"] = img.n_frames
+            info["frames"] = img.n_frames  # type: ignore[attr-defined]
 
         # Size info
         info["megapixels"] = (img.width * img.height) / 1_000_000

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """ColorSpace dataclass definition."""
 
 from __future__ import annotations

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Parametric tone curve function."""
 
 from __future__ import annotations

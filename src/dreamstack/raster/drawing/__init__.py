@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Drawing Module
 ==================================
@@ -47,7 +45,12 @@ from dreamstack.raster.drawing.shapes import (
     rounded_rect,
     star,
 )
-from dreamstack.raster.drawing.text import TextStyle, draw_text, text_bounds
+from dreamstack.raster.drawing.text import (
+    FontWeight,
+    TextStyle,
+    draw_text,
+    text_bounds,
+)
 
 __all__: list[str] = [
     # Brush
@@ -68,6 +71,7 @@ __all__: list[str] = [
     # Text
     "draw_text",
     "TextStyle",
+    "FontWeight",
     "text_bounds",
     # Gradient
     "linear_gradient",

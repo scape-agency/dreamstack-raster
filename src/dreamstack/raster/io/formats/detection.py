@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Format Detection
 ====================================
@@ -11,7 +9,6 @@ Functions for detecting image format from path or MIME type.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional
 
 from dreamstack.raster.io.formats.constants import (
     FORMAT_EXTENSIONS,
@@ -20,7 +17,7 @@ from dreamstack.raster.io.formats.constants import (
 from dreamstack.raster.io.formats.image_format import ImageFormat
 
 
-def get_format_for_path(path: str | Path) -> Optional[ImageFormat]:
+def get_format_for_path(path: str | Path) -> ImageFormat | None:
     """
     Detect format from file path extension.
 
@@ -40,7 +37,7 @@ def get_format_for_path(path: str | Path) -> Optional[ImageFormat]:
     return None
 
 
-def get_format_for_mime(mime_type: str) -> Optional[ImageFormat]:
+def get_format_for_mime(mime_type: str) -> ImageFormat | None:
     """
     Get format from MIME type.
 

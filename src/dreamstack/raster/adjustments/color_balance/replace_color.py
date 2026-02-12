@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-
 """Replace color function."""
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Tuple
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -19,8 +17,8 @@ from dreamstack.raster.adjustments.color_balance._color_utils import (
 
 def replace_color(
     image: Image,
-    source_color: Tuple[int, int, int],
-    target_color: Tuple[int, int, int],
+    source_color: tuple[int, int, int],
+    target_color: tuple[int, int, int],
     fuzziness: float = 40,
     hue_shift: float = 0,
     saturation_shift: float = 0,
@@ -68,16 +66,14 @@ def replace_color(
 
         if saturation_shift > 0:
             hsl[:, :, 1] = (
-                hsl[:, :, 1]
-                + (1 - hsl[:, :, 1]) * saturation_shift / 100 * mask
+                hsl[:, :, 1] + (1 - hsl[:, :, 1]) * saturation_shift / 100 * mask
             )
         else:
             hsl[:, :, 1] = hsl[:, :, 1] * (1 + saturation_shift / 100 * mask)
 
         if lightness_shift > 0:
             hsl[:, :, 2] = (
-                hsl[:, :, 2]
-                + (1 - hsl[:, :, 2]) * lightness_shift / 100 * mask
+                hsl[:, :, 2] + (1 - hsl[:, :, 2]) * lightness_shift / 100 * mask
             )
         else:
             hsl[:, :, 2] = hsl[:, :, 2] * (1 + lightness_shift / 100 * mask)

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Load with PIL
 =================================
@@ -19,7 +17,7 @@ if TYPE_CHECKING:
     from dreamstack.raster.core.image import Image
 
 
-def load_with_pil(path: Path, **options) -> Image:
+def load_with_pil(path: Path, **_options) -> Image:  # noqa: ARG001
     """Load image using PIL."""
     from PIL import Image as PILImage
 
@@ -108,7 +106,9 @@ def load_with_pil(path: Path, **options) -> Image:
     try:
         from PIL.ExifTags import TAGS
 
-        exif = pil_image._getexif()
+        exif = (
+            pil_image._getexif()
+        )  # pyright: ignore[reportAttributeAccessIssue]  # pylint: disable=protected-access
         if exif:
             metadata.exif = {TAGS.get(k, k): v for k, v in exif.items()}
     except (AttributeError, KeyError):

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Create gradient between two colors."""
 
 from __future__ import annotations
@@ -102,6 +100,4 @@ def create_gradient(
     else:
         raise ValueError(f"Unknown color space: {color_space}")
 
-    return Palette(
-        colors=colors, name=f"{start_color.to_hex()}-{end_color.to_hex()}"
-    )
+    return Palette(colors=colors, name=f"{start_color.to_hex()}-{end_color.to_hex()}")

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Internal hue to RGB conversion utility."""
 
 from __future__ import annotations

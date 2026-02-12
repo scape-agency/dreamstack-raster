@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Preprocessing Operations
 ========================
@@ -9,8 +7,6 @@ Provides stateless functions for preparing images for contour detection.
 """
 
 from __future__ import annotations
-
-from typing import Dict, Tuple
 
 import cv2
 import numpy as np
@@ -61,7 +57,7 @@ def to_grayscale(
 def apply_clahe(
     image: NDArray[np.uint8],
     clip_limit: float = 3.0,
-    tile_size: Tuple[int, int] = (8, 8),
+    tile_size: tuple[int, int] = (8, 8),
 ) -> NDArray[np.uint8]:
     """Apply CLAHE (Contrast Limited Adaptive Histogram Equalization).
 
@@ -271,12 +267,8 @@ def morphological_open(
     NDArray[np.uint8]
         Processed image.
     """
-    kernel = cv2.getStructuringElement(
-        cv2.MORPH_ELLIPSE, (kernel_size, kernel_size)
-    )
-    return cv2.morphologyEx(
-        image, cv2.MORPH_OPEN, kernel, iterations=iterations
-    )
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (kernel_size, kernel_size))
+    return cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel, iterations=iterations)
 
 
 def morphological_close(
@@ -302,20 +294,16 @@ def morphological_close(
     NDArray[np.uint8]
         Processed image.
     """
-    kernel = cv2.getStructuringElement(
-        cv2.MORPH_ELLIPSE, (kernel_size, kernel_size)
-    )
-    return cv2.morphologyEx(
-        image, cv2.MORPH_CLOSE, kernel, iterations=iterations
-    )
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (kernel_size, kernel_size))
+    return cv2.morphologyEx(image, cv2.MORPH_CLOSE, kernel, iterations=iterations)
 
 
 def preprocess_for_contours(
     image: NDArray[np.uint8],
-    blur_kernel: Tuple[int, int] = (11, 11),
+    blur_kernel: tuple[int, int] = (11, 11),
     clahe_clip: float = 3.0,
     threshold_method: str = "otsu",
-) -> Dict[str, NDArray[np.uint8]]:
+) -> dict[str, NDArray[np.uint8]]:
     """Full preprocessing pipeline for contour detection.
 
     Applies blur, contrast enhancement, grayscale conversion,

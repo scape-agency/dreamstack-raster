@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Gamma correction function."""
 
 from __future__ import annotations

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Save HDR
 ============================
@@ -17,7 +15,11 @@ if TYPE_CHECKING:
     from dreamstack.raster.core.image import Image
 
 
-def save_hdr(image: Image, path: Path, **options) -> None:
+def save_hdr(
+    image: Image,
+    path: Path,
+    **options,
+) -> None:
     """Save HDR/Radiance image."""
     import imageio
 

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Layer Base
 ==============================
@@ -12,7 +10,7 @@ from __future__ import annotations
 
 import uuid
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import numpy as np
 from numpy.typing import NDArray
@@ -53,8 +51,8 @@ class LayerBase(ABC):
         self._blend_mode = blend_mode
         self._visible = visible
         self._locked = locked
-        self._parent: Optional[LayerGroup] = None
-        self._mask: Optional[NDArray] = None
+        self._parent: LayerGroup | None = None
+        self._mask: NDArray | None = None
         self._mask_enabled = True
         self._offset = Point(0, 0)
 
@@ -114,17 +112,17 @@ class LayerBase(ABC):
         self._locked = value
 
     @property
-    def parent(self) -> Optional[LayerGroup]:
+    def parent(self) -> LayerGroup | None:
         """Get parent layer group."""
         return self._parent
 
     @property
-    def mask(self) -> Optional[NDArray]:
+    def mask(self) -> NDArray | None:
         """Get layer mask."""
         return self._mask
 
     @mask.setter
-    def mask(self, value: Optional[NDArray]) -> None:
+    def mask(self, value: NDArray | None) -> None:
         """Set layer mask."""
         self._mask = value
 
@@ -189,9 +187,7 @@ class LayerBase(ABC):
 
         # Normalize mask
         if np.issubdtype(self._mask.dtype, np.integer):
-            mask = (
-                self._mask.astype(np.float32) / np.iinfo(self._mask.dtype).max
-            )
+            mask = self._mask.astype(np.float32) / np.iinfo(self._mask.dtype).max
         else:
             mask = self._mask.astype(np.float32)
 

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Internal color conversion utilities for basic adjustments."""
 
 from __future__ import annotations

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - OpenEXR Loading
 ===================================
@@ -11,7 +9,7 @@ Load OpenEXR image files.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, Dict, List, Optional
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -20,7 +18,7 @@ if TYPE_CHECKING:
 
 
 def load_exr(
-    path: str | Path, channels: Optional[List[str]] = None, **options
+    path: str | Path, channels: list[str] | None = None, **options
 ) -> Image:
     """
     Load an OpenEXR image.
@@ -38,7 +36,7 @@ def load_exr(
         import OpenEXR
     except ImportError:
         # Fallback to imageio
-        return _load_exr_imageio(path, **options)
+        return _load_exr_imageio(Path(path), **options)
 
     from dreamstack.raster.core.image import Image, ImageMetadata
     from dreamstack.raster.core.pixel import BitDepth, PixelData, PixelFormat
@@ -127,7 +125,7 @@ def load_exr(
     return Image(pixel_data, metadata, name=path.stem)
 
 
-def _load_exr_imageio(path: Path, **options) -> Image:
+def _load_exr_imageio(path: Path, **_options) -> Image:
     """Fallback EXR loading using imageio."""
     import imageio
 

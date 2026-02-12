@@ -1,0 +1,47 @@
+"""
+Image to Data URI
+=================
+
+Encode image to data URI for HTML embedding.
+
+"""
+
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Literal
+
+import numpy as np
+
+if TYPE_CHECKING:
+    from numpy.typing import NDArray
+
+from dreamstack.raster.io.encoding.image_to_base64 import image_to_base64
+
+ImageFormat = Literal["png", "jpeg", "webp", "gif"]
+
+
+def image_to_data_uri(
+    image: NDArray[np.uint8],
+    format: ImageFormat = "png",
+    *,
+    quality: int = 85,
+) -> str:
+    """Encode image to data URI for HTML embedding.
+
+    Returns a complete data URI that can be used directly in HTML img src.
+
+    Args:
+        image: Input image.
+        format: Output format.
+        quality: Compression quality for JPEG/WebP.
+
+    Returns:
+        Data URI string (data:image/format;base64,...).
+
+    Example:
+        >>> uri = image_to_data_uri(image, format="jpeg", quality=80)
+        >>> html = f'<img src="{uri}" />'
+    """
+    b64 = image_to_base64(image, format, quality=quality)
+    mime_type = f"image/{format}"
+    return f"data:{mime_type};base64,{b64}"

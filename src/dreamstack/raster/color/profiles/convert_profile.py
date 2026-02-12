@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-
 """Convert image from one ICC profile to another."""
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -16,11 +14,11 @@ if TYPE_CHECKING:
 
 
 def convert_profile(
-    image: "Image",
-    target_profile: "ICCProfile",
-    source_profile: Optional["ICCProfile"] = None,
+    image: Image,
+    target_profile: ICCProfile,
+    source_profile: ICCProfile | None = None,
     intent: RenderingIntent = RenderingIntent.PERCEPTUAL,
-) -> "Image":
+) -> Image:
     """
     Convert image from one ICC profile to another.
 
@@ -33,7 +31,6 @@ def convert_profile(
     Returns:
         Converted Image
     """
-    from PIL import Image as PILImage
     from PIL import ImageCms
 
     from dreamstack.raster.color.profiles.icc_profile import ICCProfile

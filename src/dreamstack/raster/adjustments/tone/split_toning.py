@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Split toning function."""
 
 from __future__ import annotations

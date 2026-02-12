@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Threshold function."""
 
 from __future__ import annotations
@@ -33,9 +31,7 @@ def threshold(image: Image, level: int = 128) -> Image:
 
     if data.ndim == 3 and data.shape[2] >= 3:
         luminance = (
-            0.299 * data[:, :, 0]
-            + 0.587 * data[:, :, 1]
-            + 0.114 * data[:, :, 2]
+            0.299 * data[:, :, 0] + 0.587 * data[:, :, 1] + 0.114 * data[:, :, 2]
         )
     else:
         luminance = data[:, :, 0] if data.ndim == 3 else data

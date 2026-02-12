@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Text Layer
 ==============================
@@ -9,8 +7,6 @@ Text layer with editable text content.
 """
 
 from __future__ import annotations
-
-from typing import Optional
 
 import numpy as np
 from numpy.typing import NDArray
@@ -63,8 +59,8 @@ class TextLayer(LayerBase):
         self._line_height = 1.2
         self._alignment = "left"
         self._kerning = 0.0
-        self._cached_render: Optional[NDArray] = None
-        self._cached_bounds: Optional[Bounds] = None
+        self._cached_render: NDArray | None = None
+        self._cached_bounds: Bounds | None = None
 
     @property
     def text(self) -> str:

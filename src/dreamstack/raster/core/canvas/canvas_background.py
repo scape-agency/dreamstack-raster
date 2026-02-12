@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Canvas Background
 =====================================
@@ -11,7 +9,6 @@ Background settings for canvas.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Tuple
 
 
 @dataclass
@@ -27,6 +24,6 @@ class CanvasBackground:
     """
 
     type: str = "transparent"  # transparent, color, checker
-    color1: Tuple[int, int, int, int] = (255, 255, 255, 255)
-    color2: Tuple[int, int, int, int] = (204, 204, 204, 255)
+    color1: tuple[int, int, int, int] = (255, 255, 255, 255)
+    color2: tuple[int, int, int, int] = (204, 204, 204, 255)
     checker_size: int = 16

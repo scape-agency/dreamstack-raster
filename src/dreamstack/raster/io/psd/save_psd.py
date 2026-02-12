@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dreamstack Raster - Save PSD
 ============================
@@ -11,14 +9,14 @@ Save image as PSD file.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from dreamstack.raster.core.image import Image
 
 
 def save_psd(
-    image: Image, path: str | Path, layers: Optional[List] = None, **options
+    image: Image, path: str | Path, layers: list | None = None, **options
 ) -> None:
     """
     Save image as PSD file.
