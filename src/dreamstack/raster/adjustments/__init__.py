@@ -64,6 +64,16 @@ from dreamstack.raster.adjustments.tone import (
     split_toning,
     tone_curve,
 )
+from dreamstack.raster.adjustments.remap import (
+    RemapConfig,
+    auto_remap,
+    gamma_correction,
+    invert_values,
+    normalize_to_range,
+    remap_grayscale,
+    remap_values,
+    threshold_values,
+)
 
 __all__: list[str] = [
     # Basic
@@ -113,4 +123,13 @@ __all__: list[str] = [
     "sepia",
     "invert",
     "threshold",
+    # Remap
+    "remap_values",
+    "remap_grayscale",
+    "auto_remap",
+    "invert_values",
+    "threshold_values",
+    "normalize_to_range",
+    "gamma_correction",
+    "RemapConfig",
 ]

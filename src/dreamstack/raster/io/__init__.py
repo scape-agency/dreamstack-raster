@@ -10,6 +10,22 @@ File loading and saving for various image formats.
 
 from __future__ import annotations
 
+from dreamstack.raster.io.compress import (
+    CompressionConfig,
+    CompressionResult,
+    compress_image,
+    compress_to_size,
+    estimate_file_size,
+    optimize_for_web,
+)
+from dreamstack.raster.io.encoding import (
+    base64_to_image,
+    data_uri_to_image,
+    file_to_base64,
+    file_to_data_uri,
+    image_to_base64,
+    image_to_data_uri,
+)
 from dreamstack.raster.io.exr import load_exr, save_exr
 from dreamstack.raster.io.formats import (
     ImageFormat,
@@ -39,4 +55,18 @@ __all__: list[str] = [
     "save_exr",
     "read_metadata",
     "write_metadata",
+    # Compression
+    "compress_image",
+    "compress_to_size",
+    "estimate_file_size",
+    "optimize_for_web",
+    "CompressionConfig",
+    "CompressionResult",
+    # Encoding
+    "image_to_base64",
+    "image_to_data_uri",
+    "file_to_base64",
+    "file_to_data_uri",
+    "base64_to_image",
+    "data_uri_to_image",
 ]

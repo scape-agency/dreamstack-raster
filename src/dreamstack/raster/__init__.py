@@ -63,6 +63,7 @@ from dreamstack.raster import (
     core,
     drawing,
     effects,
+    extraction,
     filters,
     io,
     selection,
@@ -128,6 +129,18 @@ from dreamstack.raster.transform import (
     rotate,
 )
 
+# Import | Object extraction
+from dreamstack.raster.extraction import (
+    ExtractedObject,
+    ExtractionConfig,
+    ObjectExtractor,
+)
+from dreamstack.raster.extraction.pipeline import (
+    BatchPipeline,
+    BatchResult,
+    PipelineConfig,
+)
+
 # =============================================================================
 # Variables
 # =============================================================================
@@ -164,6 +177,7 @@ __all__: list[str] = [
     "effects",
     "compositing",
     "analysis",
+    "extraction",
     # IO convenience
     "load_image",
     "save_image",
@@ -193,6 +207,13 @@ __all__: list[str] = [
     "blend_multiply",
     "blend_screen",
     "blend_overlay",
+    # Extraction convenience
+    "ObjectExtractor",
+    "ExtractedObject",
+    "ExtractionConfig",
+    "BatchPipeline",
+    "BatchResult",
+    "PipelineConfig",
 ]
 
 
@@ -228,6 +249,7 @@ def get_info() -> dict:
             "effects",
             "compositing",
             "analysis",
+            "extraction",
         ],
         "features": {
             "formats_supported": "25+",
