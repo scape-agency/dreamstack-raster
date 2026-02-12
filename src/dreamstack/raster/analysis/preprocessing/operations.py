@@ -152,9 +152,7 @@ def binarize(
         adaptive_type = cv2.THRESH_BINARY
 
     if method == "otsu":
-        _, binary = cv2.threshold(
-            image, 0, 255, thresh_type + cv2.THRESH_OTSU
-        )
+        _, binary = cv2.threshold(image, 0, 255, thresh_type + cv2.THRESH_OTSU)
     elif method == "simple":
         _, binary = cv2.threshold(image, threshold, 255, thresh_type)
     elif method == "adaptive_mean":
@@ -276,7 +274,9 @@ def morphological_open(
     kernel = cv2.getStructuringElement(
         cv2.MORPH_ELLIPSE, (kernel_size, kernel_size)
     )
-    return cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel, iterations=iterations)
+    return cv2.morphologyEx(
+        image, cv2.MORPH_OPEN, kernel, iterations=iterations
+    )
 
 
 def morphological_close(
@@ -305,7 +305,9 @@ def morphological_close(
     kernel = cv2.getStructuringElement(
         cv2.MORPH_ELLIPSE, (kernel_size, kernel_size)
     )
-    return cv2.morphologyEx(image, cv2.MORPH_CLOSE, kernel, iterations=iterations)
+    return cv2.morphologyEx(
+        image, cv2.MORPH_CLOSE, kernel, iterations=iterations
+    )
 
 
 def preprocess_for_contours(

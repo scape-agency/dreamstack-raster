@@ -351,5 +351,6 @@ class ImagePreprocessor:
         >>> smooth_processor = processor.with_config(blur_kernel_size=(21, 21))
         """
         from dataclasses import replace
+
         new_config = replace(self.config, **kwargs)
         return ImagePreprocessor(new_config)
