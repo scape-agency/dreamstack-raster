@@ -45,8 +45,27 @@ from dreamstack.raster.analysis.depth import (
     colorize_depth,
     estimate_depth,
     estimate_depth_batch,
+    load_depth_npy,
     normalize_depth,
+    normalize_depth_advanced,
     save_depth_image,
+    save_depth_npy,
+    save_depth_ply,
+)
+
+# Face detection and alignment
+from dreamstack.raster.analysis.face import (
+    AlignmentResult,
+    FaceBbox,
+    FaceLandmarks,
+    align_eyes,
+    apply_transform,
+    compute_inverse_transform,
+    crop_face,
+    detect_face,
+    detect_faces,
+    detect_landmarks,
+    normalize_face_scale,
 )
 from dreamstack.raster.analysis.histogram import (
     cumulative_histogram,
@@ -135,6 +154,22 @@ __all__: list[str] = [
     "estimate_depth",
     "estimate_depth_batch",
     "normalize_depth",
+    "normalize_depth_advanced",
     "colorize_depth",
     "save_depth_image",
+    "save_depth_ply",
+    "save_depth_npy",
+    "load_depth_npy",
+    # Face Detection & Alignment
+    "FaceBbox",
+    "FaceLandmarks",
+    "AlignmentResult",
+    "detect_face",
+    "detect_faces",
+    "detect_landmarks",
+    "crop_face",
+    "align_eyes",
+    "normalize_face_scale",
+    "compute_inverse_transform",
+    "apply_transform",
 ]

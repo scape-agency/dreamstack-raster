@@ -31,6 +31,13 @@ from dreamstack.raster.adjustments.black_white import (
     threshold,
     tritone,
 )
+from dreamstack.raster.adjustments.clamp import (
+    auto_gamma,
+    clamp,
+    clamp_normalized,
+    gamma_rgb,
+)
+from dreamstack.raster.adjustments.clamp import gamma as gamma_per_channel
 from dreamstack.raster.adjustments.color_balance import (
     color_balance,
     hue_saturation,
@@ -132,4 +139,10 @@ __all__: list[str] = [
     "normalize_to_range",
     "gamma_correction",
     "RemapConfig",
+    # Clamp & Gamma
+    "clamp",
+    "clamp_normalized",
+    "gamma_per_channel",
+    "gamma_rgb",
+    "auto_gamma",
 ]

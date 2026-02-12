@@ -23,11 +23,32 @@ from dreamstack.raster.compositing.blend import (
     composite,
     merge_layers,
 )
+from dreamstack.raster.compositing.layers import (
+    apply_alpha_from_mask,
+    composite_with_mask,
+    generate_layer_combinations,
+    generate_layer_stack_from_dirs,
+    stack_layers,
+)
 from dreamstack.raster.compositing.mask import (
     apply_mask,
     channel_mask,
     create_clipping_mask,
     luminosity_mask,
+)
+from dreamstack.raster.compositing.merge import (
+    MergeMode,
+    add,
+    average,
+    difference,
+    divide,
+    maximum,
+    merge,
+    minimum,
+    multiply,
+    over,
+    screen,
+    subtract,
 )
 
 __all__: list[str] = [
@@ -47,4 +68,23 @@ __all__: list[str] = [
     "create_clipping_mask",
     "luminosity_mask",
     "channel_mask",
+    # Layers
+    "stack_layers",
+    "generate_layer_combinations",
+    "generate_layer_stack_from_dirs",
+    "composite_with_mask",
+    "apply_alpha_from_mask",
+    # Merge Operations
+    "MergeMode",
+    "add",
+    "subtract",
+    "multiply",
+    "divide",
+    "screen",
+    "difference",
+    "average",
+    "maximum",
+    "minimum",
+    "merge",
+    "over",
 ]

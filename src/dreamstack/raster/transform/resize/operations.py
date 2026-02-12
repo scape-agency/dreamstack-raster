@@ -11,6 +11,7 @@ Comprehensive image resizing and scaling utilities.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from enum import Enum
 from typing import TYPE_CHECKING, Literal
 
 import numpy as np
@@ -20,6 +21,22 @@ if TYPE_CHECKING:
 
 
 Interpolation = Literal["nearest", "linear", "cubic", "lanczos", "area"]
+
+
+class ResizeMethod(str, Enum):
+    """Resize fitting method.
+    
+    Attributes:
+        STRETCH: Stretch to exact dimensions (distorts aspect ratio).
+        FIT: Scale to fit within dimensions (maintains aspect).
+        FILL: Scale to fill dimensions, cropping if needed.
+        PAD: Scale to fit and pad to exact dimensions.
+    """
+    
+    STRETCH = "stretch"
+    FIT = "fit"
+    FILL = "fill"
+    PAD = "pad"
 
 
 @dataclass
@@ -74,6 +91,104 @@ def resize(
     
     interp = _get_cv2_interpolation(interpolation)
     return cv2.resize(image, size, interpolation=interp)
+
+
+def scale(
+    image: NDArray[np.uint8],
+    factor: float,
+    *,
+    interpolation: Interpolation = "lanczos",
+) -> NDArray[np.uint8]:
+    """Scale image by a factor.
+    
+    Args:
+        image: Input image.
+        factor: Scale factor (e.g., 0.5 for half size, 2.0 for double).
+        interpolation: Interpolation method.
+    
+    Returns:
+        Scaled image.
+    
+    Example:
+        >>> half = scale(image, 0.5)
+        >>> double = scale(image, 2.0)
+    """
+    h, w = image.shape[:2]
+    new_size = (int(w * factor), int(h * factor))
+    return resize(image, new_size, interpolation=interpolation)
+
+
+def fit(
+    image: NDArray[np.uint8],
+    max_size: tuple[int, int],
+    *,
+    interpolation: Interpolation = "lanczos",
+) -> NDArray[np.uint8]:
+    """Fit image within maximum dimensions, preserving aspect ratio.
+    
+    The image is scaled down to fit entirely within the given dimensions.
+    Will not upscale smaller images.
+    
+    Args:
+        image: Input image.
+        max_size: Maximum (width, height).
+        interpolation: Interpolation method.
+    
+    Returns:
+        Fitted image.
+    
+    Example:
+        >>> fitted = fit(image, (1920, 1080))
+    """
+    h, w = image.shape[:2]
+    max_w, max_h = max_size
+    
+    if w <= max_w and h <= max_h:
+        return image.copy()
+    
+    scale_factor = min(max_w / w, max_h / h)
+    new_size = (int(w * scale_factor), int(h * scale_factor))
+    
+    return resize(image, new_size, interpolation=interpolation)
+
+
+def fill(
+    image: NDArray[np.uint8],
+    target_size: tuple[int, int],
+    *,
+    interpolation: Interpolation = "lanczos",
+) -> NDArray[np.uint8]:
+    """Fill target dimensions, cropping if necessary.
+    
+    The image is scaled to completely fill the target area,
+    then center-cropped to exact dimensions.
+    
+    Args:
+        image: Input image.
+        target_size: Target (width, height).
+        interpolation: Interpolation method.
+    
+    Returns:
+        Filled and cropped image.
+    
+    Example:
+        >>> filled = fill(image, (1920, 1080))
+    """
+    h, w = image.shape[:2]
+    target_w, target_h = target_size
+    
+    # Scale to fill (larger dimension matches, may overflow)
+    scale_factor = max(target_w / w, target_h / h)
+    scaled_w = int(w * scale_factor)
+    scaled_h = int(h * scale_factor)
+    
+    scaled = resize(image, (scaled_w, scaled_h), interpolation=interpolation)
+    
+    # Center crop
+    x_offset = (scaled_w - target_w) // 2
+    y_offset = (scaled_h - target_h) // 2
+    
+    return scaled[y_offset:y_offset + target_h, x_offset:x_offset + target_w]
 
 
 def resize_to_width(

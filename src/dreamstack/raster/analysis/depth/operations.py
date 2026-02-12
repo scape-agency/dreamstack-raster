@@ -312,7 +312,6 @@ def save_depth_ply(
         >>> save_depth_ply(depth, image, "scene.ply", z_multiplier=0.5)
     """
     import cv2
-    from PIL import Image as PILImage
     
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)

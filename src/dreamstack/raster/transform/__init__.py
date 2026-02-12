@@ -27,11 +27,27 @@ from dreamstack.raster.transform.perspective import (
 )
 from dreamstack.raster.transform.resize import (
     ResizeMethod,
+    downscale,
     fill,
     fit,
+    fit_to_dimensions,
+    pad_to_aspect,
     resize,
+    resize_for_ai,
+    resize_to_aspect,
+    resize_to_width,
     scale,
     thumbnail,
+)
+from dreamstack.raster.transform.upscale import (
+    BaseUpscaler,
+    ImageUpscaler,
+    UpscaleConfig,
+    upscale_2x,
+    upscale_4x,
+    upscale_image,
+    upscale_lanczos,
+    upscale_to_size,
 )
 from dreamstack.raster.transform.rotate import (
     arbitrary_rotate,
@@ -51,6 +67,21 @@ __all__: list[str] = [
     "fill",
     "thumbnail",
     "ResizeMethod",
+    "resize_to_width",
+    "resize_to_aspect",
+    "resize_for_ai",
+    "fit_to_dimensions",
+    "downscale",
+    "pad_to_aspect",
+    # Upscale
+    "BaseUpscaler",
+    "ImageUpscaler",
+    "UpscaleConfig",
+    "upscale_lanczos",
+    "upscale_image",
+    "upscale_to_size",
+    "upscale_2x",
+    "upscale_4x",
     # Rotate
     "rotate",
     "rotate_90",

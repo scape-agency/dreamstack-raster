@@ -20,8 +20,12 @@ from dreamstack.raster.analysis.depth.operations import (
     colorize_depth,
     estimate_depth,
     estimate_depth_batch,
+    load_depth_npy,
     normalize_depth,
+    normalize_depth_advanced,
     save_depth_image,
+    save_depth_npy,
+    save_depth_ply,
 )
 
 __all__: list[str] = [
@@ -33,6 +37,10 @@ __all__: list[str] = [
     "estimate_depth",
     "estimate_depth_batch",
     "normalize_depth",
+    "normalize_depth_advanced",
     "colorize_depth",
     "save_depth_image",
+    "save_depth_ply",
+    "save_depth_npy",
+    "load_depth_npy",
 ]

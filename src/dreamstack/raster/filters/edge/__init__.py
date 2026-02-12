@@ -10,7 +10,7 @@ Edge detection and enhancement filters.
 
 from __future__ import annotations
 
-from dreamstack.raster.filters.edge.canny import canny
+from dreamstack.raster.filters.edge.canny import canny, canny_auto
 from dreamstack.raster.filters.edge.edge_detect import edge_detect
 from dreamstack.raster.filters.edge.emboss import emboss
 from dreamstack.raster.filters.edge.find_edges import find_edges
@@ -26,6 +26,7 @@ __all__: list[str] = [
     "edge_detect",
     "sobel",
     "canny",
+    "canny_auto",
     "laplacian",
     "prewitt",
     "scharr",

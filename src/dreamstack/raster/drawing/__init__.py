@@ -25,6 +25,19 @@ from dreamstack.raster.drawing.gradient import (
     linear_gradient,
     radial_gradient,
 )
+from dreamstack.raster.drawing.patterns import (
+    PatternConfig,
+    checker,
+    checker_fast,
+    constant,
+    gaussian_noise,
+    grid,
+    noise,
+    perlin_noise,
+    solid,
+    stripes,
+    transparency_checker,
+)
 from dreamstack.raster.drawing.shapes import (
     arrow,
     ellipse,
@@ -62,4 +75,16 @@ __all__: list[str] = [
     "angular_gradient",
     "diamond_gradient",
     "GradientStop",
+    # Patterns
+    "constant",
+    "solid",
+    "checker",
+    "checker_fast",
+    "transparency_checker",
+    "noise",
+    "gaussian_noise",
+    "perlin_noise",
+    "stripes",
+    "grid",
+    "PatternConfig",
 ]
