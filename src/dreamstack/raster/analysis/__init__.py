@@ -24,11 +24,23 @@ from dreamstack.raster.analysis.analysis import (
 
 # Contour detection
 from dreamstack.raster.analysis.contour import (
+    ActiveContourConfig,
+    ActiveContourResult,
     ContourDetector,
     ContourInfo,
     DetectionConfig,
+    active_contour,
     analyze_contours,
     approximate_contour,
+    contour_area,
+    contour_centroid,
+    contour_perimeter,
+    contour_to_mask,
+    create_circular_contour,
+    create_elliptical_contour,
+    create_rectangular_contour,
+    draw_contour,
+    extract_contour_region,
     filter_by_area,
     find_contours,
     find_largest_contour,
@@ -57,11 +69,7 @@ from dreamstack.raster.analysis.depth import (
 from dreamstack.raster.analysis.face import (
     AlignmentResult,
     FaceBbox,
-    FaceLandmarks,
     align_eyes,
-    apply_transform,
-    compute_inverse_transform,
-    crop_face,
     detect_face,
     detect_faces,
     detect_landmarks,
@@ -73,6 +81,19 @@ from dreamstack.raster.analysis.histogram import (
     histogram_luminosity,
     histogram_rgb,
     histogram_stats,
+)
+
+# Template matching
+from dreamstack.raster.analysis.matching import (
+    MatchMethod,
+    MatchResult,
+    MultiMatchResult,
+    create_template_mask,
+    draw_matches,
+    find_pattern,
+    highlight_match,
+    match_template,
+    match_template_multi,
 )
 from dreamstack.raster.analysis.measure import (
     color_sampler,
@@ -129,6 +150,29 @@ __all__: list[str] = [
     "find_largest_contour",
     "approximate_contour",
     "scale_contour",
+    # Active Contour (Snakes)
+    "ActiveContourConfig",
+    "ActiveContourResult",
+    "active_contour",
+    "create_circular_contour",
+    "create_elliptical_contour",
+    "create_rectangular_contour",
+    "draw_contour",
+    "contour_to_mask",
+    "extract_contour_region",
+    "contour_area",
+    "contour_perimeter",
+    "contour_centroid",
+    # Template Matching
+    "MatchMethod",
+    "MatchResult",
+    "MultiMatchResult",
+    "match_template",
+    "match_template_multi",
+    "draw_matches",
+    "highlight_match",
+    "create_template_mask",
+    "find_pattern",
     # Preprocessing
     "PreprocessingConfig",
     "ImagePreprocessor",

@@ -66,6 +66,7 @@ from dreamstack.raster import (
     extraction,
     filters,
     io,
+    ml,
     selection,
     transform,
 )
@@ -108,6 +109,18 @@ from dreamstack.raster.core import (
     Pixel,
 )
 
+# Import | Object extraction
+from dreamstack.raster.extraction import (
+    ExtractedObject,
+    ExtractionConfig,
+    ObjectExtractor,
+)
+from dreamstack.raster.extraction.pipeline import (
+    BatchPipeline,
+    BatchResult,
+    PipelineConfig,
+)
+
 # Import | Common filter functions
 from dreamstack.raster.filters import (
     box_blur,
@@ -127,18 +140,6 @@ from dreamstack.raster.transform import (
     flip_vertical,
     resize,
     rotate,
-)
-
-# Import | Object extraction
-from dreamstack.raster.extraction import (
-    ExtractedObject,
-    ExtractionConfig,
-    ObjectExtractor,
-)
-from dreamstack.raster.extraction.pipeline import (
-    BatchPipeline,
-    BatchResult,
-    PipelineConfig,
 )
 
 # =============================================================================

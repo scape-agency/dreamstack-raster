@@ -7,7 +7,7 @@
 
 """
 Dreamstack Raster - Utils Module
-=================================
+================================
 
 This module provides utility functions for the Dreamstack Raster package.
 

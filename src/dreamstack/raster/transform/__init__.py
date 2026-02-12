@@ -39,6 +39,28 @@ from dreamstack.raster.transform.resize import (
     scale,
     thumbnail,
 )
+from dreamstack.raster.transform.rotate import (
+    arbitrary_rotate,
+    flip_both,
+    flip_horizontal,
+    flip_vertical,
+    get_rotation_matrix,
+    random_rotate,
+    rotate,
+    rotate_90,
+    rotate_180,
+    rotate_270,
+    rotate_point,
+    rotate_points,
+)
+from dreamstack.raster.transform.translate import (
+    apply_affine_matrix,
+    center_to_origin,
+    get_translation_matrix,
+    random_translate,
+    translate,
+    translate_percentage,
+)
 from dreamstack.raster.transform.upscale import (
     BaseUpscaler,
     ImageUpscaler,
@@ -48,15 +70,6 @@ from dreamstack.raster.transform.upscale import (
     upscale_image,
     upscale_lanczos,
     upscale_to_size,
-)
-from dreamstack.raster.transform.rotate import (
-    arbitrary_rotate,
-    flip_horizontal,
-    flip_vertical,
-    rotate,
-    rotate_90,
-    rotate_180,
-    rotate_270,
 )
 
 __all__: list[str] = [
@@ -89,7 +102,19 @@ __all__: list[str] = [
     "rotate_270",
     "flip_horizontal",
     "flip_vertical",
+    "flip_both",
     "arbitrary_rotate",
+    "random_rotate",
+    "get_rotation_matrix",
+    "rotate_point",
+    "rotate_points",
+    # Translate
+    "translate",
+    "translate_percentage",
+    "random_translate",
+    "center_to_origin",
+    "get_translation_matrix",
+    "apply_affine_matrix",
     # Crop
     "crop",
     "canvas_size",

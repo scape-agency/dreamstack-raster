@@ -330,13 +330,12 @@ def create_gradient_background(
         y, x = np.ogrid[:height, :width]
         center_x, center_y = width / 2, height / 2
         distance = np.sqrt((x - center_x) ** 2 + (y - center_y) ** 2)
-        max_distance = np.sqrt(center_x ** 2 + center_y ** 2)
+        max_distance = np.sqrt(center_x**2 + center_y**2)
         normalized = distance / max_distance
 
         for i in range(3):
             gradient[:, :, i] = (
-                edge_color[i] * normalized
-                + center_color[i] * (1 - normalized)
+                edge_color[i] * normalized + center_color[i] * (1 - normalized)
             ).astype(np.uint8)
 
     elif gradient_type == "linear_h":

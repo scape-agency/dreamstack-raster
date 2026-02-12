@@ -96,6 +96,15 @@ from dreamstack.raster.color.bridge import (
     rgb_list_to_arrays,
     rgb_to_array,
 )
+from dreamstack.raster.color.channels import (
+    channel_to_grayscale_rgb,
+    extract_channel,
+    extract_rgb_arrays,
+    isolate_channel,
+    merge_channels,
+    split_channels,
+    swap_channels,
+)
 
 # Import from submodules (now directories with __init__.py)
 from dreamstack.raster.color.convert import (
@@ -309,4 +318,14 @@ __all__: list[str] = [
     "CYAN",
     "MAGENTA",
     "TRANSPARENT",
+    # ==========================================================================
+    # Channel operations (for ML and image analysis)
+    # ==========================================================================
+    "split_channels",
+    "extract_channel",
+    "merge_channels",
+    "isolate_channel",
+    "extract_rgb_arrays",
+    "swap_channels",
+    "channel_to_grayscale_rgb",
 ]

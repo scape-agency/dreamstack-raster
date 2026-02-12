@@ -11,6 +11,20 @@ and object extraction from images.
 
 from __future__ import annotations
 
+from dreamstack.raster.analysis.contour.active_contour import (
+    ActiveContourConfig,
+    ActiveContourResult,
+    active_contour,
+    contour_area,
+    contour_centroid,
+    contour_perimeter,
+    contour_to_mask,
+    create_circular_contour,
+    create_elliptical_contour,
+    create_rectangular_contour,
+    draw_contour,
+    extract_contour_region,
+)
 from dreamstack.raster.analysis.contour.detector import (
     ContourDetector,
     DetectionConfig,
@@ -31,6 +45,8 @@ __all__: list[str] = [
     # Data Classes
     "ContourInfo",
     "DetectionConfig",
+    "ActiveContourConfig",
+    "ActiveContourResult",
     # Detector Class
     "ContourDetector",
     # Operations
@@ -42,4 +58,15 @@ __all__: list[str] = [
     "find_largest_contour",
     "approximate_contour",
     "scale_contour",
+    # Active Contour (Snakes)
+    "active_contour",
+    "create_circular_contour",
+    "create_elliptical_contour",
+    "create_rectangular_contour",
+    "draw_contour",
+    "contour_to_mask",
+    "extract_contour_region",
+    "contour_area",
+    "contour_perimeter",
+    "contour_centroid",
 ]
