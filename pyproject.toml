@@ -111,7 +111,7 @@ Pillow-heif = "^0.18.0"
 # =============================================================================
 # Documentation Dependencies
 # =============================================================================
-ruff = "^0.15.0"
+ruff = "^0.15.1"
 
 [tool.poetry.group.doc.dependencies]
 # sturnus-doc = { git = "https://github.com/starling-cloud/sturnus-doc.git", rev = "pro" }
