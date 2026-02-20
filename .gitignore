@@ -328,3 +328,5 @@ coverage.xml
 *.mo
 .DS_Store
 *.pt
+
+exa/childhood-app/images
