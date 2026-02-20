@@ -11,7 +11,7 @@ version = "0.0.1"
 description = "Dreamstack Raster"
 license = { text = "Proprietary" }
 readme = "README.md"
-requires-python = ">=3.12,<3.16"
+requires-python = ">=3.12,<3.14"
 authors = [{ name = "Scape Agency", email = "info@scape.agency" }]
 maintainers = [{ name = "Lars van Vianen", email = "lars@scape.agency" }]
 keywords = ["dreamstack", "raster"]
@@ -23,8 +23,6 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
-    "Programming Language :: Python :: 3.15",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dynamic = ["dependencies"]
@@ -64,7 +62,7 @@ priority = "supplemental"
 # =============================================================================
 
 [tool.poetry.dependencies]
-dreamstack = "^0.0.1"
+dreamstack = { git = "https://github.com/scape-agency/dreamstack.git", rev = "dev" }
 dreamstack-color = { git = "https://github.com/scape-agency/dreamstack-color.git", rev = "dev" }
 
 # Core image processing
@@ -77,8 +75,8 @@ scipy = "^1.14.0"
 # Color management
 colour-science = { version = "^0.4.0", python = ">=3.12,<3.15" }
 
-# Raw image processing
-rawpy = "^0.22.0"
+# Raw image processing (optional - no Python 3.13 wheels yet)
+rawpy = { version = "^0.22.0", optional = true, python = ">=3.12,<3.13" }
 
 # PSD file support
 psd-tools = "^1.10.0"
@@ -99,6 +97,23 @@ OpenEXR = "^3.2.0"
 
 # ICC color profiles
 Pillow-heif = "^0.18.0"
+
+# ML/Object Detection
+# Note: ultralytics will install torch automatically
+ultralytics = "^8.3.0"
+
+# AI Vision/Description
+chimp-openai = { git = "https://github.com/blue-chimp/chimp-openai.git", rev = "pro" }
+chimp-mistral = { git = "https://github.com/blue-chimp/chimp-mistral.git", rev = "pro" }
+
+# Advanced segmentation
+# Pin transformers to 4.44.x for groundingdino-py compatibility (has prebuilt wheels)
+transformers = ">=4.40.0,<4.50.0"
+groundingdino-py = "^0.4.0"
+segment-anything = "^1.0"
+
+[tool.poetry.extras]
+raw = ["rawpy"]
 
 # =============================================================================
 # Development Dependencies

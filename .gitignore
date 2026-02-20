@@ -327,3 +327,4 @@ coverage.xml
 # Translations
 *.mo
 .DS_Store
+*.pt
