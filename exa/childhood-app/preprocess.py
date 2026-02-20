@@ -484,15 +484,21 @@ def main() -> int:
     )
     parser.add_argument(
         "--segment-size",
-        type=int,
-        default=250,
-        help="Segment size in pixels (default: 250)",
+        type=str,
+        default="400x300",
+        help="Segment size WxH (default: 400x300)",
     )
     parser.add_argument(
         "--margin",
         type=int,
         default=50,
         help="Margin around cutouts (default: 50)",
+    )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Limit number of images to process",
     )
     parser.add_argument(
         "--no-effects",
@@ -544,6 +550,17 @@ def main() -> int:
         logger.error(f"Input directory not found: {args.input}")
         return 1
 
+    # Parse segment size (WxH format)
+    try:
+        seg_parts = args.segment_size.lower().split("x")
+        if len(seg_parts) == 2:
+            seg_w, seg_h = int(seg_parts[0]), int(seg_parts[1])
+        else:
+            seg_w = seg_h = int(seg_parts[0])
+    except ValueError:
+        logger.error(f"Invalid segment size format: {args.segment_size}")
+        return 1
+
     # Build configuration
     config = AppConfig(
         cutout=CutoutConfig(
@@ -551,7 +568,7 @@ def main() -> int:
             margin=args.margin,
         ),
         segment=SegmentConfig(
-            segment_size=(args.segment_size, args.segment_size),
+            segment_size=(seg_w, seg_h),
         ),
         effects=EffectConfig(
             drop_shadow=not args.no_shadow,
@@ -580,7 +597,13 @@ def main() -> int:
         logger.warning(f"No images found in {args.input}")
         return 0
 
-    logger.info(f"Found {total} images to process")
+    # Apply limit
+    if args.limit and args.limit < total:
+        images = images[: args.limit]
+        logger.info(f"Limited to {args.limit} of {total} images")
+        total = args.limit
+
+    logger.info(f"Processing {total} images")
 
     # Process images
     successful = 0
