@@ -47,9 +47,13 @@ def bevel_emboss(
 
     # Ensure BGRA
     if image.ndim == 2:
-        img = cv2.cvtColor(image, cv2.COLOR_GRAY2BGRA)  # pylint: disable=no-member
+        img = cv2.cvtColor(
+            image, cv2.COLOR_GRAY2BGRA
+        )  # pylint: disable=no-member
     elif image.shape[2] == 3:
-        img = cv2.cvtColor(image, cv2.COLOR_BGR2BGRA)  # pylint: disable=no-member
+        img = cv2.cvtColor(
+            image, cv2.COLOR_BGR2BGRA
+        )  # pylint: disable=no-member
     else:
         img = image.copy()
 
@@ -146,11 +150,15 @@ def _create_inner_bevel(
     if technique == BevelTechnique.SMOOTH:
         # Distance from edge
         for i in range(size):
-            eroded = cv2.erode(alpha, kernel, iterations=i + 1)  # pylint: disable=no-member
+            eroded = cv2.erode(
+                alpha, kernel, iterations=i + 1
+            )  # pylint: disable=no-member
             height = np.maximum(height, eroded * (i + 1) / size)
     else:
         # Chisel - hard edge
-        eroded = cv2.erode(alpha, kernel, iterations=size)  # pylint: disable=no-member
+        eroded = cv2.erode(
+            alpha, kernel, iterations=size
+        )  # pylint: disable=no-member
         height = eroded
 
     return height * alpha
@@ -167,11 +175,15 @@ def _create_outer_bevel(
 
     if technique == BevelTechnique.SMOOTH:
         for i in range(size):
-            dilated = cv2.dilate(alpha, kernel, iterations=i + 1)  # pylint: disable=no-member
+            dilated = cv2.dilate(
+                alpha, kernel, iterations=i + 1
+            )  # pylint: disable=no-member
             outside = dilated - alpha
             height = np.maximum(height, outside * (size - i) / size)
     else:
-        dilated = cv2.dilate(alpha, kernel, iterations=size)  # pylint: disable=no-member
+        dilated = cv2.dilate(
+            alpha, kernel, iterations=size
+        )  # pylint: disable=no-member
         height = dilated - alpha
 
     return height + alpha
