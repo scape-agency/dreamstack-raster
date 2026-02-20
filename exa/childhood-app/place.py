@@ -31,16 +31,81 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import math
 import random
 import sys
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Callable, Iterator
+from typing import Callable, Iterator, Literal
 
 from PIL import Image
 
 logger = logging.getLogger(__name__)
+
+# Placement order strategies
+PlacementOrder = Literal[
+    "sequential", "random", "center-out", "edge-in", "diagonal"
+]
+
+
+def _sort_segments_by_order(
+    segments: list[dict],
+    order: PlacementOrder,
+    cutout_size: tuple[int, int],
+) -> list[dict]:
+    """Sort segments according to placement order strategy.
+
+    Parameters
+    ----------
+    segments : list[dict]
+        List of segment metadata dictionaries.
+    order : PlacementOrder
+        Ordering strategy to apply.
+    cutout_size : tuple[int, int]
+        Size of the cutout (width, height) for calculating positions.
+
+    Returns
+    -------
+    list[dict]
+        Sorted/shuffled list of segments.
+    """
+    if order == "sequential":
+        return segments  # Keep original order
+
+    if order == "random":
+        shuffled = segments.copy()
+        random.shuffle(shuffled)
+        return shuffled
+
+    # Calculate center of cutout
+    center_x = cutout_size[0] / 2
+    center_y = cutout_size[1] / 2
+
+    def distance_from_center(seg: dict) -> float:
+        pos = seg.get("position", [0, 0])
+        size = seg.get("size", [0, 0])
+        seg_center_x = pos[0] + size[0] / 2
+        seg_center_y = pos[1] + size[1] / 2
+        return math.sqrt(
+            (seg_center_x - center_x) ** 2 + (seg_center_y - center_y) ** 2
+        )
+
+    if order == "center-out":
+        return sorted(segments, key=distance_from_center)
+
+    if order == "edge-in":
+        return sorted(segments, key=distance_from_center, reverse=True)
+
+    if order == "diagonal":
+        # Sort by sum of row and col (diagonal wave pattern)
+        def diagonal_key(seg: dict) -> tuple[int, int]:
+            pos = seg.get("position", [0, 0])
+            return (pos[0] + pos[1], pos[0])
+
+        return sorted(segments, key=diagonal_key)
+
+    return segments
 
 
 @dataclass
@@ -352,6 +417,9 @@ class Canvas:
             Callable[[PlacedItem, int, int], None] | None
         ) = None,
         save_each: str | Path | None = None,
+        jitter: int = 0,
+        order: PlacementOrder = "sequential",
+        animate: bool = False,
     ) -> list[PlacedItem]:
         """Place all segments of a cutout iteratively with delay.
 
@@ -377,6 +445,13 @@ class Canvas:
         save_each : str | Path | None
             If provided, save canvas after each segment placement.
             Use {n} in path for segment number (e.g., "frames/frame_{n}.png").
+        jitter : int
+            Random position jitter in pixels (±jitter for both x and y). Default 0.
+        order : PlacementOrder
+            Segment placement order strategy. Default "sequential".
+            Options: sequential, random, center-out, edge-in, diagonal.
+        animate : bool
+            Show live preview window during placement. Default False.
 
         Returns
         -------
@@ -385,8 +460,33 @@ class Canvas:
         """
         base_dir = Path(base_dir)
         segments = cutout_metadata.get("segments", [])
+        cutout_size = tuple(cutout_metadata.get("size", [0, 0]))
+
+        # Sort segments according to placement order
+        segments = _sort_segments_by_order(segments, order, cutout_size)
         total = len(segments)
         placed = []
+
+        # Setup animation display if requested
+        fig = None
+        ax = None
+        img_display = None
+        if animate:
+            try:
+                import matplotlib.pyplot as plt
+
+                plt.ion()  # Interactive mode
+                fig, ax = plt.subplots(figsize=(12, 5))
+                ax.set_title("Canvas Preview")
+                ax.axis("off")
+                # Show initial empty canvas
+                canvas_img = self.render()
+                img_display = ax.imshow(canvas_img)
+                fig.canvas.draw()
+                fig.canvas.flush_events()
+            except ImportError:
+                logger.warning("matplotlib not available, animation disabled")
+                animate = False
 
         for i, seg_data in enumerate(segments):
             seg_file = seg_data.get("file", "")
@@ -408,6 +508,11 @@ class Canvas:
             final_x = canvas_x + seg_x
             final_y = canvas_y + (cutout_height - seg_y - seg_height)
 
+            # Apply jitter
+            if jitter > 0:
+                final_x += random.randint(-jitter, jitter)
+                final_y += random.randint(-jitter, jitter)
+
             # Place segment
             item = self.place(seg_path, final_x, final_y)
             placed.append(item)
@@ -415,6 +520,16 @@ class Canvas:
             logger.info(
                 f"Placed segment {i + 1}/{total}: ({final_x}, {final_y})"
             )
+
+            # Update animation display
+            if animate and fig is not None:
+                import matplotlib.pyplot as plt
+
+                canvas_img = self.render()
+                img_display.set_data(canvas_img)
+                ax.set_title(f"Canvas Preview - Segment {i + 1}/{total}")
+                fig.canvas.draw()
+                fig.canvas.flush_events()
 
             # Callback
             if on_segment_placed:
@@ -429,6 +544,17 @@ class Canvas:
             # Delay before next segment
             if delay > 0 and i < total - 1:
                 time.sleep(delay)
+
+        # Keep animation window open briefly at the end
+        if animate and fig is not None:
+            import matplotlib.pyplot as plt
+
+            ax.set_title(f"Canvas Complete - {total} segments")
+            fig.canvas.draw()
+            fig.canvas.flush_events()
+            time.sleep(1.0)  # Show final result briefly
+            plt.ioff()
+            plt.close(fig)
 
         return placed
 
@@ -667,6 +793,24 @@ def main() -> int:
         metavar="PATTERN",
         help="Save canvas after each segment (use {n} for number, e.g., frames/frame_{n}.png)",
     )
+    parser.add_argument(
+        "--jitter",
+        type=int,
+        default=0,
+        help="Random position jitter in pixels (default: 0)",
+    )
+    parser.add_argument(
+        "--order",
+        type=str,
+        choices=["sequential", "random", "center-out", "edge-in", "diagonal"],
+        default="sequential",
+        help="Segment placement order (default: sequential)",
+    )
+    parser.add_argument(
+        "--animate",
+        action="store_true",
+        help="Show live preview window during placement",
+    )
 
     args = parser.parse_args()
 
@@ -721,6 +865,12 @@ def main() -> int:
         logger.info(
             f"Placing cutout '{cutout_data.get('label', 'unknown')}' at ({x}, {y})"
         )
+        if args.jitter > 0:
+            logger.info(f"  Jitter: ±{args.jitter}px")
+        if args.order != "sequential":
+            logger.info(f"  Order: {args.order}")
+        if args.animate:
+            logger.info("  Animation: enabled")
 
         canvas.place_cutout_segments(
             cutout_data,
@@ -729,6 +879,9 @@ def main() -> int:
             base_dir=base_dir,
             delay=args.delay,
             save_each=args.save_each,
+            jitter=args.jitter,
+            order=args.order,
+            animate=args.animate,
         )
 
     # Load from layout file

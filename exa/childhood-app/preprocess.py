@@ -489,6 +489,11 @@ def main() -> int:
         help="Segment size WxH (default: 400x300)",
     )
     parser.add_argument(
+        "--inbetweens",
+        action="store_true",
+        help="Generate horizontal and vertical in-between segments (~2x more)",
+    )
+    parser.add_argument(
         "--margin",
         type=int,
         default=50,
@@ -569,6 +574,7 @@ def main() -> int:
         ),
         segment=SegmentConfig(
             segment_size=(seg_w, seg_h),
+            generate_inbetweens=args.inbetweens,
         ),
         effects=EffectConfig(
             drop_shadow=not args.no_shadow,
@@ -587,6 +593,8 @@ def main() -> int:
     logger.info(f"Detection: {config.detection_backend}")
     logger.info(f"Cutout max size: {config.cutout.max_size}")
     logger.info(f"Segment size: {config.segment.segment_size}")
+    if config.segment.generate_inbetweens:
+        logger.info("In-between segments: ENABLED (H+V)")
     logger.info("=" * 50)
 
     # Find images

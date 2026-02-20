@@ -48,12 +48,16 @@ class SegmentConfig:
     empty_alpha_threshold : int
         Alpha value at or below which pixel is considered empty (padded).
         Only detects pixels we added as transparent padding. Default 0.
+    generate_inbetweens : bool
+        Generate horizontal and vertical in-between segments at half-positions.
+        Creates ~2x more segments. Default False.
     """
 
     segment_size: tuple[int, int] = (400, 300)
     randomize_offset: bool = True
     max_offset: int = 50
     empty_alpha_threshold: int = 0
+    generate_inbetweens: bool = False
 
 
 @dataclass
