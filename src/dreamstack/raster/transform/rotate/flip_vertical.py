@@ -22,4 +22,4 @@ def flip_vertical(
     NDArray[np.uint8]
         Vertically flipped image.
     """
-    return cv2.flip(image, 0)
+    return cv2.flip(image, 0)  # type: ignore[return-value]

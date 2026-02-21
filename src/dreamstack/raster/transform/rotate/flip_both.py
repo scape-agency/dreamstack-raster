@@ -25,4 +25,4 @@ def flip_both(
     NDArray[np.uint8]
         Flipped image.
     """
-    return cv2.flip(image, -1)
+    return cv2.flip(image, -1)  # type: ignore[return-value]

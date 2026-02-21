@@ -20,4 +20,4 @@ def rotate_270(image: NDArray[np.uint8]) -> NDArray[np.uint8]:
     NDArray[np.uint8]
         Rotated image with swapped dimensions.
     """
-    return cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
+    return cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)  # type: ignore[return-value]
