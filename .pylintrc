@@ -1,4 +1,9 @@
 [MASTER]
 ignore=bup,tmp
 init-hook='import sys; sys.path.append("src")'
+extension-pkg-allow-list=cv2
 # ignore=tests,exe,build,docs,migrations,bup,tmp
+
+[TYPECHECK]
+# cv2 dynamically loads its module at runtime
+generated-members=cv2.*

@@ -167,3 +167,18 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"] # Unused imports in __init__.py are re-exports
+
+
+# =============================================================================
+# Pyright/Pylance Configuration
+# =============================================================================
+
+[tool.pyright]
+pythonVersion = "3.12"
+typeCheckingMode = "basic"
+reportMissingTypeStubs = false
+reportUnknownMemberType = false
+reportUnknownVariableType = false
+# cv2 returns MatLike which is compatible with NDArray at runtime
+reportReturnType = false
+reportArgumentType = false
