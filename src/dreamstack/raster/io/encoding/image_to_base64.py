@@ -28,6 +28,7 @@ from typing import TYPE_CHECKING, Literal
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
 
@@ -55,6 +56,8 @@ def image_to_base64(
         >>> # Use for embedding in HTML/JSON
     """
     import cv2
+
+    # pylint: disable=import-outside-toplevel
     from PIL import Image
 
     # Convert BGR to RGB for PIL

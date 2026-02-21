@@ -27,6 +27,7 @@ import cv2
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -44,6 +45,7 @@ def trace_contour(
     Returns:
         Contour-traced image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import PixelData
 
     gray = image.to_grayscale().data

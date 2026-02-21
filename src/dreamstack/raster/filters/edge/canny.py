@@ -27,6 +27,7 @@ import cv2
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -50,6 +51,7 @@ def canny(
     Returns:
         Binary edge image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import PixelData
 
     # Convert to grayscale 8-bit
@@ -98,6 +100,7 @@ def canny_auto(
     Returns:
         Binary edge image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import PixelData
 
     # Convert to grayscale 8-bit

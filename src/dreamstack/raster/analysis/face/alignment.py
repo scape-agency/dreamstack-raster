@@ -28,6 +28,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
 

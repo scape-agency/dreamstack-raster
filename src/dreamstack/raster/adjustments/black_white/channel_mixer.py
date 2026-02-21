@@ -21,6 +21,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -48,6 +49,7 @@ def channel_mixer(
     Returns:
         Channel-mixed image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import PixelData
 
     if image.channels < 3:

@@ -336,6 +336,7 @@ class ContourDetector:
         >>> detector = ContourDetector()
         >>> strict_detector = detector.with_config(min_area_ratio=0.01)
         """
+        # pylint: disable=import-outside-toplevel
         from dataclasses import replace
 
         new_config = replace(self.config, **kwargs)

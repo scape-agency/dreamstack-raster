@@ -39,6 +39,7 @@ def read_metadata(path: str | Path) -> dict[str, Any]:
     Returns:
         Dictionary of metadata
     """
+    # pylint: disable=import-outside-toplevel
     from PIL import Image as PILImage
 
     path = Path(path)

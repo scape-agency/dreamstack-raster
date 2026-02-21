@@ -27,6 +27,7 @@ import cv2
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -40,6 +41,7 @@ def scharr(image: Image) -> Image:
     Returns:
         Edge image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import PixelData
 
     gray_img = image.to_grayscale() if image.channels > 1 else image

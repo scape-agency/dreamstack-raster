@@ -27,6 +27,7 @@ import cv2
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -45,6 +46,7 @@ def unsharp_mask(
     Returns:
         Sharpened image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import PixelData
 
     data = image.data.astype(np.float32)
@@ -52,8 +54,7 @@ def unsharp_mask(
 
     # Gaussian blur
     ksize = int(radius * 2) | 1
-    if ksize < 3:
-        ksize = 3
+    ksize = max(ksize, 3)
 
     if data.ndim == 3:
         blurred = np.zeros_like(data)

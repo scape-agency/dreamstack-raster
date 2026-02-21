@@ -27,6 +27,7 @@ import cv2
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -41,6 +42,7 @@ def box_blur(image: Image, radius: int = 5) -> Image:
     Returns:
         Blurred image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import PixelData
 
     ksize = radius * 2 + 1

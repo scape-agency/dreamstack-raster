@@ -28,6 +28,7 @@ from typing import TYPE_CHECKING, Literal
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
 
@@ -188,6 +189,8 @@ class DepthEstimator:
         """
         # pylint: disable=import-outside-toplevel
         import cv2
+
+        # pylint: disable=import-outside-toplevel
         from PIL import Image
 
         self._load_model()

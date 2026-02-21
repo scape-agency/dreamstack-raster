@@ -26,6 +26,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -41,6 +42,7 @@ def glitch(image: Image, amount: float = 10, seed: int | None = None) -> Image:
     Returns:
         Glitched image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import PixelData
 
     if seed is not None:

@@ -38,6 +38,7 @@ from dreamstack.raster.core.layer import (
 from dreamstack.raster.core.pixel import BitDepth, PixelData, PixelFormat
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -378,6 +379,7 @@ class Canvas:
         Returns:
             Image with flattened content
         """
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.core.image import Image, ImageMetadata
 
         rendered = self.render(include_background=True)

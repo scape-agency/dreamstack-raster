@@ -32,6 +32,7 @@ def set_dpi(path: str | Path, dpi: tuple[float, float]) -> None:
         path: Path to image file
         dpi: DPI as (x, y) tuple
     """
+    # pylint: disable=import-outside-toplevel
     from PIL import Image as PILImage
 
     path = Path(path)

@@ -35,8 +35,10 @@ from dreamstack.raster.detection.result import (
 )
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.detection.base import BaseDetector
 
 logger = logging.getLogger(__name__)

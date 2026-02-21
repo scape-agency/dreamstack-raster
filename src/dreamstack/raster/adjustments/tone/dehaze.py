@@ -21,6 +21,7 @@ import cv2
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -35,6 +36,7 @@ def dehaze(image: Image, amount: float = 50) -> Image:
     Returns:
         Dehazed image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import PixelData
 
     if image.channels < 3:

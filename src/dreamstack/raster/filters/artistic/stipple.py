@@ -27,6 +27,7 @@ import cv2
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -42,6 +43,7 @@ def stipple(image: Image, density: float = 0.3, dot_size: int = 2) -> Image:
     Returns:
         Stippled image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import PixelData
 
     gray = image.to_grayscale().data.astype(np.float32)

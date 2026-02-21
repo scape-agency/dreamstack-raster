@@ -27,6 +27,7 @@ import cv2
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -42,6 +43,7 @@ def contour(image: Image, levels: int = 8, edge_width: int = 1) -> Image:
     Returns:
         Contoured image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import PixelData
 
     gray = image.to_grayscale().data.astype(np.float32)

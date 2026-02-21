@@ -42,6 +42,7 @@ def convert_color(
 
     Args:
         color: Color array
+        # pylint: disable=import-outside-toplevel
         from_space: Source color space (rgb, hsv, hsl, lab, xyz, cmyk, gray)
         to_space: Target color space
         **kwargs: Additional arguments for conversion
@@ -49,6 +50,7 @@ def convert_color(
     Returns:
         Converted color array
     """
+    # pylint: disable=import-outside-toplevel
     from_space = from_space.lower()
     to_space = to_space.lower()
 

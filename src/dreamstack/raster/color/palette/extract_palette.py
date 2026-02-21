@@ -23,6 +23,7 @@ from dreamstack.raster.color.palette.color import Color
 from dreamstack.raster.color.palette.palette import Palette
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -43,6 +44,7 @@ def extract_palette(
         Extracted Palette
     """
     # pylint: disable=import-error,import-outside-toplevel
+    # pylint: disable=import-outside-toplevel
     from sklearn.cluster import KMeans  # type: ignore[import-not-found]
 
     # Get RGB data
@@ -135,6 +137,7 @@ def _octree_quantize(pixels: np.ndarray, num_colors: int) -> np.ndarray:
     # Full octree implementation is complex
     # For now, use k-means as fallback
     # pylint: disable=import-error,import-outside-toplevel
+    # pylint: disable=import-outside-toplevel
     from sklearn.cluster import KMeans  # type: ignore[import-not-found]
 
     kmeans = KMeans(n_clusters=num_colors, random_state=42, n_init=10)

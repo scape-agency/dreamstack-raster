@@ -27,13 +27,15 @@ from typing import TYPE_CHECKING
 from dreamstack.raster.io.formats import ImageFormat
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
 def save_with_pil(
-    image: Image, path: Path, format: ImageFormat, **options  # noqa: A002
+    image: Image, path: Path, image_format: ImageFormat, **options
 ) -> None:
     """Save image using PIL."""
+    # pylint: disable=import-outside-toplevel
     from PIL import Image as PILImage
 
     pil_image = image.to_pil()
@@ -41,13 +43,13 @@ def save_with_pil(
     # Format-specific handling
     save_kwargs = {}
 
-    if format == ImageFormat.PNG:
+    if image_format == ImageFormat.PNG:
         save_kwargs["format"] = "PNG"
         save_kwargs["compress_level"] = options.get("compression", 6)
         if options.get("optimize", False):
             save_kwargs["optimize"] = True
 
-    elif format == ImageFormat.JPEG:
+    elif image_format == ImageFormat.JPEG:
         save_kwargs["format"] = "JPEG"
         save_kwargs["quality"] = options.get("quality", 95)
         save_kwargs["optimize"] = options.get("optimize", True)
@@ -63,7 +65,7 @@ def save_with_pil(
                 background.paste(pil_image, mask=pil_image.split()[1])
             pil_image = background
 
-    elif format == ImageFormat.TIFF:
+    elif image_format == ImageFormat.TIFF:
         save_kwargs["format"] = "TIFF"
         compression_map = {
             "none": "raw",
@@ -76,14 +78,14 @@ def save_with_pil(
             compression, "tiff_lzw"
         )
 
-    elif format == ImageFormat.WEBP:
+    elif image_format == ImageFormat.WEBP:
         save_kwargs["format"] = "WEBP"
         if options.get("lossless", False):
             save_kwargs["lossless"] = True
         else:
             save_kwargs["quality"] = options.get("quality", 80)
 
-    elif format == ImageFormat.GIF:
+    elif image_format == ImageFormat.GIF:
         save_kwargs["format"] = "GIF"
         # Convert to palette mode
         if pil_image.mode != "P":
@@ -91,10 +93,10 @@ def save_with_pil(
                 "P", palette=getattr(PILImage, "ADAPTIVE"), colors=256
             )
 
-    elif format == ImageFormat.BMP:
+    elif image_format == ImageFormat.BMP:
         save_kwargs["format"] = "BMP"
 
-    elif format == ImageFormat.ICO:
+    elif image_format == ImageFormat.ICO:
         save_kwargs["format"] = "ICO"
         # ICO typically needs specific sizes
         sizes = options.get(
@@ -102,14 +104,15 @@ def save_with_pil(
         )
         save_kwargs["sizes"] = sizes
 
-    elif format in (ImageFormat.HEIC, ImageFormat.HEIF):
+    elif image_format in (ImageFormat.HEIC, ImageFormat.HEIF):
+        # pylint: disable=import-outside-toplevel
         from pillow_heif import register_heif_opener
 
         register_heif_opener()
         save_kwargs["format"] = "HEIF"
         save_kwargs["quality"] = options.get("quality", 80)
 
-    elif format == ImageFormat.AVIF:
+    elif image_format == ImageFormat.AVIF:
         save_kwargs["format"] = "AVIF"
         save_kwargs["quality"] = options.get("quality", 80)
 
@@ -118,7 +121,7 @@ def save_with_pil(
     save_kwargs["dpi"] = dpi
 
     # Add EXIF if present
-    if image.metadata.exif and format in (ImageFormat.JPEG, ImageFormat.TIFF):
+    if image.metadata.exif and image_format in (ImageFormat.JPEG, ImageFormat.TIFF):
         try:
             import piexif
 

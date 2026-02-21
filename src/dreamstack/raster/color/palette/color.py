@@ -210,6 +210,7 @@ class Color:
 
     def luminance(self) -> float:
         """Calculate perceptual luminance using dreamstack.color."""
+        # pylint: disable=import-outside-toplevel
         from dreamstack.color import luminance as ds_luminance
 
         return ds_luminance(self.to_dreamstack_rgb())

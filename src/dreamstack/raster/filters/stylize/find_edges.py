@@ -24,6 +24,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -37,6 +38,7 @@ def find_edges(image: Image) -> Image:
     Returns:
         Edge-detected image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.filters.edge.find_edges import (
         find_edges as edge_find_edges,
     )

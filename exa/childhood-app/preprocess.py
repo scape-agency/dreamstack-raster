@@ -62,6 +62,7 @@ from PIL import Image
 
 # Load environment variables
 try:
+    # pylint: disable=import-outside-toplevel
     from dotenv import load_dotenv  # type: ignore[assignment]
 except ImportError:
     # dotenv is optional

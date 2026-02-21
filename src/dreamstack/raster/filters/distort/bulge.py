@@ -24,6 +24,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -43,6 +44,7 @@ def bulge(
     Returns:
         Distorted image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.filters.distort.sphere import sphere
 
     return sphere(image, amount, center)

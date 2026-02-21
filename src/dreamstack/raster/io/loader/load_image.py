@@ -27,6 +27,7 @@ from typing import TYPE_CHECKING
 from dreamstack.raster.io.formats import ImageFormat, get_format_for_path
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -65,6 +66,7 @@ def load_image(
 
     # Load based on format
     if image_format == ImageFormat.PSD or image_format == ImageFormat.PSB:
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.io.psd import load_psd
 
         return load_psd(path, **options)
@@ -79,32 +81,38 @@ def load_image(
         ImageFormat.ORF,
         ImageFormat.RW2,
     ):
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.io.raw import load_raw
 
         return load_raw(path, **options)
 
     elif image_format == ImageFormat.EXR:
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.io.exr import load_exr
 
         return load_exr(path, **options)
 
     elif image_format == ImageFormat.HDR:
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.io.loader.load_hdr import load_hdr
 
         return load_hdr(path, **options)
 
     elif image_format == ImageFormat.SVG:
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.io.loader.load_svg import load_svg
 
         return load_svg(path, **options)
 
     elif image_format in (ImageFormat.HEIC, ImageFormat.HEIF):
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.io.loader.load_heif import load_heif
 
         return load_heif(path, **options)
 
     else:
         # Use PIL for standard formats
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.io.loader.load_with_pil import load_with_pil
 
         return load_with_pil(path, **options)

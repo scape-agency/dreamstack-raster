@@ -23,6 +23,7 @@ import numpy as np
 from PIL import Image, ImageEnhance, ImageFilter
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
 from modules.config import (

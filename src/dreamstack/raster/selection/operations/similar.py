@@ -19,6 +19,7 @@ import cv2
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
 from dreamstack.raster.selection.shapes.selection import Selection
@@ -49,7 +50,7 @@ def similar(
     if selection.is_empty:
         return selection.copy()
 
-    h, w = selection.mask.shape
+    _h, _w = selection.mask.shape  # noqa: F841
 
     # Get source image
     if image.ndim == 2:

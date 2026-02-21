@@ -24,6 +24,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -45,21 +46,29 @@ def edge_detect(
     Returns:
         Edge-detected image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.filters.edge.canny import canny
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.filters.edge.laplacian import laplacian
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.filters.edge.prewitt import prewitt
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.filters.edge.scharr import scharr
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.filters.edge.sobel import sobel
 
     if method == "sobel":
         return sobel(image)
-    elif method == "canny":
+    if method == "canny":
         return canny(image, threshold1, threshold2)
-    elif method == "laplacian":
+    if method == "laplacian":
         return laplacian(image)
-    elif method == "prewitt":
+    if method == "prewitt":
         return prewitt(image)
-    elif method == "scharr":
+    if method == "scharr":
         return scharr(image)
-    else:
-        raise ValueError(f"Unknown edge detection method: {method}")
+    raise ValueError(f"Unknown edge detection method: {method}")

@@ -49,6 +49,7 @@ class PreprocessingPipeline:
 
     def __call__(self, image: NDArray) -> NDArray:
         """Apply the pipeline to an image."""
+        # pylint: disable=import-outside-toplevel
         from ..preprocess import preprocess
 
         return preprocess(

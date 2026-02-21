@@ -39,7 +39,7 @@ class FormatCapabilities:
     Describes capabilities of an image format.
 
     Attributes:
-        format: The image format
+        image_format: The image format
         can_read: Whether reading is supported
         can_write: Whether writing is supported
         supports_alpha: Whether alpha channel is supported
@@ -51,7 +51,7 @@ class FormatCapabilities:
         lossy: Whether format uses lossy compression
     """
 
-    format: ImageFormat
+    image_format: ImageFormat
     can_read: bool = True
     can_write: bool = True
     supports_alpha: bool = True
@@ -74,7 +74,7 @@ def get_capabilities(image_format: ImageFormat) -> FormatCapabilities:
         Format capabilities
     """
     caps = FormatCapabilities(
-        format=image_format,
+        image_format=image_format,
         can_read=image_format in READ_FORMATS,
         can_write=image_format in WRITE_FORMATS,
         supports_alpha=image_format in ALPHA_FORMATS,

@@ -256,6 +256,8 @@ def active_contour(
     try:
         # pylint: disable=import-outside-toplevel
         from skimage.filters import gaussian
+
+        # pylint: disable=import-outside-toplevel
         from skimage.segmentation import active_contour as sk_active_contour
     except ImportError as exc:
         raise ImportError(

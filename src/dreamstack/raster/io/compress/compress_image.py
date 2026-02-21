@@ -27,6 +27,7 @@ from typing import TYPE_CHECKING, Literal
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
 
@@ -57,6 +58,8 @@ def compress_image(
         ...     f.write(data)
     """
     import cv2  # pylint: disable=import-outside-toplevel
+
+    # pylint: disable=import-outside-toplevel
     from PIL import Image  # pylint: disable=import-outside-toplevel
 
     # Convert BGR to RGB

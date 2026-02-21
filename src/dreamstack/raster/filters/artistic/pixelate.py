@@ -26,6 +26,7 @@ from typing import TYPE_CHECKING
 import cv2
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -40,6 +41,7 @@ def pixelate(image: Image, block_size: int = 10) -> Image:
     Returns:
         Pixelated image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import PixelData
 
     data = image.data

@@ -27,6 +27,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -38,6 +39,7 @@ def load_svg(
     **_options,  # noqa: ARG001
 ) -> Image:
     """Load and rasterize SVG."""
+    # pylint: disable=import-outside-toplevel
     from io import BytesIO
 
     import cairosvg

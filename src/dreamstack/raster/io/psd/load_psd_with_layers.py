@@ -26,15 +26,25 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.document import Document
 
 
 def load_psd_with_layers(psd, name: str) -> Document:
     """Load PSD preserving layer structure."""
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.bounds import Point
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.canvas import Canvas
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.document import Document
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.layer import BlendMode, Layer, LayerGroup
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import BitDepth, PixelData, PixelFormat
 
     # Create canvas

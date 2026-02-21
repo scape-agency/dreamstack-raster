@@ -19,11 +19,22 @@ print()
 
 # Test convert submodule
 try:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.convert import hsv_to_rgb, rgb_to_hsv
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.convert.convert_color import convert_color
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.convert.hsv_to_rgb import hsv_to_rgb
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.convert.lab_to_rgb import lab_to_rgb
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.convert.rgb_to_hsv import rgb_to_hsv
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.convert.rgb_to_lab import rgb_to_lab
 
     print("convert submodule: OK")
@@ -32,12 +43,27 @@ except Exception as e:
 
 # Test spaces submodule
 try:
-    from dreamstack.raster.color.spaces import (AdobeRGB, ColorSpace,
-                                                GammaType, sRGB)
+    # pylint: disable=import-outside-toplevel
+    from dreamstack.raster.color.spaces import (
+        AdobeRGB,
+        ColorSpace,
+        GammaType,
+        sRGB,
+    )
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.spaces.color_space import ColorSpace
-    from dreamstack.raster.color.spaces.color_space_instances import (AdobeRGB,
-                                                                      sRGB)
+
+    # pylint: disable=import-outside-toplevel
+    from dreamstack.raster.color.spaces.color_space_instances import (
+        AdobeRGB,
+        sRGB,
+    )
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.spaces.gamma_type import GammaType
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.spaces.get_color_space import get_color_space
 
     print("spaces submodule: OK")
@@ -46,11 +72,19 @@ except Exception as e:
 
 # Test profiles submodule
 try:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.profiles import ICCProfile, RenderingIntent
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.profiles.icc_profile import ICCProfile
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.profiles.load_profile import load_profile
-    from dreamstack.raster.color.profiles.rendering_intent import \
-        RenderingIntent
+
+    # pylint: disable=import-outside-toplevel
+    from dreamstack.raster.color.profiles.rendering_intent import (
+        RenderingIntent,
+    )
 
     print("profiles submodule: OK")
 except Exception as e:
@@ -58,10 +92,19 @@ except Exception as e:
 
 # Test palette submodule
 try:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.palette import BLACK, WHITE, Color, Palette
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.palette.color import Color
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.palette.color_presets import BLACK, WHITE
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.palette.create_gradient import create_gradient
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.palette.palette import Palette
 
     print("palette submodule: OK")
@@ -70,24 +113,60 @@ except Exception as e:
 
 # Test main color __init__
 try:
-    from dreamstack.raster.color import (ACES, ACES_WP, BLACK, BLUE, CYAN, D50,
-                                         D65, DCI_P3, GREEN, MAGENTA, RED,
-                                         TRANSPARENT, WHITE, YELLOW, ACEScg,
-                                         AdobeRGB, Color, ColorSpace,
-                                         ColorSpaceType, DisplayP3, GammaType,
-                                         ICCProfile, Palette, ProfileClass,
-                                         ProPhotoRGB, Rec709, Rec2020,
-                                         RenderingIntent, cmyk_to_rgb,
-                                         convert_color, convert_color_space,
-                                         convert_profile, create_gradient,
-                                         embed_profile, get_color_space,
-                                         get_profile_info, get_system_profiles,
-                                         gray_to_rgb, hsl_to_rgb, hsv_to_rgb,
-                                         lab_to_rgb, list_color_spaces,
-                                         load_profile, rgb_to_cmyk,
-                                         rgb_to_gray, rgb_to_hsl, rgb_to_hsv,
-                                         rgb_to_lab, rgb_to_xyz, sRGB,
-                                         xyz_to_rgb)
+    # pylint: disable=import-outside-toplevel
+    from dreamstack.raster.color import (
+        ACES,
+        ACES_WP,
+        BLACK,
+        BLUE,
+        CYAN,
+        D50,
+        D65,
+        DCI_P3,
+        GREEN,
+        MAGENTA,
+        RED,
+        TRANSPARENT,
+        WHITE,
+        YELLOW,
+        ACEScg,
+        AdobeRGB,
+        Color,
+        ColorSpace,
+        ColorSpaceType,
+        DisplayP3,
+        GammaType,
+        ICCProfile,
+        Palette,
+        ProfileClass,
+        ProPhotoRGB,
+        Rec709,
+        Rec2020,
+        RenderingIntent,
+        cmyk_to_rgb,
+        convert_color,
+        convert_color_space,
+        convert_profile,
+        create_gradient,
+        embed_profile,
+        get_color_space,
+        get_profile_info,
+        get_system_profiles,
+        gray_to_rgb,
+        hsl_to_rgb,
+        hsv_to_rgb,
+        lab_to_rgb,
+        list_color_spaces,
+        load_profile,
+        rgb_to_cmyk,
+        rgb_to_gray,
+        rgb_to_hsl,
+        rgb_to_hsv,
+        rgb_to_lab,
+        rgb_to_xyz,
+        sRGB,
+        xyz_to_rgb,
+    )
 
     print("main color __init__: OK")
 except Exception as e:

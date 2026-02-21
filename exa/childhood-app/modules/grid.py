@@ -21,6 +21,7 @@ import numpy as np
 from PIL import Image
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
 from modules.config import SegmentConfig

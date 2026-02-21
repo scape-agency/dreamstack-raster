@@ -21,6 +21,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 from dreamstack.raster.adjustments.basic._color_utils import (
@@ -40,6 +41,7 @@ def vibrance(image: Image, amount: float = 0) -> Image:
     Returns:
         Adjusted image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import PixelData
 
     if image.channels < 3:

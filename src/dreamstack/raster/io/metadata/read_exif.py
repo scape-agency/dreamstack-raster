@@ -84,6 +84,7 @@ def read_exif(path: str | Path) -> dict[str, Any]:
 
 def _read_exif_pil(path: Path) -> dict[str, Any]:
     """Read EXIF using PIL fallback."""
+    # pylint: disable=import-outside-toplevel
     from PIL import Image as PILImage
     from PIL.ExifTags import TAGS
 

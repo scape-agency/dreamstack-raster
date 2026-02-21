@@ -435,6 +435,7 @@ class BatchPipeline:
         BatchPipeline
             New pipeline with updated config.
         """
+        # pylint: disable=import-outside-toplevel
         from dataclasses import replace
 
         new_config = replace(self.config, **kwargs)

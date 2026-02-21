@@ -37,6 +37,7 @@ from dreamstack.raster.detection.result import (
 )
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
 logger = logging.getLogger(__name__)

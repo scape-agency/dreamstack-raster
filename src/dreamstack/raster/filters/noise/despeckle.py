@@ -24,6 +24,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -37,6 +38,7 @@ def despeckle(image: Image) -> Image:
     Returns:
         Despeckled image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.filters.noise.median_filter import median_filter
 
     return median_filter(image, size=3)

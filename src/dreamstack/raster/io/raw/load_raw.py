@@ -25,6 +25,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -60,7 +61,10 @@ def load_raw(
     """
     import rawpy
 
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image, ImageMetadata
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import BitDepth, PixelData, PixelFormat
 
     path = Path(path)

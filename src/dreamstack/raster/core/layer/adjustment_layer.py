@@ -100,6 +100,7 @@ class AdjustmentLayer(LayerBase):
         Returns:
             Adjusted pixel data
         """
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.adjustments import apply_adjustment
 
         result = apply_adjustment(

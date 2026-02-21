@@ -27,6 +27,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -37,7 +38,10 @@ def load_hdr(
     """Load HDR/Radiance image."""
     import imageio
 
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image, ImageMetadata
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import BitDepth, PixelData, PixelFormat
 
     data = imageio.imread(path, format="HDR-FI")

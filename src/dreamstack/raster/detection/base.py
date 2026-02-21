@@ -25,9 +25,14 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     import numpy as np
+
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.detection.config import DetectionConfig
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.detection.result import ImageDetectionResult
 
 

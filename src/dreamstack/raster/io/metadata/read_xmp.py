@@ -37,6 +37,7 @@ def read_xmp(path: str | Path) -> dict[str, Any]:
     """
     import xml.etree.ElementTree as ET
 
+    # pylint: disable=import-outside-toplevel
     from PIL import Image as PILImage
 
     path = Path(path)

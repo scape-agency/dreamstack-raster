@@ -31,6 +31,7 @@ def strip_metadata(path: str | Path) -> None:
     Args:
         path: Path to image file
     """
+    # pylint: disable=import-outside-toplevel
     from PIL import Image as PILImage
 
     path = Path(path)

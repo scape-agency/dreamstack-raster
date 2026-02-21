@@ -30,6 +30,7 @@ from dreamstack.raster.io.batch.batch_config import BatchConfig
 from dreamstack.raster.io.batch.batch_result import BatchResult
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
 

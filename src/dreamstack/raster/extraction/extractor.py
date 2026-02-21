@@ -480,6 +480,7 @@ class ObjectExtractor:
         >>> extractor = ObjectExtractor()
         >>> alpha_extractor = extractor.with_config(with_alpha=True)
         """
+        # pylint: disable=import-outside-toplevel
         from dataclasses import (
             replace,
         )  # pylint: disable=import-outside-toplevel

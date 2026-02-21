@@ -27,6 +27,7 @@ import cv2
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -41,6 +42,7 @@ def median_filter(image: Image, size: int = 3) -> Image:
     Returns:
         Filtered image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import PixelData
 
     size = size | 1  # Ensure odd

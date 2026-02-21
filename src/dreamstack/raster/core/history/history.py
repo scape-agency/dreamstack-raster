@@ -28,6 +28,7 @@ from dreamstack.raster.core.history.history_action import HistoryAction
 from dreamstack.raster.core.history.history_state import HistoryState
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.document import Document
 
 

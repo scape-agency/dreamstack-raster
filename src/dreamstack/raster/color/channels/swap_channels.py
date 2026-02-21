@@ -25,6 +25,7 @@ ChannelName = Literal["red", "green", "blue", "alpha", "r", "g", "b", "a"]
 
 def swap_channels(
     image: NDArray[np.uint8],
+    # pylint: disable=import-outside-toplevel
     from_channel: int | ChannelName,
     to_channel: int | ChannelName,
     color_format: str = "BGR",
@@ -35,6 +36,7 @@ def swap_channels(
     ----------
     image : NDArray[np.uint8]
         Input color image.
+    # pylint: disable=import-outside-toplevel
     from_channel : int or str
         First channel to swap.
     to_channel : int or str

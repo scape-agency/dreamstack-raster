@@ -363,6 +363,7 @@ class ImagePreprocessor:
         >>> processor = ImagePreprocessor()
         >>> smooth_processor = processor.with_config(blur_kernel_size=(21, 21))
         """
+        # pylint: disable=import-outside-toplevel
         from dataclasses import (
             replace,
         )  # pylint: disable=import-outside-toplevel

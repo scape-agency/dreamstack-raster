@@ -167,6 +167,7 @@ class ICCProfile:
     @classmethod
     def srgb(cls) -> ICCProfile:
         """Get sRGB profile."""
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.color.profiles.get_system_profiles import (
             _get_system_profile_paths,
         )
@@ -204,8 +205,10 @@ class ICCProfile:
 
     def to_pil_profile(self):
         """Convert to PIL/Pillow ImageCmsProfile."""
+        # pylint: disable=import-outside-toplevel
         from io import BytesIO
 
+        # pylint: disable=import-outside-toplevel
         from PIL import ImageCms
 
         return ImageCms.ImageCmsProfile(BytesIO(self.data))

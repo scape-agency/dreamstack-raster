@@ -27,6 +27,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -48,10 +49,16 @@ def load_psd(
     Returns:
         Image (flattened) or Document (if layers=True)
     """
+    # pylint: disable=import-outside-toplevel
     from psd_tools import PSDImage
 
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image, ImageMetadata
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import BitDepth, PixelData, PixelFormat
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.io.psd.load_psd_with_layers import (
         load_psd_with_layers,
     )

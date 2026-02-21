@@ -35,6 +35,7 @@ def load_image_info(path: str | Path) -> dict[str, Any]:
     Returns:
         Dictionary with image information
     """
+    # pylint: disable=import-outside-toplevel
     from PIL import Image as PILImage
 
     path = Path(path)

@@ -42,6 +42,7 @@ def validate_directory(path: str | Path) -> Path:
     Example:
         >>> dir_path = validate_directory("/path/to/images")
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.exceptions import DirectoryNotFoundError
 
     path = validate_path(path)

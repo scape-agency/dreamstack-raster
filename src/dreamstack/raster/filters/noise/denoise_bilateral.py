@@ -24,6 +24,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -42,6 +43,7 @@ def denoise_bilateral(
     Returns:
         Denoised image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.filters.blur.bilateral_blur import bilateral_blur
 
     return bilateral_blur(image, d, sigma_color, sigma_space)

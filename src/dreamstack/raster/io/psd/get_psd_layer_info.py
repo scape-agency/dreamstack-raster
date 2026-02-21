@@ -34,6 +34,7 @@ def get_psd_layer_info(path: str | Path) -> list[dict]:
     Returns:
         List of layer information dictionaries
     """
+    # pylint: disable=import-outside-toplevel
     from psd_tools import PSDImage
 
     psd = PSDImage.open(path)

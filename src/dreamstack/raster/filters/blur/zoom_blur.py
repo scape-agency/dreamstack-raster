@@ -24,6 +24,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -43,6 +44,7 @@ def zoom_blur(
     Returns:
         Blurred image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.filters.blur.radial_blur import radial_blur
 
     return radial_blur(image, amount, center, mode="zoom")

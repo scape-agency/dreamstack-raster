@@ -14,6 +14,7 @@ import numpy as np
 from .resize_to_aspect import resize_to_aspect
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
 Interpolation = Literal["nearest", "linear", "cubic", "lanczos", "area"]

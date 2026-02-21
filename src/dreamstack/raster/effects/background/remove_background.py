@@ -34,6 +34,7 @@ from dreamstack.raster.effects.background.removal_config import (
 )
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
 
@@ -107,6 +108,7 @@ def remove_background(
         )
 
     # Convert to RGBA for rembg
+    # pylint: disable=import-outside-toplevel
     from PIL import Image  # pylint: disable=import-outside-toplevel
 
     if image.shape[2] == 3:

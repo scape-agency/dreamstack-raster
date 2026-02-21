@@ -27,6 +27,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -51,7 +52,10 @@ def load_exr(
         # Fallback to imageio
         return _load_exr_imageio(Path(path), **options)
 
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image, ImageMetadata
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import BitDepth, PixelData, PixelFormat
 
     path = Path(path)
@@ -142,7 +146,10 @@ def _load_exr_imageio(path: Path, **_options) -> Image:
     """Fallback EXR loading using imageio."""
     import imageio
 
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image, ImageMetadata
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import BitDepth, PixelData, PixelFormat
 
     data = imageio.imread(path, format="EXR-FI")

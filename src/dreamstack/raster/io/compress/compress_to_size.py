@@ -29,6 +29,7 @@ import numpy as np
 from .compression_result import CompressionResult
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
 
@@ -65,6 +66,8 @@ def compress_to_size(
         >>> print(f"Final size: {result.size_kb:.1f}KB at quality {result.quality}")
     """
     import cv2
+
+    # pylint: disable=import-outside-toplevel
     from PIL import Image
 
     # Convert BGR to RGB for PIL

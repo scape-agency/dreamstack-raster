@@ -28,6 +28,7 @@ import cv2
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -43,6 +44,7 @@ def oil_paint(image: Image, brush_size: int = 6, roughness: int = 1) -> Image:
     Returns:
         Stylized image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import PixelData
 
     data = image.data

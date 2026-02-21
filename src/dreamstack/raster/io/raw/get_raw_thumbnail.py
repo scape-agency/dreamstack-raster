@@ -27,6 +27,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -40,12 +41,18 @@ def get_raw_thumbnail(path: str | Path) -> Image:
     Returns:
         Thumbnail Image
     """
+    # pylint: disable=import-outside-toplevel
     from io import BytesIO
 
     import rawpy
+
+    # pylint: disable=import-outside-toplevel
     from PIL import Image as PILImage
 
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image, ImageMetadata
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import BitDepth, PixelData, PixelFormat
 
     path = Path(path)

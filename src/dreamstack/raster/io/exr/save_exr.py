@@ -27,6 +27,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -56,6 +57,7 @@ def save_exr(
         _save_exr_imageio(image, Path(path), **options)
         return
 
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import BitDepth
 
     path = Path(path)
@@ -144,6 +146,7 @@ def _save_exr_imageio(image: Image, path: Path, **_options) -> None:
     """Fallback EXR saving using imageio."""
     import imageio
 
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import BitDepth
 
     # Convert to float

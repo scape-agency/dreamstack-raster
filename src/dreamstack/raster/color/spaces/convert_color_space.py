@@ -29,6 +29,7 @@ def convert_color_space(
 
     Args:
         image_data: RGB image array (float, 0-1 range)
+        # pylint: disable=import-outside-toplevel
         from_space: Source color space
         to_space: Target color space
 

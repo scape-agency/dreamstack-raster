@@ -27,6 +27,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -35,7 +36,10 @@ def load_with_pil(path: Path, **_options) -> Image:  # noqa: ARG001
     # pylint: disable=import-outside-toplevel
     from PIL import Image as PILImage
 
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image, ImageMetadata
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import BitDepth, PixelData, PixelFormat
 
     pil_image = PILImage.open(path)
@@ -118,6 +122,7 @@ def load_with_pil(path: Path, **_options) -> Image:  # noqa: ARG001
 
     # Get EXIF
     try:
+        # pylint: disable=import-outside-toplevel
         from PIL.ExifTags import (
             TAGS,
         )  # pylint: disable=import-outside-toplevel

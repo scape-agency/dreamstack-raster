@@ -52,6 +52,7 @@ def validate_image_extension(
     Example:
         >>> path = validate_image_extension("photo.jpg")
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.exceptions import InvalidImageTypeError
 
     path = Path(path)

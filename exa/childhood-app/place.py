@@ -18,6 +18,7 @@ Usage
 
 API Usage
 ---------
+    # pylint: disable=import-outside-toplevel
     from place import Canvas, PlacedItem
 
     canvas = Canvas(8000, 3000)
@@ -314,6 +315,7 @@ class Canvas:
         list[PlacedItem]
             List of placed items.
         """
+        # pylint: disable=import-outside-toplevel
         from fetch import ImageIndex  # pylint: disable=import-outside-toplevel
 
         index = ImageIndex(output_dir)
@@ -935,6 +937,7 @@ def main() -> int:
 
     # Grid layout (not used with place_cutout or random)
     if args.grid and not args.random and not args.place_cutout:
+        # pylint: disable=import-outside-toplevel
         from fetch import ImageIndex  # pylint: disable=import-outside-toplevel
 
         index = ImageIndex(args.from_dir)

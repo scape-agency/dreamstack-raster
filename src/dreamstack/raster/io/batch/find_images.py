@@ -44,6 +44,7 @@ def find_images(
         >>> images = find_images("/photos", recursive=True)
         >>> print(f"Found {len(images)} images")
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.io.validation import (
         SUPPORTED_EXTENSIONS,
         get_image_files,

@@ -23,7 +23,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.detection.base import BaseDetector
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.detection.config import DetectionConfig
 
 
@@ -56,6 +59,7 @@ def create_detector(config: DetectionConfig) -> BaseDetector:
     >>> results = detector.detect(image)
     """
     if config.backend == "ultralytics":
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.detection.backends.ultralytics import (
             UltralyticsDetector,
         )
@@ -63,6 +67,7 @@ def create_detector(config: DetectionConfig) -> BaseDetector:
         return UltralyticsDetector(config)
 
     elif config.backend == "grounding_dino_sam":
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.detection.backends.grounding_dino_sam import (
             GroundingDinoSamDetector,
         )

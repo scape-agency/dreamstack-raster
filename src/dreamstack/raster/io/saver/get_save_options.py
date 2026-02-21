@@ -26,19 +26,19 @@ from typing import Any
 from dreamstack.raster.io.formats import ImageFormat
 
 
-def get_save_options(format: ImageFormat) -> dict[str, Any]:
+def get_save_options(image_format: ImageFormat) -> dict[str, Any]:
     """
     Get available save options for a format.
 
     Args:
-        format: Image format
+        image_format: Image format
 
     Returns:
         Dictionary describing available options
     """
     options = {}
 
-    if format == ImageFormat.PNG:
+    if image_format == ImageFormat.PNG:
         options = {
             "compression": {
                 "type": "int",
@@ -53,7 +53,7 @@ def get_save_options(format: ImageFormat) -> dict[str, Any]:
             },
         }
 
-    elif format == ImageFormat.JPEG:
+    elif image_format == ImageFormat.JPEG:
         options = {
             "quality": {
                 "type": "int",
@@ -73,7 +73,7 @@ def get_save_options(format: ImageFormat) -> dict[str, Any]:
             },
         }
 
-    elif format == ImageFormat.WEBP:
+    elif image_format == ImageFormat.WEBP:
         options = {
             "quality": {
                 "type": "int",
@@ -88,7 +88,7 @@ def get_save_options(format: ImageFormat) -> dict[str, Any]:
             },
         }
 
-    elif format == ImageFormat.TIFF:
+    elif image_format == ImageFormat.TIFF:
         options = {
             "compression": {
                 "type": "enum",
@@ -98,7 +98,7 @@ def get_save_options(format: ImageFormat) -> dict[str, Any]:
             }
         }
 
-    elif format == ImageFormat.EXR:
+    elif image_format == ImageFormat.EXR:
         options = {
             "compression": {
                 "type": "enum",

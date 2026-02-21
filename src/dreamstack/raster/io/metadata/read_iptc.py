@@ -35,6 +35,7 @@ def read_iptc(path: str | Path) -> dict[str, Any]:
     Returns:
         Dictionary of IPTC data
     """
+    # pylint: disable=import-outside-toplevel
     from PIL import Image as PILImage
     from PIL import IptcImagePlugin
 

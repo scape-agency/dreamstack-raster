@@ -27,13 +27,14 @@ from typing import TYPE_CHECKING
 from dreamstack.raster.io.formats import ImageFormat, get_format_for_path
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
 def save_image(
     image: Image,
     path: str | Path,
-    format: ImageFormat | None = None,
+    image_format: ImageFormat | None = None,
     **options,
 ) -> None:
     """
@@ -42,7 +43,7 @@ def save_image(
     Args:
         image: Image to save
         path: Output path
-        format: Explicit format (auto-detected if None)
+        image_format: Explicit format (auto-detected if None)
         **options: Format-specific options
 
     Options by format:
@@ -74,34 +75,39 @@ def save_image(
     path.parent.mkdir(parents=True, exist_ok=True)
 
     # Detect format
-    if format is None:
-        format = get_format_for_path(path)
-        if format is None:
+    if image_format is None:
+        image_format = get_format_for_path(path)
+        if image_format is None:
             raise ValueError(f"Unknown image format: {path.suffix}")
 
     # Save based on format
-    if format == ImageFormat.PSD:
+    if image_format == ImageFormat.PSD:
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.io.psd import save_psd
 
         save_psd(image, path, **options)
 
-    elif format == ImageFormat.EXR:
+    elif image_format == ImageFormat.EXR:
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.io.exr import save_exr
 
         save_exr(image, path, **options)
 
-    elif format == ImageFormat.HDR:
+    elif image_format == ImageFormat.HDR:
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.io.saver.save_hdr import save_hdr
 
         save_hdr(image, path, **options)
 
-    elif format == ImageFormat.PDF:
+    elif image_format == ImageFormat.PDF:
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.io.saver.save_pdf import save_pdf
 
         save_pdf(image, path, **options)
 
     else:
         # Use PIL for standard formats
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.io.saver.save_with_pil import save_with_pil
 
-        save_with_pil(image, path, format, **options)
+        save_with_pil(image, path, image_format, **options)

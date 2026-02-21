@@ -39,6 +39,7 @@ def validate_path(path: str | Path) -> Path:
     Example:
         >>> path = validate_path("/path/to/file.png")
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.exceptions import InvalidPathError
 
     path = Path(path)

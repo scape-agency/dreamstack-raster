@@ -20,6 +20,7 @@ from dreamstack.raster.detection.backends.ultralytics import (
 # Lazy import for Grounding DINO + SAM (heavy dependencies)
 def get_grounding_dino_sam_detector():
     """Get GroundingDinoSamDetector class (lazy import)."""
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.detection.backends.grounding_dino_sam import (
         GroundingDinoSamDetector,
     )

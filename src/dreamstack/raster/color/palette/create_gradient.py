@@ -94,6 +94,7 @@ def create_gradient(
             colors.append(Color.from_hsl(h, s, l))
 
     elif color_space == "lab":
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.color.convert import lab_to_rgb, rgb_to_lab
 
         start_n = np.array(start_color.to_normalized()[:3])

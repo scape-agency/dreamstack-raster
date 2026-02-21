@@ -27,6 +27,7 @@ import cv2
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -50,14 +51,14 @@ def smart_sharpen(
     Returns:
         Sharpened image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import PixelData
 
     data = image.data.astype(np.float32)
     max_val = 255 if image.bit_depth.name == "UINT8" else 65535
 
     ksize = int(radius * 2) | 1
-    if ksize < 3:
-        ksize = 3
+    ksize = max(ksize, 3)
 
     if remove == "gaussian":
         # Standard Gaussian blur for deconvolution

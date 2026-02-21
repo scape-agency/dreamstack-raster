@@ -15,6 +15,7 @@ from .fit_to_dimensions import fit_to_dimensions
 from .resize import resize
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
 Interpolation = Literal["nearest", "linear", "cubic", "lanczos", "area"]

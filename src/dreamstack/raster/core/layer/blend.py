@@ -144,6 +144,7 @@ def apply_blend_mode(
         BlendMode.COLOR,
         BlendMode.LUMINOSITY,
     ):
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.color.convert import hsl_to_rgb, rgb_to_hsl
 
         # Convert to HSL

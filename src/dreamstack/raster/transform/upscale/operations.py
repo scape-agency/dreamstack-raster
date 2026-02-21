@@ -19,6 +19,7 @@ from typing import TYPE_CHECKING, Literal
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
 
@@ -85,6 +86,7 @@ def upscale_image(
     import cv2
 
     if method == "model" and model_path is not None:
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.transform.upscale.upscaler import (
             ImageUpscaler,
             UpscaleConfig,

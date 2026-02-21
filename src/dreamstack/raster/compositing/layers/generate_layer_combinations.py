@@ -25,6 +25,7 @@ import numpy as np
 from .stack_layers import stack_layers
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
 

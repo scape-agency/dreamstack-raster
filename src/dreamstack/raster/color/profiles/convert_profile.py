@@ -23,7 +23,10 @@ import numpy as np
 from dreamstack.raster.color.profiles.rendering_intent import RenderingIntent
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.profiles.icc_profile import ICCProfile
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -45,9 +48,13 @@ def convert_profile(
     Returns:
         Converted Image
     """
+    # pylint: disable=import-outside-toplevel
     from PIL import ImageCms
 
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.profiles.icc_profile import ICCProfile
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import BitDepth, PixelData
 
     # Get source profile

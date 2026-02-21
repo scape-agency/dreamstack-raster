@@ -19,6 +19,7 @@ import cv2
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
 from dreamstack.raster.selection.shapes.selection import Selection
@@ -32,7 +33,7 @@ def magic_wand(
     tolerance: int = 32,
     contiguous: bool = True,
     anti_alias: bool = True,
-    sample_all_layers: bool = False,
+    sample_all_layers: bool = False,  # pylint: disable=unused-argument  # TODO
 ) -> Selection:
     """Select pixels similar to the clicked point.
 

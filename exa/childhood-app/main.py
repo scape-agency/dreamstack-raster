@@ -50,6 +50,7 @@ from pathlib import Path
 
 # Load environment variables from .env
 try:
+    # pylint: disable=import-outside-toplevel
     from dotenv import load_dotenv  # type: ignore[assignment]
 except ImportError:
     # dotenv is optional

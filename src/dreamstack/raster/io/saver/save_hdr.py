@@ -25,6 +25,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
@@ -37,6 +38,7 @@ def save_hdr(
     # pylint: disable=import-outside-toplevel
     import imageio
 
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import BitDepth
 
     # Convert to float RGB

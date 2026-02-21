@@ -33,6 +33,7 @@ from dreamstack.raster.core.image.image_metadata import ImageMetadata
 from dreamstack.raster.core.pixel import BitDepth, PixelData, PixelFormat
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.selection import Selection
 
 
@@ -411,6 +412,7 @@ class Image:
         Returns:
             PIL.Image object
         """
+        # pylint: disable=import-outside-toplevel
         from PIL import Image as PILImage
 
         # Convert to 8-bit if needed
@@ -695,6 +697,7 @@ class Image:
             path: Output path
             **options: Format-specific options
         """
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.io import save_image
 
         save_image(self, path, **options)
@@ -713,6 +716,7 @@ class Image:
         Returns:
             Loaded image
         """
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.io import load_image
 
         image = load_image(path, **options)

@@ -303,6 +303,7 @@ class LayerGroup(LayerBase):
         Returns:
             Merged Layer
         """
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.core.layer.layer import Layer
 
         rendered = self.render(canvas_size)

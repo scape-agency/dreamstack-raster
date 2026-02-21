@@ -29,7 +29,10 @@ from dreamstack.raster.core.channel.channel import Channel
 from dreamstack.raster.core.channel.channel_type import ChannelType
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel.pixel_data import PixelData
+
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel.pixel_format import PixelFormat
 
 
@@ -189,6 +192,7 @@ class ChannelManager:
         Args:
             pixel_data: PixelData to split
         """
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.core.pixel.pixel_format import PixelFormat
 
         self._channels.clear()
@@ -254,7 +258,10 @@ class ChannelManager:
         Returns:
             Combined PixelData
         """
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.core.pixel.channel_count import CHANNEL_COUNT
+
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.core.pixel.pixel_data import PixelData
 
         expected = CHANNEL_COUNT[pixel_format]

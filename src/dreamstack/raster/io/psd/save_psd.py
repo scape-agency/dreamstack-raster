@@ -25,11 +25,15 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
 
 
 def save_psd(
-    image: Image, path: str | Path, layers: list | None = None, **options
+    image: Image,
+    path: str | Path,
+    layers: list | None = None,  # pylint: disable=unused-argument  # TODO
+    **options,  # pylint: disable=unused-argument
 ) -> None:
     """
     Save image as PSD file.

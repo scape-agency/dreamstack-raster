@@ -39,7 +39,9 @@ def write_metadata(
     try:
         import piexif
     except ImportError as exc:
-        raise ImportError("piexif package required for writing metadata") from exc
+        raise ImportError(
+            "piexif package required for writing metadata"
+        ) from exc
 
     path = Path(path)
 

@@ -28,6 +28,7 @@ import numpy as np
 from .compress_image import compress_image
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
 

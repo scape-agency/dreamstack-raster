@@ -28,6 +28,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
 
@@ -47,6 +48,7 @@ def base64_to_image(b64_string: str) -> NDArray[np.uint8]:
         >>> # Or with data URI
         >>> image = base64_to_image("data:image/png;base64,...")
     """
+    # pylint: disable=import-outside-toplevel
     from PIL import Image
 
     # Handle data URI

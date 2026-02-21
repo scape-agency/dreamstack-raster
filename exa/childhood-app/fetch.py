@@ -21,6 +21,7 @@ Usage
 
 API Usage
 ---------
+    # pylint: disable=import-outside-toplevel
     from fetch import ImageIndex, fetch_by_description, fetch_by_type
 
     index = ImageIndex("./output")
