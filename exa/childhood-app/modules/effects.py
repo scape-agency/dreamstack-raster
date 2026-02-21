@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import numpy as np
-from PIL import Image, ImageFilter, ImageEnhance
+from PIL import Image, ImageEnhance, ImageFilter
 
 if TYPE_CHECKING:
     from numpy.typing import NDArray
@@ -256,8 +256,11 @@ def _apply_warm_filter(image: Image.Image) -> Image.Image:
     r, g, b, a = image.split()
 
     # Increase reds, decrease blues
-    r = r.point(lambda x: min(255, int(x * 1.1)))
-    b = b.point(lambda x: int(x * 0.9))
+    # Using lookup tables for type safety with PIL point()
+    warm_r_table = [min(255, int(i * 1.1)) for i in range(256)]
+    cool_b_table = [int(i * 0.9) for i in range(256)]
+    r = r.point(warm_r_table)
+    b = b.point(cool_b_table)
 
     return Image.merge("RGBA", (r, g, b, a))
 
@@ -270,8 +273,11 @@ def _apply_cool_filter(image: Image.Image) -> Image.Image:
     r, g, b, a = image.split()
 
     # Decrease reds, increase blues
-    r = r.point(lambda x: int(x * 0.9))
-    b = b.point(lambda x: min(255, int(x * 1.1)))
+    # Using lookup tables for type safety with PIL point()
+    cool_r_table = [int(i * 0.9) for i in range(256)]
+    warm_b_table = [min(255, int(i * 1.1)) for i in range(256)]
+    r = r.point(cool_r_table)
+    b = b.point(warm_b_table)
 
     return Image.merge("RGBA", (r, g, b, a))
 
@@ -285,11 +291,14 @@ def _apply_vintage(image: Image.Image) -> Image.Image:
     enhancer = ImageEnhance.Color(image)
     image = enhancer.enhance(0.7)
 
-    # Add slight sepia
+    # Add slight sepia - using lookup tables for type safety
     r, g, b, a = image.split()
-    r = r.point(lambda x: min(255, int(x * 1.05)))
-    g = g.point(lambda x: int(x * 0.95))
-    b = b.point(lambda x: int(x * 0.85))
+    vintage_r_table = [min(255, int(i * 1.05)) for i in range(256)]
+    vintage_g_table = [int(i * 0.95) for i in range(256)]
+    vintage_b_table = [int(i * 0.85) for i in range(256)]
+    r = r.point(vintage_r_table)
+    g = g.point(vintage_g_table)
+    b = b.point(vintage_b_table)
 
     # Reduce contrast slightly
     result = Image.merge("RGBA", (r, g, b, a))
@@ -337,10 +346,13 @@ def _apply_sepia(image: Image.Image) -> Image.Image:
     # Convert to grayscale first
     gray = image.convert("L")
 
-    # Apply sepia tone
-    sepia_r = gray.point(lambda x: min(255, int(x * 1.07)))
-    sepia_g = gray.point(lambda x: min(255, int(x * 0.87)))
-    sepia_b = gray.point(lambda x: min(255, int(x * 0.67)))
+    # Apply sepia tone - using lookup tables for type safety
+    sepia_r_table = [min(255, int(i * 1.07)) for i in range(256)]
+    sepia_g_table = [min(255, int(i * 0.87)) for i in range(256)]
+    sepia_b_table = [min(255, int(i * 0.67)) for i in range(256)]
+    sepia_r = gray.point(sepia_r_table)
+    sepia_g = gray.point(sepia_g_table)
+    sepia_b = gray.point(sepia_b_table)
 
     # Preserve original alpha
     a = image.split()[3]

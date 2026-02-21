@@ -39,6 +39,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable, Iterator, Literal
 
+import numpy as np
 from PIL import Image
 
 logger = logging.getLogger(__name__)
@@ -481,7 +482,7 @@ class Canvas:
                 ax.axis("off")
                 # Show initial empty canvas
                 canvas_img = self.render()
-                img_display = ax.imshow(canvas_img)
+                img_display = ax.imshow(np.array(canvas_img))
                 fig.canvas.draw()
                 fig.canvas.flush_events()
             except ImportError:
@@ -522,11 +523,16 @@ class Canvas:
             )
 
             # Update animation display
-            if animate and fig is not None:
+            if (
+                animate
+                and fig is not None
+                and img_display is not None
+                and ax is not None
+            ):
                 import matplotlib.pyplot as plt
 
                 canvas_img = self.render()
-                img_display.set_data(canvas_img)
+                img_display.set_data(np.array(canvas_img))
                 ax.set_title(f"Canvas Preview - Segment {i + 1}/{total}")
                 fig.canvas.draw()
                 fig.canvas.flush_events()
@@ -546,7 +552,7 @@ class Canvas:
                 time.sleep(delay)
 
         # Keep animation window open briefly at the end
-        if animate and fig is not None:
+        if animate and fig is not None and ax is not None:
             import matplotlib.pyplot as plt
 
             ax.set_title(f"Canvas Complete - {total} segments")

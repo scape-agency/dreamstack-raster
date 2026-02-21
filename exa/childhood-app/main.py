@@ -43,7 +43,13 @@ import sys
 from pathlib import Path
 
 # Load environment variables from .env
-from dotenv import load_dotenv
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    # dotenv is optional
+    def load_dotenv(*_args: object, **_kwargs: object) -> None:  # type: ignore[misc]
+        pass
+
 
 # Try loading from project root
 project_root = Path(__file__).parent.parent.parent

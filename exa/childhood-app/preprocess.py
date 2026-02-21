@@ -46,7 +46,6 @@ import json
 import logging
 import shutil
 import sys
-from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -56,7 +55,13 @@ import numpy as np
 from PIL import Image
 
 # Load environment variables
-from dotenv import load_dotenv
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    # dotenv is optional
+    def load_dotenv(*_args: object, **_kwargs: object) -> None:  # type: ignore[misc]
+        pass
+
 
 # Add paths
 project_root = Path(__file__).parent.parent.parent
@@ -72,9 +77,9 @@ if src_path.exists():
 
 # Local modules
 sys.path.insert(0, str(Path(__file__).parent))
-from modules.config import AppConfig, CutoutConfig, SegmentConfig, EffectConfig
-from modules.grid import segment_image, save_segments
-from modules.effects import apply_effects, EffectType
+from modules.config import AppConfig, CutoutConfig, EffectConfig, SegmentConfig
+from modules.effects import apply_effects
+from modules.grid import save_segments, segment_image
 
 logger = logging.getLogger(__name__)
 
@@ -101,11 +106,11 @@ def describe_image(
     Returns (description, object_list).
     """
     from dreamstack.raster.detection.describer import (
-        ImageDescriber,
         DescriptionConfig,
+        ImageDescriber,
     )
 
-    config = DescriptionConfig(backend=backend)
+    config = DescriptionConfig(backend=backend)  # type: ignore[arg-type]
     describer = ImageDescriber(config)
 
     result = describer.describe(image_path)
@@ -125,7 +130,7 @@ def detect_objects(
     from dreamstack.raster.detection import DetectionConfig, create_detector
 
     config = DetectionConfig(
-        backend=backend,
+        backend=backend,  # type: ignore[arg-type]
         confidence_threshold=confidence,
         text_prompts=prompts,
     )
