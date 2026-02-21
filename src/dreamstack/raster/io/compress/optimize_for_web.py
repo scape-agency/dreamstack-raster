@@ -27,7 +27,7 @@ def optimize_for_web(
     max_dimension: int = 1920,
     max_size_kb: int = 500,
     *,
-    format: CompressionFormat = "webp",
+    output_format: CompressionFormat = "webp",
 ) -> CompressionResult:
     """Optimize image for web delivery.
 
@@ -38,7 +38,7 @@ def optimize_for_web(
         image: Input image.
         max_dimension: Maximum width or height.
         max_size_kb: Maximum file size.
-        format: Output format (webp recommended).
+        output_format: Output format (webp recommended).
 
     Returns:
         CompressionResult with optimized image.
@@ -47,7 +47,7 @@ def optimize_for_web(
         >>> result = optimize_for_web(large_image, max_dimension=1200)
         >>> result.save("web_ready.webp")
     """
-    import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
     h, w = image.shape[:2]
 
@@ -56,6 +56,7 @@ def optimize_for_web(
         scale = max_dimension / max(w, h)
         new_w = int(w * scale)
         new_h = int(h * scale)
-        image = cv2.resize(image, (new_w, new_h), interpolation=cv2.INTER_LANCZOS4)
+        # pylint: disable=line-too-long
+        image = cv2.resize(image, (new_w, new_h), interpolation=cv2.INTER_LANCZOS4)  # type: ignore[assignment]
 
-    return compress_to_size(image, max_size_kb, format=format)
+    return compress_to_size(image, max_size_kb, format=output_format)

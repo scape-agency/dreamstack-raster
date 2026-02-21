@@ -120,9 +120,10 @@ class TextLayer(LayerBase):
 
     def _render_text(self) -> None:
         """Render text to pixel array."""
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.drawing.text import render_text
 
-        self._cached_render, self._cached_bounds = render_text(
+        self._cached_render, self._cached_bounds = render_text(  # type: ignore[assignment]
             text=self._text,
             font_family=self._font_family,
             font_size=self._font_size,
@@ -195,6 +196,7 @@ class TextLayer(LayerBase):
             blend_mode=self._blend_mode,
             visible=self._visible,
         )
+        # pylint: disable=protected-access
         new_layer._offset = self._offset
         new_layer._font_weight = self._font_weight
         new_layer._font_style = self._font_style
@@ -203,6 +205,7 @@ class TextLayer(LayerBase):
 
         if self._mask is not None:
             new_layer._mask = self._mask.copy()
+        # pylint: enable=protected-access
 
         return new_layer
 
@@ -216,6 +219,7 @@ class TextLayer(LayerBase):
         Returns:
             Rasterized Layer
         """
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.core.layer.layer import Layer
 
         rendered = self.render(canvas_size)

@@ -19,7 +19,7 @@ Main Module for DreamStack
 import platform
 
 try:
-    import pkg_resources
+    import pkg_resources  # type: ignore[import-not-found]
 except ImportError:
     pkg_resources = None
 

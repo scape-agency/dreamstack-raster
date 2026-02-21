@@ -20,7 +20,9 @@ from PIL import Image, ImageEnhance, ImageFilter
 if TYPE_CHECKING:
     from numpy.typing import NDArray
 
-from modules.config import EffectConfig
+from modules.config import (
+    EffectConfig,
+)  # pylint: disable=wrong-import-position
 
 logger = logging.getLogger(__name__)
 
@@ -168,6 +170,7 @@ def _apply_drop_shadow(
     """
     try:
         # Try dreamstack implementation
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.effects.shadow import drop_shadow
 
         # Convert to numpy

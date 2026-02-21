@@ -16,7 +16,9 @@ import numpy as np
 if TYPE_CHECKING:
     from numpy.typing import NDArray
 
-from dreamstack.raster.selection.shapes.selection import Selection
+from dreamstack.raster.selection.shapes.selection import (
+    Selection,
+)  # pylint: disable=wrong-import-position
 
 
 def select_subject(
@@ -53,12 +55,12 @@ def select_subject(
     h, w = src.shape[:2]
 
     # Use spectral residual saliency
-    saliency = cv2.saliency.StaticSaliencySpectralResidual_create()
+    saliency = cv2.saliency.StaticSaliencySpectralResidual_create()  # type: ignore[attr-defined]
     success, saliency_map = saliency.computeSaliency(src)
 
     if not success:
         # Fallback to fine-grained saliency
-        saliency = cv2.saliency.StaticSaliencyFineGrained_create()
+        saliency = cv2.saliency.StaticSaliencyFineGrained_create()  # type: ignore[attr-defined]
         success, saliency_map = saliency.computeSaliency(src)
 
     if not success:
@@ -83,14 +85,16 @@ def select_subject(
     mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel, iterations=1)
 
     # Fill holes
-    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours, _ = cv2.findContours(
+        mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
+    )
     cv2.drawContours(mask, contours, -1, 255, -1)
 
     if refine_edges:
         # Edge-aware refinement using guided filter
         try:
             gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
-            mask = cv2.ximgproc.guidedFilter(
+            mask = cv2.ximgproc.guidedFilter(  # type: ignore[attr-defined]
                 gray, mask.astype(np.float32), 8, 0.01
             ).astype(np.uint8)
         except AttributeError:

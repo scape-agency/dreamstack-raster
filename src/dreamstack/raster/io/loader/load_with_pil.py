@@ -19,6 +19,7 @@ if TYPE_CHECKING:
 
 def load_with_pil(path: Path, **_options) -> Image:  # noqa: ARG001
     """Load image using PIL."""
+    # pylint: disable=import-outside-toplevel
     from PIL import Image as PILImage
 
     from dreamstack.raster.core.image import Image, ImageMetadata
@@ -104,11 +105,13 @@ def load_with_pil(path: Path, **_options) -> Image:  # noqa: ARG001
 
     # Get EXIF
     try:
-        from PIL.ExifTags import TAGS
+        from PIL.ExifTags import (
+            TAGS,
+        )  # pylint: disable=import-outside-toplevel
 
-        exif = (
-            pil_image._getexif()
-        )  # pyright: ignore[reportAttributeAccessIssue]  # pylint: disable=protected-access
+        # pylint: disable=protected-access
+        exif = pil_image._getexif()  # type: ignore[union-attr]
+        # pylint: enable=protected-access
         if exif:
             metadata.exif = {TAGS.get(k, k): v for k, v in exif.items()}
     except (AttributeError, KeyError):

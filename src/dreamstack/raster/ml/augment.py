@@ -63,9 +63,13 @@ def augment(
 
     # Rotation
     if config.rotation_range > 0:
-        angle = np.random.uniform(-config.rotation_range, config.rotation_range)
+        angle = np.random.uniform(
+            -config.rotation_range, config.rotation_range
+        )
         matrix = cv2.getRotationMatrix2D((w / 2, h / 2), angle, 1.0)
-        result = cv2.warpAffine(result, matrix, (w, h), borderMode=cv2.BORDER_REFLECT)
+        result = cv2.warpAffine(
+            result, matrix, (w, h), borderMode=cv2.BORDER_REFLECT
+        )
 
     # Scale
     if config.scale_range != (1.0, 1.0):
@@ -95,23 +99,30 @@ def augment(
         tx = np.random.randint(-max_tx, max_tx + 1)
         ty = np.random.randint(-max_ty, max_ty + 1)
         matrix = np.float32([[1, 0, tx], [0, 1, ty]])
-        result = cv2.warpAffine(result, matrix, (w, h), borderMode=cv2.BORDER_REFLECT)
+        # pylint: disable=line-too-long
+        result = cv2.warpAffine(result, matrix, (w, h), borderMode=cv2.BORDER_REFLECT)  # type: ignore[call-overload]
 
     # Brightness
     if config.brightness_range != (1.0, 1.0):
         factor = np.random.uniform(*config.brightness_range)
-        result = np.clip(result.astype(np.float32) * factor, 0, 255).astype(np.uint8)
+        result = np.clip(result.astype(np.float32) * factor, 0, 255).astype(
+            np.uint8
+        )
 
     # Contrast
     if config.contrast_range != (1.0, 1.0):
         factor = np.random.uniform(*config.contrast_range)
         mean = np.mean(result)
-        result = np.clip((result - mean) * factor + mean, 0, 255).astype(np.uint8)
+        result = np.clip((result - mean) * factor + mean, 0, 255).astype(
+            np.uint8
+        )
 
     # Gaussian noise
     if config.noise_std > 0:
         noise = np.random.normal(0, config.noise_std * 255, result.shape)
-        result = np.clip(result.astype(np.float32) + noise, 0, 255).astype(np.uint8)
+        result = np.clip(result.astype(np.float32) + noise, 0, 255).astype(
+            np.uint8
+        )
 
     # Blur
     if config.blur_range != (0.0, 0.0):

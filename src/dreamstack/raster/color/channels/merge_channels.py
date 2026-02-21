@@ -42,6 +42,9 @@ def merge_channels(
         if len(channels) == 3:
             return cv2.merge([channels[2], channels[1], channels[0]])  # type: ignore[return-value]
         elif len(channels) >= 4:
-            return cv2.merge([channels[2], channels[1], channels[0], channels[3]])  # type: ignore[return-value]
+            merged = cv2.merge(
+                [channels[2], channels[1], channels[0], channels[3]]
+            )
+            return merged  # type: ignore[return-value]
 
     return cv2.merge(list(channels))  # type: ignore[return-value]

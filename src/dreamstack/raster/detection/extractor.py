@@ -272,7 +272,7 @@ class DetectionExtractor:
 
         # Convert BGR to BGRA
         if len(region.shape) == 2:
-            region = cv2.cvtColor(region, cv2.COLOR_GRAY2BGR)
+            region = cv2.cvtColor(region, cv2.COLOR_GRAY2BGR)  # type: ignore[assignment]
 
         bgra = cv2.cvtColor(region, cv2.COLOR_BGR2BGRA)
         bgra[:, :, 3] = alpha

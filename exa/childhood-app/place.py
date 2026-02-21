@@ -35,9 +35,9 @@ import math
 import random
 import sys
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable, Iterator, Literal
+from typing import Callable, Literal
 
 import numpy as np
 from PIL import Image
@@ -250,7 +250,7 @@ class Canvas:
         self._items.append(item)
         img.close()
 
-        logger.debug(f"Placed {path.name} at ({x}, {y}) layer {layer}")
+        logger.debug("Placed %s at (%s, %s) layer %s", path.name, x, y, layer)
 
         return item
 
@@ -308,7 +308,7 @@ class Canvas:
         list[PlacedItem]
             List of placed items.
         """
-        from fetch import ImageIndex
+        from fetch import ImageIndex  # pylint: disable=import-outside-toplevel
 
         index = ImageIndex(output_dir)
         index.load()
@@ -348,7 +348,7 @@ class Canvas:
             item = self.place(segment_path, x, y)
             placed.append(item)
 
-        logger.info(f"Placed {len(placed)} random segments")
+        logger.info("Placed %d random segments", len(placed))
         return placed
 
     def place_grid(
@@ -474,6 +474,7 @@ class Canvas:
         img_display = None
         if animate:
             try:
+                # pylint: disable=import-outside-toplevel
                 import matplotlib.pyplot as plt
 
                 plt.ion()  # Interactive mode
@@ -494,7 +495,7 @@ class Canvas:
             seg_path = base_dir / seg_file
 
             if not seg_path.exists():
-                logger.warning(f"Segment not found: {seg_path}")
+                logger.warning("Segment not found: %s", seg_path)
                 continue
 
             # Get segment position within cutout
@@ -519,7 +520,11 @@ class Canvas:
             placed.append(item)
 
             logger.info(
-                f"Placed segment {i + 1}/{total}: ({final_x}, {final_y})"
+                "Placed segment %d/%d: (%d, %d)",
+                i + 1,
+                total,
+                final_x,
+                final_y,
             )
 
             # Update animation display
@@ -529,7 +534,7 @@ class Canvas:
                 and img_display is not None
                 and ax is not None
             ):
-                import matplotlib.pyplot as plt
+                import matplotlib.pyplot as plt  # pylint: disable=import-outside-toplevel
 
                 canvas_img = self.render()
                 img_display.set_data(np.array(canvas_img))
@@ -545,7 +550,7 @@ class Canvas:
             if save_each:
                 frame_path = str(save_each).format(n=i + 1)
                 self.save(frame_path)
-                logger.info(f"Saved frame: {frame_path}")
+                logger.info("Saved frame: %s", frame_path)
 
             # Delay before next segment
             if delay > 0 and i < total - 1:
@@ -553,7 +558,7 @@ class Canvas:
 
         # Keep animation window open briefly at the end
         if animate and fig is not None and ax is not None:
-            import matplotlib.pyplot as plt
+            import matplotlib.pyplot as plt  # pylint: disable=import-outside-toplevel
 
             ax.set_title(f"Canvas Complete - {total} segments")
             fig.canvas.draw()
@@ -584,7 +589,7 @@ class Canvas:
 
         for item in sorted_items:
             if not item.path.exists():
-                logger.warning(f"Missing image: {item.path}")
+                logger.warning("Missing image: %s", item.path)
                 continue
 
             img = Image.open(item.path).convert("RGBA")
@@ -601,7 +606,7 @@ class Canvas:
     def save(
         self,
         path: str | Path,
-        format: str | None = None,
+        output_format: str | None = None,  # Renamed from 'format'
     ) -> None:
         """Save rendered canvas to file.
 
@@ -609,7 +614,7 @@ class Canvas:
         ----------
         path : str | Path
             Output file path.
-        format : str | None
+        output_format : str | None
             Image format (e.g., "PNG", "JPEG").
         """
         path = Path(path)
@@ -619,14 +624,14 @@ class Canvas:
 
         # For JPEG, convert to RGB
         if (
-            format
-            and format.upper() == "JPEG"
+            output_format
+            and output_format.upper() == "JPEG"
             or path.suffix.lower() in (".jpg", ".jpeg")
         ):
             canvas = canvas.convert("RGB")
 
-        canvas.save(path, format=format)
-        logger.info(f"Saved canvas to {path}")
+        canvas.save(path, format=output_format)
+        logger.info("Saved canvas to %s", path)
 
     def save_layout(self, path: str | Path) -> None:
         """Save layout metadata to JSON.
@@ -646,10 +651,10 @@ class Canvas:
             "items": [item.to_dict() for item in self._items],
         }
 
-        with open(path, "w") as f:
+        with open(path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2)
 
-        logger.info(f"Saved layout to {path}")
+        logger.info("Saved layout to %s", path)
 
     def load_layout(self, path: str | Path) -> None:
         """Load layout from JSON.
@@ -661,7 +666,7 @@ class Canvas:
         """
         path = Path(path)
 
-        with open(path) as f:
+        with open(path, encoding="utf-8") as f:
             data = json.load(f)
 
         self.clear()
@@ -674,7 +679,7 @@ class Canvas:
                 item_data.get("layer"),
             )
 
-        logger.info(f"Loaded {len(self._items)} items from layout")
+        logger.info("Loaded %d items from layout", len(self._items))
 
     @property
     def items(self) -> list[PlacedItem]:
@@ -847,10 +852,10 @@ def main() -> int:
     if args.place_cutout:
         metadata_path = args.place_cutout
         if not metadata_path.exists():
-            logger.error(f"Metadata file not found: {metadata_path}")
+            logger.error("Metadata file not found: %s", metadata_path)
             return 1
 
-        with open(metadata_path) as f:
+        with open(metadata_path, encoding="utf-8") as f:
             metadata = json.load(f)
 
         cutouts = metadata.get("cutouts", [])
@@ -860,7 +865,9 @@ def main() -> int:
 
         if args.cutout_index >= len(cutouts):
             logger.error(
-                f"Cutout index {args.cutout_index} out of range (0-{len(cutouts) - 1})"
+                "Cutout index %d out of range (0-%d)",
+                args.cutout_index,
+                len(cutouts) - 1,
             )
             return 1
 
@@ -869,12 +876,15 @@ def main() -> int:
 
         x, y = args.pos
         logger.info(
-            f"Placing cutout '{cutout_data.get('label', 'unknown')}' at ({x}, {y})"
+            "Placing cutout '%s' at (%d, %d)",
+            cutout_data.get("label", "unknown"),
+            x,
+            y,
         )
         if args.jitter > 0:
-            logger.info(f"  Jitter: ±{args.jitter}px")
+            logger.info("  Jitter: ±%dpx", args.jitter)
         if args.order != "sequential":
-            logger.info(f"  Order: {args.order}")
+            logger.info("  Order: %s", args.order)
         if args.animate:
             logger.info("  Animation: enabled")
 
@@ -919,7 +929,7 @@ def main() -> int:
 
     # Grid layout (not used with place_cutout or random)
     if args.grid and not args.random and not args.place_cutout:
-        from fetch import ImageIndex
+        from fetch import ImageIndex  # pylint: disable=import-outside-toplevel
 
         index = ImageIndex(args.from_dir)
 

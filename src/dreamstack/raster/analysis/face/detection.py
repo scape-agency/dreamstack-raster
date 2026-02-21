@@ -131,14 +131,15 @@ def detect_faces(
         >>> print(f"Found {len(faces)} faces")
     """
     try:
-        import mediapipe as mp
-    except ImportError:
+        # pylint: disable=import-outside-toplevel
+        import mediapipe as mp  # type: ignore[import-not-found]
+    except ImportError as exc:
         raise ImportError(
             "mediapipe is required for face detection. "
             "Install with: pip install mediapipe"
-        )
+        ) from exc
 
-    import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
     mp_face_detection = mp.solutions.face_detection
 
@@ -217,14 +218,15 @@ def detect_landmarks(
         ...     print(f"Left eye at {landmarks.left_eye}")
     """
     try:
-        import mediapipe as mp
-    except ImportError:
+        # pylint: disable=import-outside-toplevel
+        import mediapipe as mp  # type: ignore[import-not-found]
+    except ImportError as exc:
         raise ImportError(
             "mediapipe is required for landmark detection. "
             "Install with: pip install mediapipe"
-        )
+        ) from exc
 
-    import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
     mp_face_mesh = mp.solutions.face_mesh
 
@@ -247,6 +249,7 @@ def detect_landmarks(
         points = [(int(lm.x * w), int(lm.y * h)) for lm in landmarks.landmark]
 
         # Key landmark indices
+        # pylint: disable=invalid-name
         LEFT_EYE_CENTER = 468
         RIGHT_EYE_CENTER = 473
         NOSE_TIP = 4
@@ -255,19 +258,28 @@ def detect_landmarks(
         # Fallback indices
         LEFT_EYE_INNER = 133
         RIGHT_EYE_INNER = 362
+        # pylint: enable=invalid-name
 
         # Extract key landmarks
         try:
             left_eye = points[LEFT_EYE_CENTER]
             right_eye = points[RIGHT_EYE_CENTER]
         except IndexError:
-            left_eye = points[LEFT_EYE_INNER] if len(points) > LEFT_EYE_INNER else None
+            left_eye = (
+                points[LEFT_EYE_INNER]
+                if len(points) > LEFT_EYE_INNER
+                else None
+            )
             right_eye = (
-                points[RIGHT_EYE_INNER] if len(points) > RIGHT_EYE_INNER else None
+                points[RIGHT_EYE_INNER]
+                if len(points) > RIGHT_EYE_INNER
+                else None
             )
 
         nose_tip = points[NOSE_TIP] if len(points) > NOSE_TIP else None
-        mouth_center = points[MOUTH_CENTER] if len(points) > MOUTH_CENTER else None
+        mouth_center = (
+            points[MOUTH_CENTER] if len(points) > MOUTH_CENTER else None
+        )
 
         return FaceLandmarks(
             points=points,

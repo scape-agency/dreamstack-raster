@@ -1,7 +1,9 @@
 #!/usr/bin/env python
+# ruff: noqa: F401, F811, E501
+# pylint: disable=W0611,W0703,W0404
+# pyright: reportUnusedImport=false
 """Test color module imports in isolation."""
 
-import os
 import sys
 
 # Directly add the src to path
@@ -30,17 +32,11 @@ except Exception as e:
 
 # Test spaces submodule
 try:
-    from dreamstack.raster.color.spaces import (
-        AdobeRGB,
-        ColorSpace,
-        GammaType,
-        sRGB,
-    )
+    from dreamstack.raster.color.spaces import (AdobeRGB, ColorSpace,
+                                                GammaType, sRGB)
     from dreamstack.raster.color.spaces.color_space import ColorSpace
-    from dreamstack.raster.color.spaces.color_space_instances import (
-        AdobeRGB,
-        sRGB,
-    )
+    from dreamstack.raster.color.spaces.color_space_instances import (AdobeRGB,
+                                                                      sRGB)
     from dreamstack.raster.color.spaces.gamma_type import GammaType
     from dreamstack.raster.color.spaces.get_color_space import get_color_space
 
@@ -53,9 +49,8 @@ try:
     from dreamstack.raster.color.profiles import ICCProfile, RenderingIntent
     from dreamstack.raster.color.profiles.icc_profile import ICCProfile
     from dreamstack.raster.color.profiles.load_profile import load_profile
-    from dreamstack.raster.color.profiles.rendering_intent import (
-        RenderingIntent,
-    )
+    from dreamstack.raster.color.profiles.rendering_intent import \
+        RenderingIntent
 
     print("profiles submodule: OK")
 except Exception as e:
@@ -75,59 +70,24 @@ except Exception as e:
 
 # Test main color __init__
 try:
-    from dreamstack.raster.color import (
-        ACES,
-        ACES_WP,
-        BLACK,
-        BLUE,
-        CYAN,
-        D50,
-        D65,
-        DCI_P3,
-        GREEN,
-        MAGENTA,
-        RED,
-        TRANSPARENT,
-        WHITE,
-        YELLOW,
-        ACEScg,
-        AdobeRGB,
-        Color,
-        ColorSpace,
-        ColorSpaceType,
-        DisplayP3,
-        GammaType,
-        ICCProfile,
-        Palette,
-        ProfileClass,
-        ProPhotoRGB,
-        Rec709,
-        Rec2020,
-        RenderingIntent,
-        cmyk_to_rgb,
-        convert_color,
-        convert_color_space,
-        convert_profile,
-        create_gradient,
-        embed_profile,
-        get_color_space,
-        get_profile_info,
-        get_system_profiles,
-        gray_to_rgb,
-        hsl_to_rgb,
-        hsv_to_rgb,
-        lab_to_rgb,
-        list_color_spaces,
-        load_profile,
-        rgb_to_cmyk,
-        rgb_to_gray,
-        rgb_to_hsl,
-        rgb_to_hsv,
-        rgb_to_lab,
-        rgb_to_xyz,
-        sRGB,
-        xyz_to_rgb,
-    )
+    from dreamstack.raster.color import (ACES, ACES_WP, BLACK, BLUE, CYAN, D50,
+                                         D65, DCI_P3, GREEN, MAGENTA, RED,
+                                         TRANSPARENT, WHITE, YELLOW, ACEScg,
+                                         AdobeRGB, Color, ColorSpace,
+                                         ColorSpaceType, DisplayP3, GammaType,
+                                         ICCProfile, Palette, ProfileClass,
+                                         ProPhotoRGB, Rec709, Rec2020,
+                                         RenderingIntent, cmyk_to_rgb,
+                                         convert_color, convert_color_space,
+                                         convert_profile, create_gradient,
+                                         embed_profile, get_color_space,
+                                         get_profile_info, get_system_profiles,
+                                         gray_to_rgb, hsl_to_rgb, hsv_to_rgb,
+                                         lab_to_rgb, list_color_spaces,
+                                         load_profile, rgb_to_cmyk,
+                                         rgb_to_gray, rgb_to_hsl, rgb_to_hsv,
+                                         rgb_to_lab, rgb_to_xyz, sRGB,
+                                         xyz_to_rgb)
 
     print("main color __init__: OK")
 except Exception as e:
@@ -137,7 +97,7 @@ print()
 print("Testing actual functionality...")
 
 # Test conversion functions work
-import numpy as np
+import numpy as np  # pylint: disable=wrong-import-position
 
 try:
     rgb = np.array([1.0, 0.0, 0.0])  # Pure red
@@ -158,10 +118,12 @@ except Exception as e:
     print(f"Color class: FAILED - {e}")
 
 try:
+    # pylint: disable=line-too-long
     p = Palette.from_hex_list(["#ff0000", "#00ff00", "#0000ff"], name="RGB")  # type: ignore[possibly-undefined]
+    # pylint: enable=line-too-long
     assert len(p) == 3, "Palette creation failed"
     print("Palette class: OK")
-except Exception as e:
+except Exception as e:  # noqa: BLE001
     print(f"Palette class: FAILED - {e}")
 
 try:

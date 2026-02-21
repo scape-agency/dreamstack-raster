@@ -40,7 +40,7 @@ def replace_background(
         >>> rgba = remove_background(image)
         >>> result = replace_background(rgba, new_bg)
     """
-    import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
     if rgba_image.ndim != 3 or rgba_image.shape[2] != 4:
         raise ValueError("Expected RGBA image with 4 channels")
@@ -49,11 +49,12 @@ def replace_background(
 
     # Resize background if needed
     if background.shape[:2] != (h, w):
-        background = cv2.resize(background, (w, h), interpolation=cv2.INTER_LINEAR)
+        # pylint: disable=line-too-long
+        background = cv2.resize(background, (w, h), interpolation=cv2.INTER_LINEAR)  # type: ignore[assignment]
 
     # Ensure background is 3 channels
     if background.ndim == 2:
-        background = cv2.cvtColor(background, cv2.COLOR_GRAY2RGB)
+        background = cv2.cvtColor(background, cv2.COLOR_GRAY2RGB)  # type: ignore[assignment]
     elif background.shape[2] == 4:
         background = background[:, :, :3]
 

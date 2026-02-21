@@ -69,16 +69,17 @@ class UltralyticsDetector(BaseDetector):
     def _load_model(self) -> None:
         """Load YOLO model with lazy import."""
         try:
-            from ultralytics import YOLO
-        except ImportError:
+            # pylint: disable=import-outside-toplevel
+            from ultralytics import YOLO  # type: ignore[import-not-found]
+        except ImportError as exc:
             raise ImportError(
                 "ultralytics is required for YOLO detection. "
                 "Install with: pip install ultralytics"
-            )
+            ) from exc
 
         device = self._resolve_device()
         logger.info(
-            f"Loading YOLO model '{self.config.model_name}' on {device}"
+            "Loading YOLO model '%s' on %s", self.config.model_name, device
         )
 
         # Load model - will download if not present
@@ -93,7 +94,9 @@ class UltralyticsDetector(BaseDetector):
         self._model_loaded = True
 
         logger.info(
-            f"Model loaded: {len(self._class_names)} classes, device={device}"
+            "Model loaded: %d classes, device=%s",
+            len(self._class_names),
+            device,
         )
 
     def get_class_names(self) -> dict[int, str]:
@@ -172,7 +175,7 @@ class UltralyticsDetector(BaseDetector):
                     mask = None
                     if has_masks and self.config.segmentation.enabled:
                         mask = self._extract_mask(
-                            masks.data[i].cpu().numpy(),
+                            masks.data[i].cpu().numpy(),  # type: ignore[union-attr]
                             (h, w),
                             (x1, y1, x2, y2),
                         )
@@ -215,7 +218,7 @@ class UltralyticsDetector(BaseDetector):
         NDArray[np.uint8]
             Cropped binary mask (0-255).
         """
-        import cv2
+        import cv2  # pylint: disable=import-outside-toplevel
 
         h, w = image_size
         x1, y1, x2, y2 = bbox

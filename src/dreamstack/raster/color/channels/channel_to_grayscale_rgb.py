@@ -25,4 +25,4 @@ def channel_to_grayscale_rgb(
     NDArray[np.uint8]
         3-channel grayscale image (H, W, 3).
     """
-    return cv2.merge([channel, channel, channel])
+    return cv2.merge([channel, channel, channel])  # type: ignore[attr-defined]

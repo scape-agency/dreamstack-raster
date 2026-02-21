@@ -241,13 +241,14 @@ def active_contour(
     It wraps skimage.segmentation.active_contour.
     """
     try:
+        # pylint: disable=import-outside-toplevel
         from skimage.filters import gaussian
         from skimage.segmentation import active_contour as sk_active_contour
-    except ImportError:
+    except ImportError as exc:
         raise ImportError(
             "scikit-image is required for active_contour. "
             "Install with: pip install scikit-image"
-        )
+        ) from exc
 
     if config is None:
         config = ActiveContourConfig()

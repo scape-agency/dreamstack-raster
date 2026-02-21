@@ -56,11 +56,12 @@ from PIL import Image
 
 # Load environment variables
 try:
-    from dotenv import load_dotenv
+    from dotenv import load_dotenv  # type: ignore[assignment]
 except ImportError:
     # dotenv is optional
-    def load_dotenv(*_args: object, **_kwargs: object) -> None:  # type: ignore[misc]
-        pass
+    def load_dotenv(*_args: object, **_kwargs: object) -> bool:  # type: ignore[misc]
+        """Fallback when python-dotenv is not installed."""
+        return False
 
 
 # Add paths
@@ -77,9 +78,12 @@ if src_path.exists():
 
 # Local modules
 sys.path.insert(0, str(Path(__file__).parent))
+# pylint: disable=wrong-import-position
 from modules.config import AppConfig, CutoutConfig, EffectConfig, SegmentConfig
 from modules.effects import apply_effects
-from modules.grid import save_segments, segment_image
+from modules.grid import segment_image
+
+# pylint: enable=wrong-import-position
 
 logger = logging.getLogger(__name__)
 
@@ -105,6 +109,7 @@ def describe_image(
 
     Returns (description, object_list).
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.detection.describer import (
         DescriptionConfig,
         ImageDescriber,
@@ -127,6 +132,7 @@ def detect_objects(
 
     Returns list of detections with bbox and label.
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.detection import DetectionConfig, create_detector
 
     config = DetectionConfig(
@@ -297,7 +303,7 @@ def process_image(
 
     Returns metadata dict.
     """
-    logger.info(f"Processing: {image_path.name}")
+    logger.info("Processing: %s", image_path.name)
 
     # Preserve folder structure
     try:
@@ -326,9 +332,9 @@ def process_image(
             image_path,
             backend=config.vision_backend,
         )
-        logger.info(f"  Found objects: {', '.join(objects[:5])}...")
-    except Exception as e:
-        logger.warning(f"  AI description failed: {e}")
+        logger.info("  Found objects: %s...", ", ".join(objects[:5]))
+    except Exception as e:  # pylint: disable=broad-exception-caught
+        logger.warning("  AI description failed: %s", e)
         description = ""
         objects = []
 
@@ -340,7 +346,7 @@ def process_image(
         confidence=config.confidence_threshold,
         prompts=objects if objects else None,
     )
-    logger.info(f"  Detected {len(detections)} objects")
+    logger.info("  Detected %d objects", len(detections))
 
     # Process each detection
     cutout_metadata = []
@@ -353,7 +359,7 @@ def process_image(
         cutout_name = f"{label}_{i + 1}"
         cutout_filename = f"{cutout_name}.png"
 
-        logger.info(f"  Processing cutout: {cutout_name}")
+        logger.info("  Processing cutout: %s", cutout_name)
 
         # Step 3: Extract and scale cutout with smart sizing
         cutout, cutout_info = extract_cutout(
@@ -365,14 +371,14 @@ def process_image(
             segment_align=config.cutout.segment_align,
         )
 
-        logger.info(f"    Cutout size: {cutout.width}x{cutout.height}")
+        logger.info("    Cutout size: %dx%d", cutout.width, cutout.height)
 
         # Save cutout
         cutout_path = cutouts_dir / cutout_filename
         cutout.save(cutout_path)
 
         # Step 4: Segment cutout
-        logger.info(f"    Segmenting into grid...")
+        logger.info("    Segmenting into grid...")
         segments = segment_image(cutout, config.segment)
 
         segment_output_dir = segments_dir / cutout_name
@@ -432,7 +438,7 @@ def process_image(
 
     # Save metadata
     metadata_path = image_output_dir / "metadata.json"
-    with open(metadata_path, "w") as f:
+    with open(metadata_path, "w", encoding="utf-8") as f:
         json.dump(metadata, f, indent=2)
 
     return metadata
@@ -557,7 +563,7 @@ def main() -> int:
 
     # Validate input
     if not args.input.exists():
-        logger.error(f"Input directory not found: {args.input}")
+        logger.error("Input directory not found: %s", args.input)
         return 1
 
     # Parse segment size (WxH format)
@@ -568,7 +574,7 @@ def main() -> int:
         else:
             seg_w = seg_h = int(seg_parts[0])
     except ValueError:
-        logger.error(f"Invalid segment size format: {args.segment_size}")
+        logger.error("Invalid segment size format: %s", args.segment_size)
         return 1
 
     # Build configuration
@@ -592,12 +598,12 @@ def main() -> int:
 
     logger.info("Childhood App Preprocessor")
     logger.info("=" * 50)
-    logger.info(f"Input: {args.input}")
-    logger.info(f"Output: {args.output}")
-    logger.info(f"Vision: {config.vision_backend}")
-    logger.info(f"Detection: {config.detection_backend}")
-    logger.info(f"Cutout max size: {config.cutout.max_size}")
-    logger.info(f"Segment size: {config.segment.segment_size}")
+    logger.info("Input: %s", args.input)
+    logger.info("Output: %s", args.output)
+    logger.info("Vision: %s", config.vision_backend)
+    logger.info("Detection: %s", config.detection_backend)
+    logger.info("Cutout max size: %s", config.cutout.max_size)
+    logger.info("Segment size: %s", config.segment.segment_size)
     if config.segment.generate_inbetweens:
         logger.info("In-between segments: ENABLED (H+V)")
     logger.info("=" * 50)
@@ -607,16 +613,16 @@ def main() -> int:
     total = len(images)
 
     if total == 0:
-        logger.warning(f"No images found in {args.input}")
+        logger.warning("No images found in %s", args.input)
         return 0
 
     # Apply limit
     if args.limit and args.limit < total:
         images = images[: args.limit]
-        logger.info(f"Limited to {args.limit} of {total} images")
+        logger.info("Limited to %d of %d images", args.limit, total)
         total = args.limit
 
-    logger.info(f"Processing {total} images")
+    logger.info("Processing %d images", total)
 
     # Process images
     successful = 0
@@ -644,11 +650,11 @@ def main() -> int:
             successful += 1
 
             logger.info(
-                f"  Created {num_cutouts} cutouts, " f"{num_segments} segments"
+                "  Created %d cutouts, %d segments", num_cutouts, num_segments
             )
 
-        except Exception as e:
-            logger.error(f"  Failed: {e}")
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            logger.error("  Failed: %s", e)
             failed += 1
 
     # Summary

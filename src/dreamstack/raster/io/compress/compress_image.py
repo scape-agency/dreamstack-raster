@@ -24,7 +24,7 @@ def compress_image(
     image: NDArray[np.uint8],
     quality: int = 85,
     *,
-    format: CompressionFormat = "jpeg",
+    output_format: CompressionFormat = "jpeg",
 ) -> bytes:
     """Compress image at a specific quality level.
 
@@ -33,7 +33,7 @@ def compress_image(
     Args:
         image: Input image (BGR, 3 channels).
         quality: Compression quality (1-100).
-        format: Output format.
+        output_format: Output format.
 
     Returns:
         Compressed image bytes.
@@ -43,8 +43,8 @@ def compress_image(
         >>> with open("output.jpg", "wb") as f:
         ...     f.write(data)
     """
-    import cv2
-    from PIL import Image
+    import cv2  # pylint: disable=import-outside-toplevel
+    from PIL import Image  # pylint: disable=import-outside-toplevel
 
     # Convert BGR to RGB
     if image.ndim == 3 and image.shape[2] == 3:
@@ -55,13 +55,13 @@ def compress_image(
     pil_image = Image.fromarray(rgb)
     buffer = BytesIO()
 
-    if format == "jpeg":
+    if output_format == "jpeg":
         if pil_image.mode == "RGBA":
             bg = Image.new("RGB", pil_image.size, (255, 255, 255))
             bg.paste(pil_image, mask=pil_image.split()[3])
             pil_image = bg
         pil_image.save(buffer, format="JPEG", quality=quality)
-    elif format == "webp":
+    elif output_format == "webp":
         pil_image.save(buffer, format="WEBP", quality=quality)
     else:
         pil_image.save(buffer, format="PNG", compress_level=9)

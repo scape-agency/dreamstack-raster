@@ -116,12 +116,15 @@ class GroundingDinoSamDetector(BaseDetector):
     def _load_grounding_dino(self) -> None:
         """Load Grounding DINO model."""
         try:
-            from groundingdino.util.inference import load_model
-        except ImportError:
+            # pylint: disable=import-outside-toplevel
+            from groundingdino.util.inference import (
+                load_model,
+            )  # type: ignore[import-not-found]
+        except ImportError as exc:
             raise ImportError(
                 "groundingdino-py is required for Grounding DINO. "
                 "Install with: pip install groundingdino-py"
-            )
+            ) from exc
 
         # Download model if needed
         model_dir = self._get_model_dir()
@@ -131,7 +134,7 @@ class GroundingDinoSamDetector(BaseDetector):
         if not checkpoint_path.exists():
             self._download_grounding_dino_model(model_dir)
 
-        logger.info(f"Loading Grounding DINO on {self._effective_device}")
+        logger.info("Loading Grounding DINO on %s", self._effective_device)
 
         self._grounding_dino_model = load_model(
             str(config_path),
@@ -142,12 +145,16 @@ class GroundingDinoSamDetector(BaseDetector):
     def _load_sam(self) -> None:
         """Load SAM model."""
         try:
-            from segment_anything import sam_model_registry, SamPredictor
-        except ImportError:
+            # pylint: disable=import-outside-toplevel
+            from segment_anything import (  # type: ignore[import-not-found]
+                SamPredictor,
+                sam_model_registry,
+            )
+        except ImportError as exc:
             raise ImportError(
                 "segment-anything is required for SAM. "
                 "Install with: pip install segment-anything"
-            )
+            ) from exc
 
         model_dir = self._get_model_dir()
         checkpoint_path = model_dir / self.SAM_CHECKPOINT
@@ -155,7 +162,7 @@ class GroundingDinoSamDetector(BaseDetector):
         if not checkpoint_path.exists():
             self._download_sam_model(model_dir)
 
-        logger.info(f"Loading SAM on {self._effective_device}")
+        logger.info("Loading SAM on %s", self._effective_device)
 
         sam = sam_model_registry["vit_h"](checkpoint=str(checkpoint_path))
         sam.to(self._effective_device)
@@ -170,7 +177,7 @@ class GroundingDinoSamDetector(BaseDetector):
 
     def _download_grounding_dino_model(self, model_dir: Path) -> None:
         """Download Grounding DINO model files."""
-        import urllib.request
+        import urllib.request  # pylint: disable=import-outside-toplevel
 
         logger.info("Downloading Grounding DINO model...")
 
@@ -194,7 +201,7 @@ class GroundingDinoSamDetector(BaseDetector):
 
     def _download_sam_model(self, model_dir: Path) -> None:
         """Download SAM model checkpoint."""
-        import urllib.request
+        import urllib.request  # pylint: disable=import-outside-toplevel
 
         logger.info("Downloading SAM model (this may take a while, ~2.4GB)...")
 
@@ -242,7 +249,7 @@ class GroundingDinoSamDetector(BaseDetector):
         h, w = image.shape[:2]
 
         # Convert BGR to RGB for models
-        import cv2
+        import cv2  # pylint: disable=import-outside-toplevel
 
         image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
@@ -313,6 +320,7 @@ class GroundingDinoSamDetector(BaseDetector):
         tuple[list, list[str], list[float]]
             (boxes, labels, confidences)
         """
+        # pylint: disable=import-outside-toplevel
         from groundingdino.util.inference import predict
 
         # Combine prompts with periods (Grounding DINO format)
@@ -359,7 +367,7 @@ class GroundingDinoSamDetector(BaseDetector):
         list[NDArray[np.uint8]]
             List of masks (full image size).
         """
-        self._sam_predictor.set_image(image_rgb)
+        self._sam_predictor.set_image(image_rgb)  # type: ignore[union-attr]
 
         masks = []
         for box in boxes:
@@ -367,7 +375,7 @@ class GroundingDinoSamDetector(BaseDetector):
             # box format: [x1, y1, x2, y2]
             box_array = np.array(box)
 
-            mask_output, _, _ = self._sam_predictor.predict(
+            mask_output, _, _ = self._sam_predictor.predict(  # type: ignore[union-attr]
                 point_coords=None,
                 point_labels=None,
                 box=box_array,
@@ -375,7 +383,7 @@ class GroundingDinoSamDetector(BaseDetector):
             )
 
             # Convert to uint8 mask (mask_output shape: [1, H, W])
-            mask = (mask_output[0] * 255).astype(np.uint8)
+            mask = (mask_output[0] * 255).astype(np.uint8)  # type: ignore[union-attr]
             masks.append(mask)
 
         return masks

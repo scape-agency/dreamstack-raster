@@ -29,7 +29,8 @@ def extract_palette(
     Returns:
         Extracted Palette
     """
-    from sklearn.cluster import KMeans
+    # pylint: disable=import-error,import-outside-toplevel
+    from sklearn.cluster import KMeans  # type: ignore[import-not-found]
 
     # Get RGB data
     rgb = image.to_rgb()
@@ -70,7 +71,9 @@ def extract_palette(
     # Create palette
     colors = []
     for center in centers:
-        color = Color(int(center[0] * 255), int(center[1] * 255), int(center[2] * 255))
+        color = Color(
+            int(center[0] * 255), int(center[1] * 255), int(center[2] * 255)
+        )
         colors.append(color)
 
     palette = Palette(colors=colors)
@@ -118,7 +121,8 @@ def _octree_quantize(pixels: np.ndarray, num_colors: int) -> np.ndarray:
     """Simplified octree quantization (falls back to k-means)."""
     # Full octree implementation is complex
     # For now, use k-means as fallback
-    from sklearn.cluster import KMeans
+    # pylint: disable=import-error,import-outside-toplevel
+    from sklearn.cluster import KMeans  # type: ignore[import-not-found]
 
     kmeans = KMeans(n_clusters=num_colors, random_state=42, n_init=10)
     kmeans.fit(pixels)

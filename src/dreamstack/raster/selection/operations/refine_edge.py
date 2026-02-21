@@ -16,7 +16,9 @@ import numpy as np
 if TYPE_CHECKING:
     from numpy.typing import NDArray
 
-from dreamstack.raster.selection.shapes.selection import Selection
+from dreamstack.raster.selection.shapes.selection import (
+    Selection,
+)  # pylint: disable=wrong-import-position
 
 
 def refine_edge(
@@ -51,7 +53,7 @@ def refine_edge(
     Example:
         >>> refined = refine_edge(selection, image, radius=3, feather=1)
     """
-    h, w = selection.mask.shape
+    _h, _w = selection.mask.shape
     mask = selection.mask.astype(np.float32) / 255.0
 
     # Get source image
@@ -83,7 +85,7 @@ def refine_edge(
     if np.any(edge_combined > 0):
         # Use image edges to refine selection boundary
         try:
-            refined_mask = cv2.ximgproc.guidedFilter(
+            refined_mask = cv2.ximgproc.guidedFilter(  # type: ignore[attr-defined]
                 gray,
                 mask,
                 radius,
@@ -108,7 +110,9 @@ def refine_edge(
         blur_size = int(smooth * 2 + 1)
         if blur_size % 2 == 0:
             blur_size += 1
-        refined_mask = cv2.GaussianBlur(refined_mask, (blur_size, blur_size), smooth)
+        refined_mask = cv2.GaussianBlur(
+            refined_mask, (blur_size, blur_size), smooth
+        )
 
     # Feather
     if feather > 0:
@@ -141,7 +145,9 @@ def refine_edge(
     if decontaminate:
         # This would require color replacement, for now just sharpen edges
         # to reduce fringing visibility
-        kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]], dtype=np.float32)
+        kernel = np.array(
+            [[0, -1, 0], [-1, 5, -1], [0, -1, 0]], dtype=np.float32
+        )
         refined_mask = cv2.filter2D(refined_mask, -1, kernel)
         refined_mask = np.clip(refined_mask, 0, 1)
 

@@ -36,6 +36,7 @@ def vignette(
     Returns:
         Vignetted image
     """
+    # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import PixelData
 
     data = image.data.astype(np.float32)
@@ -56,7 +57,7 @@ def vignette(
         ax = aspect
         ay = 1.0
 
-    1 + roundness / 100
+    _roundness_factor = 1 + roundness / 100  # noqa: F841
 
     # Distance from center (normalized)
     dx = (x - cx) / (w / 2) * ax
@@ -70,7 +71,9 @@ def vignette(
     feather_normalized = max(0.01, feather / 100)
 
     # Create mask
-    mask = 1 - np.clip((distance - midpoint_normalized) / feather_normalized, 0, 1)
+    mask = 1 - np.clip(
+        (distance - midpoint_normalized) / feather_normalized, 0, 1
+    )
 
     # Apply amount
     amount_normalized = amount / 100
@@ -89,7 +92,7 @@ def vignette(
     result = np.clip(result, 0, max_val)
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

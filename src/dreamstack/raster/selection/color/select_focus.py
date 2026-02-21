@@ -16,7 +16,9 @@ import numpy as np
 if TYPE_CHECKING:
     from numpy.typing import NDArray
 
-from dreamstack.raster.selection.shapes.selection import Selection
+from dreamstack.raster.selection.shapes.selection import (
+    Selection,
+)  # pylint: disable=wrong-import-position
 
 
 def select_focus(
@@ -51,14 +53,15 @@ def select_focus(
     else:
         gray = image[:, :, 0]
 
-    h, w = gray.shape[:2]
+    _h, _w = gray.shape[:2]
 
     # Compute Laplacian for sharpness detection
     laplacian = cv2.Laplacian(gray, cv2.CV_64F, ksize=blur_detection_size)
     sharpness = np.abs(laplacian)
 
     # Normalize to 0-255
-    sharpness_norm = cv2.normalize(sharpness, None, 0, 255, cv2.NORM_MINMAX)
+    # pylint: disable=line-too-long
+    sharpness_norm = cv2.normalize(sharpness, None, 0, 255, cv2.NORM_MINMAX)  # type: ignore[call-overload]
     sharpness_u8 = sharpness_norm.astype(np.uint8)
 
     # Apply local variance as additional measure
@@ -68,7 +71,7 @@ def select_focus(
     local_variance = np.maximum(0, local_variance)  # Clamp negative values
 
     # Normalize variance
-    variance_norm = cv2.normalize(
+    variance_norm = cv2.normalize(  # type: ignore[call-overload]
         np.sqrt(local_variance), None, 0, 255, cv2.NORM_MINMAX
     ).astype(np.uint8)
 

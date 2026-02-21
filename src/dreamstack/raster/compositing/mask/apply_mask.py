@@ -41,19 +41,19 @@ def apply_mask(
     """
     # Ensure BGRA output
     if image.ndim == 2:
-        result = cv2.cvtColor(image, cv2.COLOR_GRAY2BGRA)
+        result = cv2.cvtColor(image, cv2.COLOR_GRAY2BGRA)  # type: ignore[assignment]
     elif image.shape[2] == 3:
-        result = cv2.cvtColor(image, cv2.COLOR_BGR2BGRA)
+        result = cv2.cvtColor(image, cv2.COLOR_BGR2BGRA)  # type: ignore[assignment]
     else:
         result = image.copy()
 
     # Ensure mask matches image size
     if mask.shape[:2] != result.shape[:2]:
-        mask = cv2.resize(mask, (result.shape[1], result.shape[0]))
+        mask = cv2.resize(mask, (result.shape[1], result.shape[0]))  # type: ignore[assignment]
 
     # Ensure mask is grayscale
     if mask.ndim > 2:
-        mask = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
+        mask = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)  # type: ignore[assignment]
 
     # Invert if requested
     if invert:

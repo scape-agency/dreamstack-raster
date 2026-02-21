@@ -28,27 +28,27 @@ def composite_with_mask(
     Example:
         >>> result = composite_with_mask(person, scene, person_mask)
     """
-    import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
     # Ensure same size
     h, w = background.shape[:2]
     if foreground.shape[:2] != (h, w):
-        foreground = cv2.resize(foreground, (w, h))
+        foreground = cv2.resize(foreground, (w, h))  # type: ignore[assignment]
     if mask.shape[:2] != (h, w):
-        mask = cv2.resize(mask, (w, h))
+        mask = cv2.resize(mask, (w, h))  # type: ignore[assignment]
 
     # Ensure mask is single channel
     if mask.ndim == 3:
-        mask = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
+        mask = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)  # type: ignore[assignment]
 
     # Normalize mask to 0-1
     alpha = mask.astype(np.float32) / 255.0
 
     # Ensure same channel count
     if foreground.ndim == 2:
-        foreground = cv2.cvtColor(foreground, cv2.COLOR_GRAY2BGR)
+        foreground = cv2.cvtColor(foreground, cv2.COLOR_GRAY2BGR)  # type: ignore[assignment]
     if background.ndim == 2:
-        background = cv2.cvtColor(background, cv2.COLOR_GRAY2BGR)
+        background = cv2.cvtColor(background, cv2.COLOR_GRAY2BGR)  # type: ignore[assignment]
 
     # Handle alpha channels
     if foreground.shape[2] == 4:
@@ -60,8 +60,8 @@ def composite_with_mask(
     alpha = alpha[:, :, np.newaxis]
 
     # Blend
-    result = foreground.astype(np.float32) * alpha + background.astype(np.float32) * (
-        1 - alpha
-    )
+    result = foreground.astype(np.float32) * alpha + background.astype(
+        np.float32
+    ) * (1 - alpha)
 
     return result.astype(np.uint8)

@@ -64,7 +64,7 @@ def translate(
     }
     border = border_modes.get(border_mode, cv2.BORDER_CONSTANT)
 
-    return cv2.warpAffine(
+    return cv2.warpAffine(  # type: ignore[call-overload]
         image,
         translation_matrix,
         (w, h),

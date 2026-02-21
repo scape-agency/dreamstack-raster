@@ -14,8 +14,8 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Literal
 
 if TYPE_CHECKING:
-    from numpy.typing import NDArray
     import numpy as np
+    from numpy.typing import NDArray
 
 logger = logging.getLogger(__name__)
 
@@ -134,6 +134,7 @@ class ImageDescriber:
         """
         self.config = config or DescriptionConfig()
         self._chat_with_vision = None
+        self._default_model: str | None = None
 
     def _load_backend(self) -> None:
         """Lazy load the vision backend."""
@@ -142,29 +143,35 @@ class ImageDescriber:
 
         if self.config.backend == "openai":
             try:
-                from chimp.openai import chat_with_vision
+                # pylint: disable=import-outside-toplevel
+                from chimp.openai import (
+                    chat_with_vision,
+                )  # type: ignore[import-not-found]
 
                 self._chat_with_vision = chat_with_vision
                 self._default_model = "gpt-4o"
-            except ImportError:
+            except ImportError as exc:
                 raise ImportError(
                     "chimp-openai is required for OpenAI vision. "
                     "Install with: pip install chimp-openai "
                     "or poetry install --extras vision-openai"
-                )
+                ) from exc
 
         elif self.config.backend == "mistral":
             try:
-                from chimp.mistral import chat_with_vision
+                # pylint: disable=import-outside-toplevel
+                from chimp.mistral import (
+                    chat_with_vision,
+                )  # type: ignore[import-not-found]
 
                 self._chat_with_vision = chat_with_vision
                 self._default_model = "pixtral-12b-2409"
-            except ImportError:
+            except ImportError as exc:
                 raise ImportError(
                     "chimp-mistral is required for Mistral vision. "
                     "Install with: pip install chimp-mistral "
                     "or poetry install --extras vision-mistral"
-                )
+                ) from exc
         else:
             raise ValueError(f"Unknown backend: {self.config.backend}")
 
@@ -197,11 +204,13 @@ class ImageDescriber:
         model = self.config.model or self._default_model
 
         logger.info(
-            f"Describing image with {self.config.backend}: {image_path.name}"
+            "Describing image with %s: %s",
+            self.config.backend,
+            image_path.name,
         )
 
         # Call vision API with retry for rate limiting
-        import time
+        import time  # pylint: disable=import-outside-toplevel
 
         max_retries = 3
         retry_delay = 2.0  # seconds
@@ -209,7 +218,7 @@ class ImageDescriber:
         for attempt in range(max_retries):
             try:
                 if self.config.backend == "openai":
-                    response = self._chat_with_vision(
+                    response = self._chat_with_vision(  # type: ignore[misc]
                         prompt=prompt,
                         image_paths=[str(image_path)],
                         model=model,
@@ -217,21 +226,23 @@ class ImageDescriber:
                         detail=self.config.detail,
                     )
                 else:  # mistral
-                    response = self._chat_with_vision(
+                    response = self._chat_with_vision(  # type: ignore[misc]
                         prompt=prompt,
                         image_paths=[str(image_path)],
                         model=model,
                         max_tokens=self.config.max_tokens,
                     )
                 break  # Success
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 error_str = str(e).lower()
                 if "429" in error_str or "rate" in error_str:
                     if attempt < max_retries - 1:
                         wait_time = retry_delay * (2**attempt)
                         logger.warning(
-                            f"Rate limited, waiting {wait_time:.1f}s "
-                            f"(attempt {attempt + 1}/{max_retries})"
+                            "Rate limited, waiting %.1fs (attempt %d/%d)",
+                            wait_time,
+                            attempt + 1,
+                            max_retries,
                         )
                         time.sleep(wait_time)
                     else:

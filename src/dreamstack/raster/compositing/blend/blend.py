@@ -16,7 +16,10 @@ import numpy as np
 if TYPE_CHECKING:
     from numpy.typing import NDArray
 
+# pylint: disable=wrong-import-position
 from dreamstack.raster.compositing.blend.blend_mode import BlendMode
+
+# pylint: enable=wrong-import-position
 
 
 def blend(
@@ -43,7 +46,7 @@ def blend(
     """
     # Ensure both images have same shape
     if base.shape[:2] != overlay.shape[:2]:
-        overlay = cv2.resize(overlay, (base.shape[1], base.shape[0]))
+        overlay = cv2.resize(overlay, (base.shape[1], base.shape[0]))  # type: ignore[assignment]
 
     # Work with float for precision
     base_f = base.astype(np.float32) / 255.0
@@ -170,7 +173,11 @@ def _apply_blend_mode(
 
     elif mode == BlendMode.DARKER_COLOR:
         # Compare luminosity
-        base_lum = 0.299 * base[:, :, 0] + 0.587 * base[:, :, 1] + 0.114 * base[:, :, 2]
+        base_lum = (
+            0.299 * base[:, :, 0]
+            + 0.587 * base[:, :, 1]
+            + 0.114 * base[:, :, 2]
+        )
         overlay_lum = (
             0.299 * overlay[:, :, 0]
             + 0.587 * overlay[:, :, 1]
@@ -180,7 +187,11 @@ def _apply_blend_mode(
         return np.where(mask, overlay, base)
 
     elif mode == BlendMode.LIGHTER_COLOR:
-        base_lum = 0.299 * base[:, :, 0] + 0.587 * base[:, :, 1] + 0.114 * base[:, :, 2]
+        base_lum = (
+            0.299 * base[:, :, 0]
+            + 0.587 * base[:, :, 1]
+            + 0.114 * base[:, :, 2]
+        )
         overlay_lum = (
             0.299 * overlay[:, :, 0]
             + 0.587 * overlay[:, :, 1]
@@ -212,7 +223,9 @@ def _blend_hsl_mode(
     overlay_u8 = (overlay * 255).astype(np.uint8)
 
     base_hls = cv2.cvtColor(base_u8, cv2.COLOR_RGB2HLS).astype(np.float32)
-    overlay_hls = cv2.cvtColor(overlay_u8, cv2.COLOR_RGB2HLS).astype(np.float32)
+    overlay_hls = cv2.cvtColor(overlay_u8, cv2.COLOR_RGB2HLS).astype(
+        np.float32
+    )
 
     result_hls = base_hls.copy()
 

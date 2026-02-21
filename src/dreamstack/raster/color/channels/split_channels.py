@@ -54,6 +54,7 @@ def split_channels(
         if len(channels) == 3:
             return (channels[2], channels[1], channels[0])  # type: ignore[return-value]
         elif len(channels) == 4:
-            return (channels[2], channels[1], channels[0], channels[3])  # type: ignore[return-value]
+            # type: ignore[return-value]
+            return (channels[2], channels[1], channels[0], channels[3])
 
     return tuple(channels)  # type: ignore[return-value]

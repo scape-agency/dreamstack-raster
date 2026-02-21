@@ -61,7 +61,7 @@ def align_eyes(
         >>> aligned_image = result.image
         >>> print(f"Rotated {result.rotation_angle:.1f} degrees")
     """
-    import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
     # Detect landmarks if not provided
     if landmarks is None:
@@ -94,7 +94,9 @@ def align_eyes(
         scale = 1.0
 
     # Create transformation matrix
-    M = cv2.getRotationMatrix2D(tuple(center), float(angle), float(scale))
+    M = cv2.getRotationMatrix2D(  # pylint: disable=invalid-name
+        tuple(center), float(angle), float(scale)
+    )
 
     # Apply transformation
     h, w = image.shape[:2]
@@ -129,7 +131,8 @@ def _detect_eye_landmarks(
     Internal function to detect eye positions.
     """
     try:
-        import mediapipe as mp
+        # pylint: disable=import-outside-toplevel
+        import mediapipe as mp  # type: ignore[import-not-found]
     except ImportError:
         return None
 
@@ -141,7 +144,7 @@ def _detect_eye_landmarks(
         min_detection_confidence=0.5,
     ) as face_mesh:
         # MediaPipe expects RGB
-        import cv2
+        import cv2  # pylint: disable=import-outside-toplevel
 
         rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         results = face_mesh.process(rgb)
@@ -153,10 +156,12 @@ def _detect_eye_landmarks(
         h, w = image.shape[:2]
 
         # Eye landmark indices for MediaPipe Face Mesh
+        # pylint: disable=invalid-name
         LEFT_EYE_CENTER = 468
         RIGHT_EYE_CENTER = 473
         LEFT_EYE_INNER = 133
         RIGHT_EYE_INNER = 362
+        # pylint: enable=invalid-name
 
         try:
             left = landmarks.landmark[LEFT_EYE_CENTER]
@@ -194,7 +199,7 @@ def normalize_face_scale(
         >>> # Create 512x512 image with face centered and filling 60%
         >>> result = normalize_face_scale(image, (512, 512), face_ratio=0.6)
     """
-    import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
     h, w = image.shape[:2]
     target_w, target_h = target_size
@@ -219,7 +224,7 @@ def normalize_face_scale(
         face_center = (w / 2, h / 2)
 
     # Create transformation matrix
-    M = np.array(
+    M = np.array(  # pylint: disable=invalid-name
         [
             [scale, 0, target_w / 2 - scale * face_center[0]],
             [0, scale, target_h / 2 - scale * face_center[1]],
@@ -256,7 +261,8 @@ def _detect_face_bbox(
     Internal function using MediaPipe Face Detection.
     """
     try:
-        import mediapipe as mp
+        # pylint: disable=import-outside-toplevel
+        import mediapipe as mp  # type: ignore[import-not-found]
     except ImportError:
         return None
 
@@ -266,7 +272,7 @@ def _detect_face_bbox(
         model_selection=1,
         min_detection_confidence=0.5,
     ) as face_detection:
-        import cv2
+        import cv2  # pylint: disable=import-outside-toplevel
 
         rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         results = face_detection.process(rgb)
@@ -318,10 +324,10 @@ def apply_transform(
     Returns:
         Transformed image.
     """
-    import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
     # Extract 2x3 affine matrix from 3x3
-    M = transform[:2, :]
+    M = transform[:2, :]  # pylint: disable=invalid-name
 
     return np.asarray(
         cv2.warpAffine(

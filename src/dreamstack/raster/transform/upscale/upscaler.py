@@ -47,22 +47,18 @@ class BaseUpscaler(ABC):
     @abstractmethod
     def load_model(self, model_path: str | Path) -> None:
         """Load a pretrained upscaling model."""
-        pass
 
     @abstractmethod
     def upscale(self, image: NDArray[np.uint8]) -> NDArray[np.uint8]:
         """Upscale an image."""
-        pass
 
     @abstractmethod
     def preprocess(self, image: NDArray[np.uint8]) -> object:
         """Preprocess image for model input."""
-        pass
 
     @abstractmethod
     def postprocess(self, output: object) -> NDArray[np.uint8]:
         """Convert model output to image."""
-        pass
 
 
 class ImageUpscaler(BaseUpscaler):
@@ -96,7 +92,7 @@ class ImageUpscaler(BaseUpscaler):
     def _setup_device(self) -> None:
         """Configure the compute device."""
         try:
-            import torch
+            import torch  # pylint: disable=import-outside-toplevel
         except ImportError:
             self.device = "cpu"
             return
@@ -104,7 +100,10 @@ class ImageUpscaler(BaseUpscaler):
         if self.config.device == "auto":
             if torch.cuda.is_available():
                 self.device = torch.device("cuda")
-            elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+            elif (
+                hasattr(torch.backends, "mps")
+                and torch.backends.mps.is_available()
+            ):
                 self.device = torch.device("mps")
             else:
                 self.device = torch.device("cpu")
@@ -122,11 +121,11 @@ class ImageUpscaler(BaseUpscaler):
             FileNotFoundError: If model file doesn't exist.
         """
         try:
-            import torch
-        except ImportError:
+            import torch  # pylint: disable=import-outside-toplevel
+        except ImportError as exc:
             raise ImportError(
                 "PyTorch is required for AI upscaling. Install with: pip install torch"
-            )
+            ) from exc
 
         model_path = Path(model_path)
         if not model_path.exists():
@@ -148,7 +147,7 @@ class ImageUpscaler(BaseUpscaler):
         Raises:
             RuntimeError: If model is not loaded.
         """
-        import torch
+        import torch  # pylint: disable=import-outside-toplevel
 
         if self.model is None:
             raise RuntimeError("Model not loaded. Call load_model() first.")
@@ -158,7 +157,7 @@ class ImageUpscaler(BaseUpscaler):
 
         # Upscale
         with torch.no_grad():
-            output = self.model(tensor.to(self.device))
+            output = self.model(tensor.to(self.device))  # type: ignore[union-attr]
 
         # Postprocess
         return self.postprocess(output)
@@ -172,8 +171,8 @@ class ImageUpscaler(BaseUpscaler):
         Returns:
             PyTorch tensor ready for model.
         """
-        import cv2
-        import torch
+        import cv2  # pylint: disable=import-outside-toplevel
+        import torch  # pylint: disable=import-outside-toplevel
 
         # Convert BGR to RGB
         rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -184,25 +183,25 @@ class ImageUpscaler(BaseUpscaler):
         # Add batch dimension [1, C, H, W]
         return tensor.unsqueeze(0)
 
-    def postprocess(self, tensor: object) -> NDArray[np.uint8]:
+    def postprocess(self, output: object) -> NDArray[np.uint8]:
         """Convert model output tensor to image.
 
         Args:
-            tensor: Model output tensor.
+            output: Model output tensor.
 
         Returns:
             BGR image as numpy array.
         """
-        import cv2
+        import cv2  # pylint: disable=import-outside-toplevel
 
         # Remove batch dimension and convert to numpy
-        output = tensor.squeeze(0).permute(1, 2, 0).cpu().numpy()
+        result = output.squeeze(0).permute(1, 2, 0).cpu().numpy()  # type: ignore[union-attr]
 
         # Scale back to [0, 255] and clip
-        output = (output * 255).clip(0, 255).astype(np.uint8)
+        result = (result * 255).clip(0, 255).astype(np.uint8)
 
         # Convert RGB to BGR
-        return cv2.cvtColor(output, cv2.COLOR_RGB2BGR)
+        return cv2.cvtColor(result, cv2.COLOR_RGB2BGR)
 
     def upscale_tiled(
         self,

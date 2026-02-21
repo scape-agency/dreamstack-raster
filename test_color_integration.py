@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# ruff: noqa: F401, F811, E501
+# pylint: disable=W0611,W0404
+# pyright: reportUnusedImport=false
 
 """
 Test Color Integration
@@ -10,7 +13,6 @@ This test runs standalone without requiring scipy or other heavy dependencies.
 
 import os
 import sys
-import types
 
 # Set up paths before any imports
 raster_src = os.path.abspath("src")
@@ -21,18 +23,8 @@ sys.path.insert(0, raster_src)
 print("Testing imports...")
 
 # Import dreamstack.color first (no heavy dependencies)
-from dreamstack.color import (
-    HSLColorModel,
-    HSVColorModel,
-    RGBColorModel,
-    complement,
-    darken,
-    hsl_to_rgb,
-    hsv_to_rgb,
-    lighten,
-    rgb_to_hsl,
-    rgb_to_hsv,
-)
+# pylint: disable=wrong-import-position,wrong-import-order
+from dreamstack.color import complement, darken, lighten
 
 print("✓ dreamstack.color imports successful")
 
@@ -41,6 +33,8 @@ print("✓ dreamstack.color imports successful")
 import importlib.util
 
 import numpy as np
+
+# pylint: enable=wrong-import-position,wrong-import-order
 
 # Load rgb_to_hsv module directly
 spec = importlib.util.spec_from_file_location(
@@ -95,7 +89,7 @@ print("✓ Color class loaded")
 print("\n✓ All imports successful")
 
 # Test array-based conversion
-import numpy as np
+import numpy as np  # pylint: disable=wrong-import-position,wrong-import-order
 
 print("\nTesting array-based conversions...")
 pixel = np.array([0.5, 0.3, 0.2])

@@ -59,7 +59,8 @@ def remove_background(
             "rembg is required for background removal. Install with: pip install rembg"
         )
 
-    import rembg
+    # pylint: disable=import-error,import-outside-toplevel
+    import rembg  # type: ignore[import-not-found]
 
     # Use config or defaults
     cfg = config or RemovalConfig()
@@ -88,18 +89,20 @@ def remove_background(
 
     # Validate input
     if image.ndim != 3:
-        raise ValueError(f"Expected 3-channel image, got {image.ndim} dimensions")
+        raise ValueError(
+            f"Expected 3-channel image, got {image.ndim} dimensions"
+        )
 
     # Convert to RGBA for rembg
-    from PIL import Image
+    from PIL import Image  # pylint: disable=import-outside-toplevel
 
     if image.shape[2] == 3:
         # Assume BGR from OpenCV, convert to RGB
-        import cv2
+        import cv2  # pylint: disable=import-outside-toplevel
 
         rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     elif image.shape[2] == 4:
-        import cv2
+        import cv2  # pylint: disable=import-outside-toplevel
 
         rgb_image = cv2.cvtColor(image, cv2.COLOR_BGRA2RGBA)[:, :, :3]
     else:

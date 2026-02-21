@@ -16,8 +16,11 @@ import numpy as np
 if TYPE_CHECKING:
     from numpy.typing import NDArray
 
+# pylint: disable=wrong-import-position
 from dreamstack.raster.compositing.blend.blend import blend
 from dreamstack.raster.compositing.blend.blend_mode import BlendMode
+
+# pylint: enable=wrong-import-position
 
 
 def composite(
@@ -58,16 +61,20 @@ def composite(
 
     # Ensure RGBA
     if base.ndim == 2:
-        result: NDArray[np.uint8] = cv2.cvtColor(base, cv2.COLOR_GRAY2BGRA)  # type: ignore[assignment]
+        result: NDArray[np.uint8] = cv2.cvtColor(  # type: ignore[assignment]
+            base, cv2.COLOR_GRAY2BGRA
+        )
     elif base.shape[2] == 3:
         result = cv2.cvtColor(base, cv2.COLOR_BGR2BGRA)  # type: ignore[assignment]
     else:
         result = base.copy()
 
     if overlay.ndim == 2:
-        over: NDArray[np.uint8] = cv2.cvtColor(overlay, cv2.COLOR_GRAY2BGRA)  # type: ignore[assignment]
+        over: NDArray[np.uint8] = cv2.cvtColor(  # type: ignore[assignment]
+            overlay, cv2.COLOR_GRAY2BGRA
+        )
     elif overlay.shape[2] == 3:
-        over = cv2.cvtColor(overlay, cv2.COLOR_BGR2BGRA)
+        over = cv2.cvtColor(overlay, cv2.COLOR_BGR2BGRA)  # type: ignore[assignment]
     else:
         over = overlay.copy()
 

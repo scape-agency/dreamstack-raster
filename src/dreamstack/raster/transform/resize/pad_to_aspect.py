@@ -54,7 +54,7 @@ def pad_to_aspect(
             pad_top, _pad_bottom = pad_total, 0
         else:  # center
             pad_top = pad_total // 2
-            pad_total - pad_top
+            _pad_bottom = pad_total - pad_top
 
         pad_left = 0
         new_width = w
@@ -69,7 +69,7 @@ def pad_to_aspect(
             pad_left, _pad_right = pad_total, 0
         else:  # center
             pad_left = pad_total // 2
-            pad_total - pad_left
+            _pad_right = pad_total - pad_left
 
         pad_top = 0
         new_height = h

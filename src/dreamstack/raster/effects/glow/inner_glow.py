@@ -52,7 +52,7 @@ def inner_glow(
     else:
         img = image.copy()
 
-    h, w = img.shape[:2]
+    h, w = img.shape[:2]  # noqa: F841  # pylint: disable=unused-variable
     result = img.astype(np.float32)
 
     # Get alpha mask
@@ -60,7 +60,7 @@ def inner_glow(
 
     if source == "edge":
         # Edge source - glow from edges inward
-        eroded = cv2.erode(alpha, None, iterations=1)
+        eroded = cv2.erode(alpha, None, iterations=1)  # type: ignore[call-overload]
         glow = alpha - eroded
     else:
         # Center source - glow from center outward

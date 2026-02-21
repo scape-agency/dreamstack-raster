@@ -80,12 +80,12 @@ class DepthResult:
             RGB image with depth colorized.
         """
         try:
-            import matplotlib.pyplot as plt
-        except ImportError:
+            import matplotlib.pyplot as plt  # pylint: disable=import-outside-toplevel
+        except ImportError as exc:
             raise ImportError(
                 "matplotlib required for colormaps. "
                 "Install with: pip install matplotlib"
-            )
+            ) from exc
 
         cmap = plt.get_cmap(colormap)
         colored = cmap(self.depth_normalized)[:, :, :3]
@@ -127,12 +127,14 @@ class DepthEstimator:
             return
 
         try:
-            from transformers import pipeline
-        except ImportError:
+            from transformers import (
+                pipeline,
+            )  # pylint: disable=import-outside-toplevel
+        except ImportError as exc:
             raise ImportError(
                 "transformers is required for depth estimation. "
                 "Install with: pip install transformers torch"
-            )
+            ) from exc
 
         device = self._resolve_device()
 
@@ -147,7 +149,7 @@ class DepthEstimator:
         """Resolve device string to appropriate value."""
         if self.config.device == "auto":
             try:
-                import torch
+                import torch  # pylint: disable=import-outside-toplevel
 
                 if torch.cuda.is_available():
                     return 0  # GPU
@@ -171,6 +173,7 @@ class DepthEstimator:
         Returns:
             DepthResult with depth map and metadata.
         """
+        # pylint: disable=import-outside-toplevel
         import cv2
         from PIL import Image
 

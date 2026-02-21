@@ -44,11 +44,12 @@ from pathlib import Path
 
 # Load environment variables from .env
 try:
-    from dotenv import load_dotenv
+    from dotenv import load_dotenv  # type: ignore[assignment]
 except ImportError:
     # dotenv is optional
-    def load_dotenv(*_args: object, **_kwargs: object) -> None:  # type: ignore[misc]
-        pass
+    def load_dotenv(*_args: object, **_kwargs: object) -> bool:  # type: ignore[misc]
+        """Fallback when python-dotenv is not installed."""
+        return False
 
 
 # Try loading from project root
@@ -182,7 +183,7 @@ def main() -> int:
     args = parser.parse_args()
 
     # Configure logging
-    import logging
+    import logging  # pylint: disable=import-outside-toplevel
 
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.INFO,
@@ -192,17 +193,18 @@ def main() -> int:
 
     # Validate input
     if not args.input.exists():
-        logger.error(f"Input directory not found: {args.input}")
+        logger.error("Input directory not found: %s", args.input)
         return 1
 
     # Import detection module
     try:
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.detection import (
             DetectionConfig,
             DetectionPipeline,
         )
     except ImportError as e:
-        logger.error(f"Failed to import detection module: {e}")
+        logger.error("Failed to import detection module: %s", e)
         logger.error(
             "Make sure you've installed the package or set PYTHONPATH"
         )
@@ -220,16 +222,16 @@ def main() -> int:
         vision_backend=args.vision_backend,
     )
 
-    logger.info(f"Configuration:")
-    logger.info(f"  Backend: {config.backend}")
-    logger.info(f"  Model: {config.model_name}")
-    logger.info(f"  Device: {config.device}")
-    logger.info(f"  Confidence: {config.confidence_threshold}")
-    logger.info(f"  Margin: {config.margin}px")
+    logger.info("Configuration:")
+    logger.info("  Backend: %s", config.backend)
+    logger.info("  Model: %s", config.model_name)
+    logger.info("  Device: %s", config.device)
+    logger.info("  Confidence: %s", config.confidence_threshold)
+    logger.info("  Margin: %spx", config.margin)
     if config.use_ai_description:
-        logger.info(f"  AI Description: enabled ({config.vision_backend})")
+        logger.info("  AI Description: enabled (%s)", config.vision_backend)
     if config.text_prompts:
-        logger.info(f"  Prompts: {', '.join(config.text_prompts)}")
+        logger.info("  Prompts: %s", ", ".join(config.text_prompts))
 
     # Create pipeline
     pipeline = DetectionPipeline(config)
@@ -239,8 +241,8 @@ def main() -> int:
         print(f"[{current}/{total}] Processing: {filename}")
 
     # Process directory
-    logger.info(f"Input: {args.input}")
-    logger.info(f"Output: {args.output}")
+    logger.info("Input: %s", args.input)
+    logger.info("Output: %s", args.output)
 
     try:
         result = pipeline.process_directory(
@@ -252,10 +254,10 @@ def main() -> int:
             copy_source=args.copy_source,
             progress_callback=progress,
         )
-    except Exception as e:
-        logger.error(f"Pipeline failed: {e}")
+    except Exception as e:  # pylint: disable=broad-exception-caught
+        logger.error("Pipeline failed: %s", e)
         if args.verbose:
-            import traceback
+            import traceback  # pylint: disable=import-outside-toplevel
 
             traceback.print_exc()
         return 1

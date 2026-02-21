@@ -469,7 +469,9 @@ class ObjectExtractor:
         >>> extractor = ObjectExtractor()
         >>> alpha_extractor = extractor.with_config(with_alpha=True)
         """
-        from dataclasses import replace
+        from dataclasses import (
+            replace,
+        )  # pylint: disable=import-outside-toplevel
 
         new_config = replace(self.config, **kwargs)
         return ObjectExtractor(new_config)

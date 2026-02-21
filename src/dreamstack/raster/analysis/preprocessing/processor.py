@@ -151,7 +151,9 @@ class ImagePreprocessor:
         NDArray[np.uint8]
             Blurred image.
         """
-        return cv2.GaussianBlur(image, self.config.blur_kernel_size, 0)  # type: ignore[return-value]
+        return cv2.GaussianBlur(  # type: ignore[return-value]
+            image, self.config.blur_kernel_size, 0
+        )
 
     def enhance_contrast(self, image: NDArray[np.uint8]) -> NDArray[np.uint8]:
         """Enhance image contrast using CLAHE.
@@ -348,7 +350,9 @@ class ImagePreprocessor:
         >>> processor = ImagePreprocessor()
         >>> smooth_processor = processor.with_config(blur_kernel_size=(21, 21))
         """
-        from dataclasses import replace
+        from dataclasses import (
+            replace,
+        )  # pylint: disable=import-outside-toplevel
 
         new_config = replace(self.config, **kwargs)
         return ImagePreprocessor(new_config)

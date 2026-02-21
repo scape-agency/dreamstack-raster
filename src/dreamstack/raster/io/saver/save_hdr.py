@@ -18,9 +18,10 @@ if TYPE_CHECKING:
 def save_hdr(
     image: Image,
     path: Path,
-    **options,
+    **_options,  # noqa: ARG001
 ) -> None:
     """Save HDR/Radiance image."""
+    # pylint: disable=import-outside-toplevel
     import imageio
 
     from dreamstack.raster.core.pixel import BitDepth
@@ -30,4 +31,4 @@ def save_hdr(
     if rgb_image.bit_depth != BitDepth.FLOAT32:
         rgb_image = rgb_image.convert_bit_depth(BitDepth.FLOAT32)
 
-    imageio.imwrite(path, rgb_image.data, format="HDR-FI")
+    imageio.imwrite(path, rgb_image.data, format="HDR-FI")  # type: ignore[call-overload]

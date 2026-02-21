@@ -136,9 +136,10 @@ class DetectionPipeline:
 
     def _init_describer(self) -> None:
         """Initialize AI image describer."""
+        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.detection.describer import (
-            ImageDescriber,
             DescriptionConfig,
+            ImageDescriber,
         )
 
         desc_config = DescriptionConfig(
@@ -146,7 +147,7 @@ class DetectionPipeline:
         )
         self._describer = ImageDescriber(desc_config)
         logger.info(
-            f"AI description enabled with {self.config.vision_backend}"
+            "AI description enabled with %s", self.config.vision_backend
         )
 
     def _get_ai_prompts(self, image_path: Path) -> list[str]:
@@ -167,10 +168,10 @@ class DetectionPipeline:
 
         try:
             result = self._describer.describe(image_path)
-            logger.info(f"AI detected objects: {result.objects}")
+            logger.info("AI detected objects: %s", result.objects)
             return result.objects
-        except Exception as e:
-            logger.warning(f"AI description failed: {e}")
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            logger.warning("AI description failed: %s", e)
             return []
 
     def process_directory(
@@ -219,10 +220,10 @@ class DetectionPipeline:
         total = len(images)
 
         if total == 0:
-            logger.warning(f"No images found in {input_dir}")
+            logger.warning("No images found in %s", input_dir)
             return PipelineResult()
 
-        logger.info(f"Found {total} images to process")
+        logger.info("Found %d images to process", total)
 
         # Ensure output directory exists
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -247,8 +248,8 @@ class DetectionPipeline:
                 result.total_objects += num_objects
                 result.successful += 1
 
-            except Exception as e:
-                logger.error(f"Failed to process {image_path}: {e}")
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                logger.error("Failed to process %s: %s", image_path, e)
                 result.failed += 1
                 result.errors[str(image_path)] = str(e)
 
@@ -347,18 +348,20 @@ class DetectionPipeline:
                     and hasattr(self._extractor.detector, "set_prompts")
                     and ai_prompts
                 ):
-                    self._extractor.detector.set_prompts(ai_prompts)
-                    logger.info(f"AI prompts: {', '.join(ai_prompts[:10])}...")
-            except Exception as e:
+                    self._extractor.detector.set_prompts(ai_prompts)  # type: ignore[attr-defined]
+                    logger.info(
+                        "AI prompts: %s...", ", ".join(ai_prompts[:10])
+                    )
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 logger.warning(
-                    f"AI description failed for {image_path.name}: {e}"
+                    "AI description failed for %s: %s", image_path.name, e
                 )
 
         # Run detection and extraction
         extractions = self._extractor.extract(image, source_path=image_path)
 
         logger.info(
-            f"Detected {len(extractions)} objects in {image_path.name}"
+            "Detected %d objects in %s", len(extractions), image_path.name
         )
 
         # Save extracted objects
