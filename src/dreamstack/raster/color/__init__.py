@@ -48,7 +48,9 @@ Example:
 from __future__ import annotations
 
 # Re-export dreamstack.color models and functions for convenience
-from dreamstack.color import (  # Models; Manipulation functions; Harmony functions; Distance & Comparison; Gradients; Generators; Validators; Utils; Additional conversions
+# Models; Manipulation functions; Harmony functions; Distance & Comparison;
+# Gradients; Generators; Validators; Utils; Additional conversions
+from dreamstack.color import (
     NAMED_COLORS,
     CMYKColorModel,
     HSLColorModel,

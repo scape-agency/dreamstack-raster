@@ -24,6 +24,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     pass
 
@@ -38,6 +42,7 @@ def get_raw_info(path: str | Path) -> dict:
     Returns:
         Dictionary with RAW file information
     """
+    # pylint: disable=import-outside-toplevel
     import rawpy
 
     path = Path(path)

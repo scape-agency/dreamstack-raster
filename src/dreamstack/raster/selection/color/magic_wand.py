@@ -18,6 +18,10 @@ from typing import TYPE_CHECKING
 import cv2
 import numpy as np
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
@@ -33,7 +37,7 @@ def magic_wand(
     tolerance: int = 32,
     contiguous: bool = True,
     anti_alias: bool = True,
-    sample_all_layers: bool = False,  # pylint: disable=unused-argument  # TODO
+    sample_all_layers: bool = False,
 ) -> Selection:
     """Select pixels similar to the clicked point.
 
@@ -56,6 +60,7 @@ def magic_wand(
         >>> sel = magic_wand(image, 100, 100, tolerance=48)
         >>> masked = sel.apply_to_image(image)
     """
+    _ = sample_all_layers  # Reserved for multi-layer sampling
     h, w = image.shape[:2]
 
     # Get source image (BGR only for flood fill)

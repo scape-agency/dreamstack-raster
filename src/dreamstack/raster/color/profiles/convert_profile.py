@@ -22,6 +22,10 @@ import numpy as np
 
 from dreamstack.raster.color.profiles.rendering_intent import RenderingIntent
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.color.profiles.icc_profile import ICCProfile

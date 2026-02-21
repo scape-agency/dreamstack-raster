@@ -26,6 +26,10 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
@@ -69,6 +73,7 @@ def pixelate(
         >>> from dreamstack.raster.filters.stylize import pixelate
         >>> pixelated = pixelate(image, pixel_size=8)
     """
+    # pylint: disable=import-outside-toplevel
     import cv2
 
     if pixel_size < 2:
@@ -122,6 +127,7 @@ def mosaic(
     Example:
         >>> result = mosaic(image, tile_size=20, show_grid=True)
     """
+    # pylint: disable=import-outside-toplevel
     import cv2
 
     result = pixelate(image, tile_size)
@@ -167,6 +173,7 @@ def quantize_colors(
     Example:
         >>> posterized = quantize_colors(image, n_colors=8)
     """
+    # pylint: disable=import-outside-toplevel
     import cv2
 
     # Reshape for k-means
@@ -223,6 +230,7 @@ def match_to_palette(
         >>> retro = [(0, 0, 0), (255, 255, 255), (255, 0, 0), (0, 255, 0)]
         >>> result = match_to_palette(image, retro)
     """
+    # pylint: disable=import-outside-toplevel
     import cv2
 
     if not palette:

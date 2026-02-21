@@ -35,6 +35,7 @@ def get_exr_channels(path: str | Path) -> dict[str, dict]:
         Dictionary of channel names to channel info
     """
     try:
+        # pylint: disable=import-outside-toplevel
         import OpenEXR
     except ImportError as exc:
         raise ImportError(

@@ -18,6 +18,10 @@ from typing import TYPE_CHECKING, Literal
 
 import numpy as np
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
@@ -132,6 +136,7 @@ def upscale_to_size(
     Returns:
         Upscaled image.
     """
+    # pylint: disable=import-outside-toplevel
     import cv2
 
     h, w = image.shape[:2]

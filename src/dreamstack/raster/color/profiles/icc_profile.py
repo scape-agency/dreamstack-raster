@@ -190,7 +190,7 @@ class ICCProfile:
         # This is a simplified implementation
         # A full implementation would generate all required tags
         try:
-            from PIL import ImageCms
+            from PIL import ImageCms  # pylint: disable=import-outside-toplevel
 
             profile = ImageCms.createProfile("sRGB")
             data = ImageCms.ImageCmsProfile(profile).tobytes()

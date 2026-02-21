@@ -25,6 +25,10 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
@@ -80,33 +84,56 @@ def halftone(
 def _create_halftone(
     data: np.ndarray,
     dot_size: int,
-    angle: float,  # pylint: disable=unused-argument  # TODO: implement rotation
+    angle: float,
     max_val: float,
 ) -> np.ndarray:
-    """Create halftone pattern for single channel."""
+    """Create halftone pattern for single channel with rotation."""
     h, w = data.shape
     result = np.zeros_like(data)
 
     # Create dot centers
     step = dot_size * 2
 
-    for y in range(0, h, step):
-        for x in range(0, w, step):
-            # Get average intensity in block
-            y2 = min(y + step, h)
-            x2 = min(x + step, w)
-            block = data[y:y2, x:x2]
-            intensity = block.mean() / max_val
+    # Convert angle to radians
+    angle_rad = np.radians(angle)
+    cos_a = np.cos(angle_rad)
+    sin_a = np.sin(angle_rad)
 
-            # Draw dot with radius based on intensity
-            radius = int((1 - intensity) * dot_size)
+    # Calculate rotated grid bounds
+    diag = int(np.sqrt(h * h + w * w))
+    cx_img, cy_img = w // 2, h // 2
 
-            if radius > 0:
-                cy = y + step // 2
-                cx = x + step // 2
+    # Iterate over rotated grid
+    for gy in range(-diag // step, diag // step + 1):
+        for gx in range(-diag // step, diag // step + 1):
+            # Grid position in rotated space
+            rx = gx * step
+            ry = gy * step
 
-                yy, xx = np.ogrid[:h, :w]
-                mask = (xx - cx) ** 2 + (yy - cy) ** 2 <= radius**2
-                result[mask] = max_val
+            # Transform back to image space
+            cx = int(cx_img + rx * cos_a - ry * sin_a)
+            cy = int(cy_img + rx * sin_a + ry * cos_a)
+
+            # Skip if outside image
+            if cx < 0 or cx >= w or cy < 0 or cy >= h:
+                continue
+
+            # Get average intensity in block around center
+            y1 = max(0, cy - step // 2)
+            y2 = min(h, cy + step // 2)
+            x1 = max(0, cx - step // 2)
+            x2 = min(w, cx + step // 2)
+
+            if y2 > y1 and x2 > x1:
+                block = data[y1:y2, x1:x2]
+                intensity = block.mean() / max_val
+
+                # Draw dot with radius based on intensity
+                radius = int((1 - intensity) * dot_size)
+
+                if radius > 0:
+                    yy, xx = np.ogrid[:h, :w]
+                    mask = (xx - cx) ** 2 + (yy - cy) ** 2 <= radius**2
+                    result[mask] = max_val
 
     return result

@@ -18,13 +18,15 @@ from typing import TYPE_CHECKING
 import cv2
 import numpy as np
 
+from dreamstack.raster.selection.shapes.selection import Selection
+
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
-
-from dreamstack.raster.selection.shapes.selection import (
-    Selection,
-)  # pylint: disable=wrong-import-position
 
 
 def select_subject(

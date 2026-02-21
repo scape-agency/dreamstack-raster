@@ -26,6 +26,10 @@ from typing import TYPE_CHECKING
 import cv2
 import numpy as np
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
@@ -33,7 +37,7 @@ if TYPE_CHECKING:
 
 def trace_contour(
     image: Image,
-    edge_mode: str = "upper",  # pylint: disable=unused-argument  # TODO: implement
+    edge_mode: str = "upper",
 ) -> Image:
     """
     Trace contours in image.
@@ -57,8 +61,13 @@ def trace_contour(
 
     max_val = 255 if image.bit_depth.name == "UINT8" else 65535
 
-    # Threshold and find contours
-    _, thresh = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
+    # Threshold and find contours based on edge_mode
+    if edge_mode == "lower":
+        # Lower edge: trace darker areas
+        _, thresh = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY_INV)
+    else:
+        # Upper edge (default): trace lighter areas
+        _, thresh = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
     contours, _ = cv2.findContours(
         thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE
     )

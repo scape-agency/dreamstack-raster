@@ -29,6 +29,10 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
@@ -70,7 +74,7 @@ def stack_layers(
         >>> from dreamstack.raster.compositing import stack_layers
         >>> result = stack_layers([background, midground, foreground])
     """
-    import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
     if not layers:
         raise ValueError("At least one layer required")
@@ -215,7 +219,7 @@ def generate_layer_stack_from_dirs(
         ... )
         >>> print(f"Generated {count} combinations")
     """
-    import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
     base_dir = Path(base_dir)
     output_dir = Path(output_dir)
@@ -271,7 +275,7 @@ def composite_with_mask(
     Example:
         >>> result = composite_with_mask(person, scene, person_mask)
     """
-    import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
     # Ensure same size
     h, w = background.shape[:2]
@@ -347,7 +351,7 @@ def apply_alpha_from_mask(
     Example:
         >>> rgba = apply_alpha_from_mask(rgb_image, transparency_mask)
     """
-    import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
     # Ensure image is 3 channel
     if image.ndim == 2:

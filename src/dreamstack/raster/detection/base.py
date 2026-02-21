@@ -23,6 +23,10 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     import numpy as np
 
@@ -118,7 +122,7 @@ class BaseDetector(ABC):
         """
         if self.config.device == "auto":
             try:
-                import torch
+                import torch  # pylint: disable=import-outside-toplevel
 
                 if torch.cuda.is_available():
                     return "cuda"

@@ -33,6 +33,10 @@ from dreamstack.raster.effects.background.removal_config import (
     RemovalConfig,
 )
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray

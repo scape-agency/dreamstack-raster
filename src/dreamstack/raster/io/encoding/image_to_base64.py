@@ -27,6 +27,10 @@ from typing import TYPE_CHECKING, Literal
 
 import numpy as np
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
@@ -55,7 +59,7 @@ def image_to_base64(
         >>> b64 = image_to_base64(image, format="jpeg")
         >>> # Use for embedding in HTML/JSON
     """
-    import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
     # pylint: disable=import-outside-toplevel
     from PIL import Image

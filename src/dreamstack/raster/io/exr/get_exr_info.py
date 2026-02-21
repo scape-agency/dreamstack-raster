@@ -35,7 +35,7 @@ def get_exr_info(path: str | Path) -> dict:
         Dictionary with EXR file information
     """
     try:
-        import OpenEXR
+        import OpenEXR  # pylint: disable=import-outside-toplevel
     except ImportError as exc:
         raise ImportError(
             "OpenEXR package required for this function"

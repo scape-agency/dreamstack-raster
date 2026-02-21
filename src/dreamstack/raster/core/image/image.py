@@ -32,6 +32,10 @@ from dreamstack.raster.core.channel import ChannelManager
 from dreamstack.raster.core.image.image_metadata import ImageMetadata
 from dreamstack.raster.core.pixel import BitDepth, PixelData, PixelFormat
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.selection import Selection
@@ -496,7 +500,7 @@ class Image:
         Returns:
             New resized image
         """
-        import cv2
+        import cv2  # pylint: disable=import-outside-toplevel
 
         if maintain_aspect:
             aspect = self.aspect_ratio
@@ -592,7 +596,7 @@ class Image:
         Returns:
             New rotated image
         """
-        import cv2
+        import cv2  # pylint: disable=import-outside-toplevel
 
         # Get rotation matrix
         center = (self.width / 2, self.height / 2)

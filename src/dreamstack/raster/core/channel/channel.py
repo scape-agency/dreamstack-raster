@@ -29,6 +29,10 @@ from numpy.typing import NDArray
 
 from dreamstack.raster.core.channel.channel_type import ChannelType
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     pass
 
@@ -262,7 +266,7 @@ class Channel:
         Returns:
             New resized channel
         """
-        import cv2
+        import cv2  # pylint: disable=import-outside-toplevel
 
         interpolation_methods = {
             "nearest": getattr(cv2, "INTER_NEAREST"),

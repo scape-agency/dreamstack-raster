@@ -145,7 +145,6 @@ class AdjustmentLayer(LayerBase):
             visible=self._visible,
         )
         if self._mask is not None:
-            new_layer._mask = (
-                self._mask.copy()
-            )  # pylint: disable=protected-access
+            # pylint: disable=protected-access
+            new_layer._mask = self._mask.copy()
         return new_layer

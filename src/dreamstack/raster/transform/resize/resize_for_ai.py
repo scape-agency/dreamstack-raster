@@ -13,6 +13,10 @@ import numpy as np
 
 from .resize_to_aspect import resize_to_aspect
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray

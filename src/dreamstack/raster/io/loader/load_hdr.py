@@ -26,6 +26,10 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
@@ -36,6 +40,7 @@ def load_hdr(
     **options,  # pylint: disable=unused-argument
 ) -> Image:
     """Load HDR/Radiance image."""
+    # pylint: disable=import-outside-toplevel
     import imageio
 
     # pylint: disable=import-outside-toplevel

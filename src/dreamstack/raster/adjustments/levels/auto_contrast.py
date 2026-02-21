@@ -20,6 +20,10 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image

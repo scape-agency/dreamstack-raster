@@ -14,6 +14,10 @@ import numpy as np
 from .fit_to_dimensions import fit_to_dimensions
 from .resize import resize
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray

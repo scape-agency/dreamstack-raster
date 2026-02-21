@@ -442,6 +442,7 @@ class PixelData:
         Returns:
             New PixelData in target format
         """
+        # pylint: disable=import-outside-toplevel
         if self.pixel_format == target_format:
             return self.copy()
 

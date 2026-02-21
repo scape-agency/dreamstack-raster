@@ -26,6 +26,10 @@ from typing import TYPE_CHECKING
 
 from dreamstack.raster.io.formats import ImageFormat
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
@@ -121,7 +125,10 @@ def save_with_pil(
     save_kwargs["dpi"] = dpi
 
     # Add EXIF if present
-    if image.metadata.exif and image_format in (ImageFormat.JPEG, ImageFormat.TIFF):
+    if image.metadata.exif and image_format in (
+        ImageFormat.JPEG,
+        ImageFormat.TIFF,
+    ):
         try:
             import piexif
 

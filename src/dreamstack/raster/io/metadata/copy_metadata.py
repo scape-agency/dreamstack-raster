@@ -33,7 +33,7 @@ def copy_metadata(src_path: str | Path, dst_path: str | Path) -> None:
         dst_path: Destination image path
     """
     try:
-        import piexif
+        import piexif  # pylint: disable=import-outside-toplevel
     except ImportError as exc:
         raise ImportError(
             "piexif package required for copying metadata"

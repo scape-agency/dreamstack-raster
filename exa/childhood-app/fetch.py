@@ -42,9 +42,8 @@ import argparse
 import json
 import logging
 import sys
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterator
 
 logger = logging.getLogger(__name__)
 
@@ -161,15 +160,15 @@ class ImageIndex:
                 entry = self._load_metadata(metadata_path)
                 if entry:
                     self._entries.append(entry)
-            except Exception as e:
-                logger.warning(f"Failed to load {metadata_path}: {e}")
+            except Exception as e:  # pylint: disable=broad-exception-caught
+                logger.warning("Failed to load %s: %s", metadata_path, e)
 
         self._loaded = True
-        logger.info(f"Loaded {len(self._entries)} images into index")
+        logger.info("Loaded %d images into index", len(self._entries))
 
     def _load_metadata(self, metadata_path: Path) -> SearchResult | None:
         """Load a single metadata file."""
-        with open(metadata_path) as f:
+        with open(metadata_path, encoding="utf-8") as f:
             data = json.load(f)
 
         output_dir = metadata_path.parent

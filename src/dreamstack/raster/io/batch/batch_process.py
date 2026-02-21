@@ -31,6 +31,10 @@ from dreamstack.raster.io.batch.batch_config import BatchConfig
 from dreamstack.raster.io.batch.batch_result import BatchResult
 from dreamstack.raster.io.batch.find_images import find_images
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
@@ -79,7 +83,7 @@ def batch_process(
         ... )
         >>> print(f"Processed {result.successful}/{result.total} images")
     """
-    import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
     if config is None:
         config = BatchConfig()
@@ -127,7 +131,10 @@ def batch_process(
 
             return out_path, None
 
-        except (OSError, Exception) as e:  # cv2.error, etc.
+        except OSError as e:
+            return None, str(e)
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            # Catch cv2.error and other processing errors gracefully
             return None, str(e)
 
     # Process in parallel

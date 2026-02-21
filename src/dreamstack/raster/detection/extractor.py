@@ -34,6 +34,10 @@ from dreamstack.raster.detection.result import (
     ImageDetectionResult,
 )
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray

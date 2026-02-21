@@ -31,7 +31,7 @@ from dreamstack.raster.analysis.preprocessing.operations import detect_edges
 def apply_background_mask(
     image: NDArray[np.uint8],
     background_color: tuple[int, int, int],
-    threshold_offset: int = 20,  # pylint: disable=unused-argument  # TODO: implement
+    threshold_offset: int = 20,
 ) -> NDArray[np.uint8]:
     """Replace background with a solid color based on masking.
 
@@ -58,7 +58,14 @@ def apply_background_mask(
     """
     # Detect edges and find main object
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    edges = detect_edges(gray)
+    # Use threshold_offset to adjust edge detection sensitivity
+    base_low = 50
+    base_high = 150
+    edges = detect_edges(
+        gray,
+        low_threshold=max(0, base_low - threshold_offset),
+        high_threshold=max(base_low, base_high - threshold_offset),
+    )
 
     # Find largest contour
     largest = find_largest_contour(edges)

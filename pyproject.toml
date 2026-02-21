@@ -182,3 +182,13 @@ reportUnknownVariableType = false
 # cv2 returns MatLike which is compatible with NDArray at runtime
 reportReturnType = false
 reportArgumentType = false
+# Exclude non-Python config files and standard directories
+exclude = [
+    ".coveragerc",
+    ".venv/**",
+    "**/node_modules",
+    "**/__pycache__",
+    "**/.*",
+    "tmp/**",
+    "bup/**",
+]

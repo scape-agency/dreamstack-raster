@@ -23,6 +23,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.document import Document
@@ -49,7 +53,8 @@ class HistorySnapshot:
         # Snapshot layer pixel data
         for layer in document.layers.flatten_hierarchy():
             if hasattr(layer, "pixel_data"):
-                self._layer_data[layer.id] = layer.pixel_data.data.copy()  # type: ignore[attr-defined]
+                layer_data = layer.pixel_data.data  # type: ignore[attr-defined]
+                self._layer_data[layer.id] = layer_data.copy()
 
         # Snapshot selection
         if document.selection is not None:

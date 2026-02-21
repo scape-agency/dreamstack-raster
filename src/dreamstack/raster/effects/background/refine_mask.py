@@ -29,6 +29,10 @@ from dreamstack.raster.effects.background.mask_refinement_config import (
     MaskRefinementConfig,
 )
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
@@ -61,7 +65,7 @@ def refine_mask(
     Example:
         >>> refined = refine_mask(mask, dilate_iterations=2, blur_size=5)
     """
-    import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
     # Use config or defaults
     cfg = config or MaskRefinementConfig()

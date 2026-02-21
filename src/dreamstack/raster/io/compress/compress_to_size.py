@@ -28,6 +28,10 @@ import numpy as np
 
 from .compression_result import CompressionResult
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray

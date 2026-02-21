@@ -36,6 +36,10 @@ from dreamstack.raster.effects.background.replace_background import (
     replace_background,
 )
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray

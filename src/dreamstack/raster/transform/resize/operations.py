@@ -22,6 +22,10 @@ from typing import TYPE_CHECKING, Literal
 
 import numpy as np
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
@@ -264,6 +268,7 @@ def resize_to_aspect(
         >>> # Resize for AI model (dimensions divisible by 64)
         >>> result = resize_to_aspect(image, 1024, (16, 9), divisible_by=64)
     """
+    # pylint: disable=import-outside-toplevel
     import cv2
 
     ar_w, ar_h = aspect_ratio

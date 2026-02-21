@@ -61,7 +61,7 @@ def generate_layer_stack_from_dirs(
         ... )
         >>> print(f"Generated {count} combinations")
     """
-    import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
     base_dir = Path(base_dir)
     output_dir = Path(output_dir)

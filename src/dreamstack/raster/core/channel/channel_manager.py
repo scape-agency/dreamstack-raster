@@ -28,6 +28,10 @@ import numpy as np
 from dreamstack.raster.core.channel.channel import Channel
 from dreamstack.raster.core.channel.channel_type import ChannelType
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel.pixel_data import PixelData

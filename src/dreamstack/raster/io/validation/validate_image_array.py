@@ -23,6 +23,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
@@ -52,7 +56,7 @@ def validate_image_array(
     Example:
         >>> validated = validate_image_array(image)
     """
-    import numpy as np
+    import numpy as np  # pylint: disable=import-outside-toplevel
 
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.exceptions import InvalidImageError

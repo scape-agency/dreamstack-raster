@@ -25,6 +25,10 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
@@ -52,7 +56,7 @@ def replace_background_with_blur(
         >>> mask = extract_alpha_mask(image)
         >>> result = replace_background_with_blur(image, mask, blur_radius=31)
     """
-    import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
     # Ensure blur radius is odd
     if blur_radius % 2 == 0:

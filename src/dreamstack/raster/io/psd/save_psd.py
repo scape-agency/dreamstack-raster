@@ -24,6 +24,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
@@ -32,8 +36,8 @@ if TYPE_CHECKING:
 def save_psd(
     image: Image,
     path: str | Path,
-    layers: list | None = None,  # pylint: disable=unused-argument  # TODO
-    **options,  # pylint: disable=unused-argument
+    layers: list | None = None,
+    **options,
 ) -> None:
     """
     Save image as PSD file.
@@ -45,6 +49,11 @@ def save_psd(
         **options: Additional options
     """
     path = Path(path)
+
+    # Note: layers and options are accepted for API compatibility
+    # but basic PSD writing via PIL doesn't support multi-layer output
+    _ = layers  # Reserved for future psd-tools layer support
+    _ = options  # Reserved for future format options
 
     # Simple PSD save using psd-tools
     pil_image = image.to_pil()

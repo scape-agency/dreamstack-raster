@@ -19,6 +19,7 @@ from __future__ import annotations
 import numpy as np
 
 
+# pylint: disable=invalid-name
 def _compute_rgb_to_xyz_matrix(
     primaries: np.ndarray, white_point: np.ndarray
 ) -> np.ndarray:
@@ -26,8 +27,8 @@ def _compute_rgb_to_xyz_matrix(
     Compute RGB to XYZ conversion matrix from primaries and white point.
     """
 
-    # Convert xy to XYZ
-    def xy_to_XYZ(xy):
+    # Convert xy to XYZ (using standard colorimetry naming)
+    def xy_to_XYZ(xy):  # noqa: N802
         x, y = xy
         return np.array([x / y, 1, (1 - x - y) / y])
 

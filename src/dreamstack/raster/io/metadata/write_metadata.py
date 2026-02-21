@@ -37,7 +37,7 @@ def write_metadata(
         preserve_existing: Whether to preserve existing metadata
     """
     try:
-        import piexif
+        import piexif  # pylint: disable=import-outside-toplevel
     except ImportError as exc:
         raise ImportError(
             "piexif package required for writing metadata"
@@ -49,7 +49,7 @@ def write_metadata(
     if preserve_existing:
         try:
             exif_dict = piexif.load(str(path))
-        except Exception:
+        except (OSError, ValueError, KeyError):  # piexif parsing errors
             exif_dict = {
                 "0th": {},
                 "Exif": {},

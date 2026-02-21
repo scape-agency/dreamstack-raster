@@ -27,12 +27,16 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
+from dreamstack.raster.compositing.blend.blend_mode import BlendMode
+from dreamstack.raster.compositing.blend.composite import composite
+
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
-
-from dreamstack.raster.compositing.blend.blend_mode import BlendMode
-from dreamstack.raster.compositing.blend.composite import composite
 
 
 @dataclass

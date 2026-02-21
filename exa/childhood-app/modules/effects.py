@@ -22,6 +22,10 @@ from typing import TYPE_CHECKING
 import numpy as np
 from PIL import Image, ImageEnhance, ImageFilter
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray

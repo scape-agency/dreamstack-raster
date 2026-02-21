@@ -18,6 +18,10 @@ from typing import TYPE_CHECKING
 import cv2
 import numpy as np
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     pass
 

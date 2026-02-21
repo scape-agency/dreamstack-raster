@@ -37,6 +37,10 @@ from dreamstack.raster.core.layer import (
 )
 from dreamstack.raster.core.pixel import BitDepth, PixelData, PixelFormat
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image

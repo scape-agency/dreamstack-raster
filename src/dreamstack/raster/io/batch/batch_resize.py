@@ -37,7 +37,7 @@ def batch_resize(
     maintain_aspect: bool = True,
     config: BatchConfig | None = None,
     output_format: str = "jpg",
-    quality: int = 90,  # pylint: disable=unused-argument  # TODO: implement
+    quality: int = 90,
 ) -> BatchResult:
     """Batch resize images to specified dimensions.
 
@@ -62,7 +62,7 @@ def batch_resize(
         ...     height=200
         ... )
     """
-    import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
     def resize_processor(image):
         h, w = image.shape[:2]
@@ -79,6 +79,9 @@ def batch_resize(
             image, (new_w, new_h), interpolation=cv2.INTER_LANCZOS4
         )
 
+    # Note: quality parameter requires format-specific encoding params
+    # which batch_process doesn't currently support - using default quality
+    _ = quality  # Acknowledge parameter for future enhancement
     return batch_process(
         input_dir,
         output_dir,

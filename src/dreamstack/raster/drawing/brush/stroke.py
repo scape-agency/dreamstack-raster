@@ -25,11 +25,15 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
+from dreamstack.raster.drawing.brush.brush import Brush
+
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
-
-from dreamstack.raster.drawing.brush.brush import Brush
 
 
 def stroke(
@@ -63,13 +67,11 @@ def stroke(
         brush.color = color
 
     # Ensure BGRA
-    if image.ndim == 2:
-        import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
+    if image.ndim == 2:
         result = cv2.cvtColor(image, cv2.COLOR_GRAY2BGRA)
     elif image.shape[2] == 3:
-        import cv2
-
         result = cv2.cvtColor(image, cv2.COLOR_BGR2BGRA)
     else:
         result = image.copy()

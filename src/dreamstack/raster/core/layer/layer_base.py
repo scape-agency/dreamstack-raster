@@ -31,6 +31,10 @@ from numpy.typing import NDArray
 from dreamstack.raster.core.bounds import Bounds, Point, Size
 from dreamstack.raster.core.layer.blend_mode import BlendMode
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.layer.layer_group import LayerGroup

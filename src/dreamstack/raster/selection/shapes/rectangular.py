@@ -19,6 +19,10 @@ import numpy as np
 
 from dreamstack.raster.selection.shapes.selection import Selection
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     pass
 

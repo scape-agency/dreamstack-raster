@@ -22,6 +22,10 @@ import numpy as np
 from dreamstack.raster.color.palette.color import Color
 from dreamstack.raster.color.palette.palette import Palette
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image

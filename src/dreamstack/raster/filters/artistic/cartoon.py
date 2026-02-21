@@ -26,6 +26,10 @@ from typing import TYPE_CHECKING
 import cv2
 import numpy as np
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
@@ -33,7 +37,7 @@ if TYPE_CHECKING:
 
 def cartoon(
     image: Image,
-    edge_threshold: float = 100,  # pylint: disable=unused-argument  # TODO: implement
+    edge_threshold: float = 100,
     color_levels: int = 8,
 ) -> Image:
     """
@@ -65,9 +69,12 @@ def cartoon(
 
         # Get edges
         gray = cv2.cvtColor(data[:, :, :3], cv2.COLOR_BGR2GRAY)
-        edges = cv2.adaptiveThreshold(
-            gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 9, 5
-        )
+        # Apply Gaussian blur to reduce noise before edge detection
+        blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+        # Use Canny edge detection with edge_threshold
+        canny_edges = cv2.Canny(blurred, edge_threshold / 2, edge_threshold)
+        # Invert edges and dilate slightly for better lines
+        edges = 255 - cv2.dilate(canny_edges, np.ones((2, 2), np.uint8))
 
         # Combine
         edges_3d = cv2.cvtColor(edges, cv2.COLOR_GRAY2BGR)

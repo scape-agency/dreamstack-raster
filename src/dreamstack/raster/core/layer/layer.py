@@ -31,6 +31,10 @@ from dreamstack.raster.core.layer.blend_mode import BlendMode
 from dreamstack.raster.core.layer.layer_base import LayerBase
 from dreamstack.raster.core.pixel import BitDepth, PixelData, PixelFormat
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
@@ -155,11 +159,11 @@ class Layer(LayerBase):
             visible=self._visible,
             locked=self._locked,
         )
-        new_layer._offset = self._offset  # pylint: disable=protected-access
+        # pylint: disable=protected-access
+        new_layer._offset = self._offset
         if self._mask is not None:
-            new_layer._mask = (
-                self._mask.copy()
-            )  # pylint: disable=protected-access
+            new_layer._mask = self._mask.copy()
+        # pylint: enable=protected-access
         return new_layer
 
     def get_pixel(self, x: int, y: int) -> NDArray:

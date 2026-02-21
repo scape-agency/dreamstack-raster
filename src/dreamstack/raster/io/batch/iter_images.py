@@ -27,6 +27,10 @@ from typing import TYPE_CHECKING
 
 from dreamstack.raster.io.batch.find_images import find_images
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
@@ -57,7 +61,7 @@ def iter_images(
         ...     processed = my_filter(image)
         ...     save_image(processed, f"out/{path.name}")
     """
-    import cv2
+    import cv2  # pylint: disable=import-outside-toplevel
 
     images = find_images(source, extensions=extensions, recursive=recursive)
 

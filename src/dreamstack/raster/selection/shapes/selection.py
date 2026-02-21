@@ -18,6 +18,10 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
@@ -112,7 +116,14 @@ class Selection:
         self,
         image: NDArray[np.uint8],
         *,
-        fill_color: tuple[int, int, int, int] = (0, 0, 0, 0),  # noqa: ARG002
+        fill_color: tuple[  # pylint: disable=unused-argument  # TODO: implement
+            int, int, int, int
+        ] = (
+            0,
+            0,
+            0,
+            0,
+        ),
     ) -> NDArray[np.uint8]:
         """Apply selection as alpha to an image.
 

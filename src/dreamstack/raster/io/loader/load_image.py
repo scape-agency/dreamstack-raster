@@ -26,6 +26,10 @@ from typing import TYPE_CHECKING
 
 from dreamstack.raster.io.formats import ImageFormat, get_format_for_path
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image

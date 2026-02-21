@@ -27,6 +27,10 @@ from typing import TYPE_CHECKING
 import cv2
 import numpy as np
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
@@ -56,11 +60,11 @@ def oil_paint(image: Image, brush_size: int = 6, roughness: int = 1) -> Image:
     if data.ndim == 3 and data.shape[2] >= 3:
         # OpenCV xphoto module has oil painting
         try:
-            result = cv2.xphoto.oilPainting(
+            result = cv2.xphoto.oilPainting(  # type: ignore[attr-defined]
                 data[:, :, :3],
                 brush_size,
                 roughness,
-            )  # type: ignore[attr-defined]
+            )
             if data.shape[2] == 4:
                 result = np.dstack([result, data[:, :, 3]])
         except AttributeError:

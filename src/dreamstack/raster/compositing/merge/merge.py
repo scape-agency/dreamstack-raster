@@ -25,16 +25,20 @@ from typing import TYPE_CHECKING, Literal
 
 import numpy as np
 
-if TYPE_CHECKING:
-    # pylint: disable=import-outside-toplevel
-    from numpy.typing import NDArray
-
 from dreamstack.raster.compositing.merge.add import add
 from dreamstack.raster.compositing.merge.difference import difference
 from dreamstack.raster.compositing.merge.divide import divide
 from dreamstack.raster.compositing.merge.multiply import multiply
 from dreamstack.raster.compositing.merge.screen import screen
 from dreamstack.raster.compositing.merge.subtract import subtract
+
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
+if TYPE_CHECKING:
+    # pylint: disable=import-outside-toplevel
+    from numpy.typing import NDArray
 
 MergeMode = Literal[
     "add", "subtract", "multiply", "divide", "screen", "difference"

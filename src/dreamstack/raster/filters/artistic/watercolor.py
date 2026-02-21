@@ -26,6 +26,10 @@ from typing import TYPE_CHECKING
 import cv2
 import numpy as np
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image
@@ -34,7 +38,7 @@ if TYPE_CHECKING:
 def watercolor(
     image: Image,
     smoothness: int = 5,
-    edge_threshold: float = 0.5,  # pylint: disable=unused-argument  # TODO: implement
+    edge_threshold: float = 0.5,
 ) -> Image:
     """
     Apply watercolor effect.
@@ -63,10 +67,20 @@ def watercolor(
         for _ in range(smoothness - 1):
             smoothed = cv2.bilateralFilter(smoothed, 9, 75, 75)
 
-        # Add edge darkening
+        # Add edge darkening based on edge_threshold
         gray = cv2.cvtColor(smoothed, cv2.COLOR_BGR2GRAY)
+        # Scale threshold: lower edge_threshold = more edges detected
+        block_size = max(3, int(9 * (1 - edge_threshold * 0.5)))
+        if block_size % 2 == 0:
+            block_size += 1
+        c_param = max(2, int(10 * edge_threshold))
         edges = cv2.adaptiveThreshold(
-            gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 9, 5
+            gray,
+            255,
+            cv2.ADAPTIVE_THRESH_MEAN_C,
+            cv2.THRESH_BINARY,
+            block_size,
+            c_param,
         )
 
         # Combine

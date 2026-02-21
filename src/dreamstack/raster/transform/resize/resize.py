@@ -13,6 +13,10 @@ import numpy as np
 
 from ._get_cv2_interpolation import _get_cv2_interpolation
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
@@ -39,6 +43,7 @@ def resize(
     Example:
         >>> resized = resize(image, (800, 600))
     """
+    # pylint: disable=import-outside-toplevel
     import cv2
 
     interp = _get_cv2_interpolation(interpolation)

@@ -27,6 +27,10 @@ from typing import TYPE_CHECKING, Literal
 
 import numpy as np
 
+# =============================================================================
+# Type Checking Imports
+# =============================================================================
+
 if TYPE_CHECKING:
     # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
@@ -141,9 +145,8 @@ class DepthEstimator:
             return
 
         try:
-            from transformers import (
-                pipeline,
-            )  # pylint: disable=import-outside-toplevel
+            # pylint: disable=import-outside-toplevel
+            from transformers import pipeline
         except ImportError as exc:
             raise ImportError(
                 "transformers is required for depth estimation. "
