@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Color Analyzer
+Dreamstack Raster - Color Analyzer
 ==============
 
 Analyzes colors in images for background detection,
 dominant color extraction, and color palette generation.
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import numpy as np

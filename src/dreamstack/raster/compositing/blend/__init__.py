@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Blend Mode Compositing
+Dreamstack Raster - Blend Mode Compositing
 ======================
 
 Layer blending with various blend modes.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.compositing.blend.blend import blend

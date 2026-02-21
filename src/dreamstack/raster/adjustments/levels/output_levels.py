@@ -1,5 +1,19 @@
-"""Output levels adjustment function."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Output levels adjustment function."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

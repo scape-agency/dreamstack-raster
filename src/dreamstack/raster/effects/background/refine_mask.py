@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Refine Mask
+Dreamstack Raster - Refine Mask
 ===========
 
 Mask refinement with morphological operations and blurring.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -54,11 +67,19 @@ def refine_mask(
 
     # Override with keyword arguments
     d_iter = (
-        dilate_iterations if dilate_iterations is not None else cfg.dilate_iterations
+        dilate_iterations
+        if dilate_iterations is not None
+        else cfg.dilate_iterations
     )
-    e_iter = erode_iterations if erode_iterations is not None else cfg.erode_iterations
+    e_iter = (
+        erode_iterations
+        if erode_iterations is not None
+        else cfg.erode_iterations
+    )
     b_size = blur_size if blur_size is not None else cfg.blur_size
-    f_amount = feather_amount if feather_amount is not None else cfg.feather_amount
+    f_amount = (
+        feather_amount if feather_amount is not None else cfg.feather_amount
+    )
 
     result = mask.copy()
 

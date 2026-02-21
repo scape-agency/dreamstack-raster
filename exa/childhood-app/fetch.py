@@ -29,6 +29,12 @@ API Usage
         print(result.source_image, result.score)
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import argparse

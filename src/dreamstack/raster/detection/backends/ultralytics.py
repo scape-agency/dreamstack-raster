@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Ultralytics YOLO Backend
+Dreamstack Raster - Ultralytics YOLO Backend
 ========================
 
 Object detection using Ultralytics YOLO models.
 Optimized for Mac M2 with MPS support.
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import logging

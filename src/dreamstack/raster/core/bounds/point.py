@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Point
 =========================
@@ -6,6 +13,12 @@ Dreamstack Raster - Point
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import math
@@ -92,7 +105,9 @@ class Point:
 
     def lerp(self, other: Point, t: float) -> Point:
         """Linear interpolation between this point and another."""
-        return Point(self.x + (other.x - self.x) * t, self.y + (other.y - self.y) * t)
+        return Point(
+            self.x + (other.x - self.x) * t, self.y + (other.y - self.y) * t
+        )
 
     def to_int(self) -> Point:
         """Convert to integer coordinates."""

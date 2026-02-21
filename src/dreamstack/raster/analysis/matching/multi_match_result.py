@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-MultiMatchResult Dataclass
+Dreamstack Raster - MultiMatchResult Dataclass
 ==========================
 
 Results from multi-template matching.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dataclasses import dataclass, field

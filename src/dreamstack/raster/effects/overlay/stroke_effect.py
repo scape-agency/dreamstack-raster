@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Stroke Effect
+Dreamstack Raster - Stroke Effect
 =============
 
 Apply stroke/outline effect to images.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Literal

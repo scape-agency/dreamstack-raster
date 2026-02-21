@@ -1,5 +1,20 @@
-"""Internal color conversion utilities for basic adjustments."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Internal color conversion utilities for basic adjustments.
+"""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import numpy as np

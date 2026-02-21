@@ -1,10 +1,23 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Contour Information Data Class
+Dreamstack Raster - Contour Information Data Class
 ==============================
 
 Data structure for storing contour geometric information.
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dataclasses import dataclass

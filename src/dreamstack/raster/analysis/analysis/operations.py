@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Color Analysis Operations
+Dreamstack Raster - Color Analysis Operations
 =========================
 
 Functional API for color analysis operations.
 Provides functions for dominant color detection and background analysis.
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import cv2

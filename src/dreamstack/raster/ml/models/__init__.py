@@ -1,4 +1,12 @@
-"""ML models module."""
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - ML models module."""
 
 from .augmentation_config import AugmentationConfig
 from .normalization_type import NormalizationType

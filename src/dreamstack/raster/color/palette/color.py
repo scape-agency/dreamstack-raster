@@ -1,5 +1,12 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Color Class Definition
+Dreamstack Raster - Color Class Definition
 ======================
 
 This module provides a Color class that bridges between numpy arrays
@@ -8,6 +15,12 @@ manipulation operations).
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -127,7 +140,9 @@ class Color:
         if len(array) == 3:
             return cls(array[0], array[1], array[2], normalized=normalized)
         else:
-            return cls(array[0], array[1], array[2], array[3], normalized=normalized)
+            return cls(
+                array[0], array[1], array[2], array[3], normalized=normalized
+            )
 
     def to_rgb(self) -> tuple[int, int, int]:
         """Get as RGB tuple (0-255)."""
@@ -181,7 +196,9 @@ class Color:
     def to_dreamstack_rgb(self) -> DreamstackRGB:
         """Convert to dreamstack.color RGB model."""
         r, g, b = self.to_rgb()
-        return DreamstackRGB(r, g, b, self.a if self.normalized else self.a / 255)
+        return DreamstackRGB(
+            r, g, b, self.a if self.normalized else self.a / 255
+        )
 
     @classmethod
     def from_dreamstack_rgb(cls, rgb: DreamstackRGB | HSLColorModel) -> Color:
@@ -208,7 +225,9 @@ class Color:
         Returns:
             Blended color
         """
-        result = ds_mix(self.to_dreamstack_rgb(), other.to_dreamstack_rgb(), factor)
+        result = ds_mix(
+            self.to_dreamstack_rgb(), other.to_dreamstack_rgb(), factor
+        )
         return Color.from_dreamstack_rgb(result)
 
     def lighten(self, amount: float = 0.1) -> Color:

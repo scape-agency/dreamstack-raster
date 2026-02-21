@@ -1,5 +1,19 @@
-"""Internal hue to RGB conversion utility."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Internal hue to RGB conversion utility."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import numpy as np

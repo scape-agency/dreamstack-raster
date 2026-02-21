@@ -6,6 +6,11 @@ Freehand and polygon-based selection tools.
 
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.selection.freeform.lasso import lasso

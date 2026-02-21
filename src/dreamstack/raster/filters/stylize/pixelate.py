@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Pixelation Effects
+Dreamstack Raster - Pixelation Effects
 ==================
 
 Pixelation, mosaic, and color quantization effects for stylized rendering.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dataclasses import dataclass

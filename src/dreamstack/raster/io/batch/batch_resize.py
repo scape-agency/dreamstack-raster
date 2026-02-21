@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-batch_resize
+Dreamstack Raster - batch_resize
 ============
 
 Batch resize images to specified dimensions.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from pathlib import Path
@@ -24,7 +37,7 @@ def batch_resize(
     maintain_aspect: bool = True,
     config: BatchConfig | None = None,
     output_format: str = "jpg",
-    quality: int = 90,
+    quality: int = 90,  # pylint: disable=unused-argument  # TODO: implement
 ) -> BatchResult:
     """Batch resize images to specified dimensions.
 
@@ -62,7 +75,9 @@ def batch_resize(
         else:
             new_w, new_h = width, height
 
-        return cv2.resize(image, (new_w, new_h), interpolation=cv2.INTER_LANCZOS4)
+        return cv2.resize(
+            image, (new_w, new_h), interpolation=cv2.INTER_LANCZOS4
+        )
 
     return batch_process(
         input_dir,

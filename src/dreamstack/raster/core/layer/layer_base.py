@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Layer Base
 ==============================
@@ -6,6 +13,12 @@ Abstract base class for all layer types.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import uuid
@@ -150,7 +163,7 @@ class LayerBase(ABC):
     @abstractmethod
     def bounds(self) -> Bounds:
         """Get layer bounds."""
-        pass
+        ...  # pylint: disable=unnecessary-ellipsis
 
     @abstractmethod
     def render(self, canvas_size: Size) -> NDArray:
@@ -163,12 +176,12 @@ class LayerBase(ABC):
         Returns:
             Rendered pixel data as normalized float array
         """
-        pass
+        ...  # pylint: disable=unnecessary-ellipsis
 
     @abstractmethod
     def copy(self) -> LayerBase:
         """Create a copy of this layer."""
-        pass
+        ...  # pylint: disable=unnecessary-ellipsis
 
     def apply_mask(self, data: NDArray) -> NDArray:
         """
@@ -187,7 +200,9 @@ class LayerBase(ABC):
 
         # Normalize mask
         if np.issubdtype(self._mask.dtype, np.integer):
-            mask = self._mask.astype(np.float32) / np.iinfo(self._mask.dtype).max
+            mask = (
+                self._mask.astype(np.float32) / np.iinfo(self._mask.dtype).max
+            )
         else:
             mask = self._mask.astype(np.float32)
 

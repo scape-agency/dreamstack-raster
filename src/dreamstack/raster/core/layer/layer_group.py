@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Layer Group
 ===============================
@@ -6,6 +13,12 @@ Layer group containing multiple layers.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import numpy as np
@@ -45,7 +58,13 @@ class LayerGroup(LayerBase):
             visible: Visibility
             locked: Lock state
         """
-        super().__init__(name, opacity, blend_mode, visible, locked)
+        super().__init__(
+            name,
+            opacity,
+            blend_mode,
+            visible,
+            locked,
+        )
         self._children: list[LayerBase] = []
         self._expanded = True
 
@@ -93,10 +112,10 @@ class LayerGroup(LayerBase):
             layer: Layer to add
             index: Optional position (default: top)
         """
-        if layer._parent is not None:
-            layer._parent.remove(layer)
+        if layer._parent is not None:  # pylint: disable=protected-access
+            layer._parent.remove(layer)  # pylint: disable=protected-access
 
-        layer._parent = self
+        layer._parent = self  # pylint: disable=protected-access
 
         if index is None:
             self._children.append(layer)
@@ -119,7 +138,7 @@ class LayerGroup(LayerBase):
             self._children.remove(layer)
             removed = layer
 
-        removed._parent = None
+        removed._parent = None  # pylint: disable=protected-access
         return removed
 
     def move(self, layer: LayerBase | int, new_index: int) -> None:
@@ -229,7 +248,9 @@ class LayerGroup(LayerBase):
             ):
                 # Simple alpha compositing
                 child_alpha = child_render[:, :, 3:4]
-                result = result * (1 - child_alpha) + child_render * child_alpha
+                result = (
+                    result * (1 - child_alpha) + child_render * child_alpha
+                )
             else:
                 # Apply blend mode to RGB, then composite
                 blended = apply_blend_mode(
@@ -237,7 +258,8 @@ class LayerGroup(LayerBase):
                 )
                 child_alpha = child_render[:, :, 3:4]
                 result[:, :, :3] = (
-                    result[:, :, :3] * (1 - child_alpha) + blended * child_alpha
+                    result[:, :, :3] * (1 - child_alpha)
+                    + blended * child_alpha
                 )
                 result[:, :, 3:4] = result[:, :, 3:4] + child_alpha * (
                     1 - result[:, :, 3:4]
@@ -265,7 +287,9 @@ class LayerGroup(LayerBase):
             new_group.add(child.copy())
 
         if self._mask is not None:
-            new_group._mask = self._mask.copy()
+            new_group._mask = (
+                self._mask.copy()
+            )  # pylint: disable=protected-access
 
         return new_group
 

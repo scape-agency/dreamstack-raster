@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Directory Validation
+Dreamstack Raster - Directory Validation
 ====================
 
 Validate that a path is an existing directory.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from pathlib import Path
@@ -34,6 +47,8 @@ def validate_directory(path: str | Path) -> Path:
     path = validate_path(path)
 
     if not path.is_dir():
-        raise DirectoryNotFoundError(f"Path exists but is not a directory: {path}")
+        raise DirectoryNotFoundError(
+            f"Path exists but is not a directory: {path}"
+        )
 
     return path

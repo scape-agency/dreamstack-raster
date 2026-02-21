@@ -1,5 +1,19 @@
-"""Color balance adjustment function."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Color balance adjustment function."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -59,7 +73,9 @@ def color_balance(
 
     # Apply adjustments
     for i, (s, m, h) in enumerate(zip(shadows, midtones, highlights)):
-        adjustment = (shadow_mask * s + midtone_mask * m + highlight_mask * h) / 100
+        adjustment = (
+            shadow_mask * s + midtone_mask * m + highlight_mask * h
+        ) / 100
         result[:, :, i] = result[:, :, i] + adjustment
 
     result = np.clip(result, 0, 1)
@@ -67,11 +83,15 @@ def color_balance(
     # Preserve luminosity
     if preserve_luminosity:
         new_luminosity = (
-            0.299 * result[:, :, 0] + 0.587 * result[:, :, 1] + 0.114 * result[:, :, 2]
+            0.299 * result[:, :, 0]
+            + 0.587 * result[:, :, 1]
+            + 0.114 * result[:, :, 2]
         )
 
         with np.errstate(divide="ignore", invalid="ignore"):
-            ratio = np.where(new_luminosity > 0, luminosity / new_luminosity, 1)
+            ratio = np.where(
+                new_luminosity > 0, luminosity / new_luminosity, 1
+            )
 
         for i in range(3):
             result[:, :, i] = result[:, :, i] * ratio
@@ -83,7 +103,7 @@ def color_balance(
     final[:, :, :3] = result * max_val
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=final.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

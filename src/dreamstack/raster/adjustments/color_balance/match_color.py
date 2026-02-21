@@ -1,5 +1,19 @@
-"""Match color function."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Match color function."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -65,16 +79,22 @@ def match_color(
                 src_std[i] * (1 - scale) + ref_std[i] * scale
             )
             result[:, :, i] = (
-                result[:, :, i] + src_mean[i] * (1 - scale) + ref_mean[i] * scale
+                result[:, :, i]
+                + src_mean[i] * (1 - scale)
+                + ref_mean[i] * scale
             )
 
     # Apply fade
     if fade > 0:
         gray = (
-            0.299 * result[:, :, 0] + 0.587 * result[:, :, 1] + 0.114 * result[:, :, 2]
+            0.299 * result[:, :, 0]
+            + 0.587 * result[:, :, 1]
+            + 0.114 * result[:, :, 2]
         )
         fade_factor = fade / 100
-        result = result * (1 - fade_factor) + gray[:, :, np.newaxis] * fade_factor
+        result = (
+            result * (1 - fade_factor) + gray[:, :, np.newaxis] * fade_factor
+        )
 
     result = np.clip(result, 0, 1)
 
@@ -82,7 +102,7 @@ def match_color(
     final[:, :, :3] = result * max_val
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=final.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

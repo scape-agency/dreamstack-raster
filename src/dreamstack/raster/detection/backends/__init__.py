@@ -1,5 +1,12 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Detection Backends
+Dreamstack Raster - Detection Backends
 ==================
 
 Object detection backend implementations.

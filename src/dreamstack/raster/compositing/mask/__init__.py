@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Mask Operations
+Dreamstack Raster - Mask Operations
 ===============
 
 Mask creation and application for compositing.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.compositing.mask.apply_mask import apply_mask

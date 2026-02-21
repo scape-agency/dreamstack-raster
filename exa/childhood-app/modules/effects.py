@@ -6,6 +6,11 @@ Apply visual effects to image segments for the art installation.
 Uses dreamstack.raster effects where available.
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import logging

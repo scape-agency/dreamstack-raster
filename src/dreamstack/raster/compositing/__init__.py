@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Compositing Module
 ======================================
@@ -6,6 +13,12 @@ Layer compositing: blend modes, alpha blending, clipping masks.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.compositing.alpha import (

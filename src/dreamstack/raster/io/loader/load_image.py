@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Load Image
 ==============================
@@ -6,6 +13,12 @@ Universal image loading with format auto-detection.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from pathlib import Path
@@ -19,7 +32,7 @@ if TYPE_CHECKING:
 
 def load_image(
     path: str | Path,
-    format: ImageFormat | None = None,
+    image_format: ImageFormat | None = None,
     **options,
 ) -> Image:
     """
@@ -27,7 +40,7 @@ def load_image(
 
     Args:
         path: Path to image file
-        format: Explicit format (auto-detected if None)
+        image_format: Explicit format (auto-detected if None)
         **options: Format-specific loading options
 
     Returns:
@@ -45,18 +58,18 @@ def load_image(
         raise FileNotFoundError(f"Image not found: {path}")
 
     # Detect format
-    if format is None:
-        format = get_format_for_path(path)
-        if format is None:
+    if image_format is None:
+        image_format = get_format_for_path(path)
+        if image_format is None:
             raise ValueError(f"Unknown image format: {path.suffix}")
 
     # Load based on format
-    if format == ImageFormat.PSD or format == ImageFormat.PSB:
+    if image_format == ImageFormat.PSD or image_format == ImageFormat.PSB:
         from dreamstack.raster.io.psd import load_psd
 
         return load_psd(path, **options)
 
-    elif format in (
+    elif image_format in (
         ImageFormat.RAW,
         ImageFormat.CR2,
         ImageFormat.CR3,
@@ -70,22 +83,22 @@ def load_image(
 
         return load_raw(path, **options)
 
-    elif format == ImageFormat.EXR:
+    elif image_format == ImageFormat.EXR:
         from dreamstack.raster.io.exr import load_exr
 
         return load_exr(path, **options)
 
-    elif format == ImageFormat.HDR:
+    elif image_format == ImageFormat.HDR:
         from dreamstack.raster.io.loader.load_hdr import load_hdr
 
         return load_hdr(path, **options)
 
-    elif format == ImageFormat.SVG:
+    elif image_format == ImageFormat.SVG:
         from dreamstack.raster.io.loader.load_svg import load_svg
 
         return load_svg(path, **options)
 
-    elif format in (ImageFormat.HEIC, ImageFormat.HEIF):
+    elif image_format in (ImageFormat.HEIC, ImageFormat.HEIF):
         from dreamstack.raster.io.loader.load_heif import load_heif
 
         return load_heif(path, **options)

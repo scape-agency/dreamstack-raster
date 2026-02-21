@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - IO Encoding Module
 ======================================
@@ -6,6 +13,12 @@ Base64 encoding utilities for web embedding.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.io.encoding.base64_to_image import base64_to_image

@@ -1,5 +1,19 @@
-"""Brightness and contrast combined adjustment function."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Brightness and contrast combined adjustment function."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -65,13 +79,15 @@ def brightness_contrast(
             contrast_factor = 1 + contrast_amount / 100
 
         mid_val = max_val / 2
-        result = (data - mid_val) * contrast_factor + mid_val + brightness_offset
+        result = (
+            (data - mid_val) * contrast_factor + mid_val + brightness_offset
+        )
 
     result = np.clip(result, 0, max_val)
 
     result_image = image.copy()
 
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

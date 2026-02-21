@@ -6,6 +6,11 @@ Brush-based automatic selection tool.
 
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -130,7 +135,7 @@ def quick_selection(
                         255,
                         0,
                     ).astype(np.uint8)
-                except cv2.error:
+                except Exception:  # cv2.error can occur with invalid input
                     # Fall back to simple color mask
                     result_mask = color_mask
             else:

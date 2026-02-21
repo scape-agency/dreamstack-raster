@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Oil Paint
 =============================
@@ -6,6 +13,12 @@ Oil painting effect implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from collections import Counter
@@ -41,19 +54,33 @@ def oil_paint(image: Image, brush_size: int = 6, roughness: int = 1) -> Image:
     if data.ndim == 3 and data.shape[2] >= 3:
         # OpenCV xphoto module has oil painting
         try:
-            result = cv2.xphoto.oilPainting(data[:, :, :3], brush_size, roughness)  # type: ignore[attr-defined]
+            result = cv2.xphoto.oilPainting(
+                data[:, :, :3],
+                brush_size,
+                roughness,
+            )  # type: ignore[attr-defined]
             if data.shape[2] == 4:
                 result = np.dstack([result, data[:, :, 3]])
         except AttributeError:
             # Fallback implementation
-            result = _oil_paint_fallback(data, brush_size, roughness)
+            result = _oil_paint_fallback(
+                data,
+                brush_size,
+                roughness,
+            )
     else:
-        result = _oil_paint_fallback(data, brush_size, roughness)
+        result = _oil_paint_fallback(
+            data,
+            brush_size,
+            roughness,
+        )
 
     # Convert back
     if image.bit_depth.name != "UINT8":
         max_val = 65535 if image.bit_depth.name == "UINT16" else 1.0
-        result = (result / 255.0 * max_val).astype(image.data.dtype)
+        result = (result / 255.0 * max_val).astype(
+            image.data.dtype,
+        )
 
     result_image = image.copy()
     result_image._pixel_data = PixelData(  # pylint: disable=protected-access
@@ -64,7 +91,9 @@ def oil_paint(image: Image, brush_size: int = 6, roughness: int = 1) -> Image:
 
 
 def _oil_paint_fallback(
-    data: np.ndarray, brush_size: int, roughness: int
+    data: np.ndarray,
+    brush_size: int,
+    roughness: int,
 ) -> np.ndarray:
     """Fallback oil painting implementation."""
     h, w = data.shape[:2]

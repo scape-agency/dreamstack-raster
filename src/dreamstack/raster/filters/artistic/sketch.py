@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Sketch
 ==========================
@@ -6,6 +13,12 @@ Pencil sketch effect implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -64,7 +77,7 @@ def sketch(image: Image, detail: float = 0.5, stroke_width: int = 1) -> Image:
         result = (result / 255.0 * max_val).astype(image.data.dtype)
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result,
         pixel_format=image.to_grayscale().pixel_format,
         bit_depth=image.bit_depth,

@@ -1,5 +1,12 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Contour Detector
+Dreamstack Raster - Contour Detector
 ================
 
 Configurable contour detection and analysis class.
@@ -7,6 +14,12 @@ Provides a stateful interface with customizable detection parameters.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -149,7 +162,9 @@ class ContourDetector:
         )
 
         # Analyze
-        analyzed = analyze_contours(raw_contours, sort_by="area", descending=True)
+        analyzed = analyze_contours(
+            raw_contours, sort_by="area", descending=True
+        )
 
         if not apply_filters:
             return analyzed
@@ -226,7 +241,9 @@ class ContourDetector:
             Bounding boxes as (x, y, width, height).
         """
         margin = margin if margin is not None else self.config.margin
-        return get_bounding_boxes(contours, margin=margin, image_size=image_size)
+        return get_bounding_boxes(
+            contours, margin=margin, image_size=image_size
+        )
 
     def approximate(
         self,
@@ -247,7 +264,9 @@ class ContourDetector:
         NDArray[np.int32]
             Approximated contour.
         """
-        raw_contour = contour.contour if isinstance(contour, ContourInfo) else contour
+        raw_contour = (
+            contour.contour if isinstance(contour, ContourInfo) else contour
+        )
         return approximate_contour(
             raw_contour,
             epsilon_percent=epsilon or self.config.approximation_epsilon,
@@ -294,7 +313,9 @@ class ContourDetector:
         NDArray[np.int32]
             Transformed contour.
         """
-        raw_contour = contour.contour if isinstance(contour, ContourInfo) else contour
+        raw_contour = (
+            contour.contour if isinstance(contour, ContourInfo) else contour
+        )
         return scale_contour(raw_contour, scale, offset)
 
     def with_config(self, **kwargs) -> ContourDetector:

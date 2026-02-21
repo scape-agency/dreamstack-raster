@@ -1,10 +1,23 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Pipeline Operations
+Dreamstack Raster - Pipeline Operations
 ===================
 
 Functional API for batch extraction operations.
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import logging
@@ -101,10 +114,10 @@ def process_image(
     extractor = extractor or ObjectExtractor()
     prefix = prefix or image_path.stem
 
-    logger.info(f"Processing: {image_path.name}")
+    logger.info("Processing: %s", image_path.name)
 
     objects = extractor.extract_from_file(image_path)
-    logger.info(f"Found {len(objects)} objects")
+    logger.info("Found %d objects", len(objects))
 
     if output_dir:
         output_dir = Path(output_dir)
@@ -114,7 +127,7 @@ def process_image(
             prefix=prefix,
             extension=extension,
         )
-        logger.info(f"Saved {len(saved)} objects to {output_dir}")
+        logger.info("Saved %d objects to %s", len(saved), output_dir)
 
     return objects
 
@@ -168,7 +181,7 @@ def process_directory(
     image_files = find_images(input_dir, extensions, recursive)
 
     total = len(image_files)
-    logger.info(f"Found {total} images to process")
+    logger.info("Found %d images to process", total)
 
     all_objects = []
     for idx, image_path in enumerate(image_files, 1):
@@ -183,10 +196,10 @@ def process_directory(
                 prefix=image_path.stem,
             )
             all_objects.extend(objects)
-        except Exception as e:
-            logger.error(f"Failed to process {image_path}: {e}")
+        except (OSError, ValueError) as e:
+            logger.error("Failed to process %s: %s", image_path, e)
 
-    logger.info(f"Extracted {len(all_objects)} total objects")
+    logger.info("Extracted %d total objects", len(all_objects))
     return all_objects
 
 
@@ -230,6 +243,6 @@ def process_directory_iter(
         try:
             objects = extractor.extract_from_file(image_path)
             yield image_path, objects
-        except Exception as e:
-            logger.error(f"Failed to process {image_path}: {e}")
+        except (OSError, ValueError) as e:
+            logger.error("Failed to process %s: %s", image_path, e)
             yield image_path, []

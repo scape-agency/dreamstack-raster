@@ -1,5 +1,18 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """Dehaze function."""
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -64,14 +77,15 @@ def dehaze(image: Image, amount: float = 50) -> Image:
         # Remove haze
         for i in range(3):
             result[:, :, i] = (
-                normalized[:, :, i] - atmospheric[i] * (1 - transmission) * strength
+                normalized[:, :, i]
+                - atmospheric[i] * (1 - transmission) * strength
             ) / np.maximum(transmission, 0.1)
     else:
         # Add haze
         for i in range(3):
-            result[:, :, i] = normalized[:, :, i] * (1 + amount / 100) + atmospheric[
-                i
-            ] * (1 - transmission) * (-amount / 100)
+            result[:, :, i] = normalized[:, :, i] * (
+                1 + amount / 100
+            ) + atmospheric[i] * (1 - transmission) * (-amount / 100)
 
     result = np.clip(result, 0, 1)
 
@@ -79,7 +93,7 @@ def dehaze(image: Image, amount: float = 50) -> Image:
     final[:, :, :3] = result * max_val
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=final.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

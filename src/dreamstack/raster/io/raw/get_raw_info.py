@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - RAW File Information
 ========================================
@@ -6,6 +13,12 @@ Get information about RAW camera files.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from pathlib import Path
@@ -54,7 +67,9 @@ def get_raw_info(path: str | Path) -> dict:
         info["color_desc"] = (
             raw.color_desc.decode() if hasattr(raw, "color_desc") else None
         )
-        info["num_colors"] = raw.num_colors if hasattr(raw, "num_colors") else None
+        info["num_colors"] = (
+            raw.num_colors if hasattr(raw, "num_colors") else None
+        )
         info["raw_pattern"] = (
             raw.raw_pattern.tolist() if hasattr(raw, "raw_pattern") else None
         )

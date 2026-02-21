@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Lens Blur
 =============================
@@ -6,6 +13,12 @@ Lens blur (bokeh effect) filter implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -64,7 +77,9 @@ def lens_blur(
                     # Check if inside polygon
                     blade_angle = 2 * np.pi / blade_count
                     sector = angle % blade_angle - blade_angle / 2
-                    edge_dist = radius * np.cos(blade_angle / 2) / np.cos(sector)
+                    edge_dist = (
+                        radius * np.cos(blade_angle / 2) / np.cos(sector)
+                    )
 
                     if r <= edge_dist:
                         kernel[y, x] = 1
@@ -77,7 +92,9 @@ def lens_blur(
 
     # Apply specular highlights boost
     if brightness > 0:
-        highlights = np.where(data > threshold, data * (1 + brightness / 100), data)
+        highlights = np.where(
+            data > threshold, data * (1 + brightness / 100), data
+        )
         data = highlights
 
     # Apply blur
@@ -91,7 +108,7 @@ def lens_blur(
     result = np.clip(result, 0, max_val)
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

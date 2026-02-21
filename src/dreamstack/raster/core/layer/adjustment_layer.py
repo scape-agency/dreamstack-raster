@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Adjustment Layer
 ====================================
@@ -6,6 +13,12 @@ Non-destructive adjustment layer.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -89,12 +102,17 @@ class AdjustmentLayer(LayerBase):
         """
         from dreamstack.raster.adjustments import apply_adjustment
 
-        result = apply_adjustment(data, self._adjustment_type, self._parameters)
+        result = apply_adjustment(
+            data, self._adjustment_type, self._parameters
+        )
 
         # Apply mask if present
         if self._mask is not None and self._mask_enabled:
             if np.issubdtype(self._mask.dtype, np.integer):
-                mask = self._mask.astype(np.float32) / np.iinfo(self._mask.dtype).max
+                mask = (
+                    self._mask.astype(np.float32)
+                    / np.iinfo(self._mask.dtype).max
+                )
             else:
                 mask = self._mask.astype(np.float32)
 
@@ -126,5 +144,7 @@ class AdjustmentLayer(LayerBase):
             visible=self._visible,
         )
         if self._mask is not None:
-            new_layer._mask = self._mask.copy()
+            new_layer._mask = (
+                self._mask.copy()
+            )  # pylint: disable=protected-access
         return new_layer

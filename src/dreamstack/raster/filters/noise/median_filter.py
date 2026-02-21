@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Median Filter
 =================================
@@ -6,6 +13,12 @@ Median filter implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -42,7 +55,7 @@ def median_filter(image: Image, size: int = 3) -> Image:
         result = cv2.medianBlur(data, size)
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result, pixel_format=image.pixel_format, bit_depth=image.bit_depth
     )
 

@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Polar Coordinates
 =====================================
@@ -6,6 +13,12 @@ Polar/rectangular coordinate transformation filter implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -45,7 +58,7 @@ def polar_coordinates(
 
     max_radius = np.sqrt(cx**2 + cy**2)
 
-    y, x = np.mgrid[:h, :w].astype(np.float32)
+    y, x = np.mgrid[:h, :w].astype(np.float32)  # pylint: disable=no-member
 
     if mode == "rectangular_to_polar":
         # Map x to angle, y to radius
@@ -76,7 +89,7 @@ def polar_coordinates(
     )
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result, pixel_format=image.pixel_format, bit_depth=image.bit_depth
     )
 

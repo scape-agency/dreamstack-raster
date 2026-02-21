@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Core Module
 ===============================
@@ -6,6 +13,12 @@ Core classes for image processing including Image, Canvas, Layer, and History.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.core.bounds import Bounds, Point, Size

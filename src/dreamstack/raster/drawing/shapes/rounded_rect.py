@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Rounded Rectangle
+Dreamstack Raster - Rounded Rectangle
 =================
 
 Draw rounded rectangles on images.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -65,8 +78,12 @@ def rounded_rect(
     thick = -1 if filled else thickness
 
     # Draw rectangles (body)
-    cv2.rectangle(result, (x1 + radius, y1), (x2 - radius, y2), bgr_color, thick)
-    cv2.rectangle(result, (x1, y1 + radius), (x2, y2 - radius), bgr_color, thick)
+    cv2.rectangle(
+        result, (x1 + radius, y1), (x2 - radius, y2), bgr_color, thick
+    )
+    cv2.rectangle(
+        result, (x1, y1 + radius), (x2, y2 - radius), bgr_color, thick
+    )
 
     # Draw corner circles
     cv2.circle(

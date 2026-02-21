@@ -1,5 +1,12 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Depth Estimator Class
+Dreamstack Raster - Depth Estimator Class
 =====================
 
 Class-based interface for monocular depth estimation
@@ -7,6 +14,12 @@ using transformer-based models like Depth Anything.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dataclasses import dataclass

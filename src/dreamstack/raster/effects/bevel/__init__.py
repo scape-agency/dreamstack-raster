@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Bevel Effects
+Dreamstack Raster - Bevel Effects
 =============
 
 Bevel and emboss effects.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.effects.bevel.bevel_emboss import bevel_emboss

@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Wave Distortion
 ===================================
@@ -6,6 +13,12 @@ Wave distortion filter implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -43,7 +56,7 @@ def wave(
     h, w = data.shape[:2]
 
     # Create coordinate maps
-    y, x = np.mgrid[:h, :w].astype(np.float32)
+    y, x = np.mgrid[:h, :w].astype(np.float32)  # pylint: disable=no-member
 
     if wave_type == "sine":
         if direction == "horizontal":
@@ -56,11 +69,15 @@ def wave(
             map_y = y + offset
     else:  # triangle
         if direction == "horizontal":
-            offset = amplitude * (2 * np.abs((y / wavelength) % 1 - 0.5) - 0.5) * 2
+            offset = (
+                amplitude * (2 * np.abs((y / wavelength) % 1 - 0.5) - 0.5) * 2
+            )
             map_x = x + offset
             map_y = y
         else:
-            offset = amplitude * (2 * np.abs((x / wavelength) % 1 - 0.5) - 0.5) * 2
+            offset = (
+                amplitude * (2 * np.abs((x / wavelength) % 1 - 0.5) - 0.5) * 2
+            )
             map_x = x
             map_y = y + offset
 
@@ -75,7 +92,7 @@ def wave(
         )
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result, pixel_format=image.pixel_format, bit_depth=image.bit_depth
     )
 

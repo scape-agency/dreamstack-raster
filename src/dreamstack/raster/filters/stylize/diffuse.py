@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Diffuse
 ===========================
@@ -6,6 +13,12 @@ Diffuse glow effect implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -66,17 +79,21 @@ def diffuse(image: Image, mode: str = "normal", distance: int = 10) -> Image:
                     data[y, x] = image.data[src_y, src_x]
                 elif mode == "darken":
                     if data.ndim == 3:
-                        data[y, x] = np.minimum(data[y, x], image.data[src_y, src_x])
+                        data[y, x] = np.minimum(
+                            data[y, x], image.data[src_y, src_x]
+                        )
                     else:
                         data[y, x] = min(data[y, x], image.data[src_y, src_x])
                 elif mode == "lighten":
                     if data.ndim == 3:
-                        data[y, x] = np.maximum(data[y, x], image.data[src_y, src_x])
+                        data[y, x] = np.maximum(
+                            data[y, x], image.data[src_y, src_x]
+                        )
                     else:
                         data[y, x] = max(data[y, x], image.data[src_y, src_x])
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=data.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

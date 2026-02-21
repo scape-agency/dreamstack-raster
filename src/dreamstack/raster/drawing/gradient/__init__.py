@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Gradient Drawing
+Dreamstack Raster - Gradient Drawing
 ================
 
 Gradient generation operations.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.drawing.gradient.angular_gradient import (

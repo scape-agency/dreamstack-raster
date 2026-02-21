@@ -6,6 +6,11 @@ Core selection class representing a selection mask.
 
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dataclasses import dataclass, field

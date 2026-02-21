@@ -6,6 +6,11 @@ Contract/erode selection borders.
 
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import cv2

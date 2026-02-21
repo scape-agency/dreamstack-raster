@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Angular Gradient
+Dreamstack Raster - Angular Gradient
 ================
 
 Create angular (conic) gradient images.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -90,10 +103,14 @@ def _interpolate_angular(
         if not np.any(mask):
             continue
 
-        segment_t = (t[mask] - s1.position) / max(0.001, s2.position - s1.position)
+        segment_t = (t[mask] - s1.position) / max(
+            0.001, s2.position - s1.position
+        )
 
         for c in range(4):
-            result[mask, c] = s1.color[c] * (1 - segment_t) + s2.color[c] * segment_t
+            result[mask, c] = (
+                s1.color[c] * (1 - segment_t) + s2.color[c] * segment_t
+            )
 
     result[t <= stops[0].position] = stops[0].color
     result[t >= stops[-1].position] = stops[-1].color

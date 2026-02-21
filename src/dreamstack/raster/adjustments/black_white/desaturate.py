@@ -1,5 +1,18 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """Desaturate function."""
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -43,7 +56,9 @@ def desaturate(image: Image, method: str = "luminosity") -> Image:
     elif method == "average":
         gray = (r + g + b) / 3
     elif method == "lightness":
-        gray = (np.maximum(np.maximum(r, g), b) + np.minimum(np.minimum(r, g), b)) / 2
+        gray = (
+            np.maximum(np.maximum(r, g), b) + np.minimum(np.minimum(r, g), b)
+        ) / 2
     elif method == "maximum":
         gray = np.maximum(np.maximum(r, g), b)
     elif method == "minimum":
@@ -59,7 +74,7 @@ def desaturate(image: Image, method: str = "luminosity") -> Image:
     result[:, :, 2] = gray
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

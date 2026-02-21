@@ -6,6 +6,11 @@ Geometric shape selection tools.
 
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.selection.shapes.elliptical import elliptical

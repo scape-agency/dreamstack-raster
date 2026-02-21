@@ -26,6 +26,12 @@ API Usage
     canvas.save("final.png")
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import argparse

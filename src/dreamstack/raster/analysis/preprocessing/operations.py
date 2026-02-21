@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Preprocessing Operations
+Dreamstack Raster - Preprocessing Operations
 ========================
 
 Functional API for image preprocessing operations.
 Provides stateless functions for preparing images for contour detection.
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import cv2

@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Channel Manager
 ===================================
@@ -6,6 +13,12 @@ Multi-channel management for images.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -110,7 +123,9 @@ class ChannelManager:
 
         self._channels = [self._channels[i] for i in new_order]
 
-    def duplicate(self, index: int | str, new_name: str | None = None) -> Channel:
+    def duplicate(
+        self, index: int | str, new_name: str | None = None
+    ) -> Channel:
         """
         Duplicate a channel.
 
@@ -132,7 +147,9 @@ class ChannelManager:
         self._channels.append(copy)
         return copy
 
-    def merge(self, indices: list[int], weights: list[float] | None = None) -> Channel:
+    def merge(
+        self, indices: list[int], weights: list[float] | None = None
+    ) -> Channel:
         """
         Merge multiple channels into one.
 
@@ -161,7 +178,9 @@ class ChannelManager:
 
         result = np.clip(result, 0, 1)
 
-        return Channel(name="Merged", channel_type=ChannelType.CUSTOM, data=result)
+        return Channel(
+            name="Merged", channel_type=ChannelType.CUSTOM, data=result
+        )
 
     def split_from_image(self, pixel_data: PixelData) -> None:
         """

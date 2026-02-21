@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Format Capabilities
 =======================================
@@ -6,6 +13,12 @@ Dataclass and function for format capabilities.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -50,40 +63,40 @@ class FormatCapabilities:
     lossy: bool = False
 
 
-def get_capabilities(format: ImageFormat) -> FormatCapabilities:
+def get_capabilities(image_format: ImageFormat) -> FormatCapabilities:
     """
     Get capabilities for a format.
 
     Args:
-        format: Image format
+        image_format: Image format
 
     Returns:
         Format capabilities
     """
     caps = FormatCapabilities(
-        format=format,
-        can_read=format in READ_FORMATS,
-        can_write=format in WRITE_FORMATS,
-        supports_alpha=format in ALPHA_FORMATS,
-        supports_layers=format in LAYER_FORMATS,
-        supports_16bit=format in HIGH_BIT_DEPTH_FORMATS,
+        format=image_format,
+        can_read=image_format in READ_FORMATS,
+        can_write=image_format in WRITE_FORMATS,
+        supports_alpha=image_format in ALPHA_FORMATS,
+        supports_layers=image_format in LAYER_FORMATS,
+        supports_16bit=image_format in HIGH_BIT_DEPTH_FORMATS,
     )
 
     # Format-specific settings
-    if format == ImageFormat.JPEG:
+    if image_format == ImageFormat.JPEG:
         caps.supports_alpha = False
         caps.lossy = True
-    elif format == ImageFormat.GIF:
+    elif image_format == ImageFormat.GIF:
         caps.supports_animation = True
-    elif format == ImageFormat.WEBP:
+    elif image_format == ImageFormat.WEBP:
         caps.supports_animation = True
         caps.lossy = True
-    elif format == ImageFormat.EXR:
+    elif image_format == ImageFormat.EXR:
         caps.supports_float = True
-    elif format == ImageFormat.HDR:
+    elif image_format == ImageFormat.HDR:
         caps.supports_float = True
         caps.supports_alpha = False
-    elif format in (ImageFormat.PSD, ImageFormat.PSB):
+    elif image_format in (ImageFormat.PSD, ImageFormat.PSB):
         caps.supports_float = False
 
     return caps

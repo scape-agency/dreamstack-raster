@@ -1,5 +1,12 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Detection Module
+Dreamstack Raster - Detection Module
 ================
 
 Object detection and extraction with multiple backend support.
@@ -47,37 +54,37 @@ Requirements
 pip install ultralytics  # For YOLO backend
 """
 
-from dreamstack.raster.detection.config import (
-    DetectionConfig,
-    SegmentationConfig,
-    Backend,
-    DeviceType,
-)
-from dreamstack.raster.detection.result import (
-    DetectionResult,
-    ImageDetectionResult,
-)
 from dreamstack.raster.detection.base import BaseDetector
-from dreamstack.raster.detection.factory import create_detector
+from dreamstack.raster.detection.config import (
+    Backend,
+    DetectionConfig,
+    DeviceType,
+    SegmentationConfig,
+)
+from dreamstack.raster.detection.describer import (
+    DescriptionResult,
+    ImageDescriber,
+)
 from dreamstack.raster.detection.extractor import (
     DetectionExtractor,
     ExtractedDetection,
+)
+from dreamstack.raster.detection.factory import create_detector
+from dreamstack.raster.detection.metadata import (
+    ImageMetadata,
+    ObjectMetadata,
+    create_image_metadata,
+    generate_description,
+    load_metadata,
+    save_metadata,
 )
 from dreamstack.raster.detection.pipeline import (
     DetectionPipeline,
     PipelineResult,
 )
-from dreamstack.raster.detection.metadata import (
-    ImageMetadata,
-    ObjectMetadata,
-    create_image_metadata,
-    save_metadata,
-    load_metadata,
-    generate_description,
-)
-from dreamstack.raster.detection.describer import (
-    ImageDescriber,
-    DescriptionResult,
+from dreamstack.raster.detection.result import (
+    DetectionResult,
+    ImageDetectionResult,
 )
 
 __all__ = [

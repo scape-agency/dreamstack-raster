@@ -1,5 +1,19 @@
-"""RGB to Grayscale conversion."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - RGB to Grayscale conversion."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import numpy as np
@@ -38,7 +52,9 @@ def rgb_to_gray(rgb: np.ndarray, method: str = "luminance") -> np.ndarray:
         # ITU-R BT.601 (standard NTSC)
         gray = 0.299 * r + 0.587 * g + 0.114 * b
     elif method == "lightness":
-        gray = (np.maximum(np.maximum(r, g), b) + np.minimum(np.minimum(r, g), b)) / 2
+        gray = (
+            np.maximum(np.maximum(r, g), b) + np.minimum(np.minimum(r, g), b)
+        ) / 2
     elif method == "average":
         gray = (r + g + b) / 3
     elif method == "luminosity":

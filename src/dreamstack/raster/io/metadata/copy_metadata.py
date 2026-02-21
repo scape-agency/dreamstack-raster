@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Copy Metadata
 =================================
@@ -6,6 +13,12 @@ Copy metadata between image files.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from pathlib import Path
@@ -21,8 +34,10 @@ def copy_metadata(src_path: str | Path, dst_path: str | Path) -> None:
     """
     try:
         import piexif
-    except ImportError:
-        raise ImportError("piexif package required for copying metadata")
+    except ImportError as exc:
+        raise ImportError(
+            "piexif package required for copying metadata"
+        ) from exc
 
     src_path = Path(src_path)
     dst_path = Path(dst_path)
@@ -32,4 +47,4 @@ def copy_metadata(src_path: str | Path, dst_path: str | Path) -> None:
         exif_bytes = piexif.dump(exif_dict)
         piexif.insert(exif_bytes, str(dst_path))
     except Exception as e:
-        raise RuntimeError(f"Failed to copy metadata: {e}")
+        raise RuntimeError(f"Failed to copy metadata: {e}") from e

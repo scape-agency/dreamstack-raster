@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Stipple
 ===========================
@@ -6,6 +13,12 @@ Stipple effect implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -49,13 +62,15 @@ def stipple(image: Image, density: float = 0.3, dot_size: int = 2) -> Image:
 
     # Enlarge dots
     if dot_size > 1:
-        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (dot_size, dot_size))
+        kernel = cv2.getStructuringElement(
+            cv2.MORPH_ELLIPSE, (dot_size, dot_size)
+        )
         dots = cv2.dilate(dots.astype(np.uint8), kernel).astype(bool)
 
     result[dots] = 0
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result[:, :, np.newaxis].astype(image.data.dtype),
         pixel_format=image.to_grayscale().pixel_format,
         bit_depth=image.bit_depth,

@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Image to Base64
+Dreamstack Raster - Image to Base64
 ===============
 
 Encode image array to base64 string.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import base64
@@ -23,7 +36,7 @@ ImageFormat = Literal["png", "jpeg", "webp", "gif"]
 
 def image_to_base64(
     image: NDArray[np.uint8],
-    format: ImageFormat = "png",
+    image_format: ImageFormat = "png",
     *,
     quality: int = 85,
 ) -> str:
@@ -31,7 +44,7 @@ def image_to_base64(
 
     Args:
         image: Input image (BGR or RGB, 3-4 channels).
-        format: Output format.
+        image_format: Output format.
         quality: Compression quality for JPEG/WebP.
 
     Returns:
@@ -59,7 +72,7 @@ def image_to_base64(
     buffer = BytesIO()
 
     # Save with appropriate format
-    format_upper = format.upper()
+    format_upper = image_format.upper()
     if format_upper == "JPEG":
         if pil_image.mode == "RGBA":
             bg = Image.new("RGB", pil_image.size, (255, 255, 255))

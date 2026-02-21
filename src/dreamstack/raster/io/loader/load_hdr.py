@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Load HDR
 ============================
@@ -6,6 +13,12 @@ Load HDR/Radiance image.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from pathlib import Path
@@ -17,7 +30,10 @@ if TYPE_CHECKING:
     from dreamstack.raster.core.image import Image
 
 
-def load_hdr(path: Path, **options) -> Image:
+def load_hdr(
+    path: Path,
+    **options,  # pylint: disable=unused-argument
+) -> Image:
     """Load HDR/Radiance image."""
     import imageio
 

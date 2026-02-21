@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Linear Gradient
+Dreamstack Raster - Linear Gradient
 ===============
 
 Create linear gradient images.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -107,11 +120,15 @@ def _interpolate_colors(
             continue
 
         # Local interpolation factor
-        segment_t = (t[mask] - s1.position) / max(0.001, s2.position - s1.position)
+        segment_t = (t[mask] - s1.position) / max(
+            0.001, s2.position - s1.position
+        )
 
         # Interpolate each channel
         for c in range(4):
-            result[mask, c] = s1.color[c] * (1 - segment_t) + s2.color[c] * segment_t
+            result[mask, c] = (
+                s1.color[c] * (1 - segment_t) + s2.color[c] * segment_t
+            )
 
     # Handle edges
     result[t <= stops[0].position] = stops[0].color

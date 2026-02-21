@@ -1,5 +1,18 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """HDR toning function."""
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -68,7 +81,9 @@ def hdr_toning(
     mapped_lum = np.log1p(luminance * 10) / np.log1p(10)
 
     # Blend based on strength
-    adjusted_lum = luminance * (1 - strength_factor) + mapped_lum * strength_factor
+    adjusted_lum = (
+        luminance * (1 - strength_factor) + mapped_lum * strength_factor
+    )
 
     # Add detail
     detail_factor = detail / 100
@@ -114,7 +129,9 @@ def hdr_toning(
 
         # Vibrance (saturation weighted by inverse saturation)
         if vibrance != 0:
-            vib_factor = 1 + (vibrance / 100) * (1 - current_sat)[:, :, np.newaxis]
+            vib_factor = (
+                1 + (vibrance / 100) * (1 - current_sat)[:, :, np.newaxis]
+            )
             result = mean_color + (result - mean_color) * vib_factor
 
         # Saturation
@@ -128,7 +145,7 @@ def hdr_toning(
     final[:, :, :3] = result * max_val
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=final.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

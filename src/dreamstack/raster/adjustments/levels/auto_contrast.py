@@ -1,5 +1,19 @@
-"""Auto contrast adjustment function."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Auto contrast adjustment function."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -29,7 +43,9 @@ def auto_contrast(image: Image, clip: float = 0.1) -> Image:
     # Find global min/max
     if data.ndim == 3:
         luminance = (
-            0.299 * data[:, :, 0] + 0.587 * data[:, :, 1] + 0.114 * data[:, :, 2]
+            0.299 * data[:, :, 0]
+            + 0.587 * data[:, :, 1]
+            + 0.114 * data[:, :, 2]
         )
     else:
         luminance = data
@@ -51,7 +67,7 @@ def auto_contrast(image: Image, clip: float = 0.1) -> Image:
     result = np.clip(result, 0, max_val)
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

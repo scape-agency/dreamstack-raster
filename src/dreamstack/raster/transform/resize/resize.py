@@ -1,5 +1,10 @@
 """Core resize operation."""
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Literal
@@ -36,4 +41,6 @@ def resize(
     import cv2
 
     interp = _get_cv2_interpolation(interpolation)
-    return np.asarray(cv2.resize(image, size, interpolation=interp), dtype=np.uint8)
+    return np.asarray(
+        cv2.resize(image, size, interpolation=interp), dtype=np.uint8
+    )

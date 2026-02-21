@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Clamp and Gamma Adjustments
+Dreamstack Raster - Clamp and Gamma Adjustments
 ===========================
 
 Pixel value clamping and gamma correction operations.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

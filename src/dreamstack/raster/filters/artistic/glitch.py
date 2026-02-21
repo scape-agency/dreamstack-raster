@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Glitch
 ==========================
@@ -6,6 +13,12 @@ Digital glitch effect implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -41,7 +54,9 @@ def glitch(image: Image, amount: float = 10, seed: int | None = None) -> Image:
     for _ in range(num_shifts):
         y = np.random.randint(0, h)
         height = np.random.randint(1, max(2, h // 10))
-        shift = np.random.randint(-int(w * amount / 100), int(w * amount / 100))
+        shift = np.random.randint(
+            -int(w * amount / 100), int(w * amount / 100)
+        )
 
         y2 = min(y + height, h)
         data[y:y2] = np.roll(data[y:y2], shift, axis=1)
@@ -55,7 +70,7 @@ def glitch(image: Image, amount: float = 10, seed: int | None = None) -> Image:
         data[:, :, 2] = np.roll(data[:, :, 2], shift_b, axis=1)
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=data, pixel_format=image.pixel_format, bit_depth=image.bit_depth
     )
 

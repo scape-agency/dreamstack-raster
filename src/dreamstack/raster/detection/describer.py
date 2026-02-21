@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Image Describer
+Dreamstack Raster - Image Describer
 ===============
 
 AI-powered image description using vision models.
 Supports OpenAI (GPT-4o) and Mistral (Pixtral) backends.
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import logging

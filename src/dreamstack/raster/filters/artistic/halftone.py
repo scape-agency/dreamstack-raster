@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Halftone
 ============================
@@ -6,6 +13,12 @@ Halftone dot pattern effect implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -53,7 +66,7 @@ def halftone(
             result[:, :, i] = ht
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,
@@ -63,7 +76,10 @@ def halftone(
 
 
 def _create_halftone(
-    data: np.ndarray, dot_size: int, angle: float, max_val: float
+    data: np.ndarray,
+    dot_size: int,
+    angle: float,  # pylint: disable=unused-argument  # TODO: implement rotation
+    max_val: float,
 ) -> np.ndarray:
     """Create halftone pattern for single channel."""
     h, w = data.shape

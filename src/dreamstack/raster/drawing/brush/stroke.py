@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Stroke
+Dreamstack Raster - Stroke
 ======
 
 Draw brush strokes along paths.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -65,7 +78,7 @@ def stroke(
 
     # Create brush tip
     tip = brush.create_tip()
-    tip_h, tip_w = tip.shape
+    _tip_h, _tip_w = tip.shape  # Unused but kept for reference
 
     # Interpolate points based on spacing
     all_points = _interpolate_points(points, brush.size * brush.spacing)

@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Image Preprocessor
+Dreamstack Raster - Image Preprocessor
 ==================
 
 Configurable image preprocessing for detection workflows.
 Provides a stateful interface with customizable preprocessing parameters.
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dataclasses import dataclass

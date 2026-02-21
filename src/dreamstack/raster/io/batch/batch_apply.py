@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-batch_apply
+Dreamstack Raster - batch_apply
 ===========
 
 Apply a processor function to a list of images.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -66,7 +79,9 @@ def batch_apply(
             else:
                 out_base = img_path.parent
 
-            fmt = output_format if output_format else img_path.suffix.lstrip(".")
+            fmt = (
+                output_format if output_format else img_path.suffix.lstrip(".")
+            )
             out_name = f"{img_path.stem}{output_suffix}.{fmt}"
             out_path = out_base / out_name
 
@@ -83,7 +98,7 @@ def batch_apply(
 
             return out_path, None
 
-        except Exception as e:
+        except (OSError, Exception) as e:  # cv2.error, etc.
             return None, str(e)
 
     with ThreadPoolExecutor(max_workers=config.max_workers) as executor:

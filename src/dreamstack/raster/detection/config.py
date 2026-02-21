@@ -1,15 +1,27 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Detection Config
+Dreamstack Raster - Detection Config
 ================
 
 Configuration dataclasses for object detection.
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Literal
-
 
 Backend = Literal["ultralytics", "transformers", "grounding_dino_sam"]
 DeviceType = Literal["auto", "cpu", "cuda", "mps"]

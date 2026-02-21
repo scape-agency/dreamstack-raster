@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Image Array Validation
+Dreamstack Raster - Image Array Validation
 ======================
 
 Validate an image numpy array.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -53,7 +66,9 @@ def validate_image_array(
             raise InvalidImageError("Image must be 2D (grayscale)")
     else:
         if len(image.shape) not in (2, 3):
-            raise InvalidImageError(f"Image must be 2D or 3D, got shape: {image.shape}")
+            raise InvalidImageError(
+                f"Image must be 2D or 3D, got shape: {image.shape}"
+            )
 
         if len(image.shape) == 3:
             channels = image.shape[2]

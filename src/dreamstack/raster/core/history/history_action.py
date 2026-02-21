@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - History Action
 ==================================
@@ -6,6 +13,12 @@ Abstract base for undoable actions.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
@@ -26,17 +39,17 @@ class HistoryAction(ABC):
     @abstractmethod
     def name(self) -> str:
         """Get action name."""
-        pass
+        ...  # pylint: disable=unnecessary-ellipsis
 
     @abstractmethod
     def execute(self, document: Document) -> None:
         """Execute the action."""
-        pass
+        ...  # pylint: disable=unnecessary-ellipsis
 
     @abstractmethod
     def undo(self, document: Document) -> None:
         """Undo the action."""
-        pass
+        ...  # pylint: disable=unnecessary-ellipsis
 
     def redo(self, document: Document) -> None:
         """Redo the action (default: re-execute)."""

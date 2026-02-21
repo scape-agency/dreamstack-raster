@@ -7,6 +7,11 @@ perspective, and geometric warping.
 
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.transform.resize import (

@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Batch Pipeline
+Dreamstack Raster - Batch Pipeline
 ==============
 
 High-level pipeline for batch object extraction with
 configuration, progress tracking, and result aggregation.
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import logging

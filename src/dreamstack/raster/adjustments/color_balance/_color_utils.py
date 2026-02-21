@@ -1,5 +1,20 @@
-"""Internal color conversion utilities for color balance adjustments."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Internal color conversion utilities for color balance adjustments.
+"""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import numpy as np
@@ -63,17 +78,29 @@ def _hsl_to_rgb(hsl: np.ndarray) -> np.ndarray:
     for sector in range(6):
         mask = h_sector == sector
         if sector == 0:
-            rgb[mask] = np.stack([c[mask], x[mask], np.zeros_like(c[mask])], axis=-1)
+            rgb[mask] = np.stack(
+                [c[mask], x[mask], np.zeros_like(c[mask])], axis=-1
+            )
         elif sector == 1:
-            rgb[mask] = np.stack([x[mask], c[mask], np.zeros_like(c[mask])], axis=-1)
+            rgb[mask] = np.stack(
+                [x[mask], c[mask], np.zeros_like(c[mask])], axis=-1
+            )
         elif sector == 2:
-            rgb[mask] = np.stack([np.zeros_like(c[mask]), c[mask], x[mask]], axis=-1)
+            rgb[mask] = np.stack(
+                [np.zeros_like(c[mask]), c[mask], x[mask]], axis=-1
+            )
         elif sector == 3:
-            rgb[mask] = np.stack([np.zeros_like(c[mask]), x[mask], c[mask]], axis=-1)
+            rgb[mask] = np.stack(
+                [np.zeros_like(c[mask]), x[mask], c[mask]], axis=-1
+            )
         elif sector == 4:
-            rgb[mask] = np.stack([x[mask], np.zeros_like(c[mask]), c[mask]], axis=-1)
+            rgb[mask] = np.stack(
+                [x[mask], np.zeros_like(c[mask]), c[mask]], axis=-1
+            )
         else:
-            rgb[mask] = np.stack([c[mask], np.zeros_like(c[mask]), x[mask]], axis=-1)
+            rgb[mask] = np.stack(
+                [c[mask], np.zeros_like(c[mask]), x[mask]], axis=-1
+            )
 
     rgb = rgb + m[:, :, np.newaxis]
 

@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Contour Operations
+Dreamstack Raster - Contour Operations
 ==================
 
 Functional API for contour detection and analysis operations.
 Provides stateless functions for finding, filtering, and analyzing contours.
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from collections.abc import Sequence

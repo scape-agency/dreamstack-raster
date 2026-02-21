@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Create Gradient
+Dreamstack Raster - Create Gradient
 ===============
 
 Internal helper to generate gradient backgrounds.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -33,8 +46,8 @@ def _create_gradient(
     Internal function to generate gradient backgrounds.
     """
     # Create coordinate grids
-    x = np.linspace(0, 1, width)
-    y = np.linspace(0, 1, height)
+    x = np.linspace(0, 1, width)  # type: ignore[call-arg]
+    y = np.linspace(0, 1, height)  # type: ignore[call-arg]
     xx, yy = np.meshgrid(x, y)
 
     # Calculate interpolation factor based on direction

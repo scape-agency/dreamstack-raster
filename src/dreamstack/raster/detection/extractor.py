@@ -1,10 +1,23 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Detection Extractor
+Dreamstack Raster - Detection Extractor
 ===================
 
 Extract detected objects from images with segmentation masks.
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import logging

@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Format Constants
 ====================================
@@ -6,6 +13,12 @@ Constants mapping formats to extensions, MIME types, and capabilities.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.io.formats.image_format import ImageFormat

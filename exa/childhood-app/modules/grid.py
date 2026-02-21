@@ -5,6 +5,11 @@ Grid Segmentation
 Divide images into randomized grid segments for the art installation.
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import random

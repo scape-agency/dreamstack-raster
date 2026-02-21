@@ -1,5 +1,18 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """Swap channels operation."""
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import Literal
@@ -37,7 +50,9 @@ def swap_channels(
     channel_map_bgr = {"blue": 0, "b": 0, "green": 1, "g": 1, "red": 2, "r": 2}
     channel_map_rgb = {"red": 0, "r": 0, "green": 1, "g": 1, "blue": 2, "b": 2}
     channel_map = (
-        channel_map_bgr if color_format.upper() in ("BGR", "BGRA") else channel_map_rgb
+        channel_map_bgr
+        if color_format.upper() in ("BGR", "BGRA")
+        else channel_map_rgb
     )
 
     def get_idx(ch):

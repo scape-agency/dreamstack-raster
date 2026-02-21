@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Tiles
 =========================
@@ -6,6 +13,12 @@ Tiles effect implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -88,12 +101,12 @@ def tiles(
             copy_w = min(dst_x2 - dst_x1, src_x2 - src_x1)
 
             if copy_h > 0 and copy_w > 0:
-                result[dst_y1 : dst_y1 + copy_h, dst_x1 : dst_x1 + copy_w] = data[
-                    src_y1 : src_y1 + copy_h, src_x1 : src_x1 + copy_w
-                ]
+                result[dst_y1 : dst_y1 + copy_h, dst_x1 : dst_x1 + copy_w] = (
+                    data[src_y1 : src_y1 + copy_h, src_x1 : src_x1 + copy_w]
+                )
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result, pixel_format=image.pixel_format, bit_depth=image.bit_depth
     )
 

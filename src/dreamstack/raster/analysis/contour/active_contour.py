@@ -1,5 +1,12 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Active Contour (Snake) Operations
+Dreamstack Raster - Active Contour (Snake) Operations
 =================================
 
 Active contour models describe the boundaries of shapes in images.
@@ -8,6 +15,12 @@ precise image segmentation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dataclasses import dataclass

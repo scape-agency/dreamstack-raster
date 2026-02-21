@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Glow Effects
+Dreamstack Raster - Glow Effects
 ============
 
 Outer glow and inner glow effects.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.effects.glow.inner_glow import inner_glow

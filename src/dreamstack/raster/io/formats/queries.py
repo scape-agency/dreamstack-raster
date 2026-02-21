@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Format Queries
 ==================================
@@ -6,6 +13,12 @@ Functions for querying format support.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.io.formats.constants import (
@@ -33,16 +46,16 @@ def get_write_formats() -> set[ImageFormat]:
     return WRITE_FORMATS.copy()
 
 
-def supports_layers(format: ImageFormat) -> bool:
+def supports_layers(image_format: ImageFormat) -> bool:
     """Check if format supports layers."""
-    return format in LAYER_FORMATS
+    return image_format in LAYER_FORMATS
 
 
-def supports_alpha(format: ImageFormat) -> bool:
+def supports_alpha(image_format: ImageFormat) -> bool:
     """Check if format supports alpha channel."""
-    return format in ALPHA_FORMATS
+    return image_format in ALPHA_FORMATS
 
 
-def supports_high_bit_depth(format: ImageFormat) -> bool:
+def supports_high_bit_depth(image_format: ImageFormat) -> bool:
     """Check if format supports 16-bit or higher."""
-    return format in HIGH_BIT_DEPTH_FORMATS
+    return image_format in HIGH_BIT_DEPTH_FORMATS

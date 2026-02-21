@@ -6,6 +6,11 @@ Select pixels within a specified color range.
 
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -98,8 +103,12 @@ def color_range(
             np.array([[target_color]], dtype=np.uint8), cv2.COLOR_BGR2LAB
         )[0, 0]
 
-        lower = np.maximum(0, target.astype(np.int16) - fuzziness).astype(np.uint8)
-        upper = np.minimum(255, target.astype(np.int16) + fuzziness).astype(np.uint8)
+        lower = np.maximum(0, target.astype(np.int16) - fuzziness).astype(
+            np.uint8
+        )
+        upper = np.minimum(255, target.astype(np.int16) + fuzziness).astype(
+            np.uint8
+        )
 
         mask = cv2.inRange(converted, lower, upper)
 

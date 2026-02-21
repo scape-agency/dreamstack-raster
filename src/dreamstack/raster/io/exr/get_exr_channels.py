@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - OpenEXR Channel Information
 ================================================
@@ -6,6 +13,12 @@ Get information about channels in EXR files.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from pathlib import Path
@@ -23,8 +36,10 @@ def get_exr_channels(path: str | Path) -> dict[str, dict]:
     """
     try:
         import OpenEXR
-    except ImportError:
-        raise ImportError("OpenEXR package required for this function")
+    except ImportError as exc:
+        raise ImportError(
+            "OpenEXR package required for this function"
+        ) from exc
 
     path = Path(path)
     exr_file = OpenEXR.InputFile(str(path))

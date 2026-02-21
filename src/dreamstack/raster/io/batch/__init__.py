@@ -1,5 +1,12 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Batch Image Processing Utilities
+Dreamstack Raster - Batch Image Processing Utilities
 =================================
 
 Utilities for processing multiple images in batch with

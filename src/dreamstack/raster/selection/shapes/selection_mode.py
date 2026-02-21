@@ -6,6 +6,11 @@ Defines selection combination modes.
 
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from enum import Enum, auto

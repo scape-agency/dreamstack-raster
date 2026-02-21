@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Image Measurement Module
+Dreamstack Raster - Image Measurement Module
 ========================
 
 Functions for measuring and sampling image data.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from .color_sampler import color_sampler

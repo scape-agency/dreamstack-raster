@@ -1,10 +1,23 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Extraction Config
+Dreamstack Raster - Extraction Config
 =================
 
 Configuration dataclass for object extraction.
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -53,5 +66,7 @@ class ExtractionConfig:
     target_size: int | None = None
     with_alpha: bool = False
     feather_edges: int = 0
-    preprocessing: PreprocessingConfig = field(default_factory=PreprocessingConfig)
+    preprocessing: PreprocessingConfig = field(
+        default_factory=PreprocessingConfig
+    )
     detection: DetectionConfig = field(default_factory=DetectionConfig)

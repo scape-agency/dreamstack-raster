@@ -6,6 +6,11 @@ Layer effects: shadows, glows, bevels, overlays, and background operations.
 
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.effects.background import (

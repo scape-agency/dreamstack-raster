@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Shadow Effects
+Dreamstack Raster - Shadow Effects
 ==============
 
 Drop shadow and inner shadow effects.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.effects.shadow.drop_shadow import drop_shadow

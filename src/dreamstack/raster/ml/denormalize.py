@@ -1,5 +1,18 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """Denormalize operation."""
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import numpy as np
@@ -33,7 +46,10 @@ def denormalize(
     if method == NormalizationType.MINMAX:
         result = image
 
-    elif method == NormalizationType.IMAGENET or method == NormalizationType.TORCH:
+    elif (
+        method == NormalizationType.IMAGENET
+        or method == NormalizationType.TORCH
+    ):
         result = image * IMAGENET_STD + IMAGENET_MEAN
 
     elif method == NormalizationType.CAFFE:

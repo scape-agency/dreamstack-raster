@@ -1,5 +1,19 @@
-"""Augmentation configuration dataclass."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Augmentation configuration dataclass."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -7,7 +21,8 @@ from dataclasses import dataclass
 
 @dataclass
 class AugmentationConfig:
-    """Configuration for image augmentation.
+    """
+    Configuration for image augmentation.
 
     Attributes
     ----------

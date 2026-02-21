@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Gradient Overlay
+Dreamstack Raster - Gradient Overlay
 ================
 
 Apply gradient overlay to images.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Literal
@@ -84,7 +97,9 @@ def gradient_overlay(
     start_bgr = np.array(
         [start_color[2], start_color[1], start_color[0]], dtype=np.float32
     )
-    end_bgr = np.array([end_color[2], end_color[1], end_color[0]], dtype=np.float32)
+    end_bgr = np.array(
+        [end_color[2], end_color[1], end_color[0]], dtype=np.float32
+    )
 
     for c in range(3):
         base = result[:, :, c] / 255.0

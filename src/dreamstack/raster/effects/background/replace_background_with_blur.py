@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Replace Background with Blur
+Dreamstack Raster - Replace Background with Blur
 ============================
 
 Replace background with blurred version of the original image.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -68,6 +81,8 @@ def replace_background_with_blur(
     alpha = np.expand_dims(alpha, axis=-1)
 
     # Blend: foreground is sharp, background is blurred
-    result = image.astype(np.float32) * alpha + blurred.astype(np.float32) * (1 - alpha)
+    result = image.astype(np.float32) * alpha + blurred.astype(np.float32) * (
+        1 - alpha
+    )
 
     return result.astype(np.uint8)

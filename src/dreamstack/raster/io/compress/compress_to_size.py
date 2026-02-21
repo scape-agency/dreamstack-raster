@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-compress_to_size
+Dreamstack Raster - compress_to_size
 ================
 
 Compress image to fit within a target file size.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from io import BytesIO
@@ -26,7 +39,7 @@ def compress_to_size(
     image: NDArray[np.uint8],
     max_size_kb: int = 500,
     *,
-    format: CompressionFormat = "jpeg",
+    output_format: CompressionFormat = "jpeg",
     min_quality: int = 20,
     max_quality: int = 95,
 ) -> CompressionResult:
@@ -38,7 +51,7 @@ def compress_to_size(
     Args:
         image: Input image (BGR, 3 channels).
         max_size_kb: Maximum file size in kilobytes.
-        format: Output format (jpeg, webp, png).
+        output_format: Output format (jpeg, webp, png).
         min_quality: Minimum acceptable quality.
         max_quality: Starting quality.
 
@@ -65,10 +78,10 @@ def compress_to_size(
     pil_image = Image.fromarray(rgb)
 
     # Determine format-specific settings
-    if format == "jpeg":
+    if output_format == "jpeg":
         pil_format = "JPEG"
         quality_key = "quality"
-    elif format == "webp":
+    elif output_format == "webp":
         pil_format = "WEBP"
         quality_key = "quality"
     else:
@@ -129,7 +142,9 @@ def compress_to_size(
             bg.paste(pil_image, mask=pil_image.split()[3])
             bg.save(buffer, format=pil_format, **{quality_key: min_quality})
         else:
-            pil_image.save(buffer, format=pil_format, **{quality_key: min_quality})
+            pil_image.save(
+                buffer, format=pil_format, **{quality_key: min_quality}
+            )
         best_data = buffer.getvalue()
         best_quality = min_quality
 
@@ -137,6 +152,6 @@ def compress_to_size(
         data=best_data,
         size_kb=len(best_data) / 1024,
         quality=best_quality,
-        format=format,
+        format=output_format,
         iterations=iterations,
     )

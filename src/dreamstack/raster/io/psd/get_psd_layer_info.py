@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Get PSD Layer Info
 ======================================
@@ -6,6 +13,12 @@ Get information about layers in a PSD file.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from pathlib import Path
@@ -37,7 +50,9 @@ def get_psd_layer_info(path: str | Path) -> list[dict]:
         }
 
         if layer.is_group():
-            info["children"] = [process_layer(child, depth + 1) for child in layer]
+            info["children"] = [
+                process_layer(child, depth + 1) for child in layer
+            ]
 
         return info
 

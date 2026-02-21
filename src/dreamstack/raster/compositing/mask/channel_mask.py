@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Channel Mask
+Dreamstack Raster - Channel Mask
 ============
 
 Create masks from color channels.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Literal
@@ -75,7 +88,11 @@ def channel_mask(
             mask = image
         else:
             rgb = image[:, :, :3].astype(np.float32)
-            mask = 0.299 * rgb[:, :, 2] + 0.587 * rgb[:, :, 1] + 0.114 * rgb[:, :, 0]
+            mask = (
+                0.299 * rgb[:, :, 2]
+                + 0.587 * rgb[:, :, 1]
+                + 0.114 * rgb[:, :, 0]
+            )
             mask = mask.astype(np.uint8)
 
     elif channel == "saturation":

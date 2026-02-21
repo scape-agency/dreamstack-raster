@@ -1,5 +1,12 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Face Alignment Operations
+Dreamstack Raster - Face Alignment Operations
 =========================
 
 Face alignment utilities for consistent face positioning.
@@ -7,6 +14,12 @@ Includes eye alignment and scale normalization.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dataclasses import dataclass

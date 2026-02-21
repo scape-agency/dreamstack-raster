@@ -6,6 +6,11 @@ Functional interface for image upscaling.
 
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from pathlib import Path
@@ -100,7 +105,9 @@ def upscale_image(
     if method == "cubic":
         return cv2.resize(image, (new_w, new_h), interpolation=cv2.INTER_CUBIC)
     else:
-        return cv2.resize(image, (new_w, new_h), interpolation=cv2.INTER_LANCZOS4)
+        return cv2.resize(
+            image, (new_w, new_h), interpolation=cv2.INTER_LANCZOS4
+        )
 
 
 def upscale_to_size(
@@ -140,7 +147,9 @@ def upscale_to_size(
     }
 
     interp = interp_map.get(interpolation, cv2.INTER_LANCZOS4)
-    return cv2.resize(image, (target_width, target_height), interpolation=interp)
+    return cv2.resize(
+        image, (target_width, target_height), interpolation=interp
+    )
 
 
 def upscale_2x(image: NDArray[np.uint8]) -> NDArray[np.uint8]:

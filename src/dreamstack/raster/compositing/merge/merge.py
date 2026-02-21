@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Merge Operation
+Dreamstack Raster - Merge Operation
 ===============
 
 Merge two images using specified mode.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Literal
@@ -22,7 +35,9 @@ from dreamstack.raster.compositing.merge.multiply import multiply
 from dreamstack.raster.compositing.merge.screen import screen
 from dreamstack.raster.compositing.merge.subtract import subtract
 
-MergeMode = Literal["add", "subtract", "multiply", "divide", "screen", "difference"]
+MergeMode = Literal[
+    "add", "subtract", "multiply", "divide", "screen", "difference"
+]
 
 
 def merge(

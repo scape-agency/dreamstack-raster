@@ -1,5 +1,19 @@
-"""Auto levels adjustment function."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Auto levels adjustment function."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -43,11 +57,15 @@ def auto_levels(
 
             sorted_vals = np.sort(channel)
             in_black = sorted_vals[black_clip] if black_clip < total else 0
-            in_white = sorted_vals[-white_clip - 1] if white_clip < total else max_val
+            in_white = (
+                sorted_vals[-white_clip - 1] if white_clip < total else max_val
+            )
 
             if in_white > in_black:
                 result[:, :, i] = (
-                    (data[:, :, i] - in_black) / (in_white - in_black) * max_val
+                    (data[:, :, i] - in_black)
+                    / (in_white - in_black)
+                    * max_val
                 )
     else:
         flat = data.flatten()
@@ -57,7 +75,9 @@ def auto_levels(
 
         sorted_vals = np.sort(flat)
         in_black = sorted_vals[black_clip] if black_clip < total else 0
-        in_white = sorted_vals[-white_clip - 1] if white_clip < total else max_val
+        in_white = (
+            sorted_vals[-white_clip - 1] if white_clip < total else max_val
+        )
 
         if in_white > in_black:
             result = (data - in_black) / (in_white - in_black) * max_val
@@ -65,7 +85,7 @@ def auto_levels(
     result = np.clip(result, 0, max_val)
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

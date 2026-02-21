@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Image Extension Validation
+Dreamstack Raster - Image Extension Validation
 ==========================
 
 Validate that a file has a supported image extension.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from collections.abc import Sequence

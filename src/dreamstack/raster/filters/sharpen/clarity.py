@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Clarity
 ===========================
@@ -6,6 +13,12 @@ Clarity enhancement (midtone contrast) filter implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -39,7 +52,9 @@ def clarity(image: Image, amount: float = 50) -> Image:
     if data.ndim == 3:
         blurred = np.zeros_like(data)
         for i in range(data.shape[2]):
-            blurred[:, :, i] = cv2.GaussianBlur(data[:, :, i], (ksize, ksize), 0)
+            blurred[:, :, i] = cv2.GaussianBlur(
+                data[:, :, i], (ksize, ksize), 0
+            )
     else:
         blurred = cv2.GaussianBlur(data, (ksize, ksize), 0)
 
@@ -53,7 +68,7 @@ def clarity(image: Image, amount: float = 50) -> Image:
     result = np.clip(result, 0, max_val)
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

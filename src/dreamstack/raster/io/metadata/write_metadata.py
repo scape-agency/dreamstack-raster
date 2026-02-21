@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Write Metadata
 ==================================
@@ -6,6 +13,12 @@ Write metadata to image files.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from pathlib import Path
@@ -25,8 +38,8 @@ def write_metadata(
     """
     try:
         import piexif
-    except ImportError:
-        raise ImportError("piexif package required for writing metadata")
+    except ImportError as exc:
+        raise ImportError("piexif package required for writing metadata") from exc
 
     path = Path(path)
 

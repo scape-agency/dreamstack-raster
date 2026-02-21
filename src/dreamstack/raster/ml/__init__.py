@@ -1,5 +1,12 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Machine Learning Image Preprocessing
+Dreamstack Raster - Machine Learning Image Preprocessing
 ====================================
 
 This module provides image preprocessing utilities specifically designed

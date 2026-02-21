@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Twirl Distortion
 ====================================
@@ -6,6 +13,12 @@ Twirl distortion filter implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -50,7 +63,7 @@ def twirl(
 
     angle_rad = np.radians(angle)
 
-    y, x = np.mgrid[:h, :w].astype(np.float32)
+    y, x = np.mgrid[:h, :w].astype(np.float32)  # pylint: disable=no-member
 
     dx = x - cx
     dy = y - cy
@@ -75,7 +88,7 @@ def twirl(
     )
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result, pixel_format=image.pixel_format, bit_depth=image.bit_depth
     )
 

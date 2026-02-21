@@ -1,4 +1,12 @@
-"""Normalization type enum."""
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Normalization type enum."""
 
 from enum import StrEnum
 

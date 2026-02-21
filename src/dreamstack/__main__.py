@@ -3,7 +3,7 @@
 # =============================================================================
 
 """
-Main Module for DreamStack
+Dreamstack Raster - Main Module for DreamStack
 
 
 """

@@ -1,10 +1,23 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Apply Background Mask
+Dreamstack Raster - Apply Background Mask
 =====================
 
 Function for replacing background with a solid color based on masking.
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import cv2
@@ -18,7 +31,7 @@ from dreamstack.raster.analysis.preprocessing.operations import detect_edges
 def apply_background_mask(
     image: NDArray[np.uint8],
     background_color: tuple[int, int, int],
-    threshold_offset: int = 20,
+    threshold_offset: int = 20,  # pylint: disable=unused-argument  # TODO: implement
 ) -> NDArray[np.uint8]:
     """Replace background with a solid color based on masking.
 

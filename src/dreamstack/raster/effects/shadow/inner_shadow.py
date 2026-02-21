@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Inner Shadow
+Dreamstack Raster - Inner Shadow
 ============
 
 Create inner shadow effects.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -73,7 +86,9 @@ def inner_shadow(
     dst_x1 = max(0, ox)
     dst_x2 = min(w, w + ox)
 
-    inverted[dst_y1:dst_y2, dst_x1:dst_x2] = 1.0 - alpha[src_y1:src_y2, src_x1:src_x2]
+    inverted[dst_y1:dst_y2, dst_x1:dst_x2] = (
+        1.0 - alpha[src_y1:src_y2, src_x1:src_x2]
+    )
 
     # Apply choke
     if choke > 0:
@@ -94,6 +109,8 @@ def inner_shadow(
 
     # Blend shadow with image
     for c in range(3):
-        result[:, :, c] = result[:, :, c] * (1 - shadow) + shadow_color[c] * shadow
+        result[:, :, c] = (
+            result[:, :, c] * (1 - shadow) + shadow_color[c] * shadow
+        )
 
     return np.clip(result, 0, 255).astype(np.uint8)

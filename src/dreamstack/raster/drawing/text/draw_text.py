@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Draw Text
+Dreamstack Raster - Draw Text
 =========
 
 Text rendering on images.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -167,7 +180,7 @@ def _get_cv2_font(weight: FontWeight) -> int:
 
 def render_text(
     text: str,
-    font_family: str = "sans-serif",
+    font_family: str = "sans-serif",  # pylint: disable=unused-argument
     font_size: float = 24.0,
     font_color: tuple[int, int, int, int] = (255, 255, 255, 255),
     font_weight: str = "normal",

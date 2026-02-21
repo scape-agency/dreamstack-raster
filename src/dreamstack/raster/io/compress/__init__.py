@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Smart Image Compression
+Dreamstack Raster - Smart Image Compression
 =======================
 
 Utilities for intelligent image compression with target file size.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from .compress_image import compress_image

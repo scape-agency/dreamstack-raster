@@ -1,5 +1,19 @@
-"""Levels adjustment function."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Levels adjustment function."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -71,13 +85,17 @@ def levels(
     else:
         # Apply to specific channel
         channel_idx = {"red": 0, "green": 1, "blue": 2}.get(channel.lower())
-        if channel_idx is not None and data.ndim == 3 and channel_idx < data.shape[2]:
+        if (
+            channel_idx is not None
+            and data.ndim == 3
+            and channel_idx < data.shape[2]
+        ):
             result[:, :, channel_idx] = apply_levels(data[:, :, channel_idx])
 
     result = np.clip(result, 0, max_val)
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

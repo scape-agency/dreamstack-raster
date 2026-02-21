@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Luminosity Mask
+Dreamstack Raster - Luminosity Mask
 ===============
 
 Create masks based on image luminosity.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Literal
@@ -50,7 +63,9 @@ def luminosity_mask(
     else:
         # Use ITU-R BT.601 luminosity
         rgb = image[:, :, :3].astype(np.float32) / 255.0
-        luminosity = 0.299 * rgb[:, :, 2] + 0.587 * rgb[:, :, 1] + 0.114 * rgb[:, :, 0]
+        luminosity = (
+            0.299 * rgb[:, :, 2] + 0.587 * rgb[:, :, 1] + 0.114 * rgb[:, :, 0]
+        )
 
     # Create base mask
     if target == "lights":

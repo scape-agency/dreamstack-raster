@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Image Statistics Module
+Dreamstack Raster - Image Statistics Module
 =======================
 
 Statistical analysis functions for images.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from .channel_statistics import channel_statistics

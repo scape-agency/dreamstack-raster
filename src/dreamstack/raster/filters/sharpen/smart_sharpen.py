@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Smart Sharpen
 =================================
@@ -6,6 +13,12 @@ Smart sharpening with blur type detection filter implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -59,9 +72,9 @@ def smart_sharpen(
 
     elif remove == "lens":
         # Disk blur approximation
-        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (ksize, ksize)).astype(
-            np.float32
-        )
+        kernel = cv2.getStructuringElement(
+            cv2.MORPH_ELLIPSE, (ksize, ksize)
+        ).astype(np.float32)
         kernel /= kernel.sum()
 
         if data.ndim == 3:
@@ -109,7 +122,7 @@ def smart_sharpen(
     result = np.clip(result, 0, max_val)
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

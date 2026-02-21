@@ -3,7 +3,7 @@
 # =============================================================================
 
 """
-Sturnus - Dreamstack Initialization
+Dreamstack Raster - Sturnus - Dreamstack Initialization
 ===================================
 
 This module initializes the Dreamstack package.

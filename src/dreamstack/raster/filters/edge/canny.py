@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Canny Edge Detection
 ========================================
@@ -6,6 +13,12 @@ Canny edge detection implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -58,7 +71,7 @@ def canny(
     )
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=edges[:, :, np.newaxis],
         pixel_format=gray_img.pixel_format,
         bit_depth=gray_img.bit_depth,
@@ -110,7 +123,7 @@ def canny_auto(
     )
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=edges[:, :, np.newaxis],
         pixel_format=gray_img.pixel_format,
         bit_depth=gray_img.bit_depth,

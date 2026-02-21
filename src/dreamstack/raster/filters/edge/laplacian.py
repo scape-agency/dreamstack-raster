@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Laplacian Edge Detection
 ============================================
@@ -6,6 +13,12 @@ Laplacian edge detection implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -46,7 +59,7 @@ def laplacian(image: Image, ksize: int = 3, scale: float = 1.0) -> Image:
     laplacian_result = np.clip(laplacian_result, 0, max_val)
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=laplacian_result[:, :, np.newaxis].astype(image.data.dtype),
         pixel_format=gray_img.pixel_format,
         bit_depth=image.bit_depth,

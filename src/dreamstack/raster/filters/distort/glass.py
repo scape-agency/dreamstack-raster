@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Glass Distortion
 ====================================
@@ -6,6 +13,12 @@ Glass distortion effect filter implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -50,7 +63,7 @@ def glass(
         texture = cv2.GaussianBlur(texture, (ksize, ksize), 0)
 
     # Create displacement maps
-    y, x = np.mgrid[:h, :w].astype(np.float32)
+    y, x = np.mgrid[:h, :w].astype(np.float32)  # pylint: disable=no-member
 
     # Compute gradients
     grad_x = cv2.Sobel(texture, cv2.CV_32F, 1, 0, ksize=3)
@@ -64,7 +77,7 @@ def glass(
     )
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result, pixel_format=image.pixel_format, bit_depth=image.bit_depth
     )
 

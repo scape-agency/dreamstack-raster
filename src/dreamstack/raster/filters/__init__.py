@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Filters Module
 ==================================
@@ -7,6 +14,12 @@ noise reduction, and artistic effects.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.filters.artistic import (
@@ -63,8 +76,9 @@ from dreamstack.raster.filters.sharpen import (
     smart_sharpen,
     unsharp_mask,
 )
-from dreamstack.raster.filters.stylize import diffuse, extrude, solarize, tiles, wind
+from dreamstack.raster.filters.stylize import diffuse, extrude
 from dreamstack.raster.filters.stylize import find_edges as stylize_edges
+from dreamstack.raster.filters.stylize import solarize, tiles, wind
 
 __all__: list[str] = [
     # Blur

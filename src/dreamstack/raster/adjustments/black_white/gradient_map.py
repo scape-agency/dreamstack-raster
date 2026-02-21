@@ -1,5 +1,19 @@
-"""Gradient map function."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Gradient map function."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -70,13 +84,16 @@ def gradient_map(
             if gradient[j][0] <= pos <= gradient[j + 1][0]:
                 # Interpolate
                 t = (
-                    (pos - gradient[j][0]) / (gradient[j + 1][0] - gradient[j][0])
+                    (pos - gradient[j][0])
+                    / (gradient[j + 1][0] - gradient[j][0])
                     if gradient[j + 1][0] != gradient[j][0]
                     else 0
                 )
 
                 for c in range(3):
-                    lut[i, c] = gradient[j][1][c] * (1 - t) + gradient[j + 1][1][c] * t
+                    lut[i, c] = (
+                        gradient[j][1][c] * (1 - t) + gradient[j + 1][1][c] * t
+                    )
                 break
 
     # Normalize LUT
@@ -92,9 +109,9 @@ def gradient_map(
 
     # Add dithering
     if dither:
-        noise = np.random.random(luminance.shape) * (1 / (lut_size - 1)) - 0.5 / (
-            lut_size - 1
-        )
+        noise = np.random.random(luminance.shape) * (
+            1 / (lut_size - 1)
+        ) - 0.5 / (lut_size - 1)
         result = result + noise[:, :, np.newaxis]
 
     result = np.clip(result, 0, 1)
@@ -103,7 +120,7 @@ def gradient_map(
     final[:, :, :3] = result * max_val
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=final.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

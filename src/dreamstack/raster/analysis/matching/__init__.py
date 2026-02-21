@@ -1,5 +1,12 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Template Matching Module
+Dreamstack Raster - Template Matching Module
 ========================
 
 Template matching for object detection and localization.
@@ -7,6 +14,12 @@ Find occurrences of a template image within a larger image.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from .create_template_mask import create_template_mask

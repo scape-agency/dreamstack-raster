@@ -1,5 +1,19 @@
-"""Convert image from one ICC profile to another."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Convert image from one ICC profile to another."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -72,7 +86,7 @@ def convert_profile(
     if array.ndim == 2:
         array = array[:, :, np.newaxis]
 
-    result._pixel_data = PixelData(
+    result._pixel_data = PixelData(  # pylint: disable=protected-access
         data=array, pixel_format=result.pixel_format, bit_depth=BitDepth.UINT8
     )
 

@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Color Analysis Module
 =========================================
@@ -7,6 +14,12 @@ k-means clustering, and background color analysis.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.analysis.analysis.analyzer import ColorAnalyzer

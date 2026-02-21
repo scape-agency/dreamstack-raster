@@ -1,18 +1,31 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Base Detector
+Dreamstack Raster - Base Detector
 =============
 
 Abstract base class for object detection backends.
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from numpy.typing import NDArray
     import numpy as np
+    from numpy.typing import NDArray
 
     from dreamstack.raster.detection.config import DetectionConfig
     from dreamstack.raster.detection.result import ImageDetectionResult
@@ -55,7 +68,7 @@ class BaseDetector(ABC):
         Called lazily on first detection. Subclasses should
         set self._model and self._model_loaded = True.
         """
-        pass
+        ...  # pylint: disable=unnecessary-ellipsis
 
     @abstractmethod
     def detect(self, image: NDArray[np.uint8]) -> ImageDetectionResult:
@@ -71,7 +84,7 @@ class BaseDetector(ABC):
         ImageDetectionResult
             Detection results including bounding boxes, labels, and masks.
         """
-        pass
+        ...  # pylint: disable=unnecessary-ellipsis
 
     @abstractmethod
     def get_class_names(self) -> dict[int, str]:
@@ -82,7 +95,7 @@ class BaseDetector(ABC):
         dict[int, str]
             Mapping from class ID to class name.
         """
-        pass
+        ...  # pylint: disable=unnecessary-ellipsis
 
     def _ensure_model_loaded(self) -> None:
         """Ensure model is loaded before detection."""

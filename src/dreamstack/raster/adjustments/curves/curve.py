@@ -1,5 +1,19 @@
-"""Curve dataclass for curves adjustment."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Curve dataclass for curves adjustment."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -31,7 +45,9 @@ class Curve:
     def add_point(self, input_val: float, output_val: float) -> None:
         """Add a point to the curve."""
         # Remove existing point at same input
-        self.points = [p for p in self.points if abs(p.input - input_val) > 0.5]
+        self.points = [
+            p for p in self.points if abs(p.input - input_val) > 0.5
+        ]
         self.points.append(CurvePoint(input_val, output_val))
         self.points = sorted(self.points, key=lambda p: p.input)
 
@@ -40,7 +56,9 @@ class Curve:
         # Don't remove endpoints
         if input_val <= 1 or input_val >= 254:
             return
-        self.points = [p for p in self.points if abs(p.input - input_val) > 0.5]
+        self.points = [
+            p for p in self.points if abs(p.input - input_val) > 0.5
+        ]
 
     def get_lookup_table(self, size: int = 256) -> np.ndarray:
         """Generate lookup table from curve."""
@@ -52,13 +70,15 @@ class Curve:
 
         if len(x) == 2:
             # Linear interpolation
-            lut = np.interp(np.arange(size), x * (size - 1) / 255, y * (size - 1) / 255)
+            lut = np.interp(
+                np.arange(size), x * (size - 1) / 255, y * (size - 1) / 255
+            )
         else:
             # Cubic spline interpolation
             try:
                 spline = interpolate.CubicSpline(x, y, bc_type="clamped")
                 lut = spline(np.linspace(0, 255, size))
-            except Exception:
+            except ValueError:  # CubicSpline can raise ValueError on bad input
                 # Fallback to linear
                 lut = np.interp(
                     np.arange(size), x * (size - 1) / 255, y * (size - 1) / 255

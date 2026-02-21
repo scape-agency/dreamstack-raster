@@ -6,6 +6,11 @@ Expand selection to include similar adjacent colors.
 
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

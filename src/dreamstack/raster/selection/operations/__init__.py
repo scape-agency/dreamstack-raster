@@ -6,6 +6,11 @@ Operations for modifying and manipulating selections.
 
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.selection.operations.border import border

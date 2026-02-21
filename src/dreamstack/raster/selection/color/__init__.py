@@ -6,6 +6,11 @@ Selection tools based on color and image analysis.
 
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.selection.color.color_range import color_range

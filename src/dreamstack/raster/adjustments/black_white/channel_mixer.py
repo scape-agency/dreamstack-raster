@@ -1,5 +1,19 @@
-"""Channel mixer function."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Channel mixer function."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -47,7 +61,12 @@ def channel_mixer(
     b = data[:, :, 2]
 
     # Calculate mixed channel
-    mixed = r * red / 100 + g * green / 100 + b * blue / 100 + constant * max_val / 100
+    mixed = (
+        r * red / 100
+        + g * green / 100
+        + b * blue / 100
+        + constant * max_val / 100
+    )
     mixed = np.clip(mixed, 0, max_val)
 
     result = data.copy()
@@ -57,11 +76,13 @@ def channel_mixer(
         result[:, :, 1] = mixed
         result[:, :, 2] = mixed
     else:
-        channel_idx = {"red": 0, "green": 1, "blue": 2}.get(output_channel.lower(), 0)
+        channel_idx = {"red": 0, "green": 1, "blue": 2}.get(
+            output_channel.lower(), 0
+        )
         result[:, :, channel_idx] = mixed
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

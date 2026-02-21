@@ -1,5 +1,19 @@
-"""Apply curve function."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Apply curve function."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -11,7 +25,9 @@ from dreamstack.raster.adjustments.curves.curve import Curve
 from dreamstack.raster.adjustments.curves.curves import curves
 
 
-def apply_curve(image: Image, curve: Curve, channel: str | None = None) -> Image:
+def apply_curve(
+    image: Image, curve: Curve, channel: str | None = None
+) -> Image:
     """
     Apply a single curve to image.
 

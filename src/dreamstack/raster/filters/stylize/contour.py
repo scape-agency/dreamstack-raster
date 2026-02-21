@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Contour
 ===========================
@@ -6,6 +13,12 @@ Contour effect (like topographic maps) implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -63,7 +76,7 @@ def contour(image: Image, levels: int = 8, edge_width: int = 1) -> Image:
         result = cv2.erode(result.astype(np.uint8), kernel).astype(gray.dtype)
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result[:, :, np.newaxis].astype(image.data.dtype),
         pixel_format=image.to_grayscale().pixel_format,
         bit_depth=image.bit_depth,

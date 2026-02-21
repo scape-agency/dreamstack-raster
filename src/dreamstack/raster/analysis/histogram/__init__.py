@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Histogram Analysis Module
+Dreamstack Raster - Histogram Analysis Module
 =========================
 
 Histogram computation and analysis functions.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from .histogram import histogram

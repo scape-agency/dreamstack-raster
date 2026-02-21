@@ -1,5 +1,19 @@
-"""Layer stack generation from directories."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Layer stack generation from directories."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import itertools
@@ -25,7 +39,7 @@ def generate_layer_stack_from_dirs(
                 0.png, 1.png, 2.png, ...
             layer1/
                 0.png, 1.png, 2.png, ...
-            ...
+            ...  # pylint: disable=unnecessary-ellipsis
 
     Args:
         base_dir: Root directory containing layer subdirectories.

@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Object Extractor
+Dreamstack Raster - Object Extractor
 ================
 
 Main class for extracting objects from images.
@@ -9,6 +14,12 @@ Combines preprocessing, contour detection, and extraction
 into a configurable, reusable interface.
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dataclasses import dataclass, field

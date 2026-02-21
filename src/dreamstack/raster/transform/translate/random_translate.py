@@ -1,5 +1,10 @@
 """Random translation operation."""
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import numpy as np
@@ -53,4 +58,6 @@ def random_translate(
     tx = np.random.randint(-max_tx, max_tx + 1)
     ty = np.random.randint(-max_ty, max_ty + 1)
 
-    return translate(image, tx, ty, border_mode=border_mode, border_value=border_value)
+    return translate(
+        image, tx, ty, border_mode=border_mode, border_value=border_value
+    )

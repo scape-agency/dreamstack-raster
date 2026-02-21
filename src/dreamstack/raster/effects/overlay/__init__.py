@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Overlay Effects
+Dreamstack Raster - Overlay Effects
 ===============
 
 Color, gradient, pattern, and stroke overlay effects.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.effects.overlay.color_overlay import color_overlay

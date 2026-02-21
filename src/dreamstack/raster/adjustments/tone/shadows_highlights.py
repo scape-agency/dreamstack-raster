@@ -1,5 +1,18 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """Shadows and highlights adjustment function."""
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -73,7 +86,8 @@ def shadows_highlights(
     # Highlight mask
     highlight_width = highlight_tonal_width / 100
     highlight_mask = (
-        np.clip((local_lum - (1 - highlight_width)) / highlight_width, 0, 1) ** 2
+        np.clip((local_lum - (1 - highlight_width)) / highlight_width, 0, 1)
+        ** 2
     )
 
     # Calculate adjustments
@@ -86,7 +100,9 @@ def shadows_highlights(
     # Shadows: brighten or darken
     if shadow_adj > 0:
         # Brighten shadows
-        adjusted_lum = adjusted_lum + shadow_mask * shadow_adj * (1 - adjusted_lum)
+        adjusted_lum = adjusted_lum + shadow_mask * shadow_adj * (
+            1 - adjusted_lum
+        )
     else:
         # Darken shadows
         adjusted_lum = adjusted_lum * (1 + shadow_adj * shadow_mask)
@@ -99,7 +115,9 @@ def shadows_highlights(
         )
     else:
         # Darken highlights
-        adjusted_lum = adjusted_lum + highlight_mask * highlight_adj * adjusted_lum
+        adjusted_lum = (
+            adjusted_lum + highlight_mask * highlight_adj * adjusted_lum
+        )
 
     # Midtone contrast
     if midtone_contrast != 0:
@@ -144,7 +162,7 @@ def shadows_highlights(
     final[:, :, :3] = result * max_val
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=final.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

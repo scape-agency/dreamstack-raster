@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-File and Image Validation Utilities
+Dreamstack Raster - File and Image Validation Utilities
 ===================================
 
 Validation functions for paths, files, and image data.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.io.validation.constants import (

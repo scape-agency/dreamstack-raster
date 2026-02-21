@@ -1,5 +1,19 @@
-"""Create gradient between two colors."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Create gradient between two colors."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import numpy as np
@@ -100,4 +114,6 @@ def create_gradient(
     else:
         raise ValueError(f"Unknown color space: {color_space}")
 
-    return Palette(colors=colors, name=f"{start_color.to_hex()}-{end_color.to_hex()}")
+    return Palette(
+        colors=colors, name=f"{start_color.to_hex()}-{end_color.to_hex()}"
+    )

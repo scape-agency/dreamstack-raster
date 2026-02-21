@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Composite on Background
+Dreamstack Raster - Composite on Background
 =======================
 
 Composite RGBA images onto solid color backgrounds.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -20,7 +33,8 @@ def composite_on_background(
     rgba_image: NDArray[np.uint8],
     background_color: tuple[int, int, int] = (255, 255, 255),
 ) -> NDArray[np.uint8]:
-    """Composite an RGBA image onto a solid color background.
+    """
+    Composite an RGBA image onto a solid color background.
 
     Blend the RGBA image with the alpha channel onto a solid background.
 

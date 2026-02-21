@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Canvas
 ==========================
@@ -6,6 +13,12 @@ Canvas for rendering and compositing layers.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -186,7 +199,9 @@ class Canvas:
 
         # Offset all layers
         for layer in self._layers.flatten_hierarchy():
-            layer.offset = Point(layer.offset.x + offset[0], layer.offset.y + offset[1])
+            layer.offset = Point(
+                layer.offset.x + offset[0], layer.offset.y + offset[1]
+            )
 
         self._render_dirty = True
 
@@ -202,7 +217,9 @@ class Canvas:
 
         # Offset layers
         for layer in self._layers.flatten_hierarchy():
-            layer.offset = Point(layer.offset.x - bounds.x, layer.offset.y - bounds.y)
+            layer.offset = Point(
+                layer.offset.x - bounds.x, layer.offset.y - bounds.y
+            )
 
         self._render_dirty = True
 
@@ -430,7 +447,9 @@ class Canvas:
             New Canvas
         """
         if background_color:
-            background = CanvasBackground(type="color", color1=background_color)
+            background = CanvasBackground(
+                type="color", color1=background_color
+            )
         else:
             background = CanvasBackground(type="checker")
 

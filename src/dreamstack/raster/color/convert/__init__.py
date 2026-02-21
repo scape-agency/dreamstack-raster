@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Color Space Conversions
 ===========================================
@@ -6,6 +13,12 @@ High-performance color space conversion functions.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.color.convert.cmyk_to_rgb import cmyk_to_rgb

@@ -1,5 +1,19 @@
-"""ICC Profile class."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - ICC Profile class."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import struct
@@ -89,9 +103,15 @@ class ICCProfile:
             if offset + 12 > len(self.data):
                 break
 
-            sig = self.data[offset : offset + 4].decode("ascii", errors="ignore")
-            tag_offset = struct.unpack(">I", self.data[offset + 4 : offset + 8])[0]
-            tag_size = struct.unpack(">I", self.data[offset + 8 : offset + 12])[0]
+            sig = self.data[offset : offset + 4].decode(
+                "ascii", errors="ignore"
+            )
+            tag_offset = struct.unpack(
+                ">I", self.data[offset + 4 : offset + 8]
+            )[0]
+            tag_size = struct.unpack(
+                ">I", self.data[offset + 8 : offset + 12]
+            )[0]
 
             if sig == tag_name or sig == tag_name.upper():
                 if tag_offset + tag_size <= len(self.data):
@@ -128,7 +148,9 @@ class ICCProfile:
             # ASCII string at offset 8, preceded by count
             count = struct.unpack(">I", tag_data[8:12])[0]
             if count > 0 and len(tag_data) >= 12 + count:
-                return tag_data[12 : 12 + count - 1].decode("ascii", errors="ignore")
+                return tag_data[12 : 12 + count - 1].decode(
+                    "ascii", errors="ignore"
+                )
 
         elif type_sig == "text":  # Simple text
             return tag_data[8:].decode("ascii", errors="ignore").strip("\x00")
@@ -155,7 +177,7 @@ class ICCProfile:
             if "srgb" in name.lower():
                 try:
                     return cls.from_file(path)
-                except Exception:
+                except (OSError, ValueError):  # File read/parse errors
                     continue
 
         # Generate minimal sRGB profile

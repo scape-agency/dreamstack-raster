@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Gaussian Blur
 =================================
@@ -6,6 +13,12 @@ Gaussian blur filter implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -45,12 +58,14 @@ def gaussian_blur(
     if data.ndim == 3:
         result = np.zeros_like(data)
         for i in range(data.shape[2]):
-            result[:, :, i] = cv2.GaussianBlur(data[:, :, i], (ksize, ksize), sigma)
+            result[:, :, i] = cv2.GaussianBlur(
+                data[:, :, i], (ksize, ksize), sigma
+            )
     else:
         result = cv2.GaussianBlur(data, (ksize, ksize), sigma)
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

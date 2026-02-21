@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-optimize_for_web
+Dreamstack Raster - optimize_for_web
 ================
 
 Optimize image for web delivery.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Literal
@@ -59,4 +72,4 @@ def optimize_for_web(
         # pylint: disable=line-too-long
         image = cv2.resize(image, (new_w, new_h), interpolation=cv2.INTER_LANCZOS4)  # type: ignore[assignment]
 
-    return compress_to_size(image, max_size_kb, format=output_format)
+    return compress_to_size(image, max_size_kb, output_format=output_format)

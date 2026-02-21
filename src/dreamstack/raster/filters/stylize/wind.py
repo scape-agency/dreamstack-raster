@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Wind
 ========================
@@ -6,6 +13,12 @@ Wind effect implementation.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -69,7 +82,9 @@ def wind(
                 elif mode == "blast":
                     streak_length = strength
                 else:  # stagger
-                    streak_length = np.random.choice([1, strength // 2, strength])
+                    streak_length = np.random.choice(
+                        [1, strength // 2, strength]
+                    )
 
                 if direction == "right":
                     for i in range(streak_length):
@@ -79,11 +94,13 @@ def wind(
                             alpha = 1 - i / streak_length
                             if data.ndim == 3:
                                 result[y, nx] = (
-                                    alpha * data[y, x] + (1 - alpha) * result[y, nx]
+                                    alpha * data[y, x]
+                                    + (1 - alpha) * result[y, nx]
                                 )
                             else:
                                 result[y, nx] = (
-                                    alpha * data[y, x] + (1 - alpha) * result[y, nx]
+                                    alpha * data[y, x]
+                                    + (1 - alpha) * result[y, nx]
                                 )
                 else:  # left
                     for i in range(streak_length):
@@ -92,15 +109,17 @@ def wind(
                             alpha = 1 - i / streak_length
                             if data.ndim == 3:
                                 result[y, nx] = (
-                                    alpha * data[y, x] + (1 - alpha) * result[y, nx]
+                                    alpha * data[y, x]
+                                    + (1 - alpha) * result[y, nx]
                                 )
                             else:
                                 result[y, nx] = (
-                                    alpha * data[y, x] + (1 - alpha) * result[y, nx]
+                                    alpha * data[y, x]
+                                    + (1 - alpha) * result[y, nx]
                                 )
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

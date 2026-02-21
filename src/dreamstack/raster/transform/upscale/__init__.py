@@ -7,6 +7,11 @@ Supports various super-resolution models.
 
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.transform.upscale.operations import (

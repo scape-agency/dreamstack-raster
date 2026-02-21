@@ -6,6 +6,11 @@ Image resizing, scaling, and dimension manipulation utilities.
 
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from .downscale import downscale

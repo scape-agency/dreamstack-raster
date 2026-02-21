@@ -1,5 +1,12 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Layer Stacking Operations
+Dreamstack Raster - Layer Stacking Operations
 =========================
 
 Multi-layer image compositing and combination utilities.

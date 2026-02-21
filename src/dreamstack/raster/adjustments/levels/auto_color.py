@@ -1,5 +1,19 @@
-"""Auto color adjustment function."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Auto color adjustment function."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -46,7 +60,9 @@ def auto_color(
 
         sorted_vals = np.sort(channel)
         in_black = sorted_vals[clip_count] if clip_count < total else 0
-        in_white = sorted_vals[-clip_count - 1] if clip_count < total else max_val
+        in_white = (
+            sorted_vals[-clip_count - 1] if clip_count < total else max_val
+        )
 
         if in_white > in_black:
             result[:, :, i] = (
@@ -65,7 +81,7 @@ def auto_color(
     result = np.clip(result, 0, max_val)
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

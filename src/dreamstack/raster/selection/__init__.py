@@ -7,6 +7,11 @@ magic wand, color range, and selection operations.
 
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.selection.color import (

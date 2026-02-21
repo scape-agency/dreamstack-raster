@@ -1,5 +1,19 @@
-"""Replace color function."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Replace color function."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -66,14 +80,16 @@ def replace_color(
 
         if saturation_shift > 0:
             hsl[:, :, 1] = (
-                hsl[:, :, 1] + (1 - hsl[:, :, 1]) * saturation_shift / 100 * mask
+                hsl[:, :, 1]
+                + (1 - hsl[:, :, 1]) * saturation_shift / 100 * mask
             )
         else:
             hsl[:, :, 1] = hsl[:, :, 1] * (1 + saturation_shift / 100 * mask)
 
         if lightness_shift > 0:
             hsl[:, :, 2] = (
-                hsl[:, :, 2] + (1 - hsl[:, :, 2]) * lightness_shift / 100 * mask
+                hsl[:, :, 2]
+                + (1 - hsl[:, :, 2]) * lightness_shift / 100 * mask
             )
         else:
             hsl[:, :, 2] = hsl[:, :, 2] * (1 + lightness_shift / 100 * mask)
@@ -92,7 +108,7 @@ def replace_color(
     result = np.clip(result, 0, max_val)
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

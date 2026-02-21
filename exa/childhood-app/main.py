@@ -36,6 +36,12 @@ pip install ultralytics
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import argparse

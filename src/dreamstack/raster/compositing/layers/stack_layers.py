@@ -1,5 +1,19 @@
-"""Layer stacking operations."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Layer stacking operations."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from collections.abc import Sequence
@@ -61,7 +75,9 @@ def stack_layers(
 
         # Resize if needed
         if resize_to_base and overlay.shape[:2] != (h, w):
-            overlay = cv2.resize(overlay, (w, h), interpolation=cv2.INTER_LINEAR)
+            overlay = cv2.resize(
+                overlay, (w, h), interpolation=cv2.INTER_LINEAR
+            )
 
         overlay = overlay.astype(np.float32)
 
@@ -75,7 +91,8 @@ def stack_layers(
         safe_alpha = np.where(out_alpha > 0, out_alpha, 1)
 
         rgb = (
-            overlay[:, :, :3] * src_alpha + base[:, :, :3] * dst_alpha * (1 - src_alpha)
+            overlay[:, :, :3] * src_alpha
+            + base[:, :, :3] * dst_alpha * (1 - src_alpha)
         ) / safe_alpha
 
         base[:, :, :3] = rgb

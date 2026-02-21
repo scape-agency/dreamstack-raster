@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Layer Stacking Operations
+Dreamstack Raster - Layer Stacking Operations
 =========================
 
 Multi-layer image compositing and combination utilities.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import itertools
@@ -179,7 +192,7 @@ def generate_layer_stack_from_dirs(
                 0.png, 1.png, 2.png, ...
             layer1/
                 0.png, 1.png, 2.png, ...
-            ...
+            ...  # pylint: disable=unnecessary-ellipsis
 
     Args:
         base_dir: Root directory containing layer subdirectories.

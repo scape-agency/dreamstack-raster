@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Layer
 =========================
@@ -6,6 +13,12 @@ Standard raster layer containing pixel data.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -141,9 +154,11 @@ class Layer(LayerBase):
             visible=self._visible,
             locked=self._locked,
         )
-        new_layer._offset = self._offset
+        new_layer._offset = self._offset  # pylint: disable=protected-access
         if self._mask is not None:
-            new_layer._mask = self._mask.copy()
+            new_layer._mask = (
+                self._mask.copy()
+            )  # pylint: disable=protected-access
         return new_layer
 
     def get_pixel(self, x: int, y: int) -> NDArray:

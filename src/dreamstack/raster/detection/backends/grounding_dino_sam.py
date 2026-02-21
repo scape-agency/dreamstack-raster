@@ -1,5 +1,12 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Grounding DINO + SAM Backend
+Dreamstack Raster - Grounding DINO + SAM Backend
 ============================
 
 Open-vocabulary object detection using Grounding DINO
@@ -8,6 +15,12 @@ with precise segmentation from Segment Anything (SAM).
 This backend allows text-prompted detection of arbitrary objects.
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import logging

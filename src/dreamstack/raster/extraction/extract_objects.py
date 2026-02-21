@@ -1,10 +1,23 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Extract Objects
+Dreamstack Raster - Extract Objects
 ===============
 
 Function for extracting all objects from an image.
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import numpy as np
@@ -84,7 +97,9 @@ def extract_objects(
     # Extract each object
     extractions = []
     for contour in filtered:
-        obj = extract_object(image, contour, margin=margin, min_dimension=min_dimension)
+        obj = extract_object(
+            image, contour, margin=margin, min_dimension=min_dimension
+        )
         if obj is not None:
             extractions.append((obj, contour))
 

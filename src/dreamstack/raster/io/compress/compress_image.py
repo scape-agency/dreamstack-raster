@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-compress_image
+Dreamstack Raster - compress_image
 ==============
 
 Compress image at a specific quality level.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from io import BytesIO
@@ -48,7 +61,10 @@ def compress_image(
 
     # Convert BGR to RGB
     if image.ndim == 3 and image.shape[2] == 3:
-        rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        rgb = cv2.cvtColor(
+            image,
+            cv2.COLOR_BGR2RGB,
+        )
     else:
         rgb = image
 
@@ -57,7 +73,11 @@ def compress_image(
 
     if output_format == "jpeg":
         if pil_image.mode == "RGBA":
-            bg = Image.new("RGB", pil_image.size, (255, 255, 255))
+            bg = Image.new(
+                "RGB",
+                pil_image.size,
+                (255, 255, 255),
+            )
             bg.paste(pil_image, mask=pil_image.split()[3])
             pil_image = bg
         pil_image.save(buffer, format="JPEG", quality=quality)

@@ -1,5 +1,10 @@
 """Resize to width operation."""
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Literal
@@ -37,4 +42,6 @@ def resize_to_width(
     scale = target_width / w
     target_height = int(h * scale)
 
-    return resize(image, (target_width, target_height), interpolation=interpolation)
+    return resize(
+        image, (target_width, target_height), interpolation=interpolation
+    )

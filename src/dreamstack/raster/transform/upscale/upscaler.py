@@ -6,6 +6,11 @@ AI-based image upscaling using PyTorch models.
 
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from abc import ABC, abstractmethod

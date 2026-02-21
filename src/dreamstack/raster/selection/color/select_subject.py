@@ -6,6 +6,11 @@ AI-powered subject selection using saliency detection.
 
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

@@ -6,6 +6,11 @@ Invert the selection mask.
 
 """
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dreamstack.raster.selection.shapes.selection import Selection

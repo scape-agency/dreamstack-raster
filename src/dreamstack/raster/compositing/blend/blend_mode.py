@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Blend Mode Enum
+Dreamstack Raster - Blend Mode Enum
 ===============
 
 Defines available blend modes for layer compositing.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from enum import Enum, auto

@@ -1,5 +1,18 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """Selective color adjustment function."""
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -65,7 +78,9 @@ def selective_color(
 
     if method == "relative":
         # Relative: percentage of current color
-        result[:, :, 0] -= c_adj * mask * (1 - normalized[:, :, 0])  # Cyan reduces Red
+        result[:, :, 0] -= (
+            c_adj * mask * (1 - normalized[:, :, 0])
+        )  # Cyan reduces Red
         result[:, :, 1] -= (
             m_adj * mask * (1 - normalized[:, :, 1])
         )  # Magenta reduces Green
@@ -92,7 +107,7 @@ def selective_color(
     final[:, :, :3] = result * max_val
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=final.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,

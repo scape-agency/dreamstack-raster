@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - Pattern Generators
 ======================================
@@ -6,6 +13,12 @@ Generate procedural patterns: checkers, solid colors, noise, gradients.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -37,7 +50,12 @@ class PatternConfig:
 def constant(
     width: int,
     height: int,
-    color: tuple[int, int, int] | tuple[int, int, int, int] = (255, 255, 255, 255),
+    color: tuple[int, int, int] | tuple[int, int, int, int] = (
+        255,
+        255,
+        255,
+        255,
+    ),
     *,
     channels: int = 4,
 ) -> NDArray[np.uint8]:
@@ -72,7 +90,12 @@ def constant(
 def solid(
     width: int,
     height: int,
-    color: tuple[int, int, int] | tuple[int, int, int, int] = (255, 255, 255, 255),
+    color: tuple[int, int, int] | tuple[int, int, int, int] = (
+        255,
+        255,
+        255,
+        255,
+    ),
 ) -> NDArray[np.uint8]:
     """Alias for constant(). Create a solid color image.
 
@@ -252,7 +275,9 @@ def noise(
     if seed is not None:
         np.random.seed(seed)
 
-    return np.random.randint(low, high + 1, (height, width, channels), dtype=np.uint8)
+    return np.random.randint(
+        low, high + 1, (height, width, channels), dtype=np.uint8
+    )
 
 
 def gaussian_noise(
@@ -330,7 +355,7 @@ def perlin_noise(
         gh = int(np.ceil(h / freq)) + 2
 
         # Random gradients at grid points
-        grid = np.random.rand(gh, gw).astype(np.float32)
+        noise_grid = np.random.rand(gh, gw).astype(np.float32)
 
         # Interpolate
         result = np.zeros((h, w), dtype=np.float32)
@@ -347,8 +372,8 @@ def perlin_noise(
                 fx, fy = gx - x0, gy - y0
 
                 # Bilinear interpolation
-                top = interpolate(grid[y0, x0], grid[y0, x1], fx)
-                bot = interpolate(grid[y1, x0], grid[y1, x1], fx)
+                top = interpolate(noise_grid[y0, x0], noise_grid[y0, x1], fx)
+                bot = interpolate(noise_grid[y1, x0], noise_grid[y1, x1], fx)
                 result[y, x] = interpolate(top, bot, fy)
 
         return result

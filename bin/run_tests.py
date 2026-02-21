@@ -6,7 +6,7 @@
 # =============================================================================
 
 """
-Test Runner
+Dreamstack Raster - Test Runner
 ===========
 
 
@@ -24,7 +24,6 @@ from __future__ import annotations
 import os
 import sys
 from pathlib import Path
-from typing import Any, Callable, Union
 
 # Import | Libraries
 
@@ -58,7 +57,7 @@ def main() -> int:
 
     try:
         import pytest  # type: ignore
-    except Exception as e:
+    except ImportError:
         print(
             "pytest is not installed in the current environment.",
             file=sys.stderr,

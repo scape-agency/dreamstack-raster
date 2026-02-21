@@ -1,5 +1,10 @@
 """Fill operation."""
 
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Literal
@@ -50,4 +55,6 @@ def fill(
     x_offset = (scaled_w - target_w) // 2
     y_offset = (scaled_h - target_h) // 2
 
-    return scaled[y_offset : y_offset + target_h, x_offset : x_offset + target_w]
+    return scaled[
+        y_offset : y_offset + target_h, x_offset : x_offset + target_w
+    ]

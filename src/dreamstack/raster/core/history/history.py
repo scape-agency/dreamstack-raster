@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
 Dreamstack Raster - History
 ===========================
@@ -6,6 +13,12 @@ Undo/redo history manager.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -47,6 +60,7 @@ class History:
         self._current_index = -1
         self._saved_index = -1
         self._action_group: list[HistoryAction] = []
+        self._group_name: str = ""
         self._grouping = False
         self._disabled = False
         self._on_change: list[Callable[[], None]] = []

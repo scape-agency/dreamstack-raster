@@ -1,5 +1,19 @@
-"""RGB to XYZ conversion."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - RGB to XYZ conversion."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import numpy as np
@@ -32,7 +46,9 @@ def rgb_to_xyz(rgb: np.ndarray, illuminant: str = "D65") -> np.ndarray:
         rgb = rgb[..., :3]
 
     # Linearize sRGB
-    linear = np.where(rgb <= 0.04045, rgb / 12.92, np.power((rgb + 0.055) / 1.055, 2.4))
+    linear = np.where(
+        rgb <= 0.04045, rgb / 12.92, np.power((rgb + 0.055) / 1.055, 2.4)
+    )
 
     # sRGB to XYZ matrix (D65)
     if illuminant == "D65":

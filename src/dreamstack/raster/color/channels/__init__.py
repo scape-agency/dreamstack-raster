@@ -1,5 +1,12 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Color Channel Operations
+Dreamstack Raster - Color Channel Operations
 ========================
 
 Operations for splitting, extracting, and merging color channels

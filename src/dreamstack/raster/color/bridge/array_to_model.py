@@ -1,19 +1,30 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Array to Model Conversion
+Dreamstack Raster - Array to Model Conversion
 =========================
 
 Convert between numpy arrays and dreamstack.color models.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import numpy as np
 
 # Import dreamstack.color models
-from dreamstack.color import (
-    RGBColorModel,
-)
+from dreamstack.color import RGBColorModel
 
 
 def array_to_rgb(
@@ -74,7 +85,9 @@ def rgb_to_array(
         return np.array([r, g, b], dtype=np.float64)
     else:
         if include_alpha:
-            return np.array([rgb.r, rgb.g, rgb.b, int(rgb.a * 255)], dtype=np.uint8)
+            return np.array(
+                [rgb.r, rgb.g, rgb.b, int(rgb.a * 255)], dtype=np.uint8
+            )
         return np.array([rgb.r, rgb.g, rgb.b], dtype=np.uint8)
 
 
@@ -99,7 +112,7 @@ def arrays_to_rgb_list(
 
     # Flatten to 2D if 3D image array
     if array.ndim == 3:
-        h, w, c = array.shape
+        _h, _w, c = array.shape  # h, w unused; only need channel count
         array = array.reshape(-1, c)
     elif array.ndim != 2:
         raise ValueError(f"Expected 2D or 3D array, got {array.ndim}D")

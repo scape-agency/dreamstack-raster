@@ -1,11 +1,24 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-batch_process
+Dreamstack Raster - batch_process
 =============
 
 Process multiple images with a given function.
 
 """
 
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 import logging
@@ -34,7 +47,8 @@ def batch_process(
     output_format: str = "png",
     output_suffix: str = "",
 ) -> BatchResult:
-    """Process multiple images with a given function.
+    """
+    Process multiple images with a given function.
 
     Applies a processing function to all images in a directory,
     saving results to an output directory.
@@ -112,12 +126,14 @@ def batch_process(
 
             return out_path, None
 
-        except Exception as e:
+        except (OSError, Exception) as e:  # cv2.error, etc.
             return None, str(e)
 
     # Process in parallel
     with ThreadPoolExecutor(max_workers=config.max_workers) as executor:
-        futures = {executor.submit(process_single, path): path for path in images}
+        futures = {
+            executor.submit(process_single, path): path for path in images
+        }
 
         for future in as_completed(futures):
             path = futures[future]

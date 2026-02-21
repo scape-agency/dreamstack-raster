@@ -1,5 +1,19 @@
-"""Threshold function."""
+# -*- coding: utf-8 -*-
 
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
+"""
+Dreamstack Raster - Threshold function."""
+
+
+# =============================================================================
+# Imports
+# =============================================================================
+
+# Import | Future
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -31,7 +45,9 @@ def threshold(image: Image, level: int = 128) -> Image:
 
     if data.ndim == 3 and data.shape[2] >= 3:
         luminance = (
-            0.299 * data[:, :, 0] + 0.587 * data[:, :, 1] + 0.114 * data[:, :, 2]
+            0.299 * data[:, :, 0]
+            + 0.587 * data[:, :, 1]
+            + 0.114 * data[:, :, 2]
         )
     else:
         luminance = data[:, :, 0] if data.ndim == 3 else data
@@ -47,7 +63,7 @@ def threshold(image: Image, level: int = 128) -> Image:
         result = binary
 
     result_image = image.copy()
-    result_image._pixel_data = PixelData(
+    result_image._pixel_data = PixelData(  # pylint: disable=protected-access
         data=result.astype(image.data.dtype),
         pixel_format=image.pixel_format,
         bit_depth=image.bit_depth,
