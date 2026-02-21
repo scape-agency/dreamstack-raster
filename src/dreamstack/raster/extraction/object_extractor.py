@@ -125,6 +125,7 @@ class ObjectExtractor:
         """
         # Preprocess
         processed = self.preprocessor.preprocess(image)
+        assert isinstance(processed, dict), "Expected dict from preprocess()"
         binary = processed["threshold"]
 
         # Detect contours

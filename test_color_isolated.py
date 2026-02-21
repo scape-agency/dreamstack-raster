@@ -141,8 +141,8 @@ import numpy as np
 
 try:
     rgb = np.array([1.0, 0.0, 0.0])  # Pure red
-    hsv = rgb_to_hsv(rgb)
-    rgb_back = hsv_to_rgb(hsv)
+    hsv = rgb_to_hsv(rgb)  # type: ignore[possibly-undefined]
+    rgb_back = hsv_to_rgb(hsv)  # type: ignore[possibly-undefined]
     assert np.allclose(
         rgb, rgb_back, atol=0.01
     ), "RGB->HSV->RGB conversion failed"
@@ -151,21 +151,21 @@ except Exception as e:
     print(f"rgb_to_hsv / hsv_to_rgb: FAILED - {e}")
 
 try:
-    c = Color(255, 0, 0)
+    c = Color(255, 0, 0)  # type: ignore[possibly-undefined]
     assert c.to_hex() == "#ff0000", "Color hex conversion failed"
     print("Color class: OK")
 except Exception as e:
     print(f"Color class: FAILED - {e}")
 
 try:
-    p = Palette.from_hex_list(["#ff0000", "#00ff00", "#0000ff"], name="RGB")
+    p = Palette.from_hex_list(["#ff0000", "#00ff00", "#0000ff"], name="RGB")  # type: ignore[possibly-undefined]
     assert len(p) == 3, "Palette creation failed"
     print("Palette class: OK")
 except Exception as e:
     print(f"Palette class: FAILED - {e}")
 
 try:
-    cs = get_color_space("srgb")
+    cs = get_color_space("srgb")  # type: ignore[possibly-undefined]
     assert cs is not None, "get_color_space failed"
     assert cs.name == "sRGB", "Wrong color space returned"
     print("get_color_space: OK")

@@ -41,7 +41,7 @@ def extract_channel(
     >>> blue = extract_channel(img, 2)  # By index
     """
     if isinstance(channel, str):
-        channel = channel.lower()
+        channel_lower = channel.lower()
         channel_map_bgr = {
             "blue": 0,
             "b": 0,
@@ -67,9 +67,9 @@ def extract_channel(
             if color_format.upper() in ("BGR", "BGRA")
             else channel_map_rgb
         )
-        if channel not in channel_map:
+        if channel_lower not in channel_map:
             raise ValueError(f"Unknown channel name: {channel}")
-        channel_idx = channel_map[channel]
+        channel_idx = channel_map[channel_lower]
     else:
         channel_idx = channel
 

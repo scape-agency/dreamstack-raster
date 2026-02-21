@@ -80,7 +80,17 @@ def clamp_normalized(
         >>> # Clamp HDR values to displayable range
         >>> clamped = clamp_normalized(hdr_image, 0.0, 1.0)
     """
-    return clamp(image, min_value, max_value, clamp_alpha=clamp_alpha)
+    result = image.copy()
+
+    # Handle RGBA images
+    if len(result.shape) == 3 and result.shape[2] == 4 and not clamp_alpha:
+        # Clamp RGB only, preserve alpha
+        result[:, :, :3] = np.clip(result[:, :, :3], min_value, max_value)
+    else:
+        # Clamp all channels
+        result = np.clip(result, min_value, max_value)
+
+    return result.astype(np.float32)
 
 
 def gamma(
@@ -212,7 +222,11 @@ def auto_gamma(
     # Calculate current mean (normalized)
     if len(image.shape) == 3:
         # Use luminance for color images
-        gray = 0.299 * image[:, :, 0] + 0.587 * image[:, :, 1] + 0.114 * image[:, :, 2]
+        gray = (
+            0.299 * image[:, :, 0]
+            + 0.587 * image[:, :, 1]
+            + 0.114 * image[:, :, 2]
+        )
         current_mean = np.mean(gray) / 255.0
     else:
         current_mean = np.mean(image) / 255.0

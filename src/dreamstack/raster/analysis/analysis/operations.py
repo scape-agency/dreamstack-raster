@@ -53,7 +53,7 @@ def get_dominant_color(
     )
 
     # Run K-means
-    _, labels, centers = cv2.kmeans(
+    _, labels, centers = cv2.kmeans(  # type: ignore[call-overload]
         data, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS
     )
 
@@ -109,7 +109,7 @@ def get_dominant_colors(
     )
 
     # Run K-means
-    _, labels, centers = cv2.kmeans(
+    _, labels, centers = cv2.kmeans(  # type: ignore[call-overload]
         data, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS
     )
 
@@ -226,7 +226,9 @@ def find_background_color(
             unique, counts = np.unique(all_edges, axis=0, return_counts=True)
             return unique[np.argmax(counts)].astype(np.int32)
         else:  # edge_dominant
-            return get_dominant_color(all_edges.reshape(1, -1, 3).astype(np.uint8))
+            return get_dominant_color(
+                all_edges.reshape(1, -1, 3).astype(np.uint8)
+            )
 
 
 def adjust_background_color(

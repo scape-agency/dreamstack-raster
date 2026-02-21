@@ -58,14 +58,14 @@ def composite(
 
     # Ensure RGBA
     if base.ndim == 2:
-        result = cv2.cvtColor(base, cv2.COLOR_GRAY2BGRA)
+        result: NDArray[np.uint8] = cv2.cvtColor(base, cv2.COLOR_GRAY2BGRA)  # type: ignore[assignment]
     elif base.shape[2] == 3:
-        result = cv2.cvtColor(base, cv2.COLOR_BGR2BGRA)
+        result = cv2.cvtColor(base, cv2.COLOR_BGR2BGRA)  # type: ignore[assignment]
     else:
         result = base.copy()
 
     if overlay.ndim == 2:
-        over = cv2.cvtColor(overlay, cv2.COLOR_GRAY2BGRA)
+        over: NDArray[np.uint8] = cv2.cvtColor(overlay, cv2.COLOR_GRAY2BGRA)  # type: ignore[assignment]
     elif overlay.shape[2] == 3:
         over = cv2.cvtColor(overlay, cv2.COLOR_BGR2BGRA)
     else:
@@ -92,8 +92,8 @@ def composite(
 
     # Apply blend mode on RGB
     blended_rgb = blend(
-        base_region[:, :, :3],
-        over_region[:, :, :3],
+        base_region[:, :, :3].copy(),  # type: ignore[arg-type]
+        over_region[:, :, :3].copy(),  # type: ignore[arg-type]
         mode,
         opacity=1.0,  # We'll handle opacity with alpha
     )
@@ -114,6 +114,8 @@ def composite(
     ) / safe_alpha
 
     result[y1:y2, x1:x2, :3] = np.clip(out_rgb, 0, 255).astype(np.uint8)
-    result[y1:y2, x1:x2, 3:4] = np.clip(out_alpha * 255, 0, 255).astype(np.uint8)
+    result[y1:y2, x1:x2, 3:4] = np.clip(out_alpha * 255, 0, 255).astype(
+        np.uint8
+    )
 
     return result

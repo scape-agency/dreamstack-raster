@@ -24,7 +24,7 @@ except ImportError:
     pkg_resources = None
 
 # Import | Libraries
-import dreamstack
+from dreamstack.raster import __version__ as raster_version
 
 # Import | Local Modules
 
@@ -37,8 +37,10 @@ if __name__ == "__main__":
     print()
     print("palet is set!")
     print()
-    print(f"tite: {dreamstack.__version__}")
-    print(f"Python: {platform.python_version()} ({platform.python_implementation()})")
+    print(f"title: {raster_version}")
+    print(
+        f"Python: {platform.python_version()} ({platform.python_implementation()})"
+    )
 
     if pkg_resources:
         working_set = pkg_resources.working_set

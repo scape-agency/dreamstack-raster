@@ -56,9 +56,18 @@ def match_template(
 
     # Perform template matching
     if mask is not None:
-        match_map = cv2.matchTemplate(image, template, cv_method, mask=mask)
+        match_map = cv2.matchTemplate(
+            image,
+            template,
+            cv_method,
+            mask=mask,
+        )
     else:
-        match_map = cv2.matchTemplate(image, template, cv_method)
+        match_map = cv2.matchTemplate(
+            image,
+            template,
+            cv_method,
+        )
 
     # Find best match
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(match_map)
@@ -73,11 +82,12 @@ def match_template(
 
     # Calculate bounding box and center
     h, w = template.shape[:2]
-    bbox = (location[0], location[1], w, h)
-    center = (location[0] + w // 2, location[1] + h // 2)
+    loc: tuple[int, int] = (int(location[0]), int(location[1]))
+    bbox = (loc[0], loc[1], w, h)
+    center = (loc[0] + w // 2, loc[1] + h // 2)
 
     return MatchResult(
-        location=location,
+        location=loc,
         score=score,
         bounding_box=bbox,
         center=center,

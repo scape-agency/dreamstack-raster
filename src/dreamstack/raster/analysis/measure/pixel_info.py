@@ -43,10 +43,20 @@ def pixel_info(
     # Convert to HSV
     pixel = np.array([[bgr]], dtype=np.uint8)
     hsv_pixel = cv2.cvtColor(pixel, cv2.COLOR_BGR2HSV)
-    hsv = tuple(int(v) for v in hsv_pixel[0, 0])
+    hsv_px = hsv_pixel[0, 0]
+    hsv: tuple[int, int, int] = (
+        int(hsv_px[0]),
+        int(hsv_px[1]),
+        int(hsv_px[2]),
+    )
 
     # Convert to LAB
     lab_pixel = cv2.cvtColor(pixel, cv2.COLOR_BGR2LAB)
-    lab = tuple(int(v) for v in lab_pixel[0, 0])
+    lab_px = lab_pixel[0, 0]
+    lab: tuple[int, int, int] = (
+        int(lab_px[0]),
+        int(lab_px[1]),
+        int(lab_px[2]),
+    )
 
     return PixelInfo(x=x, y=y, rgb=rgb, hsv=hsv, lab=lab)

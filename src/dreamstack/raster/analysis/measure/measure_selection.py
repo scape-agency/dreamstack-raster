@@ -16,7 +16,7 @@ from numpy.typing import NDArray
 def measure_selection(
     mask: NDArray[np.uint8],
     image: NDArray[np.uint8] | None = None,
-) -> dict[str, int | float | tuple[int, int]]:
+) -> dict[str, int | float | tuple[int, int] | tuple[int, int, int, int]]:
     """Measure properties of a selection.
 
     Parameters
@@ -50,7 +50,9 @@ def measure_selection(
     cy, cx = coords.mean(axis=0)
 
     # Find contours for perimeter
-    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours, _ = cv2.findContours(
+        mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
+    )
     perimeter = sum(cv2.arcLength(c, True) for c in contours)
 
     result = {

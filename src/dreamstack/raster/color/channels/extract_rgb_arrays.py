@@ -52,4 +52,4 @@ def extract_rgb_arrays(
         green_img = cv2.merge([zeros, g, zeros])
         blue_img = cv2.merge([zeros, zeros, b])
 
-    return red_img, green_img, blue_img
+    return red_img, green_img, blue_img  # type: ignore[return-value]

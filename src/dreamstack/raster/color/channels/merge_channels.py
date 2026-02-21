@@ -40,8 +40,8 @@ def merge_channels(
     if color_format.upper() in ("BGR", "BGRA"):
         # Convert from RGB order to BGR
         if len(channels) == 3:
-            return cv2.merge([channels[2], channels[1], channels[0]])
+            return cv2.merge([channels[2], channels[1], channels[0]])  # type: ignore[return-value]
         elif len(channels) >= 4:
-            return cv2.merge([channels[2], channels[1], channels[0], channels[3]])
+            return cv2.merge([channels[2], channels[1], channels[0], channels[3]])  # type: ignore[return-value]
 
-    return cv2.merge(list(channels))
+    return cv2.merge(list(channels))  # type: ignore[return-value]

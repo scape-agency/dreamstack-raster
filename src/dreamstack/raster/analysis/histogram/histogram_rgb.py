@@ -34,7 +34,19 @@ def histogram_rgb(
     tuple
         (blue_hist, green_hist, red_hist)
     """
-    b_hist = cv2.calcHist([image], [0], mask, [bins], [0, 256]).flatten()
-    g_hist = cv2.calcHist([image], [1], mask, [bins], [0, 256]).flatten()
-    r_hist = cv2.calcHist([image], [2], mask, [bins], [0, 256]).flatten()
+    b_hist = (
+        cv2.calcHist([image], [0], mask, [bins], [0, 256])
+        .flatten()
+        .astype(np.float64)
+    )
+    g_hist = (
+        cv2.calcHist([image], [1], mask, [bins], [0, 256])
+        .flatten()
+        .astype(np.float64)
+    )
+    r_hist = (
+        cv2.calcHist([image], [2], mask, [bins], [0, 256])
+        .flatten()
+        .astype(np.float64)
+    )
     return (b_hist, g_hist, r_hist)

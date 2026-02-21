@@ -40,4 +40,5 @@ def sample_color(
         val = int(image[y, x])
         return (val, val, val)
 
-    return tuple(int(v) for v in image[y, x])
+    px = image[y, x]
+    return (int(px[0]), int(px[1]), int(px[2]))

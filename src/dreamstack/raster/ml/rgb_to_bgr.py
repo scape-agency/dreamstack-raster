@@ -20,4 +20,4 @@ def rgb_to_bgr(image: NDArray[np.uint8]) -> NDArray[np.uint8]:
     NDArray[np.uint8]
         BGR image (OpenCV default).
     """
-    return cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+    return cv2.cvtColor(image, cv2.COLOR_RGB2BGR)  # type: ignore[return-value]

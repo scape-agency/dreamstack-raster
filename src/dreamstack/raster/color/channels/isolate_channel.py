@@ -41,7 +41,7 @@ def isolate_channel(
     result = np.zeros_like(image)
 
     if isinstance(channel, str):
-        channel = channel.lower()
+        channel_lower = channel.lower()
         channel_map_bgr = {
             "blue": 0,
             "b": 0,
@@ -63,7 +63,7 @@ def isolate_channel(
             if color_format.upper() in ("BGR", "BGRA")
             else channel_map_rgb
         )
-        channel_idx = channel_map.get(channel, 0)
+        channel_idx = channel_map.get(channel_lower, 0)
     else:
         channel_idx = channel
 

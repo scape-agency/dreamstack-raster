@@ -64,7 +64,7 @@ def find_pattern(
             continue
 
         scaled_pattern = cv2.resize(pattern, new_shape)
-        result = match_template(image, scaled_pattern, method=method)
+        result = match_template(image, scaled_pattern, method=method)  # type: ignore[arg-type]
 
         if result.score > best_score and result.score >= threshold:
             best_score = result.score

@@ -47,6 +47,7 @@ spec = importlib.util.spec_from_file_location(
     "rgb_to_hsv",
     os.path.join(raster_src, "dreamstack/raster/color/convert/rgb_to_hsv.py"),
 )
+assert spec is not None and spec.loader is not None
 rgb_to_hsv_module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(rgb_to_hsv_module)
 array_rgb_to_hsv = rgb_to_hsv_module.rgb_to_hsv
@@ -55,6 +56,7 @@ spec = importlib.util.spec_from_file_location(
     "hsv_to_rgb",
     os.path.join(raster_src, "dreamstack/raster/color/convert/hsv_to_rgb.py"),
 )
+assert spec is not None and spec.loader is not None
 hsv_to_rgb_module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(hsv_to_rgb_module)
 array_hsv_to_rgb = hsv_to_rgb_module.hsv_to_rgb
@@ -68,6 +70,7 @@ spec = importlib.util.spec_from_file_location(
         raster_src, "dreamstack/raster/color/bridge/array_to_model.py"
     ),
 )
+assert spec is not None and spec.loader is not None
 bridge_module = importlib.util.module_from_spec(spec)
 sys.modules["dreamstack.raster.color.bridge.array_to_model"] = bridge_module
 spec.loader.exec_module(bridge_module)
@@ -81,6 +84,7 @@ spec = importlib.util.spec_from_file_location(
     "dreamstack.raster.color.palette.color",
     os.path.join(raster_src, "dreamstack/raster/color/palette/color.py"),
 )
+assert spec is not None and spec.loader is not None
 color_module = importlib.util.module_from_spec(spec)
 sys.modules["dreamstack.raster.color.palette.color"] = color_module
 spec.loader.exec_module(color_module)

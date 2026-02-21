@@ -54,4 +54,4 @@ def color_sampler(
         val = int(avg)
         return (val, val, val)
 
-    return tuple(int(v) for v in avg)
+    return (int(avg[0]), int(avg[1]), int(avg[2]))

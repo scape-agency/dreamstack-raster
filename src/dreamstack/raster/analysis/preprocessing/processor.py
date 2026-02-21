@@ -136,7 +136,7 @@ class ImagePreprocessor:
         if image is None:
             raise ValueError(f"Failed to load image: {path}")
 
-        return image
+        return image  # type: ignore[return-value]
 
     def blur(self, image: NDArray[np.uint8]) -> NDArray[np.uint8]:
         """Apply Gaussian blur to reduce noise.
@@ -151,7 +151,7 @@ class ImagePreprocessor:
         NDArray[np.uint8]
             Blurred image.
         """
-        return cv2.GaussianBlur(image, self.config.blur_kernel_size, 0)
+        return cv2.GaussianBlur(image, self.config.blur_kernel_size, 0)  # type: ignore[return-value]
 
     def enhance_contrast(self, image: NDArray[np.uint8]) -> NDArray[np.uint8]:
         """Enhance image contrast using CLAHE.
@@ -242,10 +242,15 @@ class ImagePreprocessor:
             Cleaned mask.
         """
         # Dilate to connect nearby regions
-        dilated = cv2.dilate(mask, None, iterations=self.config.morph_dilate_iter)
+        kernel = np.ones((3, 3), np.uint8)
+        dilated = cv2.dilate(
+            mask, kernel, iterations=self.config.morph_dilate_iter
+        )
         # Erode to restore size
-        eroded = cv2.erode(dilated, None, iterations=self.config.morph_erode_iter)
-        return eroded
+        eroded = cv2.erode(
+            dilated, kernel, iterations=self.config.morph_erode_iter
+        )
+        return eroded  # type: ignore[return-value]
 
     def preprocess(
         self,

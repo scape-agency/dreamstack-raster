@@ -52,8 +52,8 @@ def split_channels(
     if color_format.upper() in ("BGR", "BGRA"):
         # Convert from BGR to RGB order
         if len(channels) == 3:
-            return (channels[2], channels[1], channels[0])
+            return (channels[2], channels[1], channels[0])  # type: ignore[return-value]
         elif len(channels) == 4:
-            return (channels[2], channels[1], channels[0], channels[3])
+            return (channels[2], channels[1], channels[0], channels[3])  # type: ignore[return-value]
 
-    return tuple(channels)
+    return tuple(channels)  # type: ignore[return-value]

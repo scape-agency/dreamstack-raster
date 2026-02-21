@@ -273,8 +273,8 @@ def active_contour(
         beta=config.beta,
         gamma=config.gamma,
         w_line=config.w_line,
-        w_edge=config.w_edge,
-        max_iterations=config.max_iterations,
+        w_edge=int(config.w_edge),
+        max_num_iter=config.max_iterations,
         convergence=config.convergence_threshold,
     )
 

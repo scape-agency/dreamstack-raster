@@ -20,4 +20,4 @@ def bgr_to_rgb(image: NDArray[np.uint8]) -> NDArray[np.uint8]:
     NDArray[np.uint8]
         RGB image.
     """
-    return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # type: ignore[return-value]

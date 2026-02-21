@@ -152,7 +152,8 @@ class DepthEstimator:
                 if torch.cuda.is_available():
                     return 0  # GPU
                 elif (
-                    hasattr(torch.backends, "mps") and torch.backends.mps.is_available()
+                    hasattr(torch.backends, "mps")
+                    and torch.backends.mps.is_available()
                 ):
                     return "mps"
                 else:
@@ -184,17 +185,21 @@ class DepthEstimator:
         pil_image = Image.fromarray(rgb)
 
         # Run inference
+        if self._pipe is None:
+            raise RuntimeError("Depth estimation pipeline not initialized")
         result = self._pipe(pil_image)
 
         # Extract depth map
-        depth_map = np.array(result["depth"]).astype(np.float32)
+        depth_map = np.array(result["depth"]).astype(np.float32)  # type: ignore[index]
 
         # Normalize
         min_depth = float(depth_map.min())
         max_depth = float(depth_map.max())
 
         if max_depth > min_depth:
-            depth_normalized = (depth_map - min_depth) / (max_depth - min_depth)
+            depth_normalized = (depth_map - min_depth) / (
+                max_depth - min_depth
+            )
         else:
             depth_normalized = np.zeros_like(depth_map)
 
@@ -245,7 +250,7 @@ class DepthEstimator:
             >>> estimator = DepthEstimator.with_config(model_size="large")
         """
         if model_size is not None:
-            size_map = {
+            size_map: dict[str, ModelName] = {
                 "small": "LiheYoung/depth-anything-small-hf",
                 "base": "LiheYoung/depth-anything-base-hf",
                 "large": "LiheYoung/depth-anything-large-hf",

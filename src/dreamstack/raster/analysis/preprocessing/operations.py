@@ -43,7 +43,7 @@ def to_grayscale(
         return image  # Already grayscale
 
     if method == "luminosity":
-        return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  # type: ignore[return-value]
     elif method == "average":
         return np.mean(image, axis=2).astype(np.uint8)
     elif method == "lightness":
@@ -86,14 +86,14 @@ def apply_clahe(
 
     if len(image.shape) == 2:
         # Grayscale
-        return clahe.apply(image)
+        return clahe.apply(image)  # type: ignore[return-value]
     else:
         # Color - apply to L channel in LAB space
         lab = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
         l_channel, a_channel, b_channel = cv2.split(lab)
         l_enhanced = clahe.apply(l_channel)
         lab_enhanced = cv2.merge((l_enhanced, a_channel, b_channel))
-        return cv2.cvtColor(lab_enhanced, cv2.COLOR_LAB2BGR)
+        return cv2.cvtColor(lab_enhanced, cv2.COLOR_LAB2BGR)  # type: ignore[return-value]
 
 
 def binarize(
@@ -172,7 +172,7 @@ def binarize(
     else:
         raise ValueError(f"Unknown method: {method}")
 
-    return binary
+    return binary  # type: ignore[return-value]
 
 
 def detect_edges(
@@ -236,12 +236,13 @@ def detect_edges(
         raise ValueError(f"Unknown method: {method}")
 
     # Morphological operations
+    kernel = np.ones((3, 3), np.uint8)
     if dilate:
-        edges = cv2.dilate(edges, None)
+        edges = cv2.dilate(np.asarray(edges, dtype=np.uint8), kernel)  # type: ignore[assignment]
     if erode:
-        edges = cv2.erode(edges, None)
+        edges = cv2.erode(np.asarray(edges, dtype=np.uint8), kernel)  # type: ignore[assignment]
 
-    return edges
+    return edges  # type: ignore[return-value]
 
 
 def morphological_open(
@@ -267,8 +268,12 @@ def morphological_open(
     NDArray[np.uint8]
         Processed image.
     """
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (kernel_size, kernel_size))
-    return cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel, iterations=iterations)
+    kernel = cv2.getStructuringElement(
+        cv2.MORPH_ELLIPSE, (kernel_size, kernel_size)
+    )
+    return cv2.morphologyEx(  # type: ignore[return-value]
+        image, cv2.MORPH_OPEN, kernel, iterations=iterations
+    )
 
 
 def morphological_close(
@@ -294,8 +299,12 @@ def morphological_close(
     NDArray[np.uint8]
         Processed image.
     """
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (kernel_size, kernel_size))
-    return cv2.morphologyEx(image, cv2.MORPH_CLOSE, kernel, iterations=iterations)
+    kernel = cv2.getStructuringElement(
+        cv2.MORPH_ELLIPSE, (kernel_size, kernel_size)
+    )
+    return cv2.morphologyEx(  # type: ignore[return-value]
+        image, cv2.MORPH_CLOSE, kernel, iterations=iterations
+    )
 
 
 def preprocess_for_contours(
@@ -341,7 +350,7 @@ def preprocess_for_contours(
     blurred = cv2.GaussianBlur(image, blur_kernel, 0)
 
     # Enhance contrast
-    contrast = apply_clahe(blurred, clip_limit=clahe_clip)
+    contrast = apply_clahe(blurred, clip_limit=clahe_clip)  # type: ignore[arg-type]
 
     # Convert to grayscale
     grayscale = to_grayscale(contrast)
@@ -352,7 +361,7 @@ def preprocess_for_contours(
     # Edge detection
     edges = detect_edges(grayscale)
 
-    return {
+    return {  # type: ignore[return-value]
         "original": image.copy(),
         "blurred": blurred,
         "contrast": contrast,

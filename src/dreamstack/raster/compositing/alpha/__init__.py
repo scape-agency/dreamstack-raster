@@ -39,12 +39,12 @@ def alpha_composite(
 
     # Ensure both have alpha
     if foreground.shape[2] == 3:
-        fg = cv2.cvtColor(foreground, cv2.COLOR_BGR2BGRA)
+        fg: NDArray[np.uint8] = cv2.cvtColor(foreground, cv2.COLOR_BGR2BGRA)  # type: ignore[assignment]
     else:
         fg = foreground
 
     if background.shape[2] == 3:
-        result = cv2.cvtColor(background, cv2.COLOR_BGR2BGRA)
+        result: NDArray[np.uint8] = cv2.cvtColor(background, cv2.COLOR_BGR2BGRA)  # type: ignore[assignment]
     else:
         result = background.copy()
 
@@ -136,9 +136,9 @@ def set_alpha(
         Image with alpha (BGRA).
     """
     if image.ndim == 2:
-        image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGRA)
+        image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGRA)  # type: ignore[assignment]
     elif image.shape[2] == 3:
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2BGRA)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2BGRA)  # type: ignore[assignment]
     else:
         image = image.copy()
 

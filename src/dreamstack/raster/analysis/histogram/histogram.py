@@ -36,9 +36,18 @@ def histogram(
     """
     if image.ndim == 3:
         # Convert to grayscale for single histogram
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        gray = cv2.cvtColor(
+            image,
+            cv2.COLOR_BGR2GRAY,
+        )
     else:
         gray = image
 
-    hist = cv2.calcHist([gray], [0], mask, [bins], [0, 256])
-    return hist.flatten()
+    hist = cv2.calcHist(
+        [gray],
+        [0],
+        mask,
+        [bins],
+        [0, 256],
+    )
+    return hist.flatten().astype(np.float64)

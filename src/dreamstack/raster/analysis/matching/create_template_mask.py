@@ -42,13 +42,15 @@ def create_template_mask(
 
     if template.ndim == 2:
         # Grayscale
+        assert transparent_color is not None
         diff = np.abs(template.astype(np.int32) - transparent_color)
         mask = (diff > threshold).astype(np.uint8) * 255
     else:
         # Color
         diff = np.sqrt(
             np.sum(
-                (template.astype(np.float32) - np.array(transparent_color)) ** 2,
+                (template.astype(np.float32) - np.array(transparent_color))
+                ** 2,
                 axis=2,
             )
         )
