@@ -93,7 +93,7 @@ piexif = "^1.1.0"
 
 # HDR/EXR support
 imageio = "^2.35.0"
-OpenEXR = "^3.2.0"
+OpenEXR = "^3.4.5"
 
 # ICC color profiles
 Pillow-heif = "^0.18.0"
