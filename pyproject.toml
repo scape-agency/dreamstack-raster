@@ -96,7 +96,7 @@ imageio = "^2.35.0"
 OpenEXR = "^3.4.5"
 
 # ICC color profiles
-Pillow-heif = "^0.18.0"
+Pillow-heif = "^1.2.1"
 
 # ML/Object Detection
 # Note: ultralytics will install torch automatically
