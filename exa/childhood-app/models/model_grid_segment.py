@@ -39,7 +39,11 @@ class GridSegment:
     has_empty_pixels : bool
         True if segment contains transparent/empty pixels.
     inbetween_type : str | None
-        None, 'h' (horizontal), or 'v' (vertical).
+        None, 'h' (horizontal), 'v' (vertical), or 'd' (diagonal).
+    layer : int
+        Segmentation layer index (for multi-layer fluid grid).
+    rotation : float
+        Rotation angle in degrees (applied at placement).
     """
 
     image: Image.Image
@@ -53,12 +57,15 @@ class GridSegment:
     offset_y: int = 0
     has_empty_pixels: bool = False
     inbetween_type: str | None = None
+    layer: int = 0
+    rotation: float = 0.0
 
     @property
     def filename(self) -> str:
         """Generate filename for this segment."""
         suffix = f"_{self.inbetween_type}" if self.inbetween_type else ""
-        return f"seg_{self.row}_{self.col}{suffix}.png"
+        layer_suffix = f"_L{self.layer}" if self.layer > 0 else ""
+        return f"seg_{self.row}_{self.col}{suffix}{layer_suffix}.png"
 
     def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
@@ -69,6 +76,8 @@ class GridSegment:
             "size": [self.width, self.height],
             "offset": [self.offset_x, self.offset_y],
             "has_empty_pixels": self.has_empty_pixels,
+            "layer": self.layer,
+            "rotation": self.rotation,
         }
         if self.inbetween_type:
             result["inbetween_type"] = self.inbetween_type

@@ -32,12 +32,52 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import random
 import sys
 from pathlib import Path
 
 from services.service_canvas import Canvas
 from services.service_image_index import ImageIndex
 from utils.util_load_config import load_config, get_nested
+
+# simple color‑filter helper used in place_random / place_grid
+
+def _image_is_color(
+    path: str | Path, color: str, threshold: int = 50
+) -> bool:
+    """Return True if the average color of *path* matches named color.
+
+    The implementation is intentionally simple: convert to RGB and
+    compare channel means.  "red" means R is greater than G and B by
+    *threshold* pixels.  You can extend this with proper HSV ranges
+    if you like.
+    """
+    from PIL import Image
+    import numpy as np
+
+    try:
+        img = Image.open(path).convert("RGB")
+    except Exception:  # file could be missing or unreadable
+        return False
+
+    arr = np.array(img)
+    # arr shape (h,w,3)
+    mean_r = float(arr[:, :, 0].mean())
+    mean_g = float(arr[:, :, 1].mean())
+    mean_b = float(arr[:, :, 2].mean())
+    img.close()
+
+    color = color.lower()
+    if color == "red":
+        return mean_r > mean_g + threshold and mean_r > mean_b + threshold
+    if color == "green":
+        return mean_g > mean_r + threshold and mean_g > mean_b + threshold
+    if color == "blue":
+        return mean_b > mean_r + threshold and mean_b > mean_g + threshold
+
+    # unknown color, always allow
+    return True
+
 
 logger = logging.getLogger(__name__)
 
@@ -88,6 +128,12 @@ def main() -> int:
     )
     from_dir = Path(get_nested(cfg, "random", "from_dir", default="./output"))
     obj_type = get_nested(cfg, "random", "object_type")
+    keep_cutouts = get_nested(cfg, "random", "keep_cutouts", default=False)
+    margin = get_nested(cfg, "random", "margin", default=50)
+
+    # optional color filter (only used in random/grid modes)
+    color_filter = get_nested(cfg, "filter", "color")
+    color_threshold = get_nested(cfg, "filter", "color_threshold", default=50)
 
     # Cutout placement config
     cutout_enabled = get_nested(cfg, "place_cutout", "enabled", default=False)
@@ -105,6 +151,13 @@ def main() -> int:
     order = get_nested(cfg, "animation", "order", default="sequential")
     animate = get_nested(cfg, "animation", "enabled", default=False)
     save_each = get_nested(cfg, "animation", "save_each")
+    # organic placement: when true, apply a small default per-segment jitter
+    # so segments look slightly moved from their original positions
+    organic = get_nested(cfg, "animation", "organic", default=True)
+    organic_jitter = get_nested(cfg, "animation", "organic_jitter", default=6)
+    # Fluid grid placement options
+    selection_ratio = get_nested(cfg, "animation", "selection_ratio", default=0.7)
+    rotation_jitter = get_nested(cfg, "animation", "rotation_jitter", default=3.0)
 
     # Grid config
     grid_enabled = get_nested(cfg, "grid", "enabled", default=False)
@@ -185,8 +238,12 @@ def main() -> int:
             delay=delay,
             save_each=save_each,
             jitter=jitter,
+            organic=organic,
+            organic_jitter=organic_jitter,
             order=order,
             animate=animate,
+            selection_ratio=selection_ratio,
+            rotation_jitter=rotation_jitter,
         )
 
     # Load from layout file
@@ -195,14 +252,77 @@ def main() -> int:
 
     # Random placement
     elif random_count:
-        canvas.place_random(
-            from_dir,
-            random_count,
-            obj_type,
-            animate=animate,
-            delay=delay,
-            jitter=jitter,
-        )
+        if keep_cutouts:
+            logger.info("Random placement: grouping by cutout (keep_cutouts=True)")
+            # select random cutouts instead of individual segments
+            index = ImageIndex(from_dir)
+            index.load()
+
+            candidates: list[dict] = []
+            for entry in index.all():
+                # we need the raw metadata to get positions/sizes
+                with open(entry.metadata_path, encoding="utf-8") as f:
+                    meta = json.load(f)
+                for c in meta.get("cutouts", []):
+                    label = c.get("label", "")
+                    if obj_type is None or obj_type.lower() in label.lower():
+                        candidates.append({
+                            "cutout": c,
+                            "base_dir": entry.metadata_path.parent,
+                        })
+
+            # apply color filtering to cutouts if requested
+            if color_filter:
+                filtered: list[dict] = []
+                for item in candidates:
+                    segs = item["cutout"].get("segments", [])
+                    if any(_image_is_color(item["base_dir"] / s.get("file", ""), color_filter, color_threshold) for s in segs):
+                        filtered.append(item)
+                candidates = filtered
+
+            if not candidates:
+                logger.warning("No cutouts available for random placement")
+            else:
+                logger.info("Selected %d cutouts for placement", min(random_count, len(candidates)))
+                chosen = random.sample(candidates, min(random_count, len(candidates)))
+                for sel in chosen:
+                    cutout_meta = sel["cutout"]
+                    cutout_size = tuple(cutout_meta.get("size", [0, 0]))
+                    # compute random canvas position ensuring whole cutout fits
+                    x = random.randint(
+                        margin,
+                        max(margin, width - cutout_size[0] - margin),
+                    )
+                    y = random.randint(
+                        margin,
+                        max(margin, height - cutout_size[1] - margin),
+                    )
+                    canvas.place_cutout_segments(
+                        cutout_meta,
+                        canvas_x=x,
+                        canvas_y=y,
+                        base_dir=sel["base_dir"],
+                        delay=delay,
+                        save_each=save_each,
+                        jitter=jitter,
+                        organic=organic,
+                        organic_jitter=organic_jitter,
+                        order=order,
+                        animate=animate,
+                        selection_ratio=selection_ratio,
+                        rotation_jitter=rotation_jitter,
+                    )
+        else:
+            canvas.place_random(
+                from_dir,
+                random_count,
+                obj_type,
+                animate=animate,
+                delay=delay,
+                jitter=jitter,
+                color=color_filter,
+                color_threshold=color_threshold,
+            )
 
     # Grid layout
     elif grid:
@@ -216,6 +336,11 @@ def main() -> int:
                     or obj_type.lower() in cutout.label.lower()
                 ):
                     all_segs.extend(cutout.segments)
+        # apply color filter if requested
+        if color_filter:
+            all_segs = [p for p in all_segs if _image_is_color(p, color_filter, color_threshold)]
+            if not all_segs:
+                logger.warning("No segments left after color filter")
 
         canvas.place_grid(all_segs, cols=grid)
 

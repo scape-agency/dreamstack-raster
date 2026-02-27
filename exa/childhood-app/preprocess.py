@@ -128,7 +128,16 @@ def main() -> int:
 
     segment_size_cfg = get_nested(cfg, "segment", "size", default=[400, 300])
     seg_w, seg_h = segment_size_cfg[0], segment_size_cfg[1]
+    randomize_offset = get_nested(cfg, "segment", "randomize_offset", default=False)
+    max_offset = get_nested(cfg, "segment", "max_offset", default=50)
     inbetweens = get_nested(cfg, "segment", "generate_inbetweens", default=False)
+    diagonal_inbetweens = get_nested(cfg, "segment", "generate_diagonal_inbetweens", default=False)
+    # Fluid grid options
+    fluid_grid = get_nested(cfg, "segment", "fluid_grid", default=True)
+    size_variation = get_nested(cfg, "segment", "size_variation", default=0.3)
+    layer_count = get_nested(cfg, "segment", "layer_count", default=2)
+    layer_selection_ratio = get_nested(cfg, "segment", "layer_selection_ratio", default=0.7)
+    rotation_range = get_nested(cfg, "segment", "rotation_range", default=5.0)
 
     effects_enabled = get_nested(cfg, "effects", "enabled", default=True)
     drop_shadow = get_nested(cfg, "effects", "drop_shadow", default=True)
@@ -155,7 +164,15 @@ def main() -> int:
         ),
         segment=SegmentConfig(
             segment_size=(seg_w, seg_h),
+            randomize_offset=randomize_offset,
+            max_offset=max_offset,
             generate_inbetweens=inbetweens,
+            generate_diagonal_inbetweens=diagonal_inbetweens,
+            fluid_grid=fluid_grid,
+            size_variation=size_variation,
+            layer_count=layer_count,
+            layer_selection_ratio=layer_selection_ratio,
+            rotation_range=rotation_range,
         ),
         effects=EffectConfig(
             drop_shadow=drop_shadow,
@@ -174,8 +191,22 @@ def main() -> int:
     logger.info("Detection: %s", config.detection_backend)
     logger.info("Cutout max size: %s", config.cutout.max_size)
     logger.info("Segment size: %s", config.segment.segment_size)
-    if config.segment.generate_inbetweens:
-        logger.info("In-between segments: ENABLED (H+V)")
+    if config.segment.fluid_grid:
+        logger.info("Fluid grid: ENABLED (variation=%.0f%%, layers=%d, selection=%.0f%%)",
+                    config.segment.size_variation * 100,
+                    config.segment.layer_count,
+                    config.segment.layer_selection_ratio * 100)
+        if config.segment.rotation_range > 0:
+            logger.info("Rotation range: ±%.1f°", config.segment.rotation_range)
+    elif config.segment.generate_inbetweens or config.segment.generate_diagonal_inbetweens:
+        types = []
+        if config.segment.generate_inbetweens:
+            types.append("H+V")
+        if config.segment.generate_diagonal_inbetweens:
+            types.append("D")
+        logger.info("In-between segments: ENABLED (%s)", "+".join(types))
+    if config.segment.randomize_offset:
+        logger.info("Randomize offset: ENABLED (max %dpx)", config.segment.max_offset)
     logger.info("=" * 50)
 
     # Find images

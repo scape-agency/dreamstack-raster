@@ -29,6 +29,8 @@ class PlacedItem:
         Image height.
     layer : int
         Z-order layer (higher = on top).
+    rotation : float
+        Rotation angle in degrees (counter-clockwise).
     """
 
     path: Path
@@ -37,6 +39,7 @@ class PlacedItem:
     width: int
     height: int
     layer: int = 0
+    rotation: float = 0.0
 
     def to_dict(self) -> dict:
         """Convert to dictionary."""
@@ -47,4 +50,5 @@ class PlacedItem:
             "width": self.width,
             "height": self.height,
             "layer": self.layer,
+            "rotation": self.rotation,
         }

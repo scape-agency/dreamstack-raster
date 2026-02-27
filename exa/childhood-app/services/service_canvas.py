@@ -20,6 +20,33 @@ from PIL import Image
 
 from models.model_placed_item import PlacedItem
 
+
+# helper for simple average-color tests used by random/grid placement
+
+def _image_is_color(path: Path | str, color: str, threshold: int = 50) -> bool:
+    from PIL import Image
+
+    try:
+        img = Image.open(path).convert("RGB")
+    except Exception:
+        return False
+
+    arr = np.array(img)
+    mean_r = float(arr[:, :, 0].mean())
+    mean_g = float(arr[:, :, 1].mean())
+    mean_b = float(arr[:, :, 2].mean())
+    img.close()
+
+    color = color.lower()
+    if color == "red":
+        return mean_r > mean_g + threshold and mean_r > mean_b + threshold
+    if color == "green":
+        return mean_g > mean_r + threshold and mean_g > mean_b + threshold
+    if color == "blue":
+        return mean_b > mean_r + threshold and mean_b > mean_g + threshold
+    # unknown color -> pass everything
+    return True
+
 logger = logging.getLogger(__name__)
 
 # Placement order strategies
@@ -147,6 +174,7 @@ class Canvas:
         x: int,
         y: int,
         layer: int | None = None,
+        rotation: float = 0.0,
     ) -> PlacedItem:
         """Place an image on the canvas.
 
@@ -160,6 +188,8 @@ class Canvas:
             Y position from bottom edge.
         layer : int | None
             Z-order layer. If None, uses next layer.
+        rotation : float
+            Rotation angle in degrees (counter-clockwise). Default 0.0.
 
         Returns
         -------
@@ -184,12 +214,13 @@ class Canvas:
             width=img.width,
             height=img.height,
             layer=layer,
+            rotation=rotation,
         )
 
         self.items.append(item)
         img.close()
 
-        logger.debug("Placed %s at (%s, %s) layer %s", path.name, x, y, layer)
+        logger.debug("Placed %s at (%s, %s) layer %s rot %.1f°", path.name, x, y, layer, rotation)
 
         return item
 
@@ -231,6 +262,8 @@ class Canvas:
         animate: bool = False,
         delay: float = 0.5,
         jitter: int = 0,
+        color: str | None = None,
+        color_threshold: int = 50,
     ) -> list[PlacedItem]:
         """Place random segments from output directory.
 
@@ -241,7 +274,7 @@ class Canvas:
         count : int
             Number of segments to place.
         object_type : str | None
-            Optional filter by object type.
+            Optional filter by object type (label text).
         margin : int
             Minimum margin from canvas edges.
         animate : bool
@@ -250,6 +283,11 @@ class Canvas:
             Delay between placements in seconds (for animation).
         jitter : int
             Random position jitter in pixels.
+        color : str | None
+            If provided, only segments whose average color matches this
+            ("red","green","blue") will be considered.
+        color_threshold : int
+            How much stronger the chosen channel must be compared to others.
 
         Returns
         -------
@@ -279,10 +317,17 @@ class Canvas:
                 ):
                     all_segments.extend(cutout.segments)
 
-        if not all_segments:
-            logger.warning("No segments found")
-            return []
+        # optional color-based filtering
+        if color:
+            filtered: list[Path] = []
+            for p in all_segments:
+                if _image_is_color(p, color, color_threshold):
+                    filtered.append(p)
+            all_segments = filtered
 
+        if not all_segments:
+            logger.warning("No segments found after filtering")
+            return []
         # Randomly select and place
         selected = random.sample(all_segments, min(count, len(all_segments)))
         placed = []
@@ -299,26 +344,24 @@ class Canvas:
 <head>
     <title>Canvas Preview</title>
     <style>
-        body {{
-            margin: 0;
-            padding: 20px;
-            background: #1a1a1a;
-            font-family: system-ui;
-            color: #fff;
-        }}
-        h1 {{ margin: 0 0 10px 0; font-size: 18px; }}
-        #status {{ color: #888; margin-bottom: 10px; }}
-        #canvas {{
-            max-width: 100%;
-            border: 1px solid #333;
-            background: repeating-conic-gradient(#222 0% 25%, #333 0% 50%) 50% / 20px 20px;
-        }}
+        * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+        html, body {{ width: 100vw; height: 100vh; background: #1a1a1a; color: #fff; font-family: system-ui; overflow: hidden; }}
+        body {{ display: flex; flex-direction: column; padding: 10px; }}
+        #header {{ flex-shrink: 0; margin-bottom: 10px; }}
+        h1 {{ font-size: 16px; }}
+        #status {{ color: #888; font-size: 14px; }}
+        #canvas-container {{ flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }}
+        #canvas {{ max-width: calc(100vw - 22px); max-height: calc(100vh - 60px); object-fit: contain; border: 1px solid #333; background: repeating-conic-gradient(#222 0% 25%, #333 0% 50%) 50% / 20px 20px; }}
     </style>
 </head>
 <body>
-    <h1>Canvas Preview</h1>
-    <div id="status">Placing segments...</div>
-    <img id="canvas" src="canvas.png" />
+    <div id="header">
+        <h1>Canvas Preview</h1>
+        <div id="status">Placing segments...</div>
+    </div>
+    <div id="canvas-container">
+        <img id="canvas" src="canvas.png" />
+    </div>
     <script>
         const img = document.getElementById('canvas');
         const status = document.getElementById('status');
@@ -478,8 +521,12 @@ class Canvas:
         ) = None,
         save_each: str | Path | None = None,
         jitter: int = 0,
+        organic: bool = True,
+        organic_jitter: int = 6,
         order: PlacementOrder = "sequential",
         animate: bool = False,
+        selection_ratio: float = 1.0,
+        rotation_jitter: float = 0.0,
     ) -> list[PlacedItem]:
         """Place all segments of a cutout iteratively with delay.
 
@@ -512,6 +559,12 @@ class Canvas:
             Options: sequential, random, center-out, edge-in, diagonal.
         animate : bool
             Show live preview window during placement. Default False.
+        selection_ratio : float
+            Fraction of segments to place (0.0-1.0). Default 1.0 (all).
+            Used for organic layered effect with overlapping segmentations.
+        rotation_jitter : float
+            Additional random rotation in degrees (±). Added to segment's
+            stored rotation. Default 0.0.
 
         Returns
         -------
@@ -522,33 +575,98 @@ class Canvas:
         segments = cutout_metadata.get("segments", [])
         cutout_size = tuple(cutout_metadata.get("size", [0, 0]))
 
+        logger.info("Placing cutout with %d segments (size %dx%d)", len(segments), cutout_size[0], cutout_size[1])
+
         # Sort segments according to placement order
         segments = sort_segments_by_order(segments, order, cutout_size)
         total = len(segments)
         placed = []
 
-        # Setup animation display if requested
-        fig = None
-        ax = None
-        img_display = None
+        # Setup browser preview if requested (replace matplotlib interactive)
+        preview_dir = None
+        preview_image = None
+        server = None
+        server_thread = None
         if animate:
             try:
-                import matplotlib.pyplot as plt
+                import http.server
+                import socketserver
+                import threading
+                import tempfile
+                import webbrowser
+                import shutil
 
-                plt.ion()  # Interactive mode
-                fig, ax = plt.subplots(figsize=(12, 5))
-                ax.set_title("Canvas Preview")
-                ax.axis("off")
-                # Show initial empty canvas
-                canvas_img = self.render()
-                img_display = ax.imshow(np.array(canvas_img))
-                fig.canvas.draw()
-                fig.canvas.flush_events()
-            except ImportError:
-                logger.warning("matplotlib not available, animation disabled")
+                preview_dir = Path(tempfile.mkdtemp(prefix="canvas_preview_"))
+                preview_image = preview_dir / "canvas.png"
+
+                html_template = """<!DOCTYPE html>
+<html>
+<head>
+    <title>Canvas Preview</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { width: 100vw; height: 100vh; background: #1a1a1a; color: #fff; font-family: system-ui; overflow: hidden; }
+        body { display: flex; flex-direction: column; padding: 10px; }
+        #header { flex-shrink: 0; margin-bottom: 10px; }
+        h1 { font-size: 16px; }
+        #status { color: #888; font-size: 14px; }
+        #canvas-container { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
+        #canvas { max-width: calc(100vw - 22px); max-height: calc(100vh - 60px); object-fit: contain; border: 1px solid #333; background: repeating-conic-gradient(#222 0% 25%, #333 0% 50%) 50% / 20px 20px; }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>Canvas Preview</h1>
+        <div id="status">Placing segments...</div>
+    </div>
+    <div id="canvas-container">
+        <img id="canvas" src="canvas.png" />
+    </div>
+    <script>
+        let count = 0; const total = TOTAL_PLACEHOLDER; const delay = DELAY_PLACEHOLDER;
+        const status = document.getElementById('status'); const img = document.getElementById('canvas');
+        function refresh(){ count++; status.textContent = `Placed ${Math.min(count,total)} / ${total} segments`; img.src = 'canvas.png?'+Date.now(); if(count<total){ setTimeout(refresh, delay); } else { status.textContent = `Done! Placed ${total} segments`; } }
+        setTimeout(refresh, delay);
+    </script>
+</body>
+</html>
+"""
+                html_content = html_template.replace("TOTAL_PLACEHOLDER", str(len(segments))).replace("DELAY_PLACEHOLDER", str(int(delay*1000)))
+
+                (preview_dir / "index.html").write_text(html_content)
+                # Save initial canvas
+                self.render().save(preview_image)
+
+                class QuietHandler(http.server.SimpleHTTPRequestHandler):
+                    def __init__(self, *args, **kwargs):
+                        super().__init__(*args, directory=str(preview_dir), **kwargs)
+                    def log_message(self, format, *args):
+                        pass
+
+                port = 8765
+                server = socketserver.TCPServer(("", port), QuietHandler)
+                server_thread = threading.Thread(target=server.serve_forever, daemon=True)
+                server_thread.start()
+                url = f"http://localhost:{port}"
+                logger.info("Preview server running at %s", url)
+                try:
+                    opened = webbrowser.open(url)
+                    if not opened:
+                        logger.info("Browser did not open automatically; please open %s manually", url)
+                except Exception as e:
+                    logger.info("webbrowser.open failed: %s", e)
+                time.sleep(0.5)
+            except Exception as exc:
+                import traceback
+                logger.warning("Browser preview unavailable, disabling animation: %s", exc)
+                logger.debug("Preview setup traceback:\n%s", traceback.format_exc())
                 animate = False
 
         for i, seg_data in enumerate(segments):
+            # Apply selection ratio - randomly skip some segments for organic layered effect
+            if selection_ratio < 1.0 and random.random() > selection_ratio:
+                continue
+
             seg_file = seg_data.get("file", "")
             seg_path = base_dir / seg_file
 
@@ -563,42 +681,45 @@ class Canvas:
             # Segment position is from top-left of cutout
             # Canvas Y is from bottom, so we need to flip
             cutout_height = cutout_metadata.get("size", [0, 0])[1]
-            seg_height = seg_data.get("size", [250, 250])[1]
+            seg_w, seg_height = seg_data.get("size", [250, 250])
 
             final_x = canvas_x + seg_x
             final_y = canvas_y + (cutout_height - seg_y - seg_height)
 
-            # Apply jitter
-            if jitter > 0:
-                final_x += random.randint(-jitter, jitter)
-                final_y += random.randint(-jitter, jitter)
+            # Apply jitter (organic mode: if jitter==0 and organic enabled,
+            # use a small organic_jitter to introduce imperfect seams)
+            use_jitter = jitter
+            if organic and use_jitter == 0:
+                use_jitter = organic_jitter
 
-            # Place segment
-            item = self.place(seg_path, final_x, final_y)
+            if use_jitter > 0:
+                final_x += random.randint(-use_jitter, use_jitter)
+                final_y += random.randint(-use_jitter, use_jitter)
+                # Clamp to canvas bounds
+                final_x = max(0, min(final_x, self.width - seg_w))
+                final_y = max(0, min(final_y, self.height - seg_height))
+
+            # Get rotation from segment metadata and add jitter
+            base_rotation = seg_data.get("rotation", 0.0)
+            if rotation_jitter > 0:
+                base_rotation += random.uniform(-rotation_jitter, rotation_jitter)
+
+            # Place segment with rotation
+            item = self.place(seg_path, final_x, final_y, rotation=base_rotation)
             placed.append(item)
 
             logger.info(
-                "Placed segment %d/%d: (%d, %d)",
+                "Placed segment %d/%d: (%d, %d) rot %.1f°",
                 i + 1,
                 total,
                 final_x,
                 final_y,
+                base_rotation,
             )
 
-            # Update animation display
-            if (
-                animate
-                and fig is not None
-                and img_display is not None
-                and ax is not None
-            ):
-                import matplotlib.pyplot as plt
-
-                canvas_img = self.render()
-                img_display.set_data(np.array(canvas_img))
-                ax.set_title(f"Canvas Preview - Segment {i + 1}/{total}")
-                fig.canvas.draw()
-                fig.canvas.flush_events()
+            # Update browser preview image
+            if animate and preview_image is not None:
+                self.render().save(preview_image)
 
             # Callback
             if on_segment_placed:
@@ -614,17 +735,26 @@ class Canvas:
             if delay > 0 and i < total - 1:
                 time.sleep(delay)
 
-        # Keep animation window open briefly at the end
-        if animate and fig is not None and ax is not None:
-            import matplotlib.pyplot as plt
+        # Finalize browser preview
+        if animate and preview_image is not None:
+            self.render().save(preview_image)
+            logger.info("Preview complete. Close browser when done.")
+            try:
+                input("Press Enter to close preview server...")
+            except KeyboardInterrupt:
+                pass
+            try:
+                if server is not None:
+                    server.shutdown()
+            except Exception:
+                pass
+            try:
+                if preview_dir is not None:
+                    shutil.rmtree(preview_dir, ignore_errors=True)
+            except Exception:
+                pass
 
-            ax.set_title(f"Canvas Complete - {total} segments")
-            fig.canvas.draw()
-            fig.canvas.flush_events()
-            time.sleep(1.0)  # Show final result briefly
-            plt.ioff()
-            plt.close(fig)
-
+        logger.info("Placed %d segments from cutout", len(placed))
         return placed
 
     def clear(self) -> None:
@@ -652,11 +782,33 @@ class Canvas:
 
             img = Image.open(item.path).convert("RGBA")
 
-            # Convert Y coordinate
-            pil_y = self.y_to_pil(item.y, img.height)
+            # Apply rotation if needed
+            if item.rotation != 0.0:
+                # Store original size for position adjustment
+                orig_w, orig_h = img.size
+                # Rotate with expand=True to avoid clipping
+                img = img.rotate(
+                    item.rotation,
+                    resample=Image.Resampling.BICUBIC,
+                    expand=True,
+                )
+                # Calculate offset due to expansion
+                new_w, new_h = img.size
+                offset_x = (new_w - orig_w) // 2
+                offset_y = (new_h - orig_h) // 2
+            else:
+                offset_x = 0
+                offset_y = 0
+
+            # Convert Y coordinate (use original height for coordinate system)
+            pil_y = self.y_to_pil(item.y, item.height)
+
+            # Adjust position for rotation expansion
+            paste_x = item.x - offset_x
+            paste_y = pil_y - offset_y
 
             # Paste with alpha compositing
-            canvas.paste(img, (item.x, pil_y), img)
+            canvas.paste(img, (paste_x, paste_y), img)
             img.close()
 
         return canvas
