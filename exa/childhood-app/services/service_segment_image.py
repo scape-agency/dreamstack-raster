@@ -1,97 +1,24 @@
 """
-Grid Segmentation
-=================
+Segment Image Service
+=====================
 
-Divide images into randomized grid segments for the art installation.
+Divide images into randomized grid segments.
 """
 
-# =============================================================================
-# Imports
-# =============================================================================
-
-# Import | Future
 from __future__ import annotations
 
 import random
-from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 import numpy as np
 from PIL import Image
 
-# =============================================================================
-# Type Checking Imports
-# =============================================================================
-
 if TYPE_CHECKING:
-    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
-from modules.config import SegmentConfig
-
-
-@dataclass
-class GridSegment:
-    """A single grid segment from an image.
-
-    Attributes
-    ----------
-    image : Image.Image
-        The segment image (PIL).
-    row : int
-        Row index in grid.
-    col : int
-        Column index in grid.
-    x : int
-        X position in source image.
-    y : int
-        Y position in source image.
-    width : int
-        Segment width.
-    height : int
-        Segment height.
-    offset_x : int
-        Random X offset applied.
-    offset_y : int
-        Random Y offset applied.
-    has_empty_pixels : bool
-        True if segment contains transparent/empty pixels.
-    """
-
-    image: Image.Image
-    row: int
-    col: int
-    x: int
-    y: int
-    width: int
-    height: int
-    offset_x: int = 0
-    offset_y: int = 0
-    has_empty_pixels: bool = False
-    inbetween_type: str | None = (
-        None  # None, 'h' (horizontal), or 'v' (vertical)
-    )
-
-    @property
-    def filename(self) -> str:
-        """Generate filename for this segment."""
-        suffix = f"_{self.inbetween_type}" if self.inbetween_type else ""
-        return f"seg_{self.row}_{self.col}{suffix}.png"
-
-    def to_dict(self) -> dict:
-        """Convert to dictionary for JSON serialization."""
-        result = {
-            "row": self.row,
-            "col": self.col,
-            "position": [self.x, self.y],
-            "size": [self.width, self.height],
-            "offset": [self.offset_x, self.offset_y],
-            "has_empty_pixels": self.has_empty_pixels,
-        }
-        if self.inbetween_type:
-            result["inbetween_type"] = self.inbetween_type
-        return result
+from models.model_segment_config import SegmentConfig
+from models.model_grid_segment import GridSegment
 
 
 def segment_image(
@@ -249,37 +176,3 @@ def segment_image(
         )
 
     return segments
-
-
-def save_segments(
-    segments: list[GridSegment],
-    output_dir: Path | str,
-    prefix: str = "",
-) -> list[Path]:
-    """Save segments to disk.
-
-    Parameters
-    ----------
-    segments : list[GridSegment]
-        Segments to save.
-    output_dir : Path | str
-        Output directory.
-    prefix : str
-        Filename prefix.
-
-    Returns
-    -------
-    list[Path]
-        Paths to saved files.
-    """
-    output_dir = Path(output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    saved_paths = []
-    for seg in segments:
-        filename = f"{prefix}{seg.filename}" if prefix else seg.filename
-        path = output_dir / filename
-        seg.image.save(path)
-        saved_paths.append(path)
-
-    return saved_paths

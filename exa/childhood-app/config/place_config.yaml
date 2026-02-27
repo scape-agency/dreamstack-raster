@@ -1,0 +1,47 @@
+# Place Configuration
+# ===================
+# Edit this file to customize canvas placement settings.
+# Run with: python place.py
+# Override config with: python place.py --config other_config.yaml
+
+# Canvas dimensions
+canvas:
+  width: 8000
+  height: 3000
+  background: "transparent"  # transparent, white, black, or hex color (#FF0000)
+
+# Output settings
+output:
+  path: "canvas.png"
+  save_layout: null  # Optional: path to save layout JSON
+
+# Random placement mode
+random:
+  enabled: true
+  count: 30
+  from_dir: "./output"
+  object_type: null  # Optional: filter by type (e.g., "person")
+
+# Cutout placement mode (disabled if random is enabled)
+place_cutout:
+  enabled: false
+  metadata_path: null  # Path to metadata.json
+  cutout_index: 0
+  position: [0, 0]  # [X, Y] canvas position
+
+# Animation and timing
+animation:
+  enabled: false  # Show live preview window
+  delay: 1.0      # Seconds between placements
+  jitter: 0       # Random position offset in pixels
+  order: "sequential"  # sequential, random, center-out, edge-in, diagonal
+  save_each: null  # Optional: pattern like "frames/frame_{n}.png"
+
+# Grid layout (only if not using random or place_cutout)
+grid:
+  enabled: false
+  columns: 10
+
+# Load layout from file (only if not using random, place_cutout, or grid)
+layout:
+  load: null  # Optional: path to layout JSON file

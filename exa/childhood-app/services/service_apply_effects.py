@@ -1,70 +1,27 @@
 """
-Image Effects
-=============
+Apply Effects Service
+=====================
 
-Apply visual effects to image segments for the art installation.
-Uses dreamstack.raster effects where available.
+Apply visual effects to image segments.
 """
 
-# =============================================================================
-# Imports
-# =============================================================================
-
-# Import | Future
 from __future__ import annotations
 
 import logging
-from dataclasses import dataclass
-from enum import Enum
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 import numpy as np
 from PIL import Image, ImageEnhance, ImageFilter
 
-# =============================================================================
-# Type Checking Imports
-# =============================================================================
-
 if TYPE_CHECKING:
-    # pylint: disable=import-outside-toplevel
     from numpy.typing import NDArray
 
-from modules.config import (
-    EffectConfig,
-)  # pylint: disable=wrong-import-position
+from models.model_effect_config import EffectConfig
+from models.model_effect_type import EffectType
+from models.model_effect_result import EffectResult
 
 logger = logging.getLogger(__name__)
-
-
-class EffectType(str, Enum):
-    """Available effect types."""
-
-    DROP_SHADOW = "drop_shadow"
-    WARM_FILTER = "warm_filter"
-    COOL_FILTER = "cool_filter"
-    VINTAGE = "vintage"
-    HIGH_CONTRAST = "high_contrast"
-    SOFT_GLOW = "soft_glow"
-    SHARPEN = "sharpen"
-    BLUR = "blur"
-    SEPIA = "sepia"
-
-
-@dataclass
-class EffectResult:
-    """Result of applying effects.
-
-    Attributes
-    ----------
-    image : Image.Image
-        Processed image.
-    effects_applied : list[str]
-        Names of effects applied.
-    """
-
-    image: Image.Image
-    effects_applied: list[str]
 
 
 def apply_effects(
@@ -94,7 +51,7 @@ def apply_effects(
     if isinstance(image, (str, Path)):
         image = Image.open(image)
     elif isinstance(image, np.ndarray):
-        image = _numpy_to_pil(image)
+        image = numpy_to_pil(image)
 
     # Ensure RGBA
     if image.mode != "RGBA":
@@ -104,7 +61,7 @@ def apply_effects(
 
     # Apply drop shadow first if enabled
     if config.drop_shadow:
-        image = _apply_drop_shadow(
+        image = apply_drop_shadow(
             image,
             offset=config.shadow_offset,
             blur=config.shadow_blur,
@@ -124,34 +81,34 @@ def apply_effects(
         )
 
         if effect_name == "warm_filter":
-            image = _apply_warm_filter(image)
+            image = apply_warm_filter(image)
             applied.append("warm_filter")
         elif effect_name == "cool_filter":
-            image = _apply_cool_filter(image)
+            image = apply_cool_filter(image)
             applied.append("cool_filter")
         elif effect_name == "vintage":
-            image = _apply_vintage(image)
+            image = apply_vintage(image)
             applied.append("vintage")
         elif effect_name == "high_contrast":
-            image = _apply_high_contrast(image)
+            image = apply_high_contrast(image)
             applied.append("high_contrast")
         elif effect_name == "soft_glow":
-            image = _apply_soft_glow(image)
+            image = apply_soft_glow(image)
             applied.append("soft_glow")
         elif effect_name == "sharpen":
-            image = _apply_sharpen(image)
+            image = apply_sharpen(image)
             applied.append("sharpen")
         elif effect_name == "blur":
-            image = _apply_blur(image)
+            image = apply_blur(image)
             applied.append("blur")
         elif effect_name == "sepia":
-            image = _apply_sepia(image)
+            image = apply_sepia(image)
             applied.append("sepia")
 
     return EffectResult(image=image, effects_applied=applied)
 
 
-def _numpy_to_pil(arr: NDArray) -> Image.Image:
+def numpy_to_pil(arr: NDArray) -> Image.Image:
     """Convert numpy array to PIL Image."""
     if len(arr.shape) == 2:
         return Image.fromarray(arr)
@@ -166,7 +123,7 @@ def _numpy_to_pil(arr: NDArray) -> Image.Image:
     return Image.fromarray(arr)
 
 
-def _apply_drop_shadow(
+def apply_drop_shadow(
     image: Image.Image,
     offset: tuple[int, int] = (5, 5),
     blur: int = 10,
@@ -180,7 +137,6 @@ def _apply_drop_shadow(
     """
     try:
         # Try dreamstack implementation
-        # pylint: disable=import-outside-toplevel
         from dreamstack.raster.effects.shadow import drop_shadow
 
         # Convert to numpy
@@ -211,10 +167,10 @@ def _apply_drop_shadow(
 
     except ImportError:
         logger.debug("Using PIL drop shadow fallback")
-        return _pil_drop_shadow(image, offset, blur, opacity, color)
+        return pil_drop_shadow(image, offset, blur, opacity, color)
 
 
-def _pil_drop_shadow(
+def pil_drop_shadow(
     image: Image.Image,
     offset: tuple[int, int],
     blur: int,
@@ -260,7 +216,7 @@ def _pil_drop_shadow(
     return result
 
 
-def _apply_warm_filter(image: Image.Image) -> Image.Image:
+def apply_warm_filter(image: Image.Image) -> Image.Image:
     """Apply warm color filter (orange/yellow tint)."""
     if image.mode != "RGBA":
         image = image.convert("RGBA")
@@ -278,7 +234,7 @@ def _apply_warm_filter(image: Image.Image) -> Image.Image:
     return Image.merge("RGBA", (r, g, b, a))
 
 
-def _apply_cool_filter(image: Image.Image) -> Image.Image:
+def apply_cool_filter(image: Image.Image) -> Image.Image:
     """Apply cool color filter (blue tint)."""
     if image.mode != "RGBA":
         image = image.convert("RGBA")
@@ -295,7 +251,7 @@ def _apply_cool_filter(image: Image.Image) -> Image.Image:
     return Image.merge("RGBA", (r, g, b, a))
 
 
-def _apply_vintage(image: Image.Image) -> Image.Image:
+def apply_vintage(image: Image.Image) -> Image.Image:
     """Apply vintage/retro effect."""
     if image.mode != "RGBA":
         image = image.convert("RGBA")
@@ -319,13 +275,13 @@ def _apply_vintage(image: Image.Image) -> Image.Image:
     return enhancer.enhance(0.9)
 
 
-def _apply_high_contrast(image: Image.Image) -> Image.Image:
+def apply_high_contrast(image: Image.Image) -> Image.Image:
     """Apply high contrast effect."""
     enhancer = ImageEnhance.Contrast(image)
     return enhancer.enhance(1.5)
 
 
-def _apply_soft_glow(image: Image.Image) -> Image.Image:
+def apply_soft_glow(image: Image.Image) -> Image.Image:
     """Apply soft glow effect."""
     if image.mode != "RGBA":
         image = image.convert("RGBA")
@@ -341,17 +297,17 @@ def _apply_soft_glow(image: Image.Image) -> Image.Image:
     return Image.blend(image, blurred, 0.3)
 
 
-def _apply_sharpen(image: Image.Image) -> Image.Image:
+def apply_sharpen(image: Image.Image) -> Image.Image:
     """Apply sharpening filter."""
     return image.filter(ImageFilter.SHARPEN)
 
 
-def _apply_blur(image: Image.Image) -> Image.Image:
+def apply_blur(image: Image.Image) -> Image.Image:
     """Apply blur filter."""
     return image.filter(ImageFilter.GaussianBlur(2))
 
 
-def _apply_sepia(image: Image.Image) -> Image.Image:
+def apply_sepia(image: Image.Image) -> Image.Image:
     """Apply sepia tone effect."""
     if image.mode != "RGBA":
         image = image.convert("RGBA")

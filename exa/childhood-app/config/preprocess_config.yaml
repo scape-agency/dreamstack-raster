@@ -1,0 +1,43 @@
+# Preprocess Configuration
+# ========================
+# Edit this file to customize image preprocessing settings.
+# Run with: python preprocess.py
+# Override config with: python preprocess.py --config other_config.yaml
+
+# Input/Output directories
+paths:
+  input: "./images"
+  output: "./output"
+  recursive: true  # Process subdirectories
+
+# AI backends
+backends:
+  vision: "openai"      # openai, mistral
+  detection: "ultralytics"  # ultralytics, grounding_dino_sam
+  confidence: 0.5       # Detection confidence threshold (0.0-1.0)
+
+# Cutout settings
+cutout:
+  max_size: 1200        # Maximum dimension in pixels
+  margin: 50            # Margin around bounding box
+  segment_align: true   # Align to segment size multiple
+
+# Segmentation settings
+segment:
+  size: [400, 300]      # [width, height] in pixels
+  randomize_offset: true
+  max_offset: 50
+  generate_inbetweens: false  # Create H/V in-between segments (~2x more)
+
+# Visual effects
+effects:
+  enabled: true         # Apply effects to segments
+  drop_shadow: true
+  shadow_offset: [5, 5]
+  shadow_blur: 10
+  shadow_opacity: 0.5
+  filters: []           # List: warm_filter, cool_filter, vintage, sepia, etc.
+
+# Processing limits
+limits:
+  max_images: null      # Optional: limit number of images to process
