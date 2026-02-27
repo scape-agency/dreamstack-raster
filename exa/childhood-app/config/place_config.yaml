@@ -31,7 +31,7 @@ place_cutout:
 
 # Animation and timing
 animation:
-  enabled: false  # Show live preview window
+  enabled: true  # Show live preview window
   delay: 1.0      # Seconds between placements
   jitter: 0       # Random position offset in pixels
   order: "sequential"  # sequential, random, center-out, edge-in, diagonal

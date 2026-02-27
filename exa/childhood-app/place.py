@@ -195,7 +195,14 @@ def main() -> int:
 
     # Random placement
     elif random_count:
-        canvas.place_random(from_dir, random_count, obj_type)
+        canvas.place_random(
+            from_dir,
+            random_count,
+            obj_type,
+            animate=animate,
+            delay=delay,
+            jitter=jitter,
+        )
 
     # Grid layout
     elif grid:

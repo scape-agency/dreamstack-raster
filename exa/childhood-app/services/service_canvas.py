@@ -228,6 +228,9 @@ class Canvas:
         count: int = 50,
         object_type: str | None = None,
         margin: int = 50,
+        animate: bool = False,
+        delay: float = 0.5,
+        jitter: int = 0,
     ) -> list[PlacedItem]:
         """Place random segments from output directory.
 
@@ -241,12 +244,26 @@ class Canvas:
             Optional filter by object type.
         margin : int
             Minimum margin from canvas edges.
+        animate : bool
+            Show live preview in browser during placement.
+        delay : float
+            Delay between placements in seconds (for animation).
+        jitter : int
+            Random position jitter in pixels.
 
         Returns
         -------
         list[PlacedItem]
             List of placed items.
         """
+        import time
+        import webbrowser
+        import http.server
+        import socketserver
+        import threading
+        import tempfile
+        import shutil
+
         from services.service_image_index import ImageIndex
 
         index = ImageIndex(output_dir)
@@ -270,6 +287,85 @@ class Canvas:
         selected = random.sample(all_segments, min(count, len(all_segments)))
         placed = []
 
+        # Setup browser preview if requested
+        if animate:
+            # Create temp directory for preview
+            preview_dir = Path(tempfile.mkdtemp(prefix="canvas_preview_"))
+            preview_image = preview_dir / "canvas.png"
+
+            # Create HTML viewer
+            html_content = f"""<!DOCTYPE html>
+<html>
+<head>
+    <title>Canvas Preview</title>
+    <style>
+        body {{
+            margin: 0;
+            padding: 20px;
+            background: #1a1a1a;
+            font-family: system-ui;
+            color: #fff;
+        }}
+        h1 {{ margin: 0 0 10px 0; font-size: 18px; }}
+        #status {{ color: #888; margin-bottom: 10px; }}
+        #canvas {{
+            max-width: 100%;
+            border: 1px solid #333;
+            background: repeating-conic-gradient(#222 0% 25%, #333 0% 50%) 50% / 20px 20px;
+        }}
+    </style>
+</head>
+<body>
+    <h1>Canvas Preview</h1>
+    <div id="status">Placing segments...</div>
+    <img id="canvas" src="canvas.png" />
+    <script>
+        const img = document.getElementById('canvas');
+        const status = document.getElementById('status');
+        let count = 0;
+        const total = {len(selected)};
+
+        function refresh() {{
+            count++;
+            status.textContent = `Placed ${{Math.min(count, total)}} / ${{total}} segments`;
+            img.src = 'canvas.png?' + Date.now();
+            if (count < total) {{
+                setTimeout(refresh, {int(delay * 1000)});
+            }} else {{
+                status.textContent = `Done! Placed ${{total}} segments`;
+            }}
+        }}
+        setTimeout(refresh, {int(delay * 1000)});
+    </script>
+</body>
+</html>"""
+            (preview_dir / "index.html").write_text(html_content)
+
+            # Save initial canvas
+            self.render().save(preview_image)
+
+            # Start simple HTTP server
+            class QuietHandler(http.server.SimpleHTTPRequestHandler):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(
+                        *args, directory=str(preview_dir), **kwargs
+                    )
+
+                def log_message(self, format, *args):
+                    pass  # Suppress logging
+
+            port = 8765
+            server = socketserver.TCPServer(("", port), QuietHandler)
+            server_thread = threading.Thread(
+                target=server.serve_forever, daemon=True
+            )
+            server_thread.start()
+
+            # Open browser
+            webbrowser.open(f"http://localhost:{port}")
+            logger.info("Preview at http://localhost:%d", port)
+            time.sleep(0.5)  # Let browser load
+
         for segment_path in selected:
             if not segment_path.exists():
                 continue
@@ -282,10 +378,34 @@ class Canvas:
             y = random.randint(
                 margin, max(margin, self.height - img.height - margin)
             )
+
+            # Apply jitter
+            if jitter > 0:
+                x += random.randint(-jitter, jitter)
+                y += random.randint(-jitter, jitter)
+                x = max(0, min(x, self.width - img.width))
+                y = max(0, min(y, self.height - img.height))
+
             img.close()
 
             item = self.place(segment_path, x, y)
             placed.append(item)
+
+            # Update preview
+            if animate:
+                self.render().save(preview_image)
+                time.sleep(delay)
+
+        if animate:
+            # Final save
+            self.render().save(preview_image)
+            logger.info("Preview complete. Close browser when done.")
+            try:
+                input("Press Enter to close preview server...")
+            except KeyboardInterrupt:
+                pass
+            server.shutdown()
+            shutil.rmtree(preview_dir, ignore_errors=True)
 
         logger.info("Placed %d random segments", len(placed))
         return placed
