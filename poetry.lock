@@ -4006,14 +4006,14 @@ files = [
 
 [[package]]
 name = "ultralytics"
-version = "8.4.18"
+version = "8.4.19"
 description = "Ultralytics YOLO 🚀 for SOTA object detection, multi-object tracking, instance segmentation, pose estimation and image classification."
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "ultralytics-8.4.18-py3-none-any.whl", hash = "sha256:da8f1168196ccd32fab1675f198b277cef4bfb294475758a43aaf19e49ba1f36"},
-    {file = "ultralytics-8.4.18.tar.gz", hash = "sha256:99988130fc7e2667245ff41354db86249eea38889f7ca3263102ecb833fc85e0"},
+    {file = "ultralytics-8.4.19-py3-none-any.whl", hash = "sha256:a21d90d4c6739158f959c02cec2590fa8a14f1348f1ef81d5a3e93ea32ae1d9b"},
+    {file = "ultralytics-8.4.19.tar.gz", hash = "sha256:e4bb5abf58e54fcb2c36fe37a6b12ab96b73de766692f24e53b69f1fa8987eb3"},
 ]
 
 [package.dependencies]
@@ -4128,4 +4128,4 @@ raw = ["rawpy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.14"
-content-hash = "9e164f16348d4ec4d3949f213f1a7e8ffff272b86e374089adbc65baac7b7636"
+content-hash = "6fe080b9c304be3e18f8ae9d3f8dce89477d75eef62b46e4027bb9533cdb383c"
