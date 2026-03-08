@@ -100,7 +100,7 @@ Pillow-heif = "^0.18.0"
 
 # ML/Object Detection
 # Note: ultralytics will install torch automatically
-ultralytics = "^8.4.19"
+ultralytics = "^8.4.21"
 
 # AI Vision/Description
 chimp-openai = { git = "https://github.com/blue-chimp/chimp-openai.git", rev = "pro" }
