@@ -108,7 +108,7 @@ chimp-mistral = { git = "https://github.com/blue-chimp/chimp-mistral.git", rev =
 
 # Advanced segmentation
 # Pin transformers to 4.44.x for groundingdino-py compatibility (has prebuilt wheels)
-transformers = ">=4.40.0,<4.50.0"
+transformers = ">=4.40.0,<5.4.0"
 groundingdino-py = "^0.4.0"
 segment-anything = "^1.0"
 
