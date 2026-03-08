@@ -126,7 +126,7 @@ raw = ["rawpy"]
 # =============================================================================
 # Documentation Dependencies
 # =============================================================================
-ruff = "^0.15.1"
+ruff = "^0.15.5"
 
 [tool.poetry.group.doc.dependencies]
 # sturnus-doc = { git = "https://github.com/starling-cloud/sturnus-doc.git", rev = "pro" }
