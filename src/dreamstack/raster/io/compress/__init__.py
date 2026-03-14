@@ -28,7 +28,7 @@ from .compression_result import CompressionResult
 from .estimate_file_size import estimate_file_size
 from .optimize_for_web import optimize_for_web
 
-__all__ = [
+__all__: list[str] = [
     "CompressionConfig",
     "CompressionFormat",
     "CompressionResult",

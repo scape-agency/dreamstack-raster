@@ -27,7 +27,7 @@ from .pixel_info import pixel_info
 from .pixel_info_dataclass import PixelInfo
 from .sample_color import sample_color
 
-__all__ = [
+__all__: list[str] = [
     "PixelInfo",
     "sample_color",
     "pixel_info",

@@ -28,7 +28,7 @@ def get_grounding_dino_sam_detector():
     return GroundingDinoSamDetector
 
 
-__all__ = [
+__all__: list[str] = [
     "UltralyticsDetector",
     "get_grounding_dino_sam_detector",
 ]

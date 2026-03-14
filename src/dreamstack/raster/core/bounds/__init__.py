@@ -17,7 +17,7 @@ from dreamstack.raster.core.bounds.bounds import Bounds
 from dreamstack.raster.core.bounds.point import Point
 from dreamstack.raster.core.bounds.size import Size
 
-__all__ = [
+__all__: list[str] = [
     "Point",
     "Size",
     "Bounds",

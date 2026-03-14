@@ -14,7 +14,7 @@ from .random_translate import random_translate
 from .translate import translate
 from .translate_percentage import translate_percentage
 
-__all__ = [
+__all__: list[str] = [
     "apply_affine_matrix",
     "center_to_origin",
     "get_translation_matrix",

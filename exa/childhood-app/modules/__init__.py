@@ -9,7 +9,7 @@ from modules.config import AppConfig, CutoutConfig, SegmentConfig, CanvasConfig
 from modules.grid import segment_image, GridSegment
 from modules.effects import apply_effects, EffectType
 
-__all__ = [
+__all__: list[str] = [
     "AppConfig",
     "CutoutConfig",
     "SegmentConfig",

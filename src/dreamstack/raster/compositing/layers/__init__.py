@@ -20,7 +20,7 @@ from .generate_layer_stack_from_dirs import generate_layer_stack_from_dirs
 from .layer_stack_config import LayerStackConfig
 from .stack_layers import stack_layers
 
-__all__ = [
+__all__: list[str] = [
     "LayerStackConfig",
     "stack_layers",
     "generate_layer_combinations",

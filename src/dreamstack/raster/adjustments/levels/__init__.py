@@ -23,7 +23,7 @@ from dreamstack.raster.adjustments.levels.input_levels import input_levels
 from dreamstack.raster.adjustments.levels.levels import levels
 from dreamstack.raster.adjustments.levels.output_levels import output_levels
 
-__all__ = [
+__all__: list[str] = [
     "levels",
     "input_levels",
     "output_levels",

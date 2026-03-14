@@ -44,7 +44,7 @@ from dreamstack.raster.io.formats.queries import (
     supports_layers,
 )
 
-__all__ = [
+__all__: list[str] = [
     "ImageFormat",
     "FORMAT_EXTENSIONS",
     "FORMAT_MIME_TYPES",

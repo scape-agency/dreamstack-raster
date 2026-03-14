@@ -23,7 +23,7 @@ from dreamstack.raster.io.batch.batch_result import BatchResult
 from dreamstack.raster.io.batch.find_images import find_images
 from dreamstack.raster.io.batch.iter_images import iter_images
 
-__all__ = [
+__all__: list[str] = [
     "BatchConfig",
     "BatchResult",
     "batch_apply",

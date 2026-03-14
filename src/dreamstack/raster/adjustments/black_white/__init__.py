@@ -25,7 +25,7 @@ from dreamstack.raster.adjustments.black_white.sepia import sepia
 from dreamstack.raster.adjustments.black_white.threshold import threshold
 from dreamstack.raster.adjustments.black_white.tritone import tritone
 
-__all__ = [
+__all__: list[str] = [
     "black_white",
     "desaturate",
     "channel_mixer",

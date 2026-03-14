@@ -28,7 +28,7 @@ from .image_statistics import image_statistics
 from .image_stats import ImageStats
 from .unique_colors import unique_colors
 
-__all__ = [
+__all__: list[str] = [
     "ChannelStats",
     "ImageStats",
     "channel_statistics",

@@ -46,7 +46,7 @@ from .resize_for_model import resize_for_model
 from .rgb_to_bgr import rgb_to_bgr
 from .to_grayscale import to_grayscale
 
-__all__ = [
+__all__: list[str] = [
     "add_batch_dim",
     "add_channel_dim",
     "augment",

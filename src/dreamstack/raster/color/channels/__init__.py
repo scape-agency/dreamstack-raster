@@ -22,7 +22,7 @@ from .merge_channels import merge_channels
 from .split_channels import split_channels
 from .swap_channels import swap_channels
 
-__all__ = [
+__all__: list[str] = [
     "ChannelName",
     "channel_to_grayscale_rgb",
     "extract_channel",

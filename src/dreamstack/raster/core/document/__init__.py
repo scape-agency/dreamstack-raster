@@ -17,7 +17,7 @@ from dreamstack.raster.core.document.document import Document
 from dreamstack.raster.core.document.grid_settings import GridSettings
 from dreamstack.raster.core.document.guide import Guide
 
-__all__ = [
+__all__: list[str] = [
     "Guide",
     "GridSettings",
     "Document",

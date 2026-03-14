@@ -32,7 +32,7 @@ from .match_template import match_template
 from .match_template_multi import match_template_multi
 from .multi_match_result import MultiMatchResult
 
-__all__ = [
+__all__: list[str] = [
     "MatchMethod",
     "MatchResult",
     "MultiMatchResult",
