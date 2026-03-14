@@ -1,0 +1,51 @@
+# Preprocess Configuration
+# ========================
+# Edit this file to customize image preprocessing settings.
+# Run with: python preprocess.py
+# Override config with: python preprocess.py --config other_config.yaml
+
+# Input/Output directories
+paths:
+  input: "./images"
+  output: "./output"
+  recursive: true  # Process subdirectories
+
+# AI backends
+backends:
+  vision: "openai"      # openai, mistral
+  detection: "ultralytics"  # ultralytics, grounding_dino_sam
+  confidence: 0.5       # Detection confidence threshold (0.0-1.0)
+
+# Cutout settings
+cutout:
+  max_size: 1200        # Maximum dimension in pixels
+  margin: 50            # Margin around bounding box
+  segment_align: true   # Align to segment size multiple
+
+# Segmentation settings
+segment:
+  size: [400, 300]      # [width, height] in pixels
+  randomize_offset: false  # Offset applied at placement time instead
+  max_offset: 50
+  # Uniform grid options (legacy mode, used if fluid_grid is false)
+  generate_inbetweens: false   # Create H/V in-between segments
+  generate_diagonal_inbetweens: false  # Create diagonal in-between segments
+  # Fluid grid options (organic irregular grid)
+  fluid_grid: true         # Use organic irregular grid instead of uniform tiles
+  size_variation: 0.3      # Segment size variation (0.0-1.0). 0.3 = ±30%
+  layer_count: 2           # Number of overlapping segmentation passes
+  layer_selection_ratio: 0.7  # Fraction of segments from each layer (0.0-1.0)
+  rotation_range: 5.0      # Max rotation in degrees (±). Applied at placement.
+
+# Visual effects
+effects:
+  enabled: true         # Apply effects to segments
+  drop_shadow: true
+  shadow_offset: [5, 5]
+  shadow_blur: 10
+  shadow_opacity: 0.5
+  filters: []           # List: warm_filter, cool_filter, vintage, sepia, etc.
+
+# Processing limits
+limits:
+  max_images: null      # Optional: limit number of images to process

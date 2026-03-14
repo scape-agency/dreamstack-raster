@@ -1,0 +1,57 @@
+# Place Configuration
+# ===================
+# Edit this file to customize canvas placement settings.
+# Run with: python place.py
+# Override config with: python place.py --config other_config.yaml
+
+# Canvas dimensions
+canvas:
+  width: 3000
+  height: 2000
+  background: "transparent"  # transparent, white, black, or hex color (#FF0000)
+
+# Output settings
+output:
+  path: "canvas.png"
+  save_layout: null  # Optional: path to save layout JSON
+
+# Random placement mode
+random:
+  enabled: true
+  count: 5   # reduced for testing (was 30)
+  from_dir: "./output"
+  object_type: null  # Optional: filter by type (e.g., "person")
+  keep_cutouts: true  # if true, place segments grouped by object instead of individually
+
+# Cutout placement mode (disabled if random is enabled)
+place_cutout:
+  enabled: false
+  metadata_path: null  # Path to metadata.json
+  cutout_index: 0
+  position: [0, 0]  # [X, Y] canvas position
+
+# Animation and timing
+animation:
+  enabled: true  # Show live preview window (opens browser at localhost:8765)
+  delay: 0.2      # Seconds between placements - reduced for testing (was 1.0)
+  jitter: 0       # Random position offset in pixels for each segment
+  order: "sequential"  # sequential, random, center-out, edge-in, diagonal
+  save_each: null  # Optional: pattern like "frames/frame_{n}.png"
+  organic: true   # if true, segments within a cutout get small random offsets
+  organic_jitter: 6  # px offset used when jitter=0 and organic enabled
+  selection_ratio: 0.7  # Fraction of segments to place (0.0-1.0). Creates layered organic effect.
+  rotation_jitter: 3.0  # Additional random rotation in degrees (±). Adds organic feel.
+
+# Grid layout (only if not using random or place_cutout)
+grid:
+  enabled: false
+  columns: 10
+
+# Load layout from file (only if not using random, place_cutout, or grid)
+layout:
+  load: null  # Optional: path to layout JSON file
+
+# Filtering options (used by random/grid modes)
+filter:
+  color: red         # "red", "green", "blue", etc. case‑insensitive (null = no filter)
+  color_threshold: 50  # how much stronger the chosen channel must be

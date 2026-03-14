@@ -93,14 +93,14 @@ piexif = "^1.1.0"
 
 # HDR/EXR support
 imageio = "^2.35.0"
-OpenEXR = "^3.2.0"
+OpenEXR = "^3.4.5"
 
 # ICC color profiles
 Pillow-heif = "^0.18.0"
 
 # ML/Object Detection
 # Note: ultralytics will install torch automatically
-ultralytics = "^8.3.0"
+ultralytics = "^8.4.19"
 
 # AI Vision/Description
 chimp-openai = { git = "https://github.com/blue-chimp/chimp-openai.git", rev = "pro" }
@@ -126,7 +126,7 @@ raw = ["rawpy"]
 # =============================================================================
 # Documentation Dependencies
 # =============================================================================
-ruff = "^0.15.1"
+ruff = "^0.15.5"
 
 [tool.poetry.group.doc.dependencies]
 # sturnus-doc = { git = "https://github.com/starling-cloud/sturnus-doc.git", rev = "pro" }
