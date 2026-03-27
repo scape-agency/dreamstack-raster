@@ -1,0 +1,211 @@
+{
+  "source_image": "jim.JPG",
+  "processed_at": "2026-03-27T15:42:50.968366",
+  "image_size": {
+    "width": 640,
+    "height": 480
+  },
+  "ai_description": "The image depicts a beach scene with a young person and a small dog playing together. The person is possibly a child or teenager, wearing a green t-shirt and blue jeans with both hands visible, although specific facial features are not clear. The person appears to be in motion, suggesting they just threw a tennis ball, which is visible in the air above them. The dog, small and fluffy with a light-colored coat, is joyfully running on the sand. The background consists of the ocean meeting the sky, creating a serene and open atmosphere. The beach is sandy and expansive with no other visible objects or people in the scene.",
+  "detected_objects": [
+    "person",
+    "face",
+    "hair",
+    "hand",
+    "arm",
+    "leg",
+    "foot",
+    "t-shirt",
+    "jeans",
+    "dog",
+    "tennis ball",
+    "ocean",
+    "sky",
+    "sand"
+  ],
+  "config": {
+    "cutout": {
+      "max_size": 1200,
+      "margin": 50,
+      "segment_align": true
+    },
+    "segment": {
+      "segment_size": [
+        400,
+        300
+      ],
+      "randomize_offset": false,
+      "max_offset": 50
+    },
+    "canvas": {
+      "size": [
+        8000,
+        3000
+      ],
+      "origin": "bottom-left"
+    },
+    "effects": {
+      "drop_shadow": true,
+      "shadow_offset": [
+        5,
+        5
+      ],
+      "shadow_blur": 10,
+      "filters": []
+    },
+    "vision_backend": "openai",
+    "detection_backend": "ultralytics",
+    "confidence_threshold": 0.5
+  },
+  "cutouts": [
+    {
+      "label": "person",
+      "confidence": 0.8888,
+      "file": "cutouts/person_1.png",
+      "size": [
+        800,
+        1200
+      ],
+      "original_bbox": [
+        204,
+        145,
+        81,
+        178
+      ],
+      "margin": 50,
+      "crop_bounds": [
+        152,
+        95,
+        337,
+        373
+      ],
+      "actual_bounds": [
+        152,
+        95,
+        337,
+        373
+      ],
+      "target_size": [
+        800,
+        1200
+      ],
+      "has_padding": false,
+      "segments": [
+        {
+          "file": "segments/person_1/seg_0_0.png",
+          "row": 0,
+          "col": 0,
+          "position": [
+            346,
+            0
+          ],
+          "size": [
+            232,
+            266
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_1_0.png",
+          "row": 1,
+          "col": 0,
+          "position": [
+            234,
+            266
+          ],
+          "size": [
+            370,
+            209
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_2_0.png",
+          "row": 2,
+          "col": 0,
+          "position": [
+            165,
+            475
+          ],
+          "size": [
+            435,
+            287
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_3_0.png",
+          "row": 3,
+          "col": 0,
+          "position": [
+            281,
+            762
+          ],
+          "size": [
+            353,
+            220
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_4_0.png",
+          "row": 4,
+          "col": 0,
+          "position": [
+            316,
+            982
+          ],
+          "size": [
+            318,
+            218
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1222 @@
+{
+  "source_image": "Jimenguido.JPG",
+  "processed_at": "2026-03-27T15:42:46.796019",
+  "image_size": {
+    "width": 2272,
+    "height": 1704
+  },
+  "ai_description": "The image depicts a warmly lit room with two children sitting at a wooden table, engaged in a game of chess. There are two chairs with armrests at the table. A hanging lamp above the table illuminates the scene. The child on the left is seen in a side view, with visible facial features such as eyes, nose, mouth, and ears. They have short hair and are wearing a light-colored, long-sleeved shirt. The child on the right is also in a side view, with similar visible facial features, short hair, and is wearing a dark, long-sleeved shirt. Both children have their hands on or near the chessboard. A vase with flowers and a bowl of fruit are placed on the table. In the background, there is a tall candle holder, a few scattered items like boxes and a small black bag, and a radiator next to a curtain.",
+  "detected_objects": [
+    "person",
+    "face",
+    "eye",
+    "nose",
+    "mouth",
+    "ear",
+    "hair",
+    "hand",
+    "chair",
+    "table",
+    "lamp",
+    "chessboard",
+    "chess pieces",
+    "vase",
+    "flowers",
+    "fruit bowl",
+    "fruit",
+    "candle holder",
+    "box",
+    "bag",
+    "curtain",
+    "radiator"
+  ],
+  "config": {
+    "cutout": {
+      "max_size": 1200,
+      "margin": 50,
+      "segment_align": true
+    },
+    "segment": {
+      "segment_size": [
+        400,
+        300
+      ],
+      "randomize_offset": false,
+      "max_offset": 50
+    },
+    "canvas": {
+      "size": [
+        8000,
+        3000
+      ],
+      "origin": "bottom-left"
+    },
+    "effects": {
+      "drop_shadow": true,
+      "shadow_offset": [
+        5,
+        5
+      ],
+      "shadow_blur": 10,
+      "filters": []
+    },
+    "vision_backend": "openai",
+    "detection_backend": "ultralytics",
+    "confidence_threshold": 0.5
+  },
+  "cutouts": [
+    {
+      "label": "person",
+      "confidence": 0.7925,
+      "file": "cutouts/person_1.png",
+      "size": [
+        1200,
+        1200
+      ],
+      "original_bbox": [
+        1274,
+        333,
+        458,
+        489
+      ],
+      "margin": 50,
+      "crop_bounds": [
+        1209,
+        283,
+        1797,
+        872
+      ],
+      "actual_bounds": [
+        1209,
+        283,
+        1797,
+        872
+      ],
+      "target_size": [
+        1200,
+        1200
+      ],
+      "has_padding": false,
+      "segments": [
+        {
+          "file": "segments/person_1/seg_0_0.png",
+          "row": 0,
+          "col": 0,
+          "position": [
+            305,
+            0
+          ],
+          "size": [
+            581,
+            328
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_1_0.png",
+          "row": 1,
+          "col": 0,
+          "position": [
+            313,
+            328
+          ],
+          "size": [
+            302,
+            251
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_1_1.png",
+          "row": 1,
+          "col": 1,
+          "position": [
+            615,
+            328
+          ],
+          "size": [
+            330,
+            251
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_2_0.png",
+          "row": 2,
+          "col": 0,
+          "position": [
+            95,
+            579
+          ],
+          "size": [
+            447,
+            293
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_2_1.png",
+          "row": 2,
+          "col": 1,
+          "position": [
+            542,
+            579
+          ],
+          "size": [
+            548,
+            293
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_3_0.png",
+          "row": 3,
+          "col": 0,
+          "position": [
+            543,
+            872
+          ],
+          "size": [
+            582,
+            328
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "chair",
+      "confidence": 0.7835,
+      "file": "cutouts/chair_2.png",
+      "size": [
+        1200,
+        1200
+      ],
+      "original_bbox": [
+        1449,
+        748,
+        603,
+        948
+      ],
+      "margin": 50,
+      "crop_bounds": [
+        1227,
+        698,
+        2274,
+        1746
+      ],
+      "actual_bounds": [
+        1227,
+        698,
+        2272,
+        1704
+      ],
+      "target_size": [
+        1200,
+        1200
+      ],
+      "has_padding": true,
+      "segments": [
+        {
+          "file": "segments/chair_2/seg_0_0.png",
+          "row": 0,
+          "col": 0,
+          "position": [
+            392,
+            0
+          ],
+          "size": [
+            385,
+            238
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/chair_2/seg_0_1.png",
+          "row": 0,
+          "col": 1,
+          "position": [
+            777,
+            0
+          ],
+          "size": [
+            227,
+            238
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/chair_2/seg_1_0.png",
+          "row": 1,
+          "col": 0,
+          "position": [
+            486,
+            238
+          ],
+          "size": [
+            513,
+            219
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/chair_2/seg_2_0.png",
+          "row": 2,
+          "col": 0,
+          "position": [
+            194,
+            457
+          ],
+          "size": [
+            482,
+            246
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/chair_2/seg_2_1.png",
+          "row": 2,
+          "col": 1,
+          "position": [
+            676,
+            457
+          ],
+          "size": [
+            278,
+            246
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/chair_2/seg_3_0.png",
+          "row": 3,
+          "col": 0,
+          "position": [
+            214,
+            703
+          ],
+          "size": [
+            332,
+            261
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/chair_2/seg_3_1.png",
+          "row": 3,
+          "col": 1,
+          "position": [
+            546,
+            703
+          ],
+          "size": [
+            416,
+            261
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/chair_2/seg_4_0.png",
+          "row": 4,
+          "col": 0,
+          "position": [
+            271,
+            964
+          ],
+          "size": [
+            427,
+            236
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/chair_2/seg_4_1.png",
+          "row": 4,
+          "col": 1,
+          "position": [
+            698,
+            964
+          ],
+          "size": [
+            282,
+            236
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "person",
+      "confidence": 0.7546,
+      "file": "cutouts/person_3.png",
+      "size": [
+        1200,
+        1200
+      ],
+      "original_bbox": [
+        606,
+        384,
+        379,
+        560
+      ],
+      "margin": 50,
+      "crop_bounds": [
+        466,
+        334,
+        1125,
+        994
+      ],
+      "actual_bounds": [
+        466,
+        334,
+        1125,
+        994
+      ],
+      "target_size": [
+        1200,
+        1200
+      ],
+      "has_padding": false,
+      "segments": [
+        {
+          "file": "segments/person_3/seg_0_0.png",
+          "row": 0,
+          "col": 0,
+          "position": [
+            422,
+            0
+          ],
+          "size": [
+            475,
+            310
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_3/seg_1_0.png",
+          "row": 1,
+          "col": 0,
+          "position": [
+            345,
+            310
+          ],
+          "size": [
+            552,
+            181
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_3/seg_2_0.png",
+          "row": 2,
+          "col": 0,
+          "position": [
+            229,
+            491
+          ],
+          "size": [
+            294,
+            280
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_3/seg_2_1.png",
+          "row": 2,
+          "col": 1,
+          "position": [
+            523,
+            491
+          ],
+          "size": [
+            480,
+            280
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_3/seg_3_0.png",
+          "row": 3,
+          "col": 0,
+          "position": [
+            222,
+            771
+          ],
+          "size": [
+            307,
+            233
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_3/seg_3_1.png",
+          "row": 3,
+          "col": 1,
+          "position": [
+            529,
+            771
+          ],
+          "size": [
+            426,
+            233
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_3/seg_4_0.png",
+          "row": 4,
+          "col": 0,
+          "position": [
+            229,
+            1004
+          ],
+          "size": [
+            203,
+            196
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "chair",
+      "confidence": 0.7403,
+      "file": "cutouts/chair_4.png",
+      "size": [
+        800,
+        1200
+      ],
+      "original_bbox": [
+        354,
+        705,
+        283,
+        733
+      ],
+      "margin": 50,
+      "crop_bounds": [
+        218,
+        655,
+        773,
+        1488
+      ],
+      "actual_bounds": [
+        218,
+        655,
+        773,
+        1488
+      ],
+      "target_size": [
+        800,
+        1200
+      ],
+      "has_padding": false,
+      "segments": [
+        {
+          "file": "segments/chair_4/seg_0_0.png",
+          "row": 0,
+          "col": 0,
+          "position": [
+            136,
+            0
+          ],
+          "size": [
+            510,
+            330
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/chair_4/seg_1_0.png",
+          "row": 1,
+          "col": 0,
+          "position": [
+            184,
+            330
+          ],
+          "size": [
+            466,
+            496
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/chair_4/seg_2_0.png",
+          "row": 2,
+          "col": 0,
+          "position": [
+            199,
+            826
+          ],
+          "size": [
+            308,
+            374
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "dining table",
+      "confidence": 0.6188,
+      "file": "cutouts/dining table_5.png",
+      "size": [
+        1200,
+        1200
+      ],
+      "original_bbox": [
+        550,
+        615,
+        1204,
+        1061
+      ],
+      "margin": 50,
+      "crop_bounds": [
+        500,
+        494,
+        1804,
+        1797
+      ],
+      "actual_bounds": [
+        500,
+        494,
+        1804,
+        1704
+      ],
+      "target_size": [
+        1200,
+        1200
+      ],
+      "has_padding": true,
+      "segments": [
+        {
+          "file": "segments/dining table_5/seg_0_0.png",
+          "row": 0,
+          "col": 0,
+          "position": [
+            13,
+            0
+          ],
+          "size": [
+            432,
+            479
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/dining table_5/seg_0_1.png",
+          "row": 0,
+          "col": 1,
+          "position": [
+            445,
+            0
+          ],
+          "size": [
+            364,
+            479
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/dining table_5/seg_0_2.png",
+          "row": 0,
+          "col": 2,
+          "position": [
+            809,
+            0
+          ],
+          "size": [
+            391,
+            479
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/dining table_5/seg_1_0.png",
+          "row": 1,
+          "col": 0,
+          "position": [
+            6,
+            479
+          ],
+          "size": [
+            321,
+            439
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/dining table_5/seg_1_1.png",
+          "row": 1,
+          "col": 1,
+          "position": [
+            327,
+            479
+          ],
+          "size": [
+            422,
+            439
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/dining table_5/seg_1_2.png",
+          "row": 1,
+          "col": 2,
+          "position": [
+            749,
+            479
+          ],
+          "size": [
+            451,
+            439
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/dining table_5/seg_2_0.png",
+          "row": 2,
+          "col": 0,
+          "position": [
+            78,
+            918
+          ],
+          "size": [
+            345,
+            282
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/dining table_5/seg_2_1.png",
+          "row": 2,
+          "col": 1,
+          "position": [
+            423,
+            918
+          ],
+          "size": [
+            387,
+            282
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/dining table_5/seg_2_2.png",
+          "row": 2,
+          "col": 2,
+          "position": [
+            810,
+            918
+          ],
+          "size": [
+            353,
+            282
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "potted plant",
+      "confidence": 0.5714,
+      "file": "cutouts/potted plant_6.png",
+      "size": [
+        1200,
+        1200
+      ],
+      "original_bbox": [
+        921,
+        231,
+        335,
+        377
+      ],
+      "margin": 50,
+      "crop_bounds": [
+        850,
+        181,
+        1327,
+        658
+      ],
+      "actual_bounds": [
+        850,
+        181,
+        1327,
+        658
+      ],
+      "target_size": [
+        1200,
+        1200
+      ],
+      "has_padding": false,
+      "segments": [
+        {
+          "file": "segments/potted plant_6/seg_0_0.png",
+          "row": 0,
+          "col": 0,
+          "position": [
+            141,
+            0
+          ],
+          "size": [
+            429,
+            281
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/potted plant_6/seg_0_1.png",
+          "row": 0,
+          "col": 1,
+          "position": [
+            570,
+            0
+          ],
+          "size": [
+            485,
+            281
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/potted plant_6/seg_1_0.png",
+          "row": 1,
+          "col": 0,
+          "position": [
+            119,
+            281
+          ],
+          "size": [
+            555,
+            280
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/potted plant_6/seg_1_1.png",
+          "row": 1,
+          "col": 1,
+          "position": [
+            674,
+            281
+          ],
+          "size": [
+            391,
+            280
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/potted plant_6/seg_2_0.png",
+          "row": 2,
+          "col": 0,
+          "position": [
+            267,
+            561
+          ],
+          "size": [
+            399,
+            318
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/potted plant_6/seg_2_1.png",
+          "row": 2,
+          "col": 1,
+          "position": [
+            666,
+            561
+          ],
+          "size": [
+            337,
+            318
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/potted plant_6/seg_3_0.png",
+          "row": 3,
+          "col": 0,
+          "position": [
+            428,
+            879
+          ],
+          "size": [
+            217,
+            321
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        }
+      ]
+    }
+  ]
+}

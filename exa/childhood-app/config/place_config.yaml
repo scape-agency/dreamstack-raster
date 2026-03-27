@@ -18,7 +18,7 @@ output:
 # Random placement mode
 random:
   enabled: true
-  count: 5   # reduced for testing (was 30)
+  count: 20   # objects to place (e.g., 10 people). Ignored if place_cutout is enabled.
   from_dir: "./output"
   object_type: null  # Optional: filter by type (e.g., "person")
   keep_cutouts: true  # if true, place segments grouped by object instead of individually
@@ -33,14 +33,16 @@ place_cutout:
 # Animation and timing
 animation:
   enabled: true  # Show live preview window (opens browser at localhost:8765)
-  delay: 0.2      # Seconds between placements - reduced for testing (was 1.0)
+  delay: 0.4      # Seconds between placements
   jitter: 0       # Random position offset in pixels for each segment
   order: "sequential"  # sequential, random, center-out, edge-in, diagonal
   save_each: null  # Optional: pattern like "frames/frame_{n}.png"
   organic: true   # if true, segments within a cutout get small random offsets
   organic_jitter: 6  # px offset used when jitter=0 and organic enabled
-  selection_ratio: 0.7  # Fraction of segments to place (0.0-1.0). Creates layered organic effect.
-  rotation_jitter: 3.0  # Additional random rotation in degrees (±). Adds organic feel.
+  selection_ratio: 0.9  # Fraction of segments to place (0.0-1.0). Creates layered organic effect.
+  rotation_range: 0.5    # Base random rotation in degrees (±). Applied per segment at placement.
+  rotation_jitter: 0   # Additional random rotation in degrees (±). Adds organic feel on top.
+  parallel_tracks: 2     # Number of cutouts placed simultaneously (1 = sequential, up to 5)
 
 # Grid layout (only if not using random or place_cutout)
 grid:
@@ -51,7 +53,14 @@ grid:
 layout:
   load: null  # Optional: path to layout JSON file
 
+# Post-production color grading (applied to final canvas)
+postproduction:
+  mode: "gradient_map"          # "normal", "bw" (black & white), "gradient_map"
+  # Gradient map settings (only used when mode is "gradient_map")
+  gradient_dark: "#1a1a2e"   # Color for dark tones (hex)
+  gradient_light: "#e0c9a6"  # Color for light tones (hex)
+
 # Filtering options (used by random/grid modes)
 filter:
-  color: red         # "red", "green", "blue", etc. case‑insensitive (null = no filter)
+  color: null         # "red", "green", "blue", etc. case‑insensitive (null = no filter)
   color_threshold: 50  # how much stronger the chosen channel must be

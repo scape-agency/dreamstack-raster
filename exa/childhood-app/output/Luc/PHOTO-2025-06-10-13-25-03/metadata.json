@@ -1,0 +1,341 @@
+{
+  "source_image": "PHOTO-2025-06-10-13-25-03.jpg",
+  "processed_at": "2026-03-27T15:42:56.281666",
+  "image_size": {
+    "width": 1536,
+    "height": 2040
+  },
+  "ai_description": "The image shows a child sitting on a couch, focused on playing with toys. The child has short, light brown hair and visible facial features including eyes, a nose, mouth, and ears. The child is wearing a patterned sweater or jacket over a light-colored shirt. In their hands, they hold a small, colorful toy figure. There is also a colorful plastic activity table in front of the child with various shapes, including a red handle/gripper attached to it. To the left of the child, an adult's arm is visible, holding another small toy. The adult is wearing a patterned sweater and blue pants. In the background, a beige couch and a wall socket can be seen.",
+  "detected_objects": [
+    "child",
+    "face",
+    "eyes",
+    "nose",
+    "mouth",
+    "ears",
+    "hair",
+    "sweater",
+    "shirt",
+    "hand",
+    "toy figure",
+    "activity table",
+    "shapes",
+    "adult arm",
+    "toy",
+    "couch",
+    "wall socket."
+  ],
+  "config": {
+    "cutout": {
+      "max_size": 1200,
+      "margin": 50,
+      "segment_align": true
+    },
+    "segment": {
+      "segment_size": [
+        400,
+        300
+      ],
+      "randomize_offset": false,
+      "max_offset": 50
+    },
+    "canvas": {
+      "size": [
+        8000,
+        3000
+      ],
+      "origin": "bottom-left"
+    },
+    "effects": {
+      "drop_shadow": true,
+      "shadow_offset": [
+        5,
+        5
+      ],
+      "shadow_blur": 10,
+      "filters": []
+    },
+    "vision_backend": "openai",
+    "detection_backend": "ultralytics",
+    "confidence_threshold": 0.5
+  },
+  "cutouts": [
+    {
+      "label": "person",
+      "confidence": 0.7865,
+      "file": "cutouts/person_1.png",
+      "size": [
+        800,
+        1200
+      ],
+      "original_bbox": [
+        329,
+        350,
+        692,
+        1114
+      ],
+      "margin": 50,
+      "crop_bounds": [
+        271,
+        300,
+        1079,
+        1514
+      ],
+      "actual_bounds": [
+        271,
+        300,
+        1079,
+        1514
+      ],
+      "target_size": [
+        800,
+        1200
+      ],
+      "has_padding": false,
+      "segments": [
+        {
+          "file": "segments/person_1/seg_0_0.png",
+          "row": 0,
+          "col": 0,
+          "position": [
+            271,
+            0
+          ],
+          "size": [
+            502,
+            421
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_1_0.png",
+          "row": 1,
+          "col": 0,
+          "position": [
+            22,
+            421
+          ],
+          "size": [
+            342,
+            387
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_1_1.png",
+          "row": 1,
+          "col": 1,
+          "position": [
+            364,
+            421
+          ],
+          "size": [
+            379,
+            387
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_2_0.png",
+          "row": 2,
+          "col": 0,
+          "position": [
+            22,
+            808
+          ],
+          "size": [
+            301,
+            392
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_2_1.png",
+          "row": 2,
+          "col": 1,
+          "position": [
+            323,
+            808
+          ],
+          "size": [
+            435,
+            392
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "person",
+      "confidence": 0.5914,
+      "file": "cutouts/person_2.png",
+      "size": [
+        800,
+        1200
+      ],
+      "original_bbox": [
+        1,
+        44,
+        348,
+        892
+      ],
+      "margin": 50,
+      "crop_bounds": [
+        -155,
+        -6,
+        505,
+        986
+      ],
+      "actual_bounds": [
+        0,
+        0,
+        505,
+        986
+      ],
+      "target_size": [
+        800,
+        1200
+      ],
+      "has_padding": true,
+      "segments": [
+        {
+          "file": "segments/person_2/seg_0_0.png",
+          "row": 0,
+          "col": 0,
+          "position": [
+            178,
+            0
+          ],
+          "size": [
+            250,
+            331
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_2/seg_1_0.png",
+          "row": 1,
+          "col": 0,
+          "position": [
+            178,
+            331
+          ],
+          "size": [
+            301,
+            312
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_2/seg_2_0.png",
+          "row": 2,
+          "col": 0,
+          "position": [
+            178,
+            643
+          ],
+          "size": [
+            479,
+            287
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_2/seg_3_0.png",
+          "row": 3,
+          "col": 0,
+          "position": [
+            178,
+            930
+          ],
+          "size": [
+            491,
+            270
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        }
+      ]
+    }
+  ]
+}

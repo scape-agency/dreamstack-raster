@@ -21,6 +21,7 @@ cutout:
   max_size: 1200        # Maximum dimension in pixels
   margin: 50            # Margin around bounding box
   segment_align: true   # Align to segment size multiple
+  cutout_mode: "contour" # "bbox" = full rectangle, "contour" = follow object silhouette
 
 # Segmentation settings
 segment:
@@ -33,19 +34,20 @@ segment:
   # Fluid grid options (organic irregular grid)
   fluid_grid: true         # Use organic irregular grid instead of uniform tiles
   size_variation: 0.3      # Segment size variation (0.0-1.0). 0.3 = ±30%
-  layer_count: 2           # Number of overlapping segmentation passes
+  layer_count: 1           # Number of overlapping segmentation passes
   layer_selection_ratio: 0.7  # Fraction of segments from each layer (0.0-1.0)
-  rotation_range: 5.0      # Max rotation in degrees (±). Applied at placement.
+  rotation_range: 0.0      # Rotation is now applied at placement time only (see place_config.yaml).
+  contour_padding: 0.15    # Extra padding beyond object edges (fraction of segment width)
 
 # Visual effects
 effects:
   enabled: true         # Apply effects to segments
   drop_shadow: true
-  shadow_offset: [5, 5]
+  shadow_offset: [3, 3]
   shadow_blur: 10
-  shadow_opacity: 0.5
+  shadow_opacity: 0.3
   filters: []           # List: warm_filter, cool_filter, vintage, sepia, etc.
 
 # Processing limits
 limits:
-  max_images: null      # Optional: limit number of images to process
+  max_images: 10      # Optional: limit number of images to process

@@ -19,6 +19,7 @@ def extract_cutout(
     max_size: int = 1200,
     segment_size: tuple[int, int] = (250, 250),
     segment_align: bool = True,
+    mask: np.ndarray | None = None,
 ) -> tuple[Image.Image, dict]:
     """Extract and scale bounding box cutout with smart sizing.
 
@@ -41,6 +42,10 @@ def extract_cutout(
         Segment size for alignment. Default (250, 250).
     segment_align : bool
         Align smallest dimension to segment multiple. Default True.
+    mask : np.ndarray | None
+        Optional segmentation mask (uint8, same size as bbox region).
+        When provided the mask is applied as the alpha channel so that
+        background pixels outside the object silhouette become transparent.
 
     Returns
     -------
@@ -127,6 +132,30 @@ def extract_cutout(
     # Scale to target size
     result = full_crop.resize((target_w, target_h), Image.Resampling.LANCZOS)
 
+    # When a segmentation mask is provided, scale it to match the cutout
+    # dimensions and include it in metadata.  The segmenter uses this for
+    # contour-adaptive grid planning.  The cutout pixels stay fully opaque.
+    scaled_mask = None
+    if mask is not None:
+        mask_full = np.zeros((crop_h, crop_w), dtype=np.uint8)
+        mask_off_x = x - x1_desired
+        mask_off_y = y - y1_desired
+        mh, mw = mask.shape[:2]
+        src_x0 = max(0, -mask_off_x)
+        src_y0 = max(0, -mask_off_y)
+        dst_x0 = max(0, mask_off_x)
+        dst_y0 = max(0, mask_off_y)
+        copy_w = min(mw - src_x0, crop_w - dst_x0)
+        copy_h = min(mh - src_y0, crop_h - dst_y0)
+        if copy_w > 0 and copy_h > 0:
+            mask_full[dst_y0:dst_y0 + copy_h, dst_x0:dst_x0 + copy_w] = (
+                mask[src_y0:src_y0 + copy_h, src_x0:src_x0 + copy_w]
+            )
+        mask_pil = Image.fromarray(mask_full).resize(
+            (target_w, target_h), Image.Resampling.LANCZOS
+        )
+        scaled_mask = np.array(mask_pil)
+
     # Metadata about the cutout
     metadata = {
         "original_bbox": [x, y, bw, bh],
@@ -140,6 +169,7 @@ def extract_cutout(
             or x2_desired > img_w
             or y2_desired > img_h
         ),
+        "scaled_mask": scaled_mask,
     }
 
     return result, metadata

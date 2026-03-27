@@ -47,12 +47,14 @@ def detect_objects(
 
     detections = []
     for det in result.detections:
-        detections.append(
-            {
-                "label": det.label,
-                "confidence": det.confidence,
-                "bbox": det.bbox,  # (x, y, w, h)
-            }
-        )
+        entry: dict = {
+            "label": det.label,
+            "confidence": det.confidence,
+            "bbox": det.bbox,  # (x, y, w, h)
+        }
+        # Preserve segmentation mask when available (uint8 ndarray, bbox-sized)
+        if det.has_mask:
+            entry["mask"] = det.mask
+        detections.append(entry)
 
     return detections

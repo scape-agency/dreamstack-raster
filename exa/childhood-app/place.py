@@ -157,7 +157,14 @@ def main() -> int:
     organic_jitter = get_nested(cfg, "animation", "organic_jitter", default=6)
     # Fluid grid placement options
     selection_ratio = get_nested(cfg, "animation", "selection_ratio", default=0.7)
+    rotation_range = get_nested(cfg, "animation", "rotation_range", default=1.0)
     rotation_jitter = get_nested(cfg, "animation", "rotation_jitter", default=3.0)
+    parallel_tracks = max(1, min(5, get_nested(cfg, "animation", "parallel_tracks", default=1)))
+
+    # Postproduction config
+    pp_mode = get_nested(cfg, "postproduction", "mode", default="normal")
+    pp_gradient_dark = get_nested(cfg, "postproduction", "gradient_dark", default="#000000")
+    pp_gradient_light = get_nested(cfg, "postproduction", "gradient_light", default="#ffffff")
 
     # Grid config
     grid_enabled = get_nested(cfg, "grid", "enabled", default=False)
@@ -189,6 +196,13 @@ def main() -> int:
         bg = (0, 0, 0, 0)
 
     canvas = Canvas(width, height, bg)
+
+    # Configure postproduction color grading (applied per-segment during render)
+    canvas.set_postproduction(
+        mode=pp_mode,
+        gradient_dark=pp_gradient_dark,
+        gradient_light=pp_gradient_light,
+    )
 
     # Place cutout segments iteratively
     if place_cutout:
@@ -243,6 +257,7 @@ def main() -> int:
             order=order,
             animate=animate,
             selection_ratio=selection_ratio,
+            rotation_range=rotation_range,
             rotation_jitter=rotation_jitter,
         )
 
@@ -283,12 +298,123 @@ def main() -> int:
             if not candidates:
                 logger.warning("No cutouts available for random placement")
             else:
-                logger.info("Selected %d cutouts for placement", min(random_count, len(candidates)))
-                chosen = random.sample(candidates, min(random_count, len(candidates)))
+                num_chosen = min(random_count, len(candidates))
+                logger.info("Selected %d cutouts for placement", num_chosen)
+                chosen = random.sample(candidates, num_chosen)
+
+                # Count total segments across all cutouts for the progress bar
+                total_segments = sum(
+                    len(sel["cutout"].get("segments", []))
+                    for sel in chosen
+                )
+
+                # Start ONE preview server for the entire placement loop
+                preview_dir = None
+                preview_image = None
+                server = None
+                if animate:
+                    try:
+                        import http.server
+                        import socketserver
+                        import threading
+                        import tempfile
+                        import webbrowser
+                        import shutil
+
+                        preview_dir = Path(tempfile.mkdtemp(prefix="canvas_preview_"))
+                        preview_image = preview_dir / "canvas.png"
+
+                        html_content = f"""<!DOCTYPE html>
+<html>
+<head>
+    <title>Canvas Preview</title>
+    <style>
+        * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+        html, body {{ width: 100vw; height: 100vh; background: #1a1a1a; color: #fff; font-family: system-ui; overflow: hidden; }}
+        body {{ display: flex; flex-direction: column; padding: 10px; }}
+        #header {{ flex-shrink: 0; margin-bottom: 10px; }}
+        h1 {{ font-size: 16px; }}
+        #status {{ color: #888; font-size: 14px; }}
+        #canvas-container {{ flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }}
+        #canvas {{ max-width: calc(100vw - 22px); max-height: calc(100vh - 60px); object-fit: contain; border: 1px solid #333; background: repeating-conic-gradient(#222 0% 25%, #333 0% 50%) 50% / 20px 20px; }}
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>Canvas Preview</h1>
+        <div id="status">Placing segments...</div>
+    </div>
+    <div id="canvas-container">
+        <img id="canvas" src="canvas.png" />
+    </div>
+    <script>
+        const img = document.getElementById('canvas');
+        const status = document.getElementById('status');
+        const delay = {int(delay * 1000)};
+
+        function refresh() {{
+            fetch('status.json?' + Date.now())
+                .then(r => r.ok ? r.json() : Promise.reject('not ready'))
+                .then(data => {{
+                    const newImg = new Image();
+                    newImg.onload = function() {{
+                        img.src = newImg.src;
+                        status.textContent = data.done
+                            ? 'Done! Placed ' + data.placed + ' segments'
+                            : 'Placed ' + data.placed + ' / ' + data.total + ' segments';
+                        if (!data.done) {{
+                            setTimeout(refresh, delay);
+                        }}
+                    }};
+                    newImg.onerror = function() {{
+                        setTimeout(refresh, delay);
+                    }};
+                    newImg.src = 'canvas.png?' + Date.now();
+                }})
+                .catch(() => {{
+                    setTimeout(refresh, delay);
+                }});
+        }}
+        setTimeout(refresh, delay);
+    </script>
+</body>
+</html>"""
+                        (preview_dir / "index.html").write_text(html_content)
+
+                        # Render initial canvas
+                        import os as _os
+                        canvas.render().save(preview_image)
+                        (preview_dir / "status.json").write_text(
+                            json.dumps({"placed": 0, "total": total_segments, "done": False})
+                        )
+
+                        class _QuietHandler(http.server.SimpleHTTPRequestHandler):
+                            def __init__(self, *a, **kw):
+                                super().__init__(*a, directory=str(preview_dir), **kw)
+                            def log_message(self, fmt, *a):
+                                pass
+
+                        port = 8765
+                        server = socketserver.TCPServer(("", port), _QuietHandler)
+                        threading.Thread(target=server.serve_forever, daemon=True).start()
+                        logger.info("Preview server running at http://localhost:%d", port)
+                        webbrowser.open(f"http://localhost:{port}")
+                        import time as _time
+                        _time.sleep(0.5)
+                    except Exception as exc:
+                        logger.warning("Browser preview unavailable: %s", exc)
+                        animate = False
+                        preview_dir = None
+                        preview_image = None
+
+                # --- Prepare all cutout segment lists up-front ---
+                import time as _time
+                import os as _os
+
+                all_prepared: list[list[dict]] = []
                 for sel in chosen:
                     cutout_meta = sel["cutout"]
                     cutout_size = tuple(cutout_meta.get("size", [0, 0]))
-                    # compute random canvas position ensuring whole cutout fits
                     x = random.randint(
                         margin,
                         max(margin, width - cutout_size[0] - margin),
@@ -297,21 +423,126 @@ def main() -> int:
                         margin,
                         max(margin, height - cutout_size[1] - margin),
                     )
-                    canvas.place_cutout_segments(
+                    segs = canvas.prepare_cutout_segments(
                         cutout_meta,
                         canvas_x=x,
                         canvas_y=y,
                         base_dir=sel["base_dir"],
-                        delay=delay,
-                        save_each=save_each,
                         jitter=jitter,
                         organic=organic,
                         organic_jitter=organic_jitter,
                         order=order,
-                        animate=animate,
                         selection_ratio=selection_ratio,
+                        rotation_range=rotation_range,
                         rotation_jitter=rotation_jitter,
                     )
+                    if segs:
+                        all_prepared.append(segs)
+
+                # --- Time-based parallel placement scheduler ---
+                # Each track has its own independent timing with random
+                # variation so they naturally drift apart (not lockstep).
+                queue = list(all_prepared)  # cutouts waiting for a track slot
+                placed_so_far = 0
+                _needs_preview_update = False
+
+                # Track state: list of (segment_list, current_index, next_time)
+                active: list[tuple[list[dict], int, float]] = []
+
+                now = _time.monotonic()
+
+                def _fill_tracks() -> None:
+                    """Fill empty track slots from the queue."""
+                    nonlocal now
+                    while len(active) < parallel_tracks and queue:
+                        segs = queue.pop(0)
+                        # Stagger start: each new track starts with a small
+                        # random offset so they don't begin in sync.
+                        offset = random.uniform(0, delay * 0.5) if active else 0
+                        active.append((segs, 0, now + offset))
+
+                _fill_tracks()
+
+                while active:
+                    # Find the track with the earliest next_time
+                    earliest_idx = min(range(len(active)), key=lambda i: active[i][2])
+                    segs_list, seg_idx, next_t = active[earliest_idx]
+
+                    # Wait until it's time for this track's next segment
+                    wait = next_t - _time.monotonic()
+                    if wait > 0:
+                        # Flush preview update before sleeping (batch: one
+                        # render per wait, not per segment)
+                        if _needs_preview_update:
+                            if animate and preview_image is not None:
+                                tmp = preview_image.with_suffix(".tmp.png")
+                                canvas.render_incremental().save(tmp)
+                                _os.replace(str(tmp), str(preview_image))
+                                if preview_dir is not None:
+                                    (preview_dir / "status.json").write_text(
+                                        json.dumps({"placed": placed_so_far, "total": total_segments, "done": False})
+                                    )
+                            if save_each:
+                                frame_path = str(save_each).format(n=placed_so_far)
+                                canvas.save(frame_path)
+                            _needs_preview_update = False
+                        _time.sleep(wait)
+
+                    # Place the segment
+                    seg = segs_list[seg_idx]
+                    canvas.place(seg["path"], seg["x"], seg["y"], rotation=seg["rotation"])
+                    placed_so_far += 1
+                    _needs_preview_update = True
+                    now = _time.monotonic()
+
+                    logger.info(
+                        "Track %d placed segment %d/%d  (total %d/%d)",
+                        earliest_idx + 1, seg_idx + 1, len(segs_list),
+                        placed_so_far, total_segments,
+                    )
+
+                    seg_idx += 1
+                    if seg_idx < len(segs_list):
+                        # Schedule next segment for this track with ±40% jitter
+                        jitter_factor = random.uniform(0.6, 1.4)
+                        next_t = now + delay * jitter_factor
+                        active[earliest_idx] = (segs_list, seg_idx, next_t)
+                    else:
+                        # Track finished — remove it and try to fill from queue
+                        active.pop(earliest_idx)
+                        _fill_tracks()
+
+                # Final preview flush
+                if _needs_preview_update:
+                    if animate and preview_image is not None:
+                        tmp = preview_image.with_suffix(".tmp.png")
+                        canvas.render_incremental().save(tmp)
+                        _os.replace(str(tmp), str(preview_image))
+                        if preview_dir is not None:
+                            (preview_dir / "status.json").write_text(
+                                json.dumps({"placed": placed_so_far, "total": total_segments, "done": False})
+                            )
+                    if save_each:
+                        frame_path = str(save_each).format(n=placed_so_far)
+                        canvas.save(frame_path)
+
+                # Signal done and shut down server
+                if animate and preview_dir is not None:
+                    tmp = preview_image.with_suffix(".tmp.png")
+                    canvas.render().save(tmp)
+                    _os.replace(str(tmp), str(preview_image))
+                    (preview_dir / "status.json").write_text(
+                        json.dumps({
+                            "placed": placed_so_far,
+                            "total": total_segments,
+                            "done": True,
+                        })
+                    )
+                    _time.sleep(2)  # give browser time to show final frame
+                    if server is not None:
+                        server.shutdown()
+                    shutil.rmtree(preview_dir, ignore_errors=True)
+                    logger.info("Preview complete.")
         else:
             canvas.place_random(
                 from_dir,

@@ -41,7 +41,14 @@ class SegmentConfig:
     layer_selection_ratio : float
         Fraction of segments to use from each layer (0.0-1.0). Default 0.7.
     rotation_range : float
-        Maximum rotation in degrees (±). Applied at placement. Default 5.0.
+        Maximum rotation in degrees (±) baked into segments. Default 0.0.
+        Set to 0 so rotation is applied at placement time only.
+    contour_padding : float
+        When a contour mask is provided with ``cutout_mode: contour``,
+        each row of the adaptive grid extends this fraction beyond the
+        detected object edges (relative to segment width).  0.15 means
+        each side is padded by 15 % of the target segment width.
+        Increase for a looser fit, decrease for tighter. Default 0.15.
     """
 
     segment_size: tuple[int, int] = (400, 300)
@@ -54,4 +61,5 @@ class SegmentConfig:
     size_variation: float = 0.3
     layer_count: int = 2
     layer_selection_ratio: float = 0.7
-    rotation_range: float = 5.0
+    rotation_range: float = 0.0
+    contour_padding: float = 0.15
