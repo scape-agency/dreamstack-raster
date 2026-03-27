@@ -21,7 +21,7 @@ from dreamstack.raster.io.loader.load_images import load_images
 from dreamstack.raster.io.loader.load_svg import load_svg
 from dreamstack.raster.io.loader.load_with_pil import load_with_pil
 
-__all__ = [
+__all__: list[str] = [
     "load_image",
     "load_with_pil",
     "load_hdr",

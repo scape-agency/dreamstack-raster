@@ -16,7 +16,7 @@ Canvas for rendering and compositing layers.
 from dreamstack.raster.core.canvas.canvas import Canvas
 from dreamstack.raster.core.canvas.canvas_background import CanvasBackground
 
-__all__ = [
+__all__: list[str] = [
     "CanvasBackground",
     "Canvas",
 ]

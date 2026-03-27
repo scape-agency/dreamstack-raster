@@ -22,7 +22,7 @@ from dreamstack.raster.io.metadata.set_dpi import set_dpi
 from dreamstack.raster.io.metadata.strip_metadata import strip_metadata
 from dreamstack.raster.io.metadata.write_metadata import write_metadata
 
-__all__ = [
+__all__: list[str] = [
     "read_metadata",
     "read_exif",
     "read_xmp",

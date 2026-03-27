@@ -21,7 +21,7 @@ from dreamstack.raster.adjustments.tone.shadows_highlights import (
 from dreamstack.raster.adjustments.tone.split_toning import split_toning
 from dreamstack.raster.adjustments.tone.tone_curve import tone_curve
 
-__all__ = [
+__all__: list[str] = [
     "shadows_highlights",
     "hdr_toning",
     "tone_curve",

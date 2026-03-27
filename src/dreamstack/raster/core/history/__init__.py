@@ -18,7 +18,7 @@ from dreamstack.raster.core.history.history_action import HistoryAction
 from dreamstack.raster.core.history.history_snapshot import HistorySnapshot
 from dreamstack.raster.core.history.history_state import HistoryState
 
-__all__ = [
+__all__: list[str] = [
     "HistoryState",
     "HistoryAction",
     "History",

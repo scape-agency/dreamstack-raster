@@ -17,7 +17,7 @@ from dreamstack.raster.io.raw.get_raw_info import get_raw_info
 from dreamstack.raster.io.raw.get_raw_thumbnail import get_raw_thumbnail
 from dreamstack.raster.io.raw.load_raw import load_raw
 
-__all__ = [
+__all__: list[str] = [
     "load_raw",
     "get_raw_info",
     "get_raw_thumbnail",

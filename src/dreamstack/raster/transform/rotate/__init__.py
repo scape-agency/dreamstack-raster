@@ -20,7 +20,7 @@ from .rotate_270 import rotate_270
 from .rotate_point import rotate_point
 from .rotate_points import rotate_points
 
-__all__ = [
+__all__: list[str] = [
     "arbitrary_rotate",
     "flip_both",
     "flip_horizontal",

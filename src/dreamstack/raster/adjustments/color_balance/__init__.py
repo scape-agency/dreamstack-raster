@@ -27,7 +27,7 @@ from dreamstack.raster.adjustments.color_balance.selective_color import (
     selective_color,
 )
 
-__all__ = [
+__all__: list[str] = [
     "color_balance",
     "hue_saturation",
     "selective_color",

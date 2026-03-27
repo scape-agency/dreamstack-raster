@@ -21,7 +21,7 @@ from dreamstack.raster.core.layer.layer_base import LayerBase
 from dreamstack.raster.core.layer.layer_group import LayerGroup
 from dreamstack.raster.core.layer.text_layer import TextLayer
 
-__all__ = [
+__all__: list[str] = [
     "BlendMode",
     "apply_blend_mode",
     "LayerBase",

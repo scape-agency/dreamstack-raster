@@ -21,7 +21,8 @@ from models.model_grid_segment import GridSegment
 from services.service_segment_image import segment_image
 from services.service_apply_effects import apply_effects
 
-__all__ = [
+__all__: list[str] = [
+
     # Config models
     "AppConfig",
     "CutoutConfig",

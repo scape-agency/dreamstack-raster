@@ -27,7 +27,7 @@ from .histogram_luminosity import histogram_luminosity
 from .histogram_rgb import histogram_rgb
 from .histogram_stats import histogram_stats
 
-__all__ = [
+__all__: list[str] = [
     "histogram",
     "histogram_rgb",
     "histogram_luminosity",

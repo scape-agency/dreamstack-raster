@@ -24,7 +24,7 @@ from dreamstack.raster.adjustments.curves.linear_contrast import (
 from dreamstack.raster.adjustments.curves.preset_curves import preset_curves
 from dreamstack.raster.adjustments.curves.s_curve import s_curve
 
-__all__ = [
+__all__: list[str] = [
     "CurvePoint",
     "Curve",
     "create_curve",

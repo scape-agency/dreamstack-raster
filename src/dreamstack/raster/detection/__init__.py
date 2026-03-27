@@ -87,7 +87,7 @@ from dreamstack.raster.detection.result import (
     ImageDetectionResult,
 )
 
-__all__ = [
+__all__: list[str] = [
     # Config
     "DetectionConfig",
     "SegmentationConfig",

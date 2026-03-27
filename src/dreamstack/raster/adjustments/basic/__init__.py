@@ -23,7 +23,7 @@ from dreamstack.raster.adjustments.basic.gamma import gamma
 from dreamstack.raster.adjustments.basic.saturation import saturation
 from dreamstack.raster.adjustments.basic.vibrance import vibrance
 
-__all__ = [
+__all__: list[str] = [
     "brightness",
     "contrast",
     "brightness_contrast",

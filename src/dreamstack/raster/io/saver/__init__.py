@@ -19,7 +19,7 @@ from dreamstack.raster.io.saver.save_image import save_image
 from dreamstack.raster.io.saver.save_pdf import save_pdf
 from dreamstack.raster.io.saver.save_with_pil import save_with_pil
 
-__all__ = [
+__all__: list[str] = [
     "save_image",
     "save_with_pil",
     "save_hdr",
