@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import logging
 import math
+import os
 import random
 import time
 from pathlib import Path
@@ -46,6 +47,81 @@ def _image_is_color(path: Path | str, color: str, threshold: int = 50) -> bool:
         return mean_b > mean_r + threshold and mean_b > mean_g + threshold
     # unknown color -> pass everything
     return True
+
+
+def _hex_to_rgb(hex_color: str) -> tuple[int, int, int]:
+    """Convert a hex color string to (R, G, B) tuple."""
+    h = hex_color.lstrip("#")
+    return (int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16))
+
+
+def _apply_postproduction(
+    image: Image.Image,
+    mode: str,
+    gradient_dark: str,
+    gradient_light: str,
+) -> Image.Image:
+    """Apply postproduction color grading to a rendered canvas.
+
+    Parameters
+    ----------
+    image : Image.Image
+        The rendered canvas (RGBA).
+    mode : str
+        "normal" (no change), "bw" (grayscale), or "gradient_map".
+    gradient_dark : str
+        Hex color mapped to dark tones (gradient_map mode).
+    gradient_light : str
+        Hex color mapped to light tones (gradient_map mode).
+
+    Returns
+    -------
+    Image.Image
+        Color-graded image (RGBA preserved).
+    """
+    if mode == "normal":
+        return image
+
+    # Separate alpha channel to preserve transparency
+    if image.mode == "RGBA":
+        alpha = image.split()[3]
+    else:
+        alpha = None
+
+    if mode == "bw":
+        gray = image.convert("L")
+        result = gray.convert("RGBA")
+        if alpha is not None:
+            result.putalpha(alpha)
+        return result
+
+    if mode == "gradient_map":
+        gray = image.convert("L")
+        dark = _hex_to_rgb(gradient_dark)
+        light = _hex_to_rgb(gradient_light)
+
+        # Build a 256-entry lookup table that maps luminance to the
+        # gradient between dark and light colors.
+        lut = []
+        for i in range(256):
+            t = i / 255.0
+            lut.append(int(dark[0] + (light[0] - dark[0]) * t))
+            lut.append(int(dark[1] + (light[1] - dark[1]) * t))
+            lut.append(int(dark[2] + (light[2] - dark[2]) * t))
+
+        rgb = gray.convert("RGB")
+        # Apply the LUT per-channel (PIL point expects 256 entries per channel)
+        r, g, b = rgb.split()
+        r = r.point([lut[i * 3] for i in range(256)])
+        g = g.point([lut[i * 3 + 1] for i in range(256)])
+        b = b.point([lut[i * 3 + 2] for i in range(256)])
+        result = Image.merge("RGB", (r, g, b)).convert("RGBA")
+        if alpha is not None:
+            result.putalpha(alpha)
+        return result
+
+    return image
+
 
 logger = logging.getLogger(__name__)
 
@@ -142,6 +218,34 @@ class Canvas:
         self.background = background
         self.items: list[PlacedItem] = []
         self.canvas: Image.Image | None = None
+        # Incremental rendering state
+        self._render_canvas: Image.Image | None = None
+        self._rendered_count: int = 0
+        # Postproduction settings (applied per-segment in render)
+        self._pp_mode: str = "normal"
+        self._pp_gradient_dark: str = "#000000"
+        self._pp_gradient_light: str = "#ffffff"
+
+    def set_postproduction(
+        self,
+        mode: str = "normal",
+        gradient_dark: str = "#000000",
+        gradient_light: str = "#ffffff",
+    ) -> None:
+        """Configure postproduction color grading applied to every segment.
+
+        Parameters
+        ----------
+        mode : str
+            "normal", "bw", or "gradient_map".
+        gradient_dark : str
+            Hex color for dark tones (gradient_map mode).
+        gradient_light : str
+            Hex color for light tones (gradient_map mode).
+        """
+        self._pp_mode = mode
+        self._pp_gradient_dark = gradient_dark
+        self._pp_gradient_light = gradient_light
 
     def ensure_canvas(self) -> Image.Image:
         """Create canvas image if not exists."""
@@ -365,20 +469,32 @@ class Canvas:
     <script>
         const img = document.getElementById('canvas');
         const status = document.getElementById('status');
-        let count = 0;
-        const total = {len(selected)};
+        const delay = {int(delay * 1000)};
 
         function refresh() {{
-            count++;
-            status.textContent = `Placed ${{Math.min(count, total)}} / ${{total}} segments`;
-            img.src = 'canvas.png?' + Date.now();
-            if (count < total) {{
-                setTimeout(refresh, {int(delay * 1000)});
-            }} else {{
-                status.textContent = `Done! Placed ${{total}} segments`;
-            }}
+            fetch('status.json?' + Date.now())
+                .then(r => r.ok ? r.json() : Promise.reject('not ready'))
+                .then(data => {{
+                    const newImg = new Image();
+                    newImg.onload = function() {{
+                        img.src = newImg.src;
+                        status.textContent = data.done
+                            ? 'Done! Placed ' + data.placed + ' segments'
+                            : 'Placed ' + data.placed + ' / ' + data.total + ' segments';
+                        if (!data.done) {{
+                            setTimeout(refresh, delay);
+                        }}
+                    }};
+                    newImg.onerror = function() {{
+                        setTimeout(refresh, delay);
+                    }};
+                    newImg.src = 'canvas.png?' + Date.now();
+                }})
+                .catch(() => {{
+                    setTimeout(refresh, delay);
+                }});
         }}
-        setTimeout(refresh, {int(delay * 1000)});
+        setTimeout(refresh, delay);
     </script>
 </body>
 </html>"""
@@ -386,6 +502,10 @@ class Canvas:
 
             # Save initial canvas
             self.render().save(preview_image)
+            # Write initial status
+            (preview_dir / "status.json").write_text(
+                json.dumps({"placed": 0, "total": len(selected), "done": False})
+            )
 
             # Start simple HTTP server
             class QuietHandler(http.server.SimpleHTTPRequestHandler):
@@ -434,14 +554,24 @@ class Canvas:
             item = self.place(segment_path, x, y)
             placed.append(item)
 
-            # Update preview
+            # Update preview (atomic write to avoid flicker)
             if animate:
-                self.render().save(preview_image)
+                tmp_preview = preview_image.with_suffix('.tmp.png')
+                self.render().save(tmp_preview)
+                os.replace(str(tmp_preview), str(preview_image))
+                (preview_dir / "status.json").write_text(
+                    json.dumps({"placed": len(placed), "total": len(selected), "done": False})
+                )
                 time.sleep(delay)
 
         if animate:
-            # Final save
-            self.render().save(preview_image)
+            # Final save (atomic write + done signal)
+            tmp_preview = preview_image.with_suffix('.tmp.png')
+            self.render().save(tmp_preview)
+            os.replace(str(tmp_preview), str(preview_image))
+            (preview_dir / "status.json").write_text(
+                json.dumps({"placed": len(placed), "total": len(selected), "done": True})
+            )
             logger.info("Preview complete. Close browser when done.")
             try:
                 input("Press Enter to close preview server...")
@@ -526,7 +656,12 @@ class Canvas:
         order: PlacementOrder = "sequential",
         animate: bool = False,
         selection_ratio: float = 1.0,
+        rotation_range: float = 0.0,
         rotation_jitter: float = 0.0,
+        preview_dir: Path | None = None,
+        preview_image: Path | None = None,
+        placed_offset: int = 0,
+        total_override: int | None = None,
     ) -> list[PlacedItem]:
         """Place all segments of a cutout iteratively with delay.
 
@@ -562,9 +697,20 @@ class Canvas:
         selection_ratio : float
             Fraction of segments to place (0.0-1.0). Default 1.0 (all).
             Used for organic layered effect with overlapping segmentations.
+        rotation_range : float
+            Base random rotation range in degrees (±). Applied per segment
+            at placement time (replaces pre-baked rotation from metadata).
+            Default 0.0.
         rotation_jitter : float
             Additional random rotation in degrees (±). Added to segment's
             stored rotation. Default 0.0.
+        preview_dir : Path | None
+            When provided, skip internal server setup and write preview
+            images to this directory instead.  The caller manages the
+            HTTP server lifecycle.
+        preview_image : Path | None
+            Path to the preview PNG inside *preview_dir*.  Required when
+            *preview_dir* is set.
 
         Returns
         -------
@@ -583,11 +729,12 @@ class Canvas:
         placed = []
 
         # Setup browser preview if requested (replace matplotlib interactive)
-        preview_dir = None
-        preview_image = None
+        _owns_server = False  # True when this method started the server
         server = None
-        server_thread = None
-        if animate:
+        if animate and preview_dir is not None and preview_image is not None:
+            # External caller manages the server — just use the paths
+            pass
+        elif animate:
             try:
                 import http.server
                 import socketserver
@@ -623,9 +770,33 @@ class Canvas:
         <img id="canvas" src="canvas.png" />
     </div>
     <script>
-        let count = 0; const total = TOTAL_PLACEHOLDER; const delay = DELAY_PLACEHOLDER;
-        const status = document.getElementById('status'); const img = document.getElementById('canvas');
-        function refresh(){ count++; status.textContent = `Placed ${Math.min(count,total)} / ${total} segments`; img.src = 'canvas.png?'+Date.now(); if(count<total){ setTimeout(refresh, delay); } else { status.textContent = `Done! Placed ${total} segments`; } }
+        const img = document.getElementById('canvas');
+        const status = document.getElementById('status');
+        const delay = DELAY_PLACEHOLDER;
+
+        function refresh() {
+            fetch('status.json?' + Date.now())
+                .then(r => r.ok ? r.json() : Promise.reject('not ready'))
+                .then(data => {
+                    const newImg = new Image();
+                    newImg.onload = function() {
+                        img.src = newImg.src;
+                        status.textContent = data.done
+                            ? 'Done! Placed ' + data.placed + ' segments'
+                            : 'Placed ' + data.placed + ' / ' + data.total + ' segments';
+                        if (!data.done) {
+                            setTimeout(refresh, delay);
+                        }
+                    };
+                    newImg.onerror = function() {
+                        setTimeout(refresh, delay);
+                    };
+                    newImg.src = 'canvas.png?' + Date.now();
+                })
+                .catch(() => {
+                    setTimeout(refresh, delay);
+                });
+        }
         setTimeout(refresh, delay);
     </script>
 </body>
@@ -636,6 +807,10 @@ class Canvas:
                 (preview_dir / "index.html").write_text(html_content)
                 # Save initial canvas
                 self.render().save(preview_image)
+                # Write initial status
+                (preview_dir / "status.json").write_text(
+                    json.dumps({"placed": 0, "total": total, "done": False})
+                )
 
                 class QuietHandler(http.server.SimpleHTTPRequestHandler):
                     def __init__(self, *args, **kwargs):
@@ -647,6 +822,7 @@ class Canvas:
                 server = socketserver.TCPServer(("", port), QuietHandler)
                 server_thread = threading.Thread(target=server.serve_forever, daemon=True)
                 server_thread.start()
+                _owns_server = True
                 url = f"http://localhost:{port}"
                 logger.info("Preview server running at %s", url)
                 try:
@@ -699,8 +875,11 @@ class Canvas:
                 final_x = max(0, min(final_x, self.width - seg_w))
                 final_y = max(0, min(final_y, self.height - seg_height))
 
-            # Get rotation from segment metadata and add jitter
-            base_rotation = seg_data.get("rotation", 0.0)
+            # Build rotation entirely at placement time:
+            # base comes from rotation_range, jitter adds organic variation.
+            base_rotation = 0.0
+            if rotation_range > 0:
+                base_rotation = random.uniform(-rotation_range, rotation_range)
             if rotation_jitter > 0:
                 base_rotation += random.uniform(-rotation_jitter, rotation_jitter)
 
@@ -717,9 +896,15 @@ class Canvas:
                 base_rotation,
             )
 
-            # Update browser preview image
+            # Update browser preview image (atomic write to avoid flicker)
             if animate and preview_image is not None:
-                self.render().save(preview_image)
+                tmp_preview = preview_image.with_suffix('.tmp.png')
+                self.render().save(tmp_preview)
+                os.replace(str(tmp_preview), str(preview_image))
+                _status_total = total_override if total_override is not None else total
+                (preview_dir / "status.json").write_text(
+                    json.dumps({"placed": placed_offset + len(placed), "total": _status_total, "done": False})
+                )
 
             # Callback
             if on_segment_placed:
@@ -735,9 +920,19 @@ class Canvas:
             if delay > 0 and i < total - 1:
                 time.sleep(delay)
 
-        # Finalize browser preview
+        # Finalize browser preview (atomic write + done signal)
         if animate and preview_image is not None:
-            self.render().save(preview_image)
+            tmp_preview = preview_image.with_suffix('.tmp.png')
+            self.render().save(tmp_preview)
+            os.replace(str(tmp_preview), str(preview_image))
+            if preview_dir is not None:
+                _status_total = total_override if total_override is not None else total
+                (preview_dir / "status.json").write_text(
+                    json.dumps({"placed": placed_offset + len(placed), "total": _status_total, "done": _owns_server})
+                )
+
+        # Only shut down if this method started the server
+        if _owns_server:
             logger.info("Preview complete. Close browser when done.")
             try:
                 input("Press Enter to close preview server...")
@@ -750,6 +945,7 @@ class Canvas:
                 pass
             try:
                 if preview_dir is not None:
+                    import shutil
                     shutil.rmtree(preview_dir, ignore_errors=True)
             except Exception:
                 pass
@@ -757,13 +953,129 @@ class Canvas:
         logger.info("Placed %d segments from cutout", len(placed))
         return placed
 
+    def prepare_cutout_segments(
+        self,
+        cutout_metadata: dict,
+        canvas_x: int,
+        canvas_y: int,
+        base_dir: Path | str,
+        jitter: int = 0,
+        organic: bool = True,
+        organic_jitter: int = 6,
+        order: PlacementOrder = "sequential",
+        selection_ratio: float = 1.0,
+        rotation_range: float = 0.0,
+        rotation_jitter: float = 0.0,
+    ) -> list[dict]:
+        """Prepare segment placement data without placing them.
+
+        Returns a list of dicts with keys: path, x, y, rotation.
+        Each entry is ready to be passed to ``self.place()``.
+        """
+        base_dir = Path(base_dir)
+        segments = cutout_metadata.get("segments", [])
+        cutout_size = tuple(cutout_metadata.get("size", [0, 0]))
+        segments = sort_segments_by_order(segments, order, cutout_size)
+        cutout_height = cutout_metadata.get("size", [0, 0])[1]
+
+        prepared: list[dict] = []
+        for seg_data in segments:
+            if selection_ratio < 1.0 and random.random() > selection_ratio:
+                continue
+            seg_file = seg_data.get("file", "")
+            seg_path = base_dir / seg_file
+            if not seg_path.exists():
+                logger.warning("Segment not found: %s", seg_path)
+                continue
+            seg_x, seg_y = seg_data.get("position", [0, 0])
+            seg_w, seg_h = seg_data.get("size", [250, 250])
+            final_x = canvas_x + seg_x
+            final_y = canvas_y + (cutout_height - seg_y - seg_h)
+            use_jitter = jitter
+            if organic and use_jitter == 0:
+                use_jitter = organic_jitter
+            if use_jitter > 0:
+                final_x += random.randint(-use_jitter, use_jitter)
+                final_y += random.randint(-use_jitter, use_jitter)
+                final_x = max(0, min(final_x, self.width - seg_w))
+                final_y = max(0, min(final_y, self.height - seg_h))
+            rot = 0.0
+            if rotation_range > 0:
+                rot = random.uniform(-rotation_range, rotation_range)
+            if rotation_jitter > 0:
+                rot += random.uniform(-rotation_jitter, rotation_jitter)
+            prepared.append({"path": seg_path, "x": final_x, "y": final_y, "rotation": rot})
+        return prepared
+
     def clear(self) -> None:
         """Clear all placed items."""
         self.items.clear()
         self.canvas = None
+        self._render_canvas = None
+        self._rendered_count = 0
+
+    def _composite_item(self, canvas: Image.Image, item: PlacedItem) -> None:
+        """Composite a single placed item onto *canvas* (in-place)."""
+        if not item.path.exists():
+            logger.warning("Missing image: %s", item.path)
+            return
+
+        img = Image.open(item.path).convert("RGBA")
+
+        # Apply postproduction color grading per-segment
+        if self._pp_mode != "normal":
+            img = _apply_postproduction(
+                img, self._pp_mode, self._pp_gradient_dark, self._pp_gradient_light
+            )
+
+        # Apply rotation if needed
+        if item.rotation != 0.0:
+            orig_w, orig_h = img.size
+            img = img.rotate(
+                item.rotation,
+                resample=Image.Resampling.BICUBIC,
+                expand=True,
+            )
+            new_w, new_h = img.size
+            offset_x = (new_w - orig_w) // 2
+            offset_y = (new_h - orig_h) // 2
+        else:
+            offset_x = 0
+            offset_y = 0
+
+        pil_y = self.y_to_pil(item.y, item.height)
+        paste_x = item.x - offset_x
+        paste_y = pil_y - offset_y
+
+        canvas.paste(img, (paste_x, paste_y), img)
+        img.close()
+
+    def render_incremental(self) -> Image.Image:
+        """Render only newly-added items on top of the cached canvas.
+
+        Much faster than render() when items are added one at a time
+        (O(1) per call instead of O(n)).
+
+        Returns
+        -------
+        Image.Image
+            Rendered canvas image.
+        """
+        if self._render_canvas is None:
+            self._render_canvas = self.ensure_canvas().copy()
+            self._rendered_count = 0
+
+        sorted_items = sorted(self.items, key=lambda x: x.layer)
+        new_items = sorted_items[self._rendered_count:]
+
+        for item in new_items:
+            self._composite_item(self._render_canvas, item)
+
+        self._rendered_count = len(sorted_items)
+        return self._render_canvas
 
     def render(self) -> Image.Image:
-        """Render canvas with all placed items.
+        """Render canvas with all placed items (full re-composite).
 
         Returns
         -------
@@ -772,44 +1084,10 @@ class Canvas:
         """
         canvas = self.ensure_canvas().copy()
 
-        # Sort by layer
         sorted_items = sorted(self.items, key=lambda x: x.layer)
 
         for item in sorted_items:
-            if not item.path.exists():
-                logger.warning("Missing image: %s", item.path)
-                continue
-
-            img = Image.open(item.path).convert("RGBA")
-
-            # Apply rotation if needed
-            if item.rotation != 0.0:
-                # Store original size for position adjustment
-                orig_w, orig_h = img.size
-                # Rotate with expand=True to avoid clipping
-                img = img.rotate(
-                    item.rotation,
-                    resample=Image.Resampling.BICUBIC,
-                    expand=True,
-                )
-                # Calculate offset due to expansion
-                new_w, new_h = img.size
-                offset_x = (new_w - orig_w) // 2
-                offset_y = (new_h - orig_h) // 2
-            else:
-                offset_x = 0
-                offset_y = 0
-
-            # Convert Y coordinate (use original height for coordinate system)
-            pil_y = self.y_to_pil(item.y, item.height)
-
-            # Adjust position for rotation expansion
-            paste_x = item.x - offset_x
-            paste_y = pil_y - offset_y
-
-            # Paste with alpha compositing
-            canvas.paste(img, (paste_x, paste_y), img)
-            img.close()
+            self._composite_item(canvas, item)
 
         return canvas
 

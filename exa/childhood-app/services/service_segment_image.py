@@ -118,10 +118,124 @@ def _generate_fluid_grid_positions(
     return positions
 
 
+def _generate_contour_grid_positions(
+    img_width: int,
+    img_height: int,
+    target_width: int,
+    target_height: int,
+    size_variation: float,
+    mask: np.ndarray,
+    padding: float = 0.15,
+    layer: int = 0,
+) -> list[tuple[int, int, int, int, int, int, str | None, int]]:
+    """Generate a grid whose rows adapt to the object contour.
+
+    For each row band the mask is scanned horizontally to find the
+    leftmost and rightmost object pixels.  The row's segments then
+    span only that region (plus some padding).  Each row independently
+    decides how many columns it needs based on the object width at
+    that height, so narrow features (e.g. a neck) get fewer, wider
+    segments while broad features (e.g. shoulders) get more.
+
+    Segments are always fully opaque rectangles — the mask only
+    determines **where** the grid cells are placed, not their content.
+
+    Parameters
+    ----------
+    mask : np.ndarray
+        Uint8 mask (H × W) aligned with the cutout.  Values > 127
+        are treated as "object".
+    padding : float
+        Extra fraction of ``target_width`` added on each side of the
+        detected object span.  0.15 → 15 %.
+    """
+    # Binary threshold
+    binary = mask > 127
+
+    # --- row divisions (shared with fluid grid logic) ---
+    row_divisions = _generate_fluid_divisions(
+        img_height, target_height, size_variation,
+        min_segments=2, max_segments=8,
+    )
+
+    pad_px = int(target_width * padding)
+
+    positions: list[tuple[int, int, int, int, int, int, str | None, int]] = []
+
+    for row_idx, (row_start, row_end) in enumerate(row_divisions):
+        row_height = row_end - row_start
+        if row_height < target_height // 4:
+            continue
+
+        # Scan the mask rows in this band to find horizontal extent
+        band = binary[row_start:row_end, :]
+        col_any = np.any(band, axis=0)  # shape (W,)
+        nonzero = np.nonzero(col_any)[0]
+
+        if len(nonzero) == 0:
+            # No object pixels at all in this row — skip entirely
+            continue
+
+        obj_left = int(nonzero[0])
+        obj_right = int(nonzero[-1])
+
+        # Pad and clamp
+        row_left = max(0, obj_left - pad_px)
+        row_right = min(img_width, obj_right + pad_px)
+
+        row_span = row_right - row_left
+        if row_span < target_width // 3:
+            # Span too narrow — emit one segment covering the span
+            positions.append((
+                row_idx, 0, row_left, row_start,
+                row_span, row_height, None, layer,
+            ))
+            continue
+
+        # Decide column count based on how the row span compares to
+        # the target segment width.
+        ideal_cols = max(1, round(row_span / target_width))
+
+        # Generate column widths with slight variation so they aren't
+        # perfectly equal but also not wildly different.
+        weights = [
+            random.uniform(1 - size_variation, 1 + size_variation)
+            for _ in range(ideal_cols)
+        ]
+        total_weight = sum(weights)
+
+        col_x = row_left
+        for col_idx, w in enumerate(weights):
+            if col_idx == len(weights) - 1:
+                col_w = row_right - col_x
+            else:
+                col_w = int((w / total_weight) * row_span)
+                col_w = max(target_width // 3, col_w)  # minimum width
+
+            if col_w <= 0:
+                continue
+
+            col_end = min(col_x + col_w, img_width)
+            actual_w = col_end - col_x
+            if actual_w < target_width // 4:
+                break
+
+            positions.append((
+                row_idx, col_idx, col_x, row_start,
+                actual_w, row_height, None, layer,
+            ))
+            col_x = col_end
+            if col_x >= img_width:
+                break
+
+    return positions
+
+
 def segment_image(
     image: Image.Image | NDArray | Path | str,
     config: SegmentConfig | None = None,
     seed: int | None = None,
+    mask: NDArray | None = None,
 ) -> list[GridSegment]:
     """Segment an image into a randomized grid.
 
@@ -133,6 +247,11 @@ def segment_image(
         Segmentation configuration. Uses defaults if None.
     seed : int | None
         Random seed for reproducibility. None for random.
+    mask : NDArray | None
+        Optional uint8 mask (H × W) aligned with the cutout.  When
+        provided the grid adapts to the object contour so that
+        segments only cover the region where the object is present.
+        Segments are still fully opaque rectangles.
 
     Returns
     -------
@@ -178,7 +297,28 @@ def segment_image(
 
     # Choose grid generation strategy
     all_positions: list  # type: ignore[type-arg]  # Mixed tuple types
-    if config.fluid_grid:
+    use_8tuple = True  # contour & fluid grids use 8-tuples
+
+    if mask is not None:
+        # Contour-adaptive grid — uses the mask to adapt row widths
+        all_positions = []
+        for layer in range(config.layer_count):
+            if seed is not None:
+                random.seed(seed + layer * 1000)
+            layer_positions = _generate_contour_grid_positions(
+                img_width,
+                img_height,
+                seg_width,
+                seg_height,
+                config.size_variation,
+                mask,
+                padding=config.contour_padding,
+                layer=layer,
+            )
+            all_positions.extend(layer_positions)
+        if seed is not None:
+            random.seed(seed)
+    elif config.fluid_grid:
         # Generate fluid grid with multiple layers
         all_positions = []
         
@@ -201,6 +341,7 @@ def segment_image(
         if seed is not None:
             random.seed(seed)
     else:
+        use_8tuple = False
         # Legacy uniform grid mode
         all_positions = _generate_uniform_grid_positions(
             img_width, img_height, seg_width, seg_height, config
@@ -210,8 +351,8 @@ def segment_image(
 
     # Create segments from all positions
     for pos_data in all_positions:
-        if config.fluid_grid:
-            # Fluid grid: 8-tuple (row, col, x, y, width, height, inbetween_type, layer)
+        if use_8tuple:
+            # Contour / fluid grid: 8-tuple (row, col, x, y, width, height, inbetween_type, layer)
             row = int(pos_data[0])
             col = int(pos_data[1])
             x = int(pos_data[2])

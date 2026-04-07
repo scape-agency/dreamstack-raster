@@ -66,6 +66,12 @@ def process_image(
     except ValueError:
         image_output_dir = output_dir / image_path.stem
 
+    # Wipe stale output from previous runs to avoid orphaned segments,
+    # old metadata, and double-layer / alpha-contour artifacts.
+    if image_output_dir.exists():
+        shutil.rmtree(image_output_dir)
+        logger.info("  Cleaned previous output: %s", image_output_dir.name)
+
     image_output_dir.mkdir(parents=True, exist_ok=True)
     cutouts_dir = image_output_dir / "cutouts"
     segments_dir = image_output_dir / "segments"
@@ -109,6 +115,7 @@ def process_image(
         label = det["label"]
         bbox = det["bbox"]
         confidence = det["confidence"]
+        det_mask = det.get("mask")  # segmentation mask (or None)
 
         cutout_name = f"{label}_{i + 1}"
         cutout_filename = f"{cutout_name}.png"
@@ -116,6 +123,12 @@ def process_image(
         logger.info("  Processing cutout: %s", cutout_name)
 
         # Step 3: Extract and scale cutout with smart sizing
+        # When cutout_mode is 'contour' and a mask is available,
+        # pass it so the cutout metadata includes a scaled mask for
+        # contour-adaptive grid planning (cutout pixels stay opaque).
+        use_mask = (
+            det_mask if config.cutout.cutout_mode == "contour" else None
+        )
         cutout, cutout_info = extract_cutout(
             image,
             bbox,
@@ -123,6 +136,7 @@ def process_image(
             max_size=config.cutout.max_size,
             segment_size=config.segment.segment_size,
             segment_align=config.cutout.segment_align,
+            mask=use_mask,
         )
 
         logger.info("    Cutout size: %dx%d", cutout.width, cutout.height)
@@ -132,8 +146,10 @@ def process_image(
         cutout.save(cutout_path)
 
         # Step 4: Segment cutout
+        # Pass the scaled mask (if any) for contour-adaptive grid planning
         logger.info("    Segmenting into grid...")
-        segments = segment_image(cutout, config.segment)
+        scaled_mask = cutout_info.pop("scaled_mask", None)
+        segments = segment_image(cutout, config.segment, mask=scaled_mask)
 
         segment_output_dir = segments_dir / cutout_name
         segment_output_dir.mkdir(exist_ok=True)

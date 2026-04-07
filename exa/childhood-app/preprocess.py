@@ -44,6 +44,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+import shutil
 import sys
 from pathlib import Path
 
@@ -125,6 +126,7 @@ def main() -> int:
 
     cutout_size = get_nested(cfg, "cutout", "max_size", default=1200)
     margin = get_nested(cfg, "cutout", "margin", default=50)
+    cutout_mode = get_nested(cfg, "cutout", "cutout_mode", default="bbox")
 
     segment_size_cfg = get_nested(cfg, "segment", "size", default=[400, 300])
     seg_w, seg_h = segment_size_cfg[0], segment_size_cfg[1]
@@ -138,6 +140,7 @@ def main() -> int:
     layer_count = get_nested(cfg, "segment", "layer_count", default=2)
     layer_selection_ratio = get_nested(cfg, "segment", "layer_selection_ratio", default=0.7)
     rotation_range = get_nested(cfg, "segment", "rotation_range", default=5.0)
+    contour_padding = get_nested(cfg, "segment", "contour_padding", default=0.15)
 
     effects_enabled = get_nested(cfg, "effects", "enabled", default=True)
     drop_shadow = get_nested(cfg, "effects", "drop_shadow", default=True)
@@ -156,11 +159,19 @@ def main() -> int:
         logger.error("Input directory not found: %s", input_dir)
         return 1
 
+    # Wipe entire output directory to remove stale segments, metadata, and
+    # artifacts from previous runs (including images beyond max_images limit).
+    if output_dir.exists():
+        shutil.rmtree(output_dir)
+        logger.info("Cleaned previous output directory: %s", output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
     # Build configuration
     config = AppConfig(
         cutout=CutoutConfig(
             max_size=cutout_size,
             margin=margin,
+            cutout_mode=cutout_mode,
         ),
         segment=SegmentConfig(
             segment_size=(seg_w, seg_h),
@@ -173,6 +184,7 @@ def main() -> int:
             layer_count=layer_count,
             layer_selection_ratio=layer_selection_ratio,
             rotation_range=rotation_range,
+            contour_padding=contour_padding,
         ),
         effects=EffectConfig(
             drop_shadow=drop_shadow,
@@ -190,6 +202,7 @@ def main() -> int:
     logger.info("Vision: %s", config.vision_backend)
     logger.info("Detection: %s", config.detection_backend)
     logger.info("Cutout max size: %s", config.cutout.max_size)
+    logger.info("Cutout mode: %s", config.cutout.cutout_mode)
     logger.info("Segment size: %s", config.segment.segment_size)
     if config.segment.fluid_grid:
         logger.info("Fluid grid: ENABLED (variation=%.0f%%, layers=%d, selection=%.0f%%)",

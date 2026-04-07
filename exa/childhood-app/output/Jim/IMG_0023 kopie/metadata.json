@@ -1,0 +1,973 @@
+{
+  "source_image": "IMG_0023 kopie.JPG",
+  "processed_at": "2026-03-27T15:42:02.511074",
+  "image_size": {
+    "width": 2592,
+    "height": 1944
+  },
+  "ai_description": "The image shows three young individuals sitting on a burgundy couch in a well-lit room. The person on the left is wearing a black t-shirt and dark pants, showing a peace sign with their right hand. They have short hair and are smiling, facing slightly towards the center. The person in the middle, wearing a red shirt with a patch on the sleeve, has curly hair and is making a hand gesture with both hands. Their pants are light-colored, and they are sitting back against the couch. The person on the right is wearing a green t-shirt with visible text and graphic design, alongside light-colored pants. They are sitting in a relaxed posture, with their eyes closed, and a dark object, possibly clothing, on their lap. Behind them, a window displays an outdoor patio area with a table, chairs, potted plants, and greenery visible. A decorative blue vase is placed on the windowsill beside them.",
+  "detected_objects": [
+    "person",
+    "face",
+    "eye",
+    "ear",
+    "mouth",
+    "nose",
+    "eyebrow",
+    "hand",
+    "peace sign",
+    "hand gesture",
+    "arm",
+    "hair",
+    "black t-shirt",
+    "red shirt",
+    "green t-shirt",
+    "patch",
+    "pants",
+    "watch",
+    "couch",
+    "window",
+    "table",
+    "chair",
+    "plant",
+    "vase",
+    "patio",
+    "greenery",
+    "clothing"
+  ],
+  "config": {
+    "cutout": {
+      "max_size": 1200,
+      "margin": 50,
+      "segment_align": true
+    },
+    "segment": {
+      "segment_size": [
+        400,
+        300
+      ],
+      "randomize_offset": false,
+      "max_offset": 50
+    },
+    "canvas": {
+      "size": [
+        8000,
+        3000
+      ],
+      "origin": "bottom-left"
+    },
+    "effects": {
+      "drop_shadow": true,
+      "shadow_offset": [
+        5,
+        5
+      ],
+      "shadow_blur": 10,
+      "filters": []
+    },
+    "vision_backend": "openai",
+    "detection_backend": "ultralytics",
+    "confidence_threshold": 0.5
+  },
+  "cutouts": [
+    {
+      "label": "person",
+      "confidence": 0.9056,
+      "file": "cutouts/person_1.png",
+      "size": [
+        800,
+        1200
+      ],
+      "original_bbox": [
+        3,
+        269,
+        1008,
+        1671
+      ],
+      "margin": 50,
+      "crop_bounds": [
+        -83,
+        219,
+        1097,
+        1990
+      ],
+      "actual_bounds": [
+        0,
+        219,
+        1097,
+        1944
+      ],
+      "target_size": [
+        800,
+        1200
+      ],
+      "has_padding": true,
+      "segments": [
+        {
+          "file": "segments/person_1/seg_0_0.png",
+          "row": 0,
+          "col": 0,
+          "position": [
+            24,
+            0
+          ],
+          "size": [
+            355,
+            349
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_0_1.png",
+          "row": 0,
+          "col": 1,
+          "position": [
+            379,
+            0
+          ],
+          "size": [
+            302,
+            349
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_1_0.png",
+          "row": 1,
+          "col": 0,
+          "position": [
+            0,
+            349
+          ],
+          "size": [
+            366,
+            254
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_1_1.png",
+          "row": 1,
+          "col": 1,
+          "position": [
+            366,
+            349
+          ],
+          "size": [
+            370,
+            254
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_2_0.png",
+          "row": 2,
+          "col": 0,
+          "position": [
+            0,
+            603
+          ],
+          "size": [
+            353,
+            322
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_2_1.png",
+          "row": 2,
+          "col": 1,
+          "position": [
+            353,
+            603
+          ],
+          "size": [
+            447,
+            322
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_3_0.png",
+          "row": 3,
+          "col": 0,
+          "position": [
+            0,
+            925
+          ],
+          "size": [
+            393,
+            275
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_3_1.png",
+          "row": 3,
+          "col": 1,
+          "position": [
+            393,
+            925
+          ],
+          "size": [
+            407,
+            275
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "person",
+      "confidence": 0.8946,
+      "file": "cutouts/person_2.png",
+      "size": [
+        800,
+        1200
+      ],
+      "original_bbox": [
+        1724,
+        264,
+        867,
+        1678
+      ],
+      "margin": 50,
+      "crop_bounds": [
+        1565,
+        214,
+        2750,
+        1992
+      ],
+      "actual_bounds": [
+        1565,
+        214,
+        2592,
+        1944
+      ],
+      "target_size": [
+        800,
+        1200
+      ],
+      "has_padding": true,
+      "segments": [
+        {
+          "file": "segments/person_2/seg_0_0.png",
+          "row": 0,
+          "col": 0,
+          "position": [
+            245,
+            0
+          ],
+          "size": [
+            316,
+            229
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_2/seg_1_0.png",
+          "row": 1,
+          "col": 0,
+          "position": [
+            117,
+            229
+          ],
+          "size": [
+            311,
+            229
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_2/seg_1_1.png",
+          "row": 1,
+          "col": 1,
+          "position": [
+            428,
+            229
+          ],
+          "size": [
+            324,
+            229
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_2/seg_2_0.png",
+          "row": 2,
+          "col": 0,
+          "position": [
+            47,
+            458
+          ],
+          "size": [
+            363,
+            303
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_2/seg_2_1.png",
+          "row": 2,
+          "col": 1,
+          "position": [
+            410,
+            458
+          ],
+          "size": [
+            342,
+            303
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_2/seg_3_0.png",
+          "row": 3,
+          "col": 0,
+          "position": [
+            47,
+            761
+          ],
+          "size": [
+            319,
+            223
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_2/seg_3_1.png",
+          "row": 3,
+          "col": 1,
+          "position": [
+            366,
+            761
+          ],
+          "size": [
+            386,
+            223
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_2/seg_4_0.png",
+          "row": 4,
+          "col": 0,
+          "position": [
+            47,
+            984
+          ],
+          "size": [
+            349,
+            216
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_2/seg_4_1.png",
+          "row": 4,
+          "col": 1,
+          "position": [
+            396,
+            984
+          ],
+          "size": [
+            356,
+            216
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "person",
+      "confidence": 0.8697,
+      "file": "cutouts/person_3.png",
+      "size": [
+        800,
+        1200
+      ],
+      "original_bbox": [
+        985,
+        430,
+        907,
+        1514
+      ],
+      "margin": 50,
+      "crop_bounds": [
+        901,
+        380,
+        1976,
+        1994
+      ],
+      "actual_bounds": [
+        901,
+        380,
+        1976,
+        1944
+      ],
+      "target_size": [
+        800,
+        1200
+      ],
+      "has_padding": true,
+      "segments": [
+        {
+          "file": "segments/person_3/seg_0_0.png",
+          "row": 0,
+          "col": 0,
+          "position": [
+            101,
+            0
+          ],
+          "size": [
+            493,
+            467
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_3/seg_1_0.png",
+          "row": 1,
+          "col": 0,
+          "position": [
+            11,
+            467
+          ],
+          "size": [
+            433,
+            417
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_3/seg_1_1.png",
+          "row": 1,
+          "col": 1,
+          "position": [
+            444,
+            467
+          ],
+          "size": [
+            352,
+            417
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_3/seg_2_0.png",
+          "row": 2,
+          "col": 0,
+          "position": [
+            2,
+            884
+          ],
+          "size": [
+            421,
+            316
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_3/seg_2_1.png",
+          "row": 2,
+          "col": 1,
+          "position": [
+            423,
+            884
+          ],
+          "size": [
+            373,
+            316
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "couch",
+      "confidence": 0.5249,
+      "file": "cutouts/couch_4.png",
+      "size": [
+        1200,
+        900
+      ],
+      "original_bbox": [
+        0,
+        589,
+        2542,
+        1352
+      ],
+      "margin": 50,
+      "crop_bounds": [
+        -50,
+        275,
+        2592,
+        2255
+      ],
+      "actual_bounds": [
+        0,
+        275,
+        2592,
+        1944
+      ],
+      "target_size": [
+        1200,
+        900
+      ],
+      "has_padding": true,
+      "segments": [
+        {
+          "file": "segments/couch_4/seg_0_0.png",
+          "row": 0,
+          "col": 0,
+          "position": [
+            119,
+            0
+          ],
+          "size": [
+            505,
+            187
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/couch_4/seg_0_1.png",
+          "row": 0,
+          "col": 1,
+          "position": [
+            624,
+            0
+          ],
+          "size": [
+            410,
+            187
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/couch_4/seg_1_0.png",
+          "row": 1,
+          "col": 0,
+          "position": [
+            0,
+            187
+          ],
+          "size": [
+            403,
+            294
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/couch_4/seg_1_1.png",
+          "row": 1,
+          "col": 1,
+          "position": [
+            403,
+            187
+          ],
+          "size": [
+            418,
+            294
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/couch_4/seg_1_2.png",
+          "row": 1,
+          "col": 2,
+          "position": [
+            821,
+            187
+          ],
+          "size": [
+            379,
+            294
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/couch_4/seg_2_0.png",
+          "row": 2,
+          "col": 0,
+          "position": [
+            0,
+            481
+          ],
+          "size": [
+            312,
+            218
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/couch_4/seg_2_1.png",
+          "row": 2,
+          "col": 1,
+          "position": [
+            312,
+            481
+          ],
+          "size": [
+            409,
+            218
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/couch_4/seg_2_2.png",
+          "row": 2,
+          "col": 2,
+          "position": [
+            721,
+            481
+          ],
+          "size": [
+            479,
+            218
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/couch_4/seg_3_0.png",
+          "row": 3,
+          "col": 0,
+          "position": [
+            0,
+            699
+          ],
+          "size": [
+            298,
+            201
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/couch_4/seg_3_1.png",
+          "row": 3,
+          "col": 1,
+          "position": [
+            298,
+            699
+          ],
+          "size": [
+            395,
+            201
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/couch_4/seg_3_2.png",
+          "row": 3,
+          "col": 2,
+          "position": [
+            693,
+            699
+          ],
+          "size": [
+            398,
+            201
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        }
+      ]
+    }
+  ]
+}

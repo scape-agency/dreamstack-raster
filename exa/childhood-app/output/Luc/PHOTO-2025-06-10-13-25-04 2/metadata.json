@@ -1,0 +1,498 @@
+{
+  "source_image": "PHOTO-2025-06-10-13-25-04 2.jpg",
+  "processed_at": "2026-03-27T15:43:00.342343",
+  "image_size": {
+    "width": 1536,
+    "height": 1340
+  },
+  "ai_description": "The image features a young child sitting outdoors, likely at a beach. The child is topless and wearing patterned swim trunks. They are holding a blue cap with both hands, placing it on their head. The child's face, including eyes, nose, mouth, and ears, is visible. In front of the child is a large purple bucket with a yellow handle. The background shows some blurred structures, possibly benches or loungers, indicating a recreational area.",
+  "detected_objects": [
+    "child",
+    "face",
+    "eyes",
+    "nose",
+    "mouth",
+    "ears",
+    "hands",
+    "arms",
+    "blue cap",
+    "patterned swim trunks",
+    "purple bucket",
+    "yellow handle",
+    "background structures"
+  ],
+  "config": {
+    "cutout": {
+      "max_size": 1200,
+      "margin": 50,
+      "segment_align": true
+    },
+    "segment": {
+      "segment_size": [
+        400,
+        300
+      ],
+      "randomize_offset": false,
+      "max_offset": 50
+    },
+    "canvas": {
+      "size": [
+        8000,
+        3000
+      ],
+      "origin": "bottom-left"
+    },
+    "effects": {
+      "drop_shadow": true,
+      "shadow_offset": [
+        5,
+        5
+      ],
+      "shadow_blur": 10,
+      "filters": []
+    },
+    "vision_backend": "openai",
+    "detection_backend": "ultralytics",
+    "confidence_threshold": 0.5
+  },
+  "cutouts": [
+    {
+      "label": "person",
+      "confidence": 0.6729,
+      "file": "cutouts/person_1.png",
+      "size": [
+        800,
+        1200
+      ],
+      "original_bbox": [
+        452,
+        6,
+        775,
+        1254
+      ],
+      "margin": 50,
+      "crop_bounds": [
+        389,
+        -44,
+        1290,
+        1310
+      ],
+      "actual_bounds": [
+        389,
+        0,
+        1290,
+        1310
+      ],
+      "target_size": [
+        800,
+        1200
+      ],
+      "has_padding": true,
+      "segments": [
+        {
+          "file": "segments/person_1/seg_0_0.png",
+          "row": 0,
+          "col": 0,
+          "position": [
+            136,
+            0
+          ],
+          "size": [
+            279,
+            263
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_0_1.png",
+          "row": 0,
+          "col": 1,
+          "position": [
+            415,
+            0
+          ],
+          "size": [
+            378,
+            263
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": true,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_1_0.png",
+          "row": 1,
+          "col": 0,
+          "position": [
+            8,
+            263
+          ],
+          "size": [
+            429,
+            285
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_1_1.png",
+          "row": 1,
+          "col": 1,
+          "position": [
+            437,
+            263
+          ],
+          "size": [
+            363,
+            285
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_2_0.png",
+          "row": 2,
+          "col": 0,
+          "position": [
+            15,
+            548
+          ],
+          "size": [
+            390,
+            259
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_2_1.png",
+          "row": 2,
+          "col": 1,
+          "position": [
+            405,
+            548
+          ],
+          "size": [
+            378,
+            259
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_3_0.png",
+          "row": 3,
+          "col": 0,
+          "position": [
+            235,
+            807
+          ],
+          "size": [
+            484,
+            227
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/person_1/seg_4_0.png",
+          "row": 4,
+          "col": 0,
+          "position": [
+            336,
+            1034
+          ],
+          "size": [
+            464,
+            166
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "bowl",
+      "confidence": 0.5607,
+      "file": "cutouts/bowl_2.png",
+      "size": [
+        1200,
+        900
+      ],
+      "original_bbox": [
+        234,
+        984,
+        669,
+        340
+      ],
+      "margin": 50,
+      "crop_bounds": [
+        184,
+        866,
+        953,
+        1442
+      ],
+      "actual_bounds": [
+        184,
+        866,
+        953,
+        1340
+      ],
+      "target_size": [
+        1200,
+        900
+      ],
+      "has_padding": true,
+      "segments": [
+        {
+          "file": "segments/bowl_2/seg_0_0.png",
+          "row": 0,
+          "col": 0,
+          "position": [
+            188,
+            0
+          ],
+          "size": [
+            587,
+            262
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/bowl_2/seg_0_1.png",
+          "row": 0,
+          "col": 1,
+          "position": [
+            775,
+            0
+          ],
+          "size": [
+            372,
+            262
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/bowl_2/seg_1_0.png",
+          "row": 1,
+          "col": 0,
+          "position": [
+            18,
+            262
+          ],
+          "size": [
+            336,
+            241
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/bowl_2/seg_1_1.png",
+          "row": 1,
+          "col": 1,
+          "position": [
+            354,
+            262
+          ],
+          "size": [
+            437,
+            241
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/bowl_2/seg_1_2.png",
+          "row": 1,
+          "col": 2,
+          "position": [
+            791,
+            262
+          ],
+          "size": [
+            390,
+            241
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/bowl_2/seg_2_0.png",
+          "row": 2,
+          "col": 0,
+          "position": [
+            18,
+            503
+          ],
+          "size": [
+            367,
+            235
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/bowl_2/seg_2_1.png",
+          "row": 2,
+          "col": 1,
+          "position": [
+            385,
+            503
+          ],
+          "size": [
+            296,
+            235
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        },
+        {
+          "file": "segments/bowl_2/seg_2_2.png",
+          "row": 2,
+          "col": 2,
+          "position": [
+            681,
+            503
+          ],
+          "size": [
+            469,
+            235
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "has_empty_pixels": false,
+          "layer": 0,
+          "rotation": 0.0,
+          "effects": [
+            "drop_shadow"
+          ]
+        }
+      ]
+    }
+  ]
+}
