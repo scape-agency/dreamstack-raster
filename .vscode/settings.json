@@ -415,7 +415,7 @@
     // ...
 
     "workbench.editor.enablePreview": false,
-    "workbench.colorTheme": "Default Dark Modern",
+    "workbench.colorTheme": "Dark Modern",
     "workbench.iconTheme": "vs-seti",
 
     // ...
