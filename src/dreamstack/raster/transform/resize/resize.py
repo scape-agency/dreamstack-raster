@@ -47,6 +47,4 @@ def resize(
     import cv2
 
     interp = _get_cv2_interpolation(interpolation)
-    return np.asarray(
-        cv2.resize(image, size, interpolation=interp), dtype=np.uint8
-    )
+    return np.asarray(cv2.resize(image, size, interpolation=interp), dtype=np.uint8)

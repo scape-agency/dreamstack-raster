@@ -47,6 +47,4 @@ def resize_to_width(
     scale = target_width / w
     target_height = int(h * scale)
 
-    return resize(
-        image, (target_width, target_height), interpolation=interpolation
-    )
+    return resize(image, (target_width, target_height), interpolation=interpolation)

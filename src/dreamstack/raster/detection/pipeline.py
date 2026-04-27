@@ -22,12 +22,12 @@ from __future__ import annotations
 
 import logging
 import shutil
+from collections.abc import Callable
 
 # ThreadPoolExecutor reserved for future parallel processing
 # from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Callable
 
 import cv2
 

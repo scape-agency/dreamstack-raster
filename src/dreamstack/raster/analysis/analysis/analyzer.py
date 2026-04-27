@@ -7,10 +7,11 @@
 
 """
 Dreamstack Raster - Color Analyzer
-==============
+==================================
 
 Analyzes colors in images for background detection,
 dominant color extraction, and color palette generation.
+
 """
 
 
@@ -35,7 +36,8 @@ from dreamstack.raster.analysis.analysis.operations import (
 
 
 class ColorAnalyzer:
-    """Analyzes colors in images for extraction and masking.
+    """
+    Analyzes colors in images for extraction and masking.
 
     Provides methods for finding dominant colors, detecting backgrounds,
     and generating replacement backgrounds.

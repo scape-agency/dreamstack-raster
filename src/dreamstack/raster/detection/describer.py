@@ -31,10 +31,9 @@ from typing import TYPE_CHECKING, Literal
 # =============================================================================
 
 if TYPE_CHECKING:
-    import numpy as np
 
     # pylint: disable=import-outside-toplevel
-    from numpy.typing import NDArray
+    pass
 
 logger = logging.getLogger(__name__)
 

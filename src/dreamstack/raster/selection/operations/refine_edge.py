@@ -118,9 +118,7 @@ def refine_edge(
         blur_size = int(smooth * 2 + 1)
         if blur_size % 2 == 0:
             blur_size += 1
-        refined_mask = cv2.GaussianBlur(
-            refined_mask, (blur_size, blur_size), smooth
-        )
+        refined_mask = cv2.GaussianBlur(refined_mask, (blur_size, blur_size), smooth)
 
     # Feather
     if feather > 0:
@@ -153,9 +151,7 @@ def refine_edge(
     if decontaminate:
         # This would require color replacement, for now just sharpen edges
         # to reduce fringing visibility
-        kernel = np.array(
-            [[0, -1, 0], [-1, 5, -1], [0, -1, 0]], dtype=np.float32
-        )
+        kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]], dtype=np.float32)
         refined_mask = cv2.filter2D(refined_mask, -1, kernel)
         refined_mask = np.clip(refined_mask, 0, 1)
 

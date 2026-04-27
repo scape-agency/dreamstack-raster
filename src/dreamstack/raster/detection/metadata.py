@@ -35,7 +35,6 @@ if TYPE_CHECKING:
     from dreamstack.raster.detection.extractor import ExtractedDetection
 
     # pylint: disable=import-outside-toplevel
-    from dreamstack.raster.detection.result import ImageDetectionResult
 
 
 @dataclass
@@ -218,7 +217,7 @@ def load_metadata(path: Path) -> ImageMetadata:
     ImageMetadata
         Loaded metadata.
     """
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         data = json.load(f)
 
     objects = [ObjectMetadata(**obj) for obj in data.get("objects", [])]

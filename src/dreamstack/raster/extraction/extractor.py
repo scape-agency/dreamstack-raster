@@ -22,9 +22,9 @@ into a configurable, reusable interface.
 # Import | Future
 from __future__ import annotations
 
+from collections.abc import Iterator
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Iterator, List, Tuple
 
 import cv2  # pylint: disable=no-member
 import numpy as np
@@ -71,13 +71,13 @@ class ExtractedObject:
     """
 
     image: NDArray[np.uint8]
-    original_region: Tuple[int, int, int, int]
+    original_region: tuple[int, int, int, int]
     contour: ContourInfo | None = None
     index: int = 0
     source_path: Path | None = None
 
     @property
-    def dimensions(self) -> Tuple[int, int]:
+    def dimensions(self) -> tuple[int, int]:
         """Get image dimensions as (height, width)."""
         return self.image.shape[:2]
 
@@ -87,7 +87,7 @@ class ExtractedObject:
         return self.contour.area if self.contour else 0.0
 
     @property
-    def center(self) -> Tuple[float, float]:
+    def center(self) -> tuple[float, float]:
         """Get center point in original image coordinates."""
         x, y, w, h = self.original_region
         return (x + w / 2, y + h / 2)
@@ -190,7 +190,7 @@ class ObjectExtractor:
         self.detector = ContourDetector(self.config.detection)
         self.color_analyzer = ColorAnalyzer()
 
-    def extract(self, image: NDArray[np.uint8]) -> List[ExtractedObject]:
+    def extract(self, image: NDArray[np.uint8]) -> list[ExtractedObject]:
         """Extract all objects from an image.
 
         Parameters
@@ -259,7 +259,7 @@ class ObjectExtractor:
     def extract_from_file(
         self,
         path: str | Path,
-    ) -> List[ExtractedObject]:
+    ) -> list[ExtractedObject]:
         """Extract objects from an image file.
 
         Parameters
@@ -382,8 +382,8 @@ class ObjectExtractor:
     def extract_with_mask(
         self,
         image: NDArray[np.uint8],
-        background_color: Tuple[int, int, int] | None = None,
-    ) -> List[ExtractedObject]:
+        background_color: tuple[int, int, int] | None = None,
+    ) -> list[ExtractedObject]:
         """Extract objects with masked backgrounds.
 
         Extracts objects and replaces their backgrounds with a solid
@@ -427,11 +427,11 @@ class ObjectExtractor:
 
     def save_objects(
         self,
-        objects: List[ExtractedObject],
+        objects: list[ExtractedObject],
         output_dir: str | Path,
         prefix: str = "object",
         extension: str = ".png",
-    ) -> List[Path]:
+    ) -> list[Path]:
         """Save extracted objects to disk.
 
         Parameters
@@ -462,7 +462,7 @@ class ObjectExtractor:
 
         return saved_paths
 
-    def with_config(self, **kwargs) -> "ObjectExtractor":
+    def with_config(self, **kwargs) -> ObjectExtractor:
         """Create a new extractor with modified configuration.
 
         Parameters

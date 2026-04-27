@@ -1,11 +1,23 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Image Rotation Operations
-=========================
+Dreamstack Raster - Image Rotation Operations
+==============================================
 
 Comprehensive rotation and flipping operations for images.
 Supports arbitrary angles, fixed rotations, and flip operations.
 
 """
+
+
+# =============================================================================
+# Imports
+# =============================================================================
 
 from .arbitrary_rotate import arbitrary_rotate
 from .flip_both import flip_both

@@ -182,9 +182,7 @@ try:
     rgb = np.array([1.0, 0.0, 0.0])  # Pure red
     hsv = rgb_to_hsv(rgb)  # type: ignore[possibly-undefined]
     rgb_back = hsv_to_rgb(hsv)  # type: ignore[possibly-undefined]
-    assert np.allclose(
-        rgb, rgb_back, atol=0.01
-    ), "RGB->HSV->RGB conversion failed"
+    assert np.allclose(rgb, rgb_back, atol=0.01), "RGB->HSV->RGB conversion failed"
     print("rgb_to_hsv / hsv_to_rgb: OK")
 except Exception as e:
     print(f"rgb_to_hsv / hsv_to_rgb: FAILED - {e}")

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ruff: noqa: F401, F811, E501
 # pylint: disable=W0611,W0404
 # pyright: reportUnusedImport=false
@@ -60,9 +59,7 @@ print("✓ Array conversion functions loaded")
 # Load bridge module directly
 spec = importlib.util.spec_from_file_location(
     "dreamstack.raster.color.bridge.array_to_model",
-    os.path.join(
-        raster_src, "dreamstack/raster/color/bridge/array_to_model.py"
-    ),
+    os.path.join(raster_src, "dreamstack/raster/color/bridge/array_to_model.py"),
 )
 assert spec is not None and spec.loader is not None
 bridge_module = importlib.util.module_from_spec(spec)

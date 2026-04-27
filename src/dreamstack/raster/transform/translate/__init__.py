@@ -1,11 +1,23 @@
+# -*- coding: utf-8 -*-
+
+
+# =============================================================================
+# Docstring
+# =============================================================================
+
 """
-Image Translation Operations
-============================
+Dreamstack Raster - Image Translation Operations
+=================================================
 
 Image translation (shifting) operations using affine transformations.
 Essential for data augmentation in machine learning pipelines.
 
 """
+
+
+# =============================================================================
+# Imports
+# =============================================================================
 
 from .apply_affine_matrix import apply_affine_matrix
 from .center_to_origin import center_to_origin

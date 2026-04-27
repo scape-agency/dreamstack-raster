@@ -52,6 +52,4 @@ def translate_percentage(
     h, w = image.shape[:2]
     tx = int(w * tx_percent)
     ty = int(h * ty_percent)
-    return translate(
-        image, tx, ty, border_mode=border_mode, border_value=border_value
-    )
+    return translate(image, tx, ty, border_mode=border_mode, border_value=border_value)
