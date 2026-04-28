@@ -7,7 +7,7 @@
 
 """
 Dreamstack Raster - RGB Histogram Function
-======================
+==========================================
 
 Compute separate histograms for R, G, B channels.
 
