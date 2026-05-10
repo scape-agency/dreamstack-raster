@@ -71,7 +71,13 @@ def select_focus(
 
     # Normalize to 0-255
     # pylint: disable=line-too-long
-    sharpness_norm = cv2.normalize(sharpness, None, 0, 255, cv2.NORM_MINMAX)  # type: ignore[call-overload]
+    sharpness_norm = cv2.normalize(
+        sharpness,
+        np.empty_like(sharpness, dtype=np.float32),
+        0,
+        255,
+        cv2.NORM_MINMAX,
+    )  # type: ignore[call-overload]
     sharpness_u8 = sharpness_norm.astype(np.uint8)
 
     # Apply local variance as additional measure
@@ -82,7 +88,11 @@ def select_focus(
 
     # Normalize variance
     variance_norm = cv2.normalize(  # type: ignore[call-overload]
-        np.sqrt(local_variance), None, 0, 255, cv2.NORM_MINMAX
+        np.sqrt(local_variance),
+        np.empty_like(local_variance, dtype=np.float32),
+        0,
+        255,
+        cv2.NORM_MINMAX,
     ).astype(np.uint8)
 
     # Combine sharpness and variance
@@ -99,4 +109,4 @@ def select_focus(
     # Smooth edges
     mask = cv2.GaussianBlur(mask, (7, 7), 2)
 
-    return Selection(mask=mask)
+    return Selection(mask=np.asarray(mask, dtype=np.uint8))

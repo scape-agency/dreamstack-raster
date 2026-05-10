@@ -13,7 +13,6 @@ Main pixel data class for image manipulation.
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -21,14 +20,32 @@ Main pixel data class for image manipulation.
 # Import | Future
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
 
 import numpy as np
 from numpy.typing import NDArray
 
+from dreamstack.raster.core.pixel.alpha_state import AlphaState
 from dreamstack.raster.core.pixel.bit_depth import DTYPE_MAP, BitDepth
 from dreamstack.raster.core.pixel.channel_count import CHANNEL_COUNT
+from dreamstack.raster.core.pixel.gamma_state import GammaState
 from dreamstack.raster.core.pixel.pixel_format import PixelFormat
+
+if TYPE_CHECKING:
+    from dreamstack.raster.color.spaces.color_space import ColorSpace
+
+
+def _default_working_space() -> ColorSpace:
+    """Return the default working color space (sRGB).
+
+    Imported lazily to avoid an import cycle between
+    ``core.pixel`` and ``color.spaces``.
+    """
+    # pylint: disable=import-outside-toplevel
+    from dreamstack.raster.color.spaces.color_space_instances import sRGB
+
+    return sRGB
 
 
 @dataclass
@@ -43,13 +60,25 @@ class PixelData:
         data: The underlying numpy array (height, width, channels)
         pixel_format: The color format of the pixels
         bit_depth: The bit depth of each channel
-        premultiplied_alpha: Whether alpha is premultiplied
+        working_space: The working ``ColorSpace`` the data is expressed in
+            (defaults to sRGB).
+        gamma_state: Whether ``data`` is linear-light or display-encoded
+            via the working space's transfer function.
+        alpha_state: Whether alpha is straight (associated) or
+            premultiplied into the color channels.
     """
 
     data: NDArray
     pixel_format: PixelFormat = PixelFormat.RGBA
     bit_depth: BitDepth = BitDepth.UINT8
-    premultiplied_alpha: bool = False
+    working_space: ColorSpace = field(default_factory=_default_working_space)
+    gamma_state: GammaState = GammaState.ENCODED
+    alpha_state: AlphaState = AlphaState.STRAIGHT
+
+    @property
+    def premultiplied_alpha(self) -> bool:
+        """Backward-compatible boolean view of ``alpha_state``."""
+        return self.alpha_state is AlphaState.PREMULTIPLIED
 
     def __post_init__(self) -> None:
         """Validate and normalize pixel data."""
@@ -117,7 +146,9 @@ class PixelData:
             data=self.data.copy(),
             pixel_format=self.pixel_format,
             bit_depth=self.bit_depth,
-            premultiplied_alpha=self.premultiplied_alpha,
+            working_space=self.working_space,
+            gamma_state=self.gamma_state,
+            alpha_state=self.alpha_state,
         )
 
     def get_pixel(self, x: int, y: int) -> NDArray:
@@ -184,7 +215,9 @@ class PixelData:
             data=region_data,
             pixel_format=self.pixel_format,
             bit_depth=self.bit_depth,
-            premultiplied_alpha=self.premultiplied_alpha,
+            working_space=self.working_space,
+            gamma_state=self.gamma_state,
+            alpha_state=self.alpha_state,
         )
 
     def set_region(self, x: int, y: int, region: PixelData) -> None:
@@ -337,7 +370,9 @@ class PixelData:
                 data=self.data.astype(np.float32),
                 pixel_format=self.pixel_format,
                 bit_depth=BitDepth.FLOAT32,
-                premultiplied_alpha=self.premultiplied_alpha,
+                working_space=self.working_space,
+                gamma_state=self.gamma_state,
+                alpha_state=self.alpha_state,
             )
 
         normalized = self.data.astype(np.float32) / self.max_value
@@ -346,7 +381,9 @@ class PixelData:
             data=normalized,
             pixel_format=self.pixel_format,
             bit_depth=BitDepth.FLOAT32,
-            premultiplied_alpha=self.premultiplied_alpha,
+            working_space=self.working_space,
+            gamma_state=self.gamma_state,
+            alpha_state=self.alpha_state,
         )
 
     def to_bit_depth(self, target_depth: BitDepth) -> PixelData:
@@ -381,7 +418,9 @@ class PixelData:
             data=converted,
             pixel_format=self.pixel_format,
             bit_depth=target_depth,
-            premultiplied_alpha=self.premultiplied_alpha,
+            working_space=self.working_space,
+            gamma_state=self.gamma_state,
+            alpha_state=self.alpha_state,
         )
 
     def premultiply_alpha(self) -> PixelData:
@@ -404,7 +443,9 @@ class PixelData:
             data=result,
             pixel_format=self.pixel_format,
             bit_depth=BitDepth.FLOAT32,
-            premultiplied_alpha=True,
+            working_space=self.working_space,
+            gamma_state=self.gamma_state,
+            alpha_state=AlphaState.PREMULTIPLIED,
         ).to_bit_depth(self.bit_depth)
 
     def unpremultiply_alpha(self) -> PixelData:
@@ -429,7 +470,9 @@ class PixelData:
             data=result,
             pixel_format=self.pixel_format,
             bit_depth=BitDepth.FLOAT32,
-            premultiplied_alpha=False,
+            working_space=self.working_space,
+            gamma_state=self.gamma_state,
+            alpha_state=AlphaState.STRAIGHT,
         ).to_bit_depth(self.bit_depth)
 
     def to_format(self, target_format: PixelFormat) -> PixelData:
@@ -537,7 +580,9 @@ class PixelData:
             data=result.astype(np.float32),
             pixel_format=target_format,
             bit_depth=BitDepth.FLOAT32,
-            premultiplied_alpha=False,
+            working_space=self.working_space,
+            gamma_state=self.gamma_state,
+            alpha_state=AlphaState.STRAIGHT,
         ).to_bit_depth(self.bit_depth)
 
     @classmethod

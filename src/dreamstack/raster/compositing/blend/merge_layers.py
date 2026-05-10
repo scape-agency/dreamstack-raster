@@ -13,7 +13,6 @@ Merge multiple layers with blend modes.
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -27,8 +26,8 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from dreamstack.raster.compositing.blend.blend_mode import BlendMode
 from dreamstack.raster.compositing.blend.composite import composite
+from dreamstack.raster.core.layer.blend_mode import BlendMode
 
 # =============================================================================
 # Type Checking Imports

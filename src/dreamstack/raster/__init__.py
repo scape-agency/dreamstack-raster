@@ -43,7 +43,6 @@ Example Usage
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -81,6 +80,9 @@ from dreamstack.raster.adjustments import contrast as adjust_contrast
 from dreamstack.raster.adjustments import curves as apply_curves
 from dreamstack.raster.adjustments import saturation as adjust_saturation
 
+# Import | Color
+from dreamstack.raster.color import ColorSpace, Palette
+
 # Import | Common compositing functions
 from dreamstack.raster.compositing import alpha_composite
 from dreamstack.raster.compositing import multiply as blend_multiply
@@ -97,6 +99,12 @@ from dreamstack.raster.core import (
 from dreamstack.raster.core import History as HistoryManager
 from dreamstack.raster.core import HistoryState, Image, Layer
 from dreamstack.raster.core import PixelData as Pixel
+from dreamstack.raster.core.layer import (
+    AdjustmentLayer,
+    BlendMode,
+    LayerGroup,
+    TextLayer,
+)
 
 # Import | Object extraction
 from dreamstack.raster.extraction import (
@@ -121,6 +129,9 @@ from dreamstack.raster.filters import (
 
 # Import | Convenience functions from IO
 from dreamstack.raster.io import get_supported_formats, load_image, save_image
+
+# Import | Selection
+from dreamstack.raster.selection import Selection, SelectionMode
 
 # Import | Common transform functions
 from dreamstack.raster.transform import (
@@ -148,10 +159,20 @@ __all__: list[str] = [
     "ChannelType",
     "Image",
     "Layer",
+    "LayerGroup",
+    "AdjustmentLayer",
+    "TextLayer",
+    "BlendMode",
     "HistoryManager",
     "HistoryState",
     "Canvas",
     "Document",
+    # Color
+    "ColorSpace",
+    "Palette",
+    # Selection
+    "Selection",
+    "SelectionMode",
     # Sub-modules
     "core",
     "io",

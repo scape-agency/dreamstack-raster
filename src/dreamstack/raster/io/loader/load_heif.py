@@ -36,7 +36,11 @@ if TYPE_CHECKING:
 def load_heif(path: Path, **options) -> Image:
     """Load HEIF/HEIC image."""
     # pylint: disable=import-outside-toplevel
-    from pillow_heif import register_heif_opener
+    from dreamstack.raster._optional import require
+
+    register_heif_opener = require(
+        "pillow_heif", extra="heif", feature="HEIF/HEIC loading"
+    ).register_heif_opener
 
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.io.loader.load_with_pil import load_with_pil

@@ -13,7 +13,6 @@ Stylization and special effect filters.
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -21,10 +20,10 @@ Stylization and special effect filters.
 # Import | Future
 from __future__ import annotations
 
+from dreamstack.raster.filters.edge.find_edges import find_edges
 from dreamstack.raster.filters.stylize.contour import contour
 from dreamstack.raster.filters.stylize.diffuse import diffuse
 from dreamstack.raster.filters.stylize.extrude import extrude
-from dreamstack.raster.filters.stylize.find_edges import find_edges
 from dreamstack.raster.filters.stylize.pixelate import (
     PixelateConfig,
     match_to_palette,

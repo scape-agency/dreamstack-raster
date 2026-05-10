@@ -13,7 +13,6 @@ Extract embedded thumbnails from RAW camera files.
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -48,7 +47,10 @@ def get_raw_thumbnail(path: str | Path) -> Image:
     # pylint: disable=import-outside-toplevel
     from io import BytesIO
 
-    import rawpy
+    # pylint: disable=import-outside-toplevel
+    from dreamstack.raster._optional import require
+
+    rawpy = require("rawpy", extra="raw", feature="RAW thumbnail extraction")
 
     # pylint: disable=import-outside-toplevel
     from PIL import Image as PILImage

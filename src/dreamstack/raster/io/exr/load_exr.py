@@ -13,7 +13,6 @@ Load OpenEXR image files.
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -49,6 +48,7 @@ def load_exr(
     Returns:
         Loaded Image with float data
     """
+    # pylint: disable=import-outside-toplevel,c-extension-no-member
     try:
         import Imath
         import OpenEXR
@@ -148,7 +148,10 @@ def load_exr(
 
 def _load_exr_imageio(path: Path, **_options) -> Image:
     """Fallback EXR loading using imageio."""
-    import imageio
+    # pylint: disable=import-outside-toplevel
+    from dreamstack.raster._optional import require
+
+    imageio = require("imageio", extra="exr", feature="EXR loading")
 
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image, ImageMetadata

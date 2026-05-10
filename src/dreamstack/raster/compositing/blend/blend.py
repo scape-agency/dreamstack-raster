@@ -13,7 +13,6 @@ Apply blend modes between two images.
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -35,74 +34,119 @@ if TYPE_CHECKING:
     from numpy.typing import NDArray
 
 # pylint: disable=wrong-import-position
-from dreamstack.raster.compositing.blend.blend_mode import BlendMode
+from dreamstack.raster.core.layer.blend_mode import BlendMode
 
 # pylint: enable=wrong-import-position
 
 
 def blend(
-    base: NDArray[np.uint8],
-    overlay: NDArray[np.uint8],
+    base: NDArray,
+    overlay: NDArray,
     mode: BlendMode = BlendMode.NORMAL,
     *,
     opacity: float = 1.0,
-) -> NDArray[np.uint8]:
+) -> NDArray:
     """Blend two images using the specified blend mode.
 
+    Operates internally on float32 RGB in ``[0, 1]`` (Photoshop-style
+    color blending) and preserves the input dtype on output. Accepts
+    ``uint8``, ``uint16``, or float arrays. The base image's alpha
+    channel (if any) is carried through unchanged.
+
     Args:
-        base: Base image (bottom layer).
-        overlay: Overlay image (top layer).
+        base: Base image (bottom layer). 2-D, RGB, or RGBA.
+        overlay: Overlay image (top layer). Same shape as base.
         mode: Blend mode to apply.
-        opacity: Overlay opacity (0.0-1.0).
+        opacity: Overlay opacity in ``[0, 1]``.
 
     Returns:
-        Blended image.
+        Blended image with the same shape and dtype as ``base``.
 
     Example:
         >>> result = blend(background, foreground, BlendMode.MULTIPLY)
-        >>> result = blend(photo, texture, BlendMode.OVERLAY, opacity=0.5)
     """
-    # Ensure both images have same shape
+    # Ensure both images have same spatial shape.
     if base.shape[:2] != overlay.shape[:2]:
-        overlay = cv2.resize(overlay, (base.shape[1], base.shape[0]))  # type: ignore[assignment]
+        overlay = cv2.resize(overlay, (base.shape[1], base.shape[0]))
 
-    # Work with float for precision
-    base_f = base.astype(np.float32) / 255.0
-    overlay_f = overlay.astype(np.float32) / 255.0
+    base_f, base_scale = _to_unit_float(base)
+    overlay_f, _ = _to_unit_float(overlay)
 
-    # Get RGB channels (handle grayscale and alpha)
-    if base_f.ndim == 2:
-        base_rgb = np.stack([base_f] * 3, axis=-1)
-    elif base_f.shape[2] >= 3:
-        base_rgb = base_f[:, :, :3]
-    else:
-        base_rgb = np.stack([base_f[:, :, 0]] * 3, axis=-1)
+    base_rgb = _ensure_rgb(base_f)
+    overlay_rgb = _ensure_rgb(overlay_f)
 
-    if overlay_f.ndim == 2:
-        overlay_rgb = np.stack([overlay_f] * 3, axis=-1)
-    elif overlay_f.shape[2] >= 3:
-        overlay_rgb = overlay_f[:, :, :3]
-    else:
-        overlay_rgb = np.stack([overlay_f[:, :, 0]] * 3, axis=-1)
+    blended = np.asarray(
+        _apply_blend_mode(base_rgb, overlay_rgb, mode), dtype=np.float32
+    )
 
-    # Apply blend mode
-    result = _apply_blend_mode(base_rgb, overlay_rgb, mode)
-
-    # Apply opacity
     if opacity < 1.0:
-        result = base_rgb * (1 - opacity) + result * opacity
+        blended = base_rgb * (1.0 - opacity) + blended * opacity
 
-    # Clip and convert back
-    result = np.clip(result * 255, 0, 255).astype(np.uint8)
+    blended = np.clip(blended, 0.0, 1.0)
 
-    # Preserve alpha channel if present
-    if base.ndim > 2 and base.shape[2] == 4:
-        result_rgba = np.zeros(base.shape, dtype=np.uint8)
-        result_rgba[:, :, :3] = result
-        result_rgba[:, :, 3] = base[:, :, 3]
-        return result_rgba
+    # Reattach alpha if the base had one; otherwise return plain RGB.
+    if base.ndim == 3 and base.shape[2] == 4:
+        result_f = np.empty(base.shape, dtype=np.float32)
+        result_f[:, :, :3] = blended
+        result_f[:, :, 3] = base_f[:, :, 3]
+    else:
+        result_f = blended
 
-    return result
+    result_f = np.asarray(result_f, dtype=np.float32)
+
+    return _from_unit_float(result_f, base.dtype, base_scale)
+
+
+def blend_float(
+    base: NDArray[np.float32],
+    overlay: NDArray[np.float32],
+    mode: BlendMode = BlendMode.NORMAL,
+    *,
+    opacity: float = 1.0,
+) -> NDArray[np.float32]:
+    """Float32 RGB-only blend kernel (no dtype handling, no alpha).
+
+    Both inputs must be float32 RGB in ``[0, 1]`` with identical shapes.
+    Returned array is float32 RGB in ``[0, 1]``.
+    """
+    blended = np.asarray(
+        _apply_blend_mode(base, overlay, mode), dtype=np.float32
+    )
+    if opacity < 1.0:
+        blended = base * (1.0 - opacity) + blended * opacity
+    return np.asarray(np.clip(blended, 0.0, 1.0), dtype=np.float32)
+
+
+def _to_unit_float(arr: NDArray) -> tuple[NDArray[np.float32], float]:
+    """Cast an integer or float image to float32 in ``[0, 1]``.
+
+    Returns the converted array and the scale that was applied (so the
+    caller can invert it on the way back to the original dtype).
+    """
+    if np.issubdtype(arr.dtype, np.integer):
+        scale = float(np.iinfo(arr.dtype).max)
+        return arr.astype(np.float32) / scale, scale
+    return arr.astype(np.float32, copy=False), 1.0
+
+
+def _from_unit_float(
+    arr: NDArray[np.float32],
+    target_dtype: np.dtype,
+    scale: float,
+) -> NDArray:
+    """Inverse of :func:`_to_unit_float`."""
+    if np.issubdtype(target_dtype, np.integer):
+        return np.asarray(np.clip(arr * scale, 0.0, scale), dtype=target_dtype)
+    return arr.astype(target_dtype, copy=False)
+
+
+def _ensure_rgb(arr: NDArray[np.float32]) -> NDArray[np.float32]:
+    """Project an arbitrary 2-D / 3-channel / 4-channel image to RGB."""
+    if arr.ndim == 2:
+        return np.stack([arr] * 3, axis=-1)
+    if arr.shape[2] >= 3:
+        return arr[:, :, :3]
+    return np.stack([arr[:, :, 0]] * 3, axis=-1)
 
 
 def _apply_blend_mode(
@@ -147,13 +191,18 @@ def _apply_blend_mode(
         return np.where(overlay < 0.5, low, high)
 
     elif mode == BlendMode.SOFT_LIGHT:
-        return (1 - 2 * overlay) * base * base + 2 * overlay * base
+        return np.asarray(
+            (1 - 2 * overlay) * base * base + 2 * overlay * base,
+            dtype=np.float32,
+        )
 
     elif mode == BlendMode.DIFFERENCE:
         return np.abs(base - overlay)
 
     elif mode == BlendMode.EXCLUSION:
-        return base + overlay - 2 * base * overlay
+        return np.asarray(
+            base + overlay - 2 * base * overlay, dtype=np.float32
+        )
 
     elif mode == BlendMode.LINEAR_BURN:
         return np.maximum(0, base + overlay - 1)
@@ -235,30 +284,27 @@ def _blend_hsl_mode(
     overlay: NDArray[np.float32],
     mode: BlendMode,
 ) -> NDArray[np.float32]:
-    """Apply HSL-based blend modes."""
-    # Convert to HLS (OpenCV uses HLS, not HSL)
-    base_u8 = (base * 255).astype(np.uint8)
-    overlay_u8 = (overlay * 255).astype(np.uint8)
-
-    base_hls = cv2.cvtColor(base_u8, cv2.COLOR_RGB2HLS).astype(np.float32)
-    overlay_hls = cv2.cvtColor(overlay_u8, cv2.COLOR_RGB2HLS).astype(
-        np.float32
+    """Apply HSL-based blend modes (float32 RGB in/out)."""
+    # OpenCV's float HLS path expects RGB in [0, 1]; H is in [0, 360].
+    base_hls = cv2.cvtColor(
+        np.ascontiguousarray(base, dtype=np.float32), cv2.COLOR_RGB2HLS
+    )
+    overlay_hls = cv2.cvtColor(
+        np.ascontiguousarray(overlay, dtype=np.float32), cv2.COLOR_RGB2HLS
     )
 
     result_hls = base_hls.copy()
 
     if mode == BlendMode.HUE:
         result_hls[:, :, 0] = overlay_hls[:, :, 0]
-
     elif mode == BlendMode.SATURATION:
         result_hls[:, :, 2] = overlay_hls[:, :, 2]
-
     elif mode == BlendMode.COLOR:
         result_hls[:, :, 0] = overlay_hls[:, :, 0]
         result_hls[:, :, 2] = overlay_hls[:, :, 2]
-
     elif mode == BlendMode.LUMINOSITY:
         result_hls[:, :, 1] = overlay_hls[:, :, 1]
 
-    result_u8 = cv2.cvtColor(result_hls.astype(np.uint8), cv2.COLOR_HLS2RGB)
-    return result_u8.astype(np.float32) / 255.0
+    return np.asarray(
+        cv2.cvtColor(result_hls, cv2.COLOR_HLS2RGB), dtype=np.float32
+    )

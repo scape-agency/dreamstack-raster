@@ -13,7 +13,6 @@ Functional API for color analysis operations.
 Provides functions for dominant color detection and background analysis.
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -66,8 +65,9 @@ def get_dominant_color(
     )
 
     # Run K-means
+    empty_labels = np.empty((0, 1), dtype=np.int32)
     _, labels, centers = cv2.kmeans(  # type: ignore[call-overload]
-        data, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS
+        data, k, empty_labels, criteria, 10, cv2.KMEANS_RANDOM_CENTERS
     )
 
     if k == 1:
@@ -122,8 +122,9 @@ def get_dominant_colors(
     )
 
     # Run K-means
+    empty_labels = np.empty((0, 1), dtype=np.int32)
     _, labels, centers = cv2.kmeans(  # type: ignore[call-overload]
-        data, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS
+        data, k, empty_labels, criteria, 10, cv2.KMEANS_RANDOM_CENTERS
     )
 
     # Count pixels in each cluster

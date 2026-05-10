@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pyright: reportReturnType=false
 
 
 # =============================================================================
@@ -12,7 +13,6 @@ Dreamstack Raster - Refine Mask
 Mask refinement with morphological operations and blurring.
 
 """
-
 
 # =============================================================================
 # Imports

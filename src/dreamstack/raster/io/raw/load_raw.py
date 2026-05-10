@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=invalid-name
 
 
 # =============================================================================
@@ -12,7 +13,6 @@ Dreamstack Raster - RAW Image Loading
 Load RAW camera files.
 
 """
-
 
 # =============================================================================
 # Imports
@@ -63,7 +63,10 @@ def load_raw(
     Returns:
         Processed Image
     """
-    import rawpy
+    # pylint: disable=import-outside-toplevel
+    from dreamstack.raster._optional import require
+
+    rawpy = require("rawpy", extra="raw", feature="RAW image loading")
 
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image, ImageMetadata

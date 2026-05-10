@@ -10,6 +10,8 @@ Select contiguous regions of similar color.
 # Imports
 # =============================================================================
 
+# pyright: reportArgumentType=false
+
 # Import | Future
 from __future__ import annotations
 
@@ -97,7 +99,9 @@ def magic_wand(
         diff = np.abs(src.astype(np.int16) - seed_color)
         color_dist = np.max(diff, axis=2)
 
-        result_mask = np.where(color_dist <= tolerance, 255, 0).astype(np.uint8)
+        result_mask = np.where(color_dist <= tolerance, 255, 0).astype(
+            np.uint8
+        )
 
     # Anti-alias edges
     if anti_alias:

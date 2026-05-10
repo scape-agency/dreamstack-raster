@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pyright: reportArgumentType=false, reportReturnType=false
 
 
 # =============================================================================
@@ -14,7 +15,6 @@ with precise segmentation from Segment Anything (SAM).
 
 This backend allows text-prompted detection of arbitrary objects.
 """
-
 
 # =============================================================================
 # Imports

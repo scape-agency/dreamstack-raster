@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=invalid-name
 
 
 # =============================================================================
@@ -12,7 +13,6 @@ Dreamstack Raster - Get PSD Layer Info
 Get information about layers in a PSD file.
 
 """
-
 
 # =============================================================================
 # Imports
@@ -35,7 +35,11 @@ def get_psd_layer_info(path: str | Path) -> list[dict]:
         List of layer information dictionaries
     """
     # pylint: disable=import-outside-toplevel
-    from psd_tools import PSDImage
+    from dreamstack.raster._optional import require
+
+    PSDImage = require(
+        "psd_tools", extra="psd", feature="PSD layer inspection"
+    ).PSDImage
 
     psd = PSDImage.open(path)
 

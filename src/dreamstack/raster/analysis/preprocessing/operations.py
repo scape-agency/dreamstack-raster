@@ -13,7 +13,6 @@ Functional API for image preprocessing operations.
 Provides stateless functions for preparing images for contour detection.
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -374,11 +373,13 @@ def preprocess_for_contours(
     # Edge detection
     edges = detect_edges(grayscale)
 
-    return {  # type: ignore[return-value]
+    result: dict[str, NDArray[np.uint8]] = {
         "original": image.copy(),
-        "blurred": blurred,
-        "contrast": contrast,
-        "grayscale": grayscale,
-        "threshold": threshold,
-        "edges": edges,
+        "blurred": np.asarray(blurred, dtype=np.uint8),
+        "contrast": np.asarray(contrast, dtype=np.uint8),
+        "grayscale": np.asarray(grayscale, dtype=np.uint8),
+        "threshold": np.asarray(threshold, dtype=np.uint8),
+        "edges": np.asarray(edges, dtype=np.uint8),
     }
+
+    return result

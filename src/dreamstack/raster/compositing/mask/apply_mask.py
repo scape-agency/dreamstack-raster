@@ -13,7 +13,6 @@ Apply a mask to an image.
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -59,19 +58,28 @@ def apply_mask(
     """
     # Ensure BGRA output
     if image.ndim == 2:
-        result = cv2.cvtColor(image, cv2.COLOR_GRAY2BGRA)  # type: ignore[assignment]
+        result = np.asarray(
+            cv2.cvtColor(image, cv2.COLOR_GRAY2BGRA), dtype=np.uint8
+        )
     elif image.shape[2] == 3:
-        result = cv2.cvtColor(image, cv2.COLOR_BGR2BGRA)  # type: ignore[assignment]
+        result = np.asarray(
+            cv2.cvtColor(image, cv2.COLOR_BGR2BGRA), dtype=np.uint8
+        )
     else:
-        result = image.copy()
+        result = np.asarray(image.copy(), dtype=np.uint8)
 
     # Ensure mask matches image size
     if mask.shape[:2] != result.shape[:2]:
-        mask = cv2.resize(mask, (result.shape[1], result.shape[0]))  # type: ignore[assignment]
+        mask = np.asarray(
+            cv2.resize(mask, (result.shape[1], result.shape[0])),
+            dtype=np.uint8,
+        )
 
     # Ensure mask is grayscale
     if mask.ndim > 2:
-        mask = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)  # type: ignore[assignment]
+        mask = np.asarray(
+            cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY), dtype=np.uint8
+        )
 
     # Invert if requested
     if invert:
@@ -86,4 +94,4 @@ def apply_mask(
     else:
         result[:, :, 3] = mask
 
-    return result
+    return np.asarray(result, dtype=np.uint8)

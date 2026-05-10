@@ -110,7 +110,11 @@ def save_with_pil(
 
     elif image_format in (ImageFormat.HEIC, ImageFormat.HEIF):
         # pylint: disable=import-outside-toplevel
-        from pillow_heif import register_heif_opener
+        from dreamstack.raster._optional import require
+
+        register_heif_opener = require(
+            "pillow_heif", extra="heif", feature="HEIF/HEIC saving"
+        ).register_heif_opener
 
         register_heif_opener()
         save_kwargs["format"] = "HEIF"

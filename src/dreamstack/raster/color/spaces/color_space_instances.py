@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=invalid-name
 
 
 # =============================================================================
@@ -7,7 +8,6 @@
 
 """
 Dreamstack Raster - Pre-defined color space instances."""
-
 
 # =============================================================================
 # Imports
@@ -164,4 +164,36 @@ DCI_P3 = ColorSpace(
     gamma_type=GammaType.POWER,
     gamma=2.6,
     description="DCI-P3 digital cinema color space",
+)
+
+
+# HDR (Rec.2100) — same Rec.2020 primaries/white, different transfer.
+# Use these for PQ / HLG content authoring & display.
+
+Rec2100PQ = ColorSpace(
+    name="Rec. 2100 PQ",
+    primaries=np.array(
+        [
+            [0.708, 0.292],
+            [0.170, 0.797],
+            [0.131, 0.046],
+        ]
+    ),
+    white_point=D65,
+    gamma_type=GammaType.PQ,
+    description="ITU-R BT.2100 PQ (Perceptual Quantizer) HDR",
+)
+
+Rec2100HLG = ColorSpace(
+    name="Rec. 2100 HLG",
+    primaries=np.array(
+        [
+            [0.708, 0.292],
+            [0.170, 0.797],
+            [0.131, 0.046],
+        ]
+    ),
+    white_point=D65,
+    gamma_type=GammaType.HLG,
+    description="ITU-R BT.2100 HLG (Hybrid Log-Gamma) HDR",
 )

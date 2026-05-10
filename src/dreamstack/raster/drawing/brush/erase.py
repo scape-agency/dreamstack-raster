@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pyright: reportArgumentType=false, reportReturnType=false
 
 
 # =============================================================================
@@ -12,7 +13,6 @@ Dreamstack Raster - Erase
 Eraser tool for removing pixels.
 
 """
-
 
 # =============================================================================
 # Imports

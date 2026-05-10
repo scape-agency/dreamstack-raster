@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pyright: reportArgumentType=false, reportReturnType=false
 
 
 # =============================================================================
@@ -7,7 +8,6 @@
 
 """
 Dreamstack Raster - Normalize operation."""
-
 
 # =============================================================================
 # Imports

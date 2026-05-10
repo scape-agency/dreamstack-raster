@@ -36,7 +36,7 @@ if TYPE_CHECKING:
 
 # pylint: disable=wrong-import-position
 from dreamstack.raster.compositing.blend.blend import blend
-from dreamstack.raster.compositing.blend.blend_mode import BlendMode
+from dreamstack.raster.core.layer.blend_mode import BlendMode
 
 # pylint: enable=wrong-import-position
 

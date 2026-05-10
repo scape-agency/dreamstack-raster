@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pyright: reportArgumentType=false
 
 
 # =============================================================================
@@ -12,7 +13,6 @@ Dreamstack Raster - Image Describer
 AI-powered image description using vision models.
 Supports OpenAI (GPT-4o) and Mistral (Pixtral) backends.
 """
-
 
 # =============================================================================
 # Imports

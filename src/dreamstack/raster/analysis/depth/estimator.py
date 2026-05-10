@@ -14,7 +14,6 @@ using transformer-based models like Depth Anything.
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -149,8 +148,8 @@ class DepthEstimator:
             from transformers import pipeline
         except ImportError as exc:
             raise ImportError(
-                "transformers is required for depth estimation. "
-                "Install with: pip install transformers torch"
+                "Depth estimation requires the optional 'transformers' package. "
+                "Install it with: pip install 'dreamstack-raster[detection]'"
             ) from exc
 
         device = self._resolve_device()

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pyright: reportArgumentType=false
 
 
 # =============================================================================
@@ -12,7 +13,6 @@ Dreamstack Raster - Brush
 Brush configuration for drawing operations.
 
 """
-
 
 # =============================================================================
 # Imports

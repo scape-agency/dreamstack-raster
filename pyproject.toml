@@ -63,7 +63,6 @@ priority = "supplemental"
 
 [tool.poetry.dependencies]
 dreamstack = { git = "https://github.com/scape-agency/dreamstack.git", rev = "dev" }
-dreamstack-color = { git = "https://github.com/scape-agency/dreamstack-color.git", rev = "dev" }
 
 # Core image processing
 numpy = "^2.0.0"
@@ -72,47 +71,69 @@ scikit-image = "^0.26.0"
 opencv-python = "^4.10.0"
 scipy = "^1.14.0"
 
-# Color management
+# Color management (core; lightweight)
 colour-science = { version = "^0.4.0", python = ">=3.12,<3.15" }
 
-# Raw image processing (optional - no Python 3.13 wheels yet)
-rawpy = { version = "^0.26.1", optional = true, python = ">=3.12,<3.13" }
-
-# PSD file support
-psd-tools = "^1.10.0"
-
-# Font/text rendering
+# Font/text rendering (core; small)
 freetype-py = "^2.5.0"
 
-# SVG support
+# SVG support (core; vector i/o is widely needed)
 svgwrite = "^1.4.0"
 cairosvg = "^2.7.0"
 
-# EXIF/metadata
+# EXIF/metadata (core; tiny)
 piexif = "^1.1.0"
 
+# ----- Optional backends (kept out of base install via extras) -----
+
+# Raw image processing (no Python 3.13 wheels yet)
+rawpy = { version = "^0.26.1", optional = true, python = ">=3.12,<3.13" }
+
+# PSD file support
+psd-tools = { version = "^1.10.0", optional = true }
+
 # HDR/EXR support
-imageio = "^2.35.0"
-OpenEXR = "^3.4.6"
+imageio = { version = "^2.35.0", optional = true }
+OpenEXR = { version = "^3.4.6", optional = true }
 
-# ICC color profiles
-Pillow-heif = "^1.3.0"
+# HEIF / HEIC
+Pillow-heif = { version = "^1.3.0", optional = true }
 
-# ML/Object Detection
-# Note: ultralytics will install torch automatically
-ultralytics = "^8.4.21"
+# ML / Object Detection (pulls torch transitively via ultralytics)
+ultralytics = { version = "^8.4.21", optional = true }
+transformers = { version = "^5.3.0", optional = true }
+groundingdino-py = { version = "^0.4.0", optional = true }
+segment-anything = { version = "^1.0", optional = true }
 
-# AI Vision/Description
-chimp-openai = { git = "https://github.com/blue-chimp/chimp-openai.git", rev = "pro" }
-chimp-mistral = { git = "https://github.com/blue-chimp/chimp-mistral.git", rev = "pro" }
-
-# Advanced segmentation
-transformers = "^5.3.0"
-groundingdino-py = "^0.4.0"
-segment-anything = "^1.0"
+# AI Vision / Description
+chimp-openai = { git = "https://github.com/blue-chimp/chimp-openai.git", rev = "pro", optional = true }
+chimp-mistral = { git = "https://github.com/blue-chimp/chimp-mistral.git", rev = "pro", optional = true }
 
 [tool.poetry.extras]
 raw = ["rawpy"]
+psd = ["psd-tools"]
+exr = ["imageio", "OpenEXR"]
+heif = ["Pillow-heif"]
+detection = [
+    "ultralytics",
+    "transformers",
+    "groundingdino-py",
+    "segment-anything",
+]
+vision = ["chimp-openai", "chimp-mistral"]
+all = [
+    "rawpy",
+    "psd-tools",
+    "imageio",
+    "OpenEXR",
+    "Pillow-heif",
+    "ultralytics",
+    "transformers",
+    "groundingdino-py",
+    "segment-anything",
+    "chimp-openai",
+    "chimp-mistral",
+]
 
 # =============================================================================
 # Development Dependencies

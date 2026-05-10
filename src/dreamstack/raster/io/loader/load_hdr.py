@@ -13,7 +13,6 @@ Load HDR/Radiance image.
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -41,7 +40,9 @@ def load_hdr(
 ) -> Image:
     """Load HDR/Radiance image."""
     # pylint: disable=import-outside-toplevel
-    import imageio
+    from dreamstack.raster._optional import require
+
+    imageio = require("imageio", extra="exr", feature="HDR/Radiance loading")
 
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image, ImageMetadata

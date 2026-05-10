@@ -108,8 +108,12 @@ def color_range(
             np.array([[target_color]], dtype=np.uint8), cv2.COLOR_BGR2LAB
         )[0, 0]
 
-        lower = np.maximum(0, target.astype(np.int16) - fuzziness).astype(np.uint8)
-        upper = np.minimum(255, target.astype(np.int16) + fuzziness).astype(np.uint8)
+        lower = np.maximum(0, target.astype(np.int16) - fuzziness).astype(
+            np.uint8
+        )
+        upper = np.minimum(255, target.astype(np.int16) + fuzziness).astype(
+            np.uint8
+        )
 
         mask = cv2.inRange(converted, lower, upper)
 
@@ -126,4 +130,4 @@ def color_range(
     if invert:
         mask = 255 - mask
 
-    return Selection(mask=mask)
+    return Selection(mask=np.asarray(mask, dtype=np.uint8))

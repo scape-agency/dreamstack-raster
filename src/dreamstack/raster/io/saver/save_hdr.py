@@ -40,7 +40,9 @@ def save_hdr(
 ) -> None:
     """Save HDR/Radiance image."""
     # pylint: disable=import-outside-toplevel
-    import imageio
+    from dreamstack.raster._optional import require
+
+    imageio = require("imageio", extra="exr", feature="HDR/Radiance saving")
 
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import BitDepth

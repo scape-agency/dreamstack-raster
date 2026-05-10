@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=invalid-name
 
 
 # =============================================================================
@@ -12,7 +13,6 @@ Dreamstack Raster - Load PSD
 Load Adobe Photoshop PSD/PSB files.
 
 """
-
 
 # =============================================================================
 # Imports
@@ -54,7 +54,11 @@ def load_psd(
         Image (flattened) or Document (if layers=True)
     """
     # pylint: disable=import-outside-toplevel
-    from psd_tools import PSDImage
+    from dreamstack.raster._optional import require
+
+    PSDImage = require(
+        "psd_tools", extra="psd", feature="PSD/PSB loading"
+    ).PSDImage
 
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.image import Image, ImageMetadata

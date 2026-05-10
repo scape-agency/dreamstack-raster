@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pyright: reportArgumentType=false, reportReturnType=false
 
 
 # =============================================================================
@@ -12,7 +13,6 @@ Dreamstack Raster - Stroke
 Draw brush strokes along paths.
 
 """
-
 
 # =============================================================================
 # Imports

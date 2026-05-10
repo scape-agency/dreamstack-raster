@@ -13,7 +13,6 @@ Save images as OpenEXR files.
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -54,6 +53,7 @@ def save_exr(
         channel_names: Custom channel names
         **options: Additional options
     """
+    # pylint: disable=import-outside-toplevel,c-extension-no-member
     try:
         import Imath
         import OpenEXR
@@ -148,7 +148,10 @@ def save_exr(
 
 def _save_exr_imageio(image: Image, path: Path, **_options) -> None:
     """Fallback EXR saving using imageio."""
-    import imageio
+    # pylint: disable=import-outside-toplevel
+    from dreamstack.raster._optional import require
+
+    imageio = require("imageio", extra="exr", feature="EXR saving")
 
     # pylint: disable=import-outside-toplevel
     from dreamstack.raster.core.pixel import BitDepth
@@ -157,4 +160,6 @@ def _save_exr_imageio(image: Image, path: Path, **_options) -> None:
     if image.bit_depth not in (BitDepth.FLOAT16, BitDepth.FLOAT32):
         image = image.convert_bit_depth(BitDepth.FLOAT32)
 
-    imageio.imwrite(path, image.data.astype(np.float32), format="EXR-FI")  # type: ignore[call-overload]
+    imageio.imwrite(
+        path, image.data.astype(np.float32), format="EXR-FI"
+    )  # type: ignore[call-overload]

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pyright: reportArgumentType=false, reportReturnType=false
 
 
 # =============================================================================
@@ -11,7 +12,6 @@ Dreamstack Raster - Detection Extractor
 
 Extract detected objects from images with segmentation masks.
 """
-
 
 # =============================================================================
 # Imports

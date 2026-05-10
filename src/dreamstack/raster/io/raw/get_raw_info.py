@@ -43,7 +43,10 @@ def get_raw_info(path: str | Path) -> dict:
         Dictionary with RAW file information
     """
     # pylint: disable=import-outside-toplevel
-    import rawpy
+    # pylint: disable=import-outside-toplevel
+    from dreamstack.raster._optional import require
+
+    rawpy = require("rawpy", extra="raw", feature="RAW info inspection")
 
     path = Path(path)
 

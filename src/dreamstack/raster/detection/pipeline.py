@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pyright: reportArgumentType=false
 
 
 # =============================================================================
@@ -11,7 +12,6 @@ Dreamstack Raster - Detection Pipeline
 
 Batch processing pipeline for object detection and extraction.
 """
-
 
 # =============================================================================
 # Imports

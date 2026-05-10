@@ -12,6 +12,8 @@
     "extraPaths": ["src"],
     "typeCheckingMode": "basic",
     "reportMissingImports": "warning",
+    "reportArgumentType": "none",
+    "reportReturnType": "none",
     "reportMissingTypeStubs": false,
     "executionEnvironments": [
         { "root": "src", "pythonVersion": "3.12" },

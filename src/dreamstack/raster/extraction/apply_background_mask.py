@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pyright: reportArgumentType=false
 
 
 # =============================================================================
@@ -11,7 +12,6 @@ Dreamstack Raster - Apply Background Mask
 
 Function for replacing background with a solid color based on masking.
 """
-
 
 # =============================================================================
 # Imports

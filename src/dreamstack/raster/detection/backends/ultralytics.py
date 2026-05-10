@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pyright: reportArgumentType=false, reportReturnType=false
 
 
 # =============================================================================
@@ -12,7 +13,6 @@ Dreamstack Raster - Ultralytics YOLO Backend
 Object detection using Ultralytics YOLO models.
 Optimized for Mac M2 with MPS support.
 """
-
 
 # =============================================================================
 # Imports
@@ -86,14 +86,12 @@ class UltralyticsDetector(BaseDetector):
 
     def _load_model(self) -> None:
         """Load YOLO model with lazy import."""
-        try:
-            # pylint: disable=import-outside-toplevel
-            from ultralytics import YOLO  # type: ignore[import-not-found]
-        except ImportError as exc:
-            raise ImportError(
-                "ultralytics is required for YOLO detection. "
-                "Install with: pip install ultralytics"
-            ) from exc
+        # pylint: disable=import-outside-toplevel
+        from dreamstack.raster._optional import require
+
+        YOLO = require(
+            "ultralytics", extra="detection", feature="YOLO object detection"
+        ).YOLO
 
         device = self._resolve_device()
         logger.info(
