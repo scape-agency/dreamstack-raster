@@ -8,7 +8,6 @@
 """
 Dreamstack Raster - LAB to RGB conversion."""
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -19,18 +18,26 @@ from __future__ import annotations
 import numpy as np
 
 from dreamstack.raster.color.convert.xyz_to_rgb import xyz_to_rgb
+from dreamstack.raster.color.spaces.color_space import ColorSpace
 
 # Type for array-like inputs
 ArrayLike = np.ndarray | list | tuple
 
 
-def lab_to_rgb(lab: np.ndarray, illuminant: str = "D65") -> np.ndarray:
+def lab_to_rgb(
+    lab: np.ndarray,
+    illuminant: str = "D65",
+    *,
+    working_space: ColorSpace | None = None,
+) -> np.ndarray:
     """
     Convert CIE LAB to RGB color space.
 
     Args:
         lab: LAB array
         illuminant: Reference illuminant
+        working_space: RGB working space describing primaries, white point,
+            and transfer function
 
     Returns:
         RGB array with values in [0, 1] range
@@ -71,4 +78,4 @@ def lab_to_rgb(lab: np.ndarray, illuminant: str = "D65") -> np.ndarray:
     if has_alpha and alpha is not None:
         xyz = np.concatenate([xyz, alpha], axis=-1)
 
-    return xyz_to_rgb(xyz, illuminant)
+    return xyz_to_rgb(xyz, illuminant=illuminant, working_space=working_space)

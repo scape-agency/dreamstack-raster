@@ -13,7 +13,6 @@ Color space definitions and profiles.
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -34,6 +33,8 @@ from dreamstack.raster.color.spaces.color_space_instances import (
     ProPhotoRGB,
     Rec709,
     Rec2020,
+    Rec2100HLG,
+    Rec2100PQ,
     sRGB,
 )
 from dreamstack.raster.color.spaces.convert_color_space import (
@@ -68,6 +69,8 @@ __all__: list[str] = [
     "DisplayP3",
     "Rec709",
     "Rec2020",
+    "Rec2100PQ",
+    "Rec2100HLG",
     "ACES",
     "ACEScg",
     "DCI_P3",

@@ -5,14 +5,7 @@
 # Docstring
 # =============================================================================
 
-"""
-Dreamstack Raster - Model Conversions
-=================
-
-Utilities for working with dreamstack.color models.
-
-"""
-
+"""Utilities for working with local color models."""
 
 # =============================================================================
 # Imports
@@ -23,18 +16,19 @@ from __future__ import annotations
 
 import numpy as np
 
-# Import dreamstack.color models and conversions
-from dreamstack.color import (
-    CMYKColorModel,
-    HSLColorModel,
-    HSVColorModel,
-    RGBColorModel,
+from dreamstack.raster.color.convert import (
     cmyk_to_rgb,
     hsl_to_rgb,
     hsv_to_rgb,
     rgb_to_cmyk,
     rgb_to_hsl,
     rgb_to_hsv,
+)
+from dreamstack.raster.color.models import (
+    CMYKColorModel,
+    HSLColorModel,
+    HSVColorModel,
+    RGBColorModel,
 )
 
 ColorModel = RGBColorModel | HSLColorModel | HSVColorModel | CMYKColorModel
@@ -46,7 +40,7 @@ def get_color_model(
     normalized: bool = True,
 ) -> ColorModel:
     """
-    Create a dreamstack.color model from a numpy array.
+    Create a local color model from a numpy array.
 
     Args:
         array: Color array of shape (3,) or (4,)
@@ -54,7 +48,7 @@ def get_color_model(
         normalized: Whether input values are in normalized range
 
     Returns:
-        Appropriate color model (RGBColorModel, HSLColorModel, HSVColorModel, or CMYKColorModel)
+        Appropriate local color model
     """
     array = np.asarray(array).flatten()[:4]
 
@@ -73,7 +67,7 @@ def get_color_model(
         return RGBColorModel(r, g, b, a)
 
     elif color_space == "hsl":
-        # HSL: H in 0-360, S and L in 0-100 (dreamstack.color convention)
+        # HSL: H in 0-360, S and L in 0-100
         if normalized:
             h = float(array[0] * 360)
             s = float(array[1] * 100)
@@ -84,7 +78,7 @@ def get_color_model(
         return HSLColorModel(h, s, l, a)
 
     elif color_space == "hsv":
-        # HSV: H in 0-360, S and V in 0-100 (dreamstack.color convention)
+        # HSV: H in 0-360, S and V in 0-100
         if normalized:
             h = float(array[0] * 360)
             s = float(array[1] * 100)
@@ -115,7 +109,7 @@ def convert_color_model(
     target: str,
 ) -> ColorModel:
     """
-    Convert a color model to a different color space using dreamstack.color.
+    Convert a color model to a different color space.
 
     Args:
         color: Source color model
@@ -130,11 +124,47 @@ def convert_color_model(
     if isinstance(color, RGBColorModel):
         rgb = color
     elif isinstance(color, HSLColorModel):
-        rgb = hsl_to_rgb(color)
+        rgb_array = hsl_to_rgb(
+            np.array(
+                [color.h, color.s / 100.0, color.l / 100.0], dtype=np.float64
+            )
+        )
+        rgb = RGBColorModel(
+            int(round(rgb_array[0] * 255)),
+            int(round(rgb_array[1] * 255)),
+            int(round(rgb_array[2] * 255)),
+            color.a,
+        )
     elif isinstance(color, HSVColorModel):
-        rgb = hsv_to_rgb(color)
+        rgb_array = hsv_to_rgb(
+            np.array(
+                [color.h, color.s / 100.0, color.v / 100.0], dtype=np.float64
+            )
+        )
+        rgb = RGBColorModel(
+            int(round(rgb_array[0] * 255)),
+            int(round(rgb_array[1] * 255)),
+            int(round(rgb_array[2] * 255)),
+            color.a,
+        )
     elif isinstance(color, CMYKColorModel):
-        rgb = cmyk_to_rgb(color)
+        rgb_array = cmyk_to_rgb(
+            np.array(
+                [
+                    color.c / 100.0,
+                    color.m / 100.0,
+                    color.y / 100.0,
+                    color.k / 100.0,
+                ],
+                dtype=np.float64,
+            )
+        )
+        rgb = RGBColorModel(
+            int(round(rgb_array[0] * 255)),
+            int(round(rgb_array[1] * 255)),
+            int(round(rgb_array[2] * 255)),
+            color.a,
+        )
     else:
         raise TypeError(f"Unknown color type: {type(color)}")
 
@@ -142,11 +172,20 @@ def convert_color_model(
     if target == "rgb":
         return rgb
     elif target == "hsl":
-        return rgb_to_hsl(rgb)
+        hue, saturation, lightness = rgb_to_hsl(rgb.to_array(normalized=True))
+        return HSLColorModel(hue, saturation * 100.0, lightness * 100.0, rgb.a)
     elif target == "hsv":
-        return rgb_to_hsv(rgb)
+        hue, saturation, value = rgb_to_hsv(rgb.to_array(normalized=True))
+        return HSVColorModel(hue, saturation * 100.0, value * 100.0, rgb.a)
     elif target == "cmyk":
-        return rgb_to_cmyk(rgb)
+        cyan, magenta, yellow, key = rgb_to_cmyk(rgb.to_array(normalized=True))
+        return CMYKColorModel(
+            cyan * 100.0,
+            magenta * 100.0,
+            yellow * 100.0,
+            key * 100.0,
+            rgb.a,
+        )
     else:
         raise ValueError(f"Unknown target color space: {target}")
 

@@ -5,16 +5,7 @@
 # Docstring
 # =============================================================================
 
-"""
-Dreamstack Raster - Color Bridge Module
-=======================================
-
-Bridge between dreamstack-raster (numpy arrays) and dreamstack-color (color models).
-Provides utilities for converting between vectorized array operations and single-color
-operations from the dreamstack-color library.
-
-"""
-
+"""Bridge between numpy arrays and local single-color models."""
 
 # =============================================================================
 # Imports

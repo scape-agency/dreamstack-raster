@@ -5,14 +5,7 @@
 # Docstring
 # =============================================================================
 
-"""
-Dreamstack Raster - Array to Model Conversion
-=========================
-
-Convert between numpy arrays and dreamstack.color models.
-
-"""
-
+"""Convert between numpy arrays and local color models."""
 
 # =============================================================================
 # Imports
@@ -23,8 +16,7 @@ from __future__ import annotations
 
 import numpy as np
 
-# Import dreamstack.color models
-from dreamstack.color import RGBColorModel
+from dreamstack.raster.color.models import RGBColorModel
 
 
 def array_to_rgb(
@@ -39,7 +31,7 @@ def array_to_rgb(
         normalized: Whether input values are in 0-1 range (default: True)
 
     Returns:
-        RGBColorModel from dreamstack.color
+        Local RGBColorModel instance
     """
     array = np.asarray(array)
 
@@ -71,7 +63,7 @@ def rgb_to_array(
     Convert an RGBColorModel to a numpy array.
 
     Args:
-        rgb: RGBColorModel from dreamstack.color
+        rgb: Local RGBColorModel instance
         normalized: Whether to output values in 0-1 range (default: True)
         include_alpha: Whether to include alpha channel (default: False)
 
@@ -98,8 +90,7 @@ def arrays_to_rgb_list(
     """
     Convert a 2D/3D array of colors to a list of RGBColorModels.
 
-    Useful for operations that need to apply dreamstack.color functions
-    to multiple colors extracted from an image.
+    Useful for operations that need single-color model objects.
 
     Args:
         array: Array of shape (N, 3), (N, 4), (H, W, 3), or (H, W, 4)

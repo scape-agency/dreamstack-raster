@@ -18,11 +18,10 @@ This module provides two levels of color operations:
    - `rgb_to_hsv`, `hsv_to_rgb`, etc. - Vectorized numpy operations
    - Optimized for processing entire images or regions
 
-2. **Model-based operations** (from dreamstack.color):
-   - `RGB`, `HSL`, `HSV`, `CMYK` - Color model classes
-   - `lighten`, `darken`, `saturate`, etc. - Single-color manipulation
-   - `complementary`, `triadic`, etc. - Color harmony functions
-   - Use the `bridge` submodule to convert between arrays and models
+2. **Single-color operations** (raster-owned lightweight models):
+    - `RGBColorModel`, `HSLColorModel`, `HSVColorModel`, `CMYKColorModel`
+    - `Color` and `Palette` for swatches, gradients, and palette utilities
+    - Use the `bridge` submodule to convert between arrays and models
 
 Example:
     >>> from dreamstack.raster.color import Color, rgb_to_hsv
@@ -39,7 +38,6 @@ Example:
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -47,60 +45,6 @@ Example:
 # Import | Future
 from __future__ import annotations
 
-# Re-export dreamstack.color models and functions for convenience
-# Models; Manipulation functions; Harmony functions; Distance & Comparison;
-# Gradients; Generators; Validators; Utils; Additional conversions
-from dreamstack.color import (
-    NAMED_COLORS,
-    CMYKColorModel,
-    HSLColorModel,
-    HSVColorModel,
-    RGBColorModel,
-    adjust_hue,
-    analogous,
-    bezier_gradient,
-    brighten,
-    complement,
-    complementary,
-    contrast_ratio,
-    darken,
-    desaturate,
-    dim,
-    euclidean_distance,
-    fade,
-    get_named_color,
-    golden_ratio_color,
-    grayscale,
-    hex_to_rgb,
-    interpolate,
-    invert,
-    is_dark,
-    is_light,
-    is_similar,
-    is_valid_css_color,
-    is_valid_hex,
-    is_valid_rgb,
-    lighten,
-    linear_gradient,
-    luminance,
-    manhattan_distance,
-    mix,
-    monochromatic,
-    parse_css_color,
-    passes_wcag_aa,
-    passes_wcag_aaa,
-    random_color,
-    random_palette,
-    rgb_to_hex,
-    saturate,
-    shades,
-    split_complementary,
-    square,
-    tetradic,
-    tints,
-    tones,
-    triadic,
-)
 from dreamstack.raster.color.bridge import (
     array_to_rgb,
     arrays_to_rgb_list,
@@ -109,31 +53,34 @@ from dreamstack.raster.color.bridge import (
     rgb_list_to_arrays,
     rgb_to_array,
 )
-from dreamstack.raster.color.channels import (
-    channel_to_grayscale_rgb,
-    extract_channel,
-    extract_rgb_arrays,
-    isolate_channel,
-    merge_channels,
-    split_channels,
-    swap_channels,
-)
-
-# Import from submodules (now directories with __init__.py)
 from dreamstack.raster.color.convert import (
     cmyk_to_rgb,
     convert_color,
     gray_to_rgb,
     hsl_to_rgb,
     hsv_to_rgb,
+    lab_to_lch,
     lab_to_rgb,
+    lch_to_lab,
+    oklab_to_oklch,
+    oklab_to_rgb,
+    oklch_to_oklab,
     rgb_to_cmyk,
     rgb_to_gray,
     rgb_to_hsl,
     rgb_to_hsv,
     rgb_to_lab,
+    rgb_to_oklab,
     rgb_to_xyz,
+    rgb_to_ycbcr,
     xyz_to_rgb,
+    ycbcr_to_rgb,
+)
+from dreamstack.raster.color.models import (
+    CMYKColorModel,
+    HSLColorModel,
+    HSVColorModel,
+    RGBColorModel,
 )
 from dreamstack.raster.color.palette import (
     BLACK,
@@ -149,6 +96,14 @@ from dreamstack.raster.color.palette import (
     Palette,
     create_gradient,
     extract_palette,
+)
+from dreamstack.raster.color.pipeline import (
+    ensure,
+    to_encoded,
+    to_linear,
+    to_premultiplied,
+    to_straight,
+    to_working_space,
 )
 from dreamstack.raster.color.profiles import (
     ColorSpaceType,
@@ -175,10 +130,21 @@ from dreamstack.raster.color.spaces import (
     ProPhotoRGB,
     Rec709,
     Rec2020,
+    Rec2100HLG,
+    Rec2100PQ,
     convert_color_space,
     get_color_space,
     list_color_spaces,
     sRGB,
+)
+from dreamstack.raster.core.channel import (
+    channel_to_grayscale_rgb,
+    extract_channel,
+    extract_rgb_arrays,
+    isolate_channel,
+    merge_channels,
+    split_channels,
+    swap_channels,
 )
 
 __all__: list[str] = [
@@ -197,6 +163,14 @@ __all__: list[str] = [
     "xyz_to_rgb",
     "gray_to_rgb",
     "rgb_to_gray",
+    "rgb_to_oklab",
+    "oklab_to_rgb",
+    "lab_to_lch",
+    "lch_to_lab",
+    "oklab_to_oklch",
+    "oklch_to_oklab",
+    "rgb_to_ycbcr",
+    "ycbcr_to_rgb",
     "convert_color",
     # ==========================================================================
     # Bridge functions (array <-> model)
@@ -208,78 +182,12 @@ __all__: list[str] = [
     "convert_color_model",
     "get_color_model",
     # ==========================================================================
-    # Color models (from dreamstack.color)
+    # Color models
     # ==========================================================================
     "RGBColorModel",
     "HSLColorModel",
     "HSVColorModel",
     "CMYKColorModel",
-    # ==========================================================================
-    # Manipulation functions (from dreamstack.color)
-    # ==========================================================================
-    "lighten",
-    "darken",
-    "saturate",
-    "desaturate",
-    "grayscale",
-    "adjust_hue",
-    "mix",
-    "invert",
-    "fade",
-    "brighten",
-    "dim",
-    "complement",
-    # ==========================================================================
-    # Harmony functions (from dreamstack.color)
-    # ==========================================================================
-    "complementary",
-    "triadic",
-    "tetradic",
-    "analogous",
-    "split_complementary",
-    "square",
-    "monochromatic",
-    "shades",
-    "tints",
-    "tones",
-    # ==========================================================================
-    # Distance & Comparison (from dreamstack.color)
-    # ==========================================================================
-    "euclidean_distance",
-    "manhattan_distance",
-    "is_similar",
-    "is_dark",
-    "is_light",
-    "contrast_ratio",
-    "passes_wcag_aa",
-    "passes_wcag_aaa",
-    "luminance",
-    # ==========================================================================
-    # Gradients (from dreamstack.color)
-    # ==========================================================================
-    "linear_gradient",
-    "bezier_gradient",
-    "interpolate",
-    # ==========================================================================
-    # Generators (from dreamstack.color)
-    # ==========================================================================
-    "random_color",
-    "random_palette",
-    "golden_ratio_color",
-    # ==========================================================================
-    # Validators (from dreamstack.color)
-    # ==========================================================================
-    "is_valid_hex",
-    "is_valid_rgb",
-    "is_valid_css_color",
-    # ==========================================================================
-    # Utils (from dreamstack.color)
-    # ==========================================================================
-    "NAMED_COLORS",
-    "get_named_color",
-    "hex_to_rgb",
-    "rgb_to_hex",
-    "parse_css_color",
     # ==========================================================================
     # Color spaces (raster-specific)
     # ==========================================================================
@@ -294,6 +202,8 @@ __all__: list[str] = [
     "DisplayP3",
     "Rec709",
     "Rec2020",
+    "Rec2100PQ",
+    "Rec2100HLG",
     "ACES",
     "ACEScg",
     "DCI_P3",
@@ -341,4 +251,13 @@ __all__: list[str] = [
     "extract_rgb_arrays",
     "swap_channels",
     "channel_to_grayscale_rgb",
+    # ==========================================================================
+    # Typed color pipeline
+    # ==========================================================================
+    "ensure",
+    "to_linear",
+    "to_encoded",
+    "to_premultiplied",
+    "to_straight",
+    "to_working_space",
 ]

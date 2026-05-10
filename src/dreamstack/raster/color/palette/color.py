@@ -5,16 +5,7 @@
 # Docstring
 # =============================================================================
 
-"""
-Dreamstack Raster - Color Class Definition
-======================
-
-This module provides a Color class that bridges between numpy arrays
-(for raster image processing) and dreamstack.color models (for single-color
-manipulation operations).
-
-"""
-
+"""Single-color helpers for palette and swatch operations."""
 
 # =============================================================================
 # Imports
@@ -27,22 +18,12 @@ from dataclasses import dataclass
 
 import numpy as np
 
-# Import dreamstack.color for manipulation operations
-from dreamstack.color import HSLColorModel, HSVColorModel
-from dreamstack.color import RGBColorModel as DreamstackRGB
-from dreamstack.color import adjust_hue as ds_adjust_hue
-from dreamstack.color import complement as ds_complement
-from dreamstack.color import darken as ds_darken
-from dreamstack.color import desaturate as ds_desaturate
-from dreamstack.color import grayscale as ds_grayscale
-from dreamstack.color import hsl_to_rgb as ds_hsl_to_rgb
-from dreamstack.color import hsv_to_rgb as ds_hsv_to_rgb
-from dreamstack.color import invert as ds_invert
-from dreamstack.color import lighten as ds_lighten
-from dreamstack.color import mix as ds_mix
-from dreamstack.color import rgb_to_hsl as ds_rgb_to_hsl
-from dreamstack.color import rgb_to_hsv as ds_rgb_to_hsv
-from dreamstack.color import saturate as ds_saturate
+from dreamstack.raster.color.convert import (
+    hsl_to_rgb,
+    hsv_to_rgb,
+    rgb_to_hsl,
+    rgb_to_hsv,
+)
 
 
 @dataclass
@@ -65,12 +46,10 @@ class Color:
     normalized: bool = False
 
     def __post_init__(self):
-        if not self.normalized:
-            # Assume 0-255 range
-            self.r = float(self.r)
-            self.g = float(self.g)
-            self.b = float(self.b)
-            self.a = float(self.a)
+        self.r = float(self.r)
+        self.g = float(self.g)
+        self.b = float(self.b)
+        self.a = float(self.a)
 
     @classmethod
     def from_hex(cls, hex_string: str) -> Color:
@@ -96,43 +75,25 @@ class Color:
 
     @classmethod
     def from_hsv(cls, h: float, s: float, v: float, a: float = 1.0) -> Color:
-        """
-        Create color from HSV values using dreamstack.color.
-
-        Args:
-            h: Hue (0-360)
-            s: Saturation (0-1)
-            v: Value (0-1)
-            a: Alpha (0-1)
-
-        Returns:
-            Color instance
-        """
-        hsv = HSVColorModel(
-            h, s * 100, v * 100, a
-        )  # dreamstack.color uses 0-100 for S/V
-        rgb = ds_hsv_to_rgb(hsv)
-        return cls(rgb.r, rgb.g, rgb.b, rgb.a)
+        """Create color from HSV values."""
+        rgb = hsv_to_rgb(np.array([h, s, v], dtype=np.float64))
+        return cls(
+            int(round(rgb[0] * 255)),
+            int(round(rgb[1] * 255)),
+            int(round(rgb[2] * 255)),
+            a * 255,
+        )
 
     @classmethod
     def from_hsl(cls, h: float, s: float, l: float, a: float = 1.0) -> Color:
-        """
-        Create color from HSL values using dreamstack.color.
-
-        Args:
-            h: Hue (0-360)
-            s: Saturation (0-1)
-            l: Lightness (0-1)
-            a: Alpha (0-1)
-
-        Returns:
-            Color instance
-        """
-        hsl = HSLColorModel(
-            h, s * 100, l * 100, a
-        )  # dreamstack.color uses 0-100 for S/L
-        rgb = ds_hsl_to_rgb(hsl)
-        return cls(rgb.r, rgb.g, rgb.b, rgb.a)
+        """Create color from HSL values."""
+        rgb = hsl_to_rgb(np.array([h, s, l], dtype=np.float64))
+        return cls(
+            int(round(rgb[0] * 255)),
+            int(round(rgb[1] * 255)),
+            int(round(rgb[2] * 255)),
+            a * 255,
+        )
 
     @classmethod
     def from_array(cls, array: np.ndarray, normalized: bool = False) -> Color:
@@ -183,41 +144,22 @@ class Color:
 
     def to_hsv(self) -> tuple[float, float, float]:
         """Get as HSV values (h: 0-360, s: 0-1, v: 0-1)."""
-        ds_rgb = self.to_dreamstack_rgb()
-        hsv = ds_rgb_to_hsv(ds_rgb)
-        return (hsv.h, hsv.s / 100, hsv.v / 100)
+        hsv = rgb_to_hsv(np.array(self.to_normalized()[:3], dtype=np.float64))
+        return (float(hsv[0]), float(hsv[1]), float(hsv[2]))
 
     def to_hsl(self) -> tuple[float, float, float]:
         """Get as HSL values (h: 0-360, s: 0-1, l: 0-1)."""
-        ds_rgb = self.to_dreamstack_rgb()
-        hsl = ds_rgb_to_hsl(ds_rgb)
-        return (hsl.h, hsl.s / 100, hsl.l / 100)
-
-    def to_dreamstack_rgb(self) -> DreamstackRGB:
-        """Convert to dreamstack.color RGB model."""
-        r, g, b = self.to_rgb()
-        return DreamstackRGB(
-            r, g, b, self.a if self.normalized else self.a / 255
-        )
-
-    @classmethod
-    def from_dreamstack_rgb(cls, rgb: DreamstackRGB | HSLColorModel) -> Color:
-        """Create Color from dreamstack.color RGB or HSL model."""
-        if isinstance(rgb, HSLColorModel):
-            # Convert HSL to RGB first
-            rgb = ds_hsl_to_rgb(rgb)
-        return cls(rgb.r, rgb.g, rgb.b, rgb.a)
+        hsl = rgb_to_hsl(np.array(self.to_normalized()[:3], dtype=np.float64))
+        return (float(hsl[0]), float(hsl[1]), float(hsl[2]))
 
     def luminance(self) -> float:
-        """Calculate perceptual luminance using dreamstack.color."""
-        # pylint: disable=import-outside-toplevel
-        from dreamstack.color import luminance as ds_luminance
-
-        return ds_luminance(self.to_dreamstack_rgb())
+        """Calculate relative luminance in encoded RGB."""
+        red, green, blue, _alpha = self.to_normalized()
+        return 0.2126 * red + 0.7152 * green + 0.0722 * blue
 
     def blend(self, other: Color, factor: float = 0.5) -> Color:
         """
-        Blend with another color using dreamstack.color.
+        Blend with another color.
 
         Args:
             other: Color to blend with
@@ -226,14 +168,14 @@ class Color:
         Returns:
             Blended color
         """
-        result = ds_mix(
-            self.to_dreamstack_rgb(), other.to_dreamstack_rgb(), factor
-        )
-        return Color.from_dreamstack_rgb(result)
+        start = np.array(self.to_normalized(), dtype=np.float64)
+        end = np.array(other.to_normalized(), dtype=np.float64)
+        mixed = start + (end - start) * factor
+        return self.from_array(mixed, normalized=True)
 
     def lighten(self, amount: float = 0.1) -> Color:
         """
-        Lighten color using dreamstack.color.
+        Lighten color in HSL space.
 
         Args:
             amount: Amount to lighten (0-1 range, will be scaled to percent)
@@ -241,13 +183,17 @@ class Color:
         Returns:
             Lightened color
         """
-        # dreamstack.color.lighten uses percentage (0-100)
-        result = ds_lighten(self.to_dreamstack_rgb(), amount * 100)
-        return Color.from_dreamstack_rgb(result)
+        hue, saturation, lightness = self.to_hsl()
+        return Color.from_hsl(
+            hue,
+            saturation,
+            np.clip(lightness + amount, 0.0, 1.0),
+            self.to_normalized()[3],
+        )
 
     def darken(self, amount: float = 0.1) -> Color:
         """
-        Darken color using dreamstack.color.
+        Darken color in HSL space.
 
         Args:
             amount: Amount to darken (0-1 range, will be scaled to percent)
@@ -255,12 +201,17 @@ class Color:
         Returns:
             Darkened color
         """
-        result = ds_darken(self.to_dreamstack_rgb(), amount * 100)
-        return Color.from_dreamstack_rgb(result)
+        hue, saturation, lightness = self.to_hsl()
+        return Color.from_hsl(
+            hue,
+            saturation,
+            np.clip(lightness - amount, 0.0, 1.0),
+            self.to_normalized()[3],
+        )
 
     def saturate(self, amount: float = 0.1) -> Color:
         """
-        Increase saturation using dreamstack.color.
+        Increase saturation in HSL space.
 
         Args:
             amount: Amount to saturate (0-1 range, will be scaled to percent)
@@ -268,12 +219,17 @@ class Color:
         Returns:
             More saturated color
         """
-        result = ds_saturate(self.to_dreamstack_rgb(), amount * 100)
-        return Color.from_dreamstack_rgb(result)
+        hue, saturation, lightness = self.to_hsl()
+        return Color.from_hsl(
+            hue,
+            np.clip(saturation + amount, 0.0, 1.0),
+            lightness,
+            self.to_normalized()[3],
+        )
 
     def desaturate(self, amount: float = 0.1) -> Color:
         """
-        Decrease saturation using dreamstack.color.
+        Decrease saturation in HSL space.
 
         Args:
             amount: Amount to desaturate (0-1 range, will be scaled to percent)
@@ -281,42 +237,51 @@ class Color:
         Returns:
             Less saturated color
         """
-        result = ds_desaturate(self.to_dreamstack_rgb(), amount * 100)
-        return Color.from_dreamstack_rgb(result)
+        hue, saturation, lightness = self.to_hsl()
+        return Color.from_hsl(
+            hue,
+            np.clip(saturation - amount, 0.0, 1.0),
+            lightness,
+            self.to_normalized()[3],
+        )
 
     def complement(self) -> Color:
         """
-        Get complementary color using dreamstack.color.
+        Get the complementary color.
 
         Returns:
             Complementary color
         """
-        result = ds_complement(self.to_dreamstack_rgb())
-        return Color.from_dreamstack_rgb(result)
+        return self.adjust_hue(180.0)
 
     def grayscale(self) -> Color:
         """
-        Convert to grayscale using dreamstack.color.
+        Convert to grayscale.
 
         Returns:
             Grayscale color
         """
-        result = ds_grayscale(self.to_dreamstack_rgb())
-        return Color.from_dreamstack_rgb(result)
+        luminance = self.luminance()
+        alpha = self.to_normalized()[3]
+        gray = int(round(luminance * 255))
+        return Color(gray, gray, gray, alpha * 255)
 
     def invert(self) -> Color:
         """
-        Invert color using dreamstack.color.
+        Invert color channels.
 
         Returns:
             Inverted color
         """
-        result = ds_invert(self.to_dreamstack_rgb())
-        return Color.from_dreamstack_rgb(result)
+        red, green, blue, alpha = self.to_normalized()
+        return Color.from_array(
+            np.array([1.0 - red, 1.0 - green, 1.0 - blue, alpha]),
+            normalized=True,
+        )
 
     def adjust_hue(self, degrees: float) -> Color:
         """
-        Adjust hue using dreamstack.color.
+        Adjust hue in HSL space.
 
         Args:
             degrees: Degrees to rotate hue (-360 to 360)
@@ -324,5 +289,8 @@ class Color:
         Returns:
             Color with adjusted hue
         """
-        result = ds_adjust_hue(self.to_dreamstack_rgb(), degrees)
-        return Color.from_dreamstack_rgb(result)
+        hue, saturation, lightness = self.to_hsl()
+        alpha = self.to_normalized()[3]
+        return Color.from_hsl(
+            (hue + degrees) % 360.0, saturation, lightness, alpha
+        )
