@@ -7,7 +7,7 @@
 
 [project]
 name = "dreamstack_raster"
-version = "0.0.1"
+version = "0.0.2"
 description = "Dreamstack Raster"
 license = { text = "Proprietary" }
 readme = "README.md"

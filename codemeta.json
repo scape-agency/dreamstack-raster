@@ -3,7 +3,7 @@
   "@type": "SoftwareSourceCode",
   "name": "dreamstack-raster",
   "description": "Dreamstack Raster",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "https://spdx.org/licenses/LicenseRef-Proprietary",
   "codeRepository": "https://github.com/scape-agency/dreamstack-raster",
   "issueTracker": "https://github.com/scape-agency/dreamstack-raster/issues",

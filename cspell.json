@@ -1,0 +1,37 @@
+{
+    "version": "0.2",
+    "language": "en,en-GB",
+    "words": [
+        "dreamstack",
+        "scape",
+        "pyproject",
+        "pytest",
+        "mypy",
+        "pylint",
+        "ruff",
+        "isort",
+        "docstring",
+        "docstrings",
+        "pydantic",
+        "numpy",
+        "scipy",
+        "pillow",
+        "opencv",
+        "imageio",
+        "rasterio"
+    ],
+    "ignorePaths": [
+        "node_modules",
+        ".git",
+        ".venv",
+        "venv",
+        "__pycache__",
+        "*.egg-info",
+        "dist",
+        "build",
+        ".tox",
+        ".mypy_cache",
+        ".pytest_cache",
+        "htmlcov"
+    ]
+}
