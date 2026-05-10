@@ -57,7 +57,7 @@ def split_toning(
         return image.copy()
 
     data = image.data.astype(np.float32)
-    max_val = 255 if image.bit_depth.name == "UINT8" else 65535
+    max_val = image.bit_depth.max_value
 
     normalized = data[:, :, :3] / max_val
 

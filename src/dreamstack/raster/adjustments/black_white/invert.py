@@ -41,7 +41,7 @@ def invert(image: Image) -> Image:
     from dreamstack.raster.core.pixel import PixelData
 
     data = image.data
-    max_val = 255 if image.bit_depth.name == "UINT8" else 65535
+    max_val = image.bit_depth.max_value
 
     result = max_val - data
 

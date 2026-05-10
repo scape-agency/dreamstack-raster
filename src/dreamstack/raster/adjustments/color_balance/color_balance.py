@@ -56,7 +56,7 @@ def color_balance(
         return image.copy()
 
     data = image.data.astype(np.float32)
-    max_val = 255 if image.bit_depth.name == "UINT8" else 65535
+    max_val = image.bit_depth.max_value
 
     # Normalize to 0-1
     normalized = data[:, :, :3] / max_val

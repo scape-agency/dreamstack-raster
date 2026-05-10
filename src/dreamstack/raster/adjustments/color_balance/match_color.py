@@ -57,7 +57,7 @@ def match_color(
 
     data = image.data.astype(np.float32)
     ref_data = reference.data.astype(np.float32)
-    max_val = 255 if image.bit_depth.name == "UINT8" else 65535
+    max_val = image.bit_depth.max_value
     ref_max = 255 if reference.bit_depth.name == "UINT8" else 65535
 
     # Normalize

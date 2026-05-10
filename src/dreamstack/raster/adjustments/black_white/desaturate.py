@@ -51,7 +51,7 @@ def desaturate(image: Image, method: str = "luminosity") -> Image:
         return image.copy()
 
     data = image.data.astype(np.float32)
-    max_val = 255 if image.bit_depth.name == "UINT8" else 65535
+    max_val = image.bit_depth.max_value
 
     r = data[:, :, 0]
     g = data[:, :, 1]

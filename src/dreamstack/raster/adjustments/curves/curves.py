@@ -55,8 +55,8 @@ def curves(
     from dreamstack.raster.core.pixel import PixelData
 
     data = image.data.astype(np.float32)
-    max_val = 255 if image.bit_depth.name == "UINT8" else 65535
-    lut_size = 256 if image.bit_depth.name == "UINT8" else 65536
+    max_val = image.bit_depth.max_value
+    lut_size = 256 if image.bit_depth.name == "UINT8" else (65536 if image.bit_depth.name == "UINT16" else 1024)
 
     result = data.copy()
 

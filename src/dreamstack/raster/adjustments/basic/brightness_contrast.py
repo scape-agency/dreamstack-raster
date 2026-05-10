@@ -51,7 +51,7 @@ def brightness_contrast(
     from dreamstack.raster.core.pixel import PixelData
 
     data = image.data.astype(np.float32)
-    max_val = 255 if image.bit_depth.name == "UINT8" else 65535
+    max_val = image.bit_depth.max_value
 
     if legacy:
         # Legacy Photoshop algorithm

@@ -14,7 +14,6 @@ brightness/contrast, color balance, and more.
 
 """
 
-
 # =============================================================================
 # Imports
 # =============================================================================
@@ -104,47 +103,71 @@ def apply_adjustment(
     adjustment_type: str,
     parameters: dict[str, Any],
 ) -> NDArray[np.floating]:
-    """Apply an adjustment by name.
+    """Apply a named adjustment to a normalized float pixel array.
+
+    Operates on float32 RGBA-shaped data in [0, 1] without ever round-
+    tripping through uint8. Internally wraps the array in a transient
+    :class:`~dreamstack.raster.core.image.Image` (FLOAT32 bit depth)
+    so leaf adjustment functions can keep their ``Image``-in/``Image``-
+    out signatures.
 
     Args:
-        data: Input pixel data (normalized float 0-1).
-        adjustment_type: Name of the adjustment to apply.
-        parameters: Parameters for the adjustment.
+        data: Input pixel data, ``(H, W, C)`` float32 in ``[0, 1]``.
+        adjustment_type: Name of the adjustment (see :data:`ADJUSTMENTS`).
+        parameters: Keyword arguments forwarded to the adjustment.
 
     Returns:
-        Adjusted pixel data.
+        Adjusted pixel data as float32 in ``[0, 1]``. Returns the input
+        unchanged when the adjustment name is unknown.
     """
-    adjustments_map = {
-        "brightness": brightness,
-        "contrast": contrast,
-        "brightness_contrast": brightness_contrast,
-        "exposure": exposure,
-        "gamma": gamma,
-        "vibrance": vibrance,
-        "saturation": saturation,
-        "levels": levels,
-        "auto_levels": auto_levels,
-        "curves": curves,
-        "color_balance": color_balance,
-        "hue_saturation": hue_saturation,
-        "shadows_highlights": shadows_highlights,
-        "invert": invert,
-        "threshold": threshold,
-        "black_white": black_white,
-        "sepia": sepia,
-    }
+    # pylint: disable=import-outside-toplevel
+    from dreamstack.raster.core.image import Image, ImageMetadata
+    from dreamstack.raster.core.pixel import BitDepth, PixelData, PixelFormat
 
-    func = adjustments_map.get(adjustment_type)
+    func = ADJUSTMENTS.get(adjustment_type)
     if func is None:
         return data
 
-    # Convert to uint8 for adjustment functions if needed
-    if data.dtype in (np.float32, np.float64):
-        data_uint8 = (np.clip(data, 0, 1) * 255).astype(np.uint8)
-        result = func(data_uint8, **parameters)  # type: ignore[operator]
-        return result.astype(np.float32) / 255.0
+    # Pick a pixel format from the channel count.
+    channels = data.shape[2] if data.ndim == 3 else 1
+    pixel_format = {
+        1: PixelFormat.GRAY,
+        3: PixelFormat.RGB,
+        4: PixelFormat.RGBA,
+    }.get(channels, PixelFormat.RGBA)
 
-    return func(data, **parameters)  # type: ignore[operator]
+    float_data = data.astype(np.float32, copy=False)
+    pixel_data = PixelData(
+        data=float_data,
+        pixel_format=pixel_format,
+        bit_depth=BitDepth.FLOAT32,
+    )
+    image = Image(pixel_data, ImageMetadata())
+
+    result_image = func(image, **parameters)  # type: ignore[operator]
+    return result_image.data.astype(np.float32, copy=False)
+
+
+# Map of adjustment names to leaf functions. Exposed for introspection.
+ADJUSTMENTS: dict[str, Any] = {
+    "brightness": brightness,
+    "contrast": contrast,
+    "brightness_contrast": brightness_contrast,
+    "exposure": exposure,
+    "gamma": gamma,
+    "vibrance": vibrance,
+    "saturation": saturation,
+    "levels": levels,
+    "auto_levels": auto_levels,
+    "curves": curves,
+    "color_balance": color_balance,
+    "hue_saturation": hue_saturation,
+    "shadows_highlights": shadows_highlights,
+    "invert": invert,
+    "threshold": threshold,
+    "black_white": black_white,
+    "sepia": sepia,
+}
 
 
 __all__: list[str] = [

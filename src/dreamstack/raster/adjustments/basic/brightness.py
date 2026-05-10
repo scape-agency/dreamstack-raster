@@ -44,7 +44,7 @@ def brightness(image: Image, amount: float = 0) -> Image:
     from dreamstack.raster.core.pixel import PixelData
 
     data = image.data.astype(np.float32)
-    max_val = 255 if image.bit_depth.name == "UINT8" else 65535
+    max_val = image.bit_depth.max_value
 
     # Scale amount
     offset = amount * max_val / 100

@@ -53,7 +53,7 @@ def tone_curve(
     from dreamstack.raster.core.pixel import PixelData
 
     data = image.data.astype(np.float32)
-    max_val = 255 if image.bit_depth.name == "UINT8" else 65535
+    max_val = image.bit_depth.max_value
 
     # Build parametric curve
     # Zones: 0-25% shadows, 25-50% darks, 50-75% lights, 75-100% highlights

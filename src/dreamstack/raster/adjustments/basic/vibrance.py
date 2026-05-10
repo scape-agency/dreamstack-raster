@@ -52,7 +52,7 @@ def vibrance(image: Image, amount: float = 0) -> Image:
         return image.copy()
 
     data = image.data.astype(np.float32)
-    max_val = 255 if image.bit_depth.name == "UINT8" else 65535
+    max_val = image.bit_depth.max_value
 
     # Convert to HSV
     hsv = _rgb_to_hsv(data[:, :, :3] / max_val)
