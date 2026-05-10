@@ -13,3 +13,10 @@ authors:
     email: lars@scape.agency
     affiliation: Scape Agency
     orcid: 'https://orcid.org/0000-0002-8790-8630'
+keywords:
+  - dreamstack
+  - raster
+  - image
+abstract: >-
+  Dreamstack Raster module for raster image processing and manipulation.
+repository-code: "https://github.com/scape-agency/dreamstack-raster"
