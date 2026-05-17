@@ -146,7 +146,7 @@ all = [
 # =============================================================================
 # Documentation Dependencies
 # =============================================================================
-ruff = "^0.15.5"
+ruff = "^0.15.13"
 
 [tool.poetry.group.doc.dependencies]
 # sturnus-doc = { git = "https://github.com/starling-cloud/sturnus-doc.git", rev = "pro" }
