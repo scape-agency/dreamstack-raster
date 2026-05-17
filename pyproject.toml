@@ -65,7 +65,7 @@ priority = "supplemental"
 dreamstack = { git = "https://github.com/scape-agency/dreamstack.git", rev = "dev" }
 
 # Core image processing
-numpy = "^2.0.0"
+numpy = "^2.4.5"
 pillow = "^12.1.1"
 scikit-image = "^0.26.0"
 opencv-python = "^4.10.0"
