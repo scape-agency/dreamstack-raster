@@ -333,3 +333,6 @@ exa/childhood-app/images
 exa/childhood-app/output/**/*.jpg
 exa/childhood-app/output/**/*.png
 exa/childhood-app/output/**/*.JPG
+
+# Claude Code local settings
+.claude/settings.local.json
